@@ -12,9 +12,9 @@ export async function init(context) {
   await context.dispatch('computer/computerId', {}, { root: true })
 
   await context.dispatch('packages/setAvailablePackages', {}, { root: true })
+
   await context.dispatch('serverInfo')
   await context.dispatch('getToken')
-
   await context.dispatch('getApps')
 
   await context.dispatch('computer/computerData', {}, { root: true })
