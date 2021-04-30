@@ -1,6 +1,8 @@
 import { tokenAuth, publicApi, tokenApi, internalApi } from 'config/app.conf'
 
 export async function init(context) {
+  context.commit('ui/loading', null, { root: true })
+
   await context.dispatch('preferences/readPreferences', {}, { root: true })
   await context.dispatch('apiProtocol')
   await context.dispatch('serverHost')
@@ -26,6 +28,8 @@ export async function init(context) {
   await context.dispatch('devices/computerDevices', {}, { root: true })
   await context.dispatch('devices/getAvailableDevices', {}, { root: true })
   await context.dispatch('devices/getFeaturesDevices', {}, { root: true })
+
+  context.commit('ui/finished', null, { root: true })
 }
 
 export async function serverInfo(context) {
