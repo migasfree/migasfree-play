@@ -15,7 +15,7 @@ export async function setInstalledPackages(context) {
   await this.$axios
     .post(
       `${internalApi}/packages/installed`,
-      context.rootGetters.getAppsPackages
+      context.rootGetters['app/getAppsPackages']
     )
     .then((response) => {
       context.commit('setInstalledPackages', response.data)
