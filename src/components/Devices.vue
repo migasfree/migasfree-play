@@ -2,7 +2,7 @@
   <div>
     <DeviceFilter />
 
-    <div class="row q-gutter-md">
+    <div class="row justify-between q-gutter-md">
       <DeviceDetail
         v-for="item in devicesByFilter"
         :id="item.name"
