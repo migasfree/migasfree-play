@@ -2,7 +2,7 @@
   <div>
     <AppFilter />
 
-    <div class="row justify-between q-gutter-md">
+    <div class="row">
       <AppDetail
         v-for="item in appsByFilter"
         :key="item.id"
