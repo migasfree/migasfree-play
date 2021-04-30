@@ -6,9 +6,11 @@
           stretch
           flat
           :label="$store.getters['computer/getComputer'].name"
-          :to="{ name: 'apps' }"
+          :href="$store.getters['computer/getComputer'].link"
+          type="a"
+          target="_blank"
           no-caps
-          size="22px"
+          size="28px"
         >
           <q-tooltip>{{ $gettext('View Computer') }}</q-tooltip>
         </q-btn>
@@ -21,7 +23,7 @@
           round
           icon="apps"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
           :disabled="$router.currentRoute.name === 'apps'"
           @click="$router.push({ name: 'apps' })"
         >
@@ -34,7 +36,7 @@
           round
           icon="mdi-printer"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
           :disabled="$router.currentRoute.name === 'devices'"
           @click="$router.push({ name: 'devices' })"
         >
@@ -47,7 +49,7 @@
           round
           icon="mdi-tag"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
         >
           <q-tooltip>{{ $gettext('Tags') }}</q-tooltip>
         </q-btn>
@@ -58,7 +60,7 @@
           round
           icon="mdi-list-status"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
           :disabled="$router.currentRoute.name === 'details'"
           @click="$router.push({ name: 'details' })"
         >
@@ -70,7 +72,7 @@
           round
           icon="mdi-cog"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
           :disabled="$router.currentRoute.name === 'preferences'"
           @click="$router.push({ name: 'preferences' })"
         >
@@ -83,7 +85,7 @@
           round
           icon="info"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
           :disabled="$router.currentRoute.name === 'info'"
           @click="$router.push({ name: 'info' })"
         >
@@ -96,7 +98,7 @@
           round
           icon="help"
           size="lg"
-          class="q-mx-sm"
+          class="q-mx-xs"
           type="a"
           target="_blank"
           href="https://fun-with-migasfree.readthedocs.io/es/master/chapter10.html#migasfree-play"
