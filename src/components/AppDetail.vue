@@ -28,7 +28,7 @@
         <q-markdown v-else :src="truncatedDescription"></q-markdown>
       </q-card-section>
 
-      <q-card-actions>
+      <q-card-actions class="q-gutter-md">
         <q-btn
           v-if="isInstallable"
           color="positive"
