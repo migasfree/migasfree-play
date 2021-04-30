@@ -1,0 +1,65 @@
+{
+  "name": "migasfree-play",
+  "version": "2.0.0",
+  "description": "Migasfree Client front-end. Allow install/uninstall available applications and printers.",
+  "productName": "migasfree-play",
+  "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
+  "license": "GPLv3",
+  "copyright": "© 2017-2021 migasfree team",
+  "homepage": "https://github.com/jact/migasfree-play/blob/master/README.md",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ./",
+    "test": "echo \"No test specified\" && exit 0",
+    "gettext-extract": "gettext-extract --attribute v-translate --output src/i18n/app.pot $(find ./src -type f -name '*.vue' -o -name '*.js')",
+    "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po",
+    "dev": "quasar dev -m electron -- --no-sandbox",
+    "build": "quasar build -m electron -- --no-sandbox"
+  },
+  "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^1.0.2",
+    "@quasar/extras": "^1.10.4",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "python-shell": "^3.0.0",
+    "quasar": "^1.15.10",
+    "tcp-port-used": "^1.0.2",
+    "typeface-lato": "^1.1.13",
+    "vue-gettext": "^2.1.12"
+  },
+  "devDependencies": {
+    "@quasar/app": "^2.2.4",
+    "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
+    "babel-eslint": "^10.0.1",
+    "devtron": "^1.4.0",
+    "easygettext": "^2.17.0",
+    "electron": "^9.0.0",
+    "electron-builder": "^22.4.0",
+    "electron-debug": "^3.0.1",
+    "electron-devtools-installer": "^3.0.0",
+    "electron-packager": "^14.1.1",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-vue": "^7.7.0",
+    "eslint-webpack-plugin": "^2.4.0"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
