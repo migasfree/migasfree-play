@@ -10,8 +10,7 @@ export function setComputerId(state, value) {
 }
 
 export function setComputerLink(state, value) {
-  // FIXME path
-  state.link = `${value.protocol}://${value.host}/admin/client/computer/${value.cid}/`
+  state.link = `${value.protocol}://${value.host}/computers/results/${value.cid}/`
 }
 
 export function setComputerData(state, value) {
