@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el :label="$gettext('Preferences')" icon="mdi-cog" />
+    </q-breadcrumbs>
+
     <Preferences />
   </q-page>
 </template>

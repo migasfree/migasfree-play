@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el :label="$gettext('Apps')" icon="apps" />
+    </q-breadcrumbs>
+
     <Apps />
   </q-page>
 </template>

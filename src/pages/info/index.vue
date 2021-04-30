@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el :label="$gettext('Info')" icon="info" />
+    </q-breadcrumbs>
+
     <Info />
   </q-page>
 </template>

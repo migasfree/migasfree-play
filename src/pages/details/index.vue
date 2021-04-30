@@ -1,5 +1,9 @@
 <template>
   <q-page id="main" padding>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el :label="$gettext('Details')" icon="mdi-list-status" />
+    </q-breadcrumbs>
+
     <Executions />
   </q-page>
 </template>

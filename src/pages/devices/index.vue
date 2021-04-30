@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el :label="$gettext('Devices')" icon="mdi-printer" />
+    </q-breadcrumbs>
+
     <Devices />
   </q-page>
 </template>
