@@ -1,5 +1,5 @@
 <template>
-  <q-list>
+  <q-list class="q-ma-md">
     <ExecutionDetail
       v-for="(item, name, index) in $store.state.executions.log"
       :id="name"
