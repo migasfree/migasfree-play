@@ -12,10 +12,10 @@ function replaceAll(str, find, replace) {
 }
 
 function replaceColors(txt) {
-  txt = replaceAll(txt, '\u001b[92m', "<span text-color='green'>") // ok
-  txt = replaceAll(txt, '\u001b[93m', "<span text-color='yellow'>") // warning
-  txt = replaceAll(txt, '\u001b[91m', "<span text-color='red'>") // error
-  txt = replaceAll(txt, '\u001b[32m', "<span text-color='blue'>") // info
+  txt = replaceAll(txt, '\u001b[92m', "<span class='text-green'>") // ok
+  txt = replaceAll(txt, '\u001b[93m', "<span class='text-yellow'>") // warning
+  txt = replaceAll(txt, '\u001b[91m', "<span class='text-negative'>") // error
+  txt = replaceAll(txt, '\u001b[32m', "<span class='text-blue'>") // info
   txt = replaceAll(txt, '\u001b[0m', '</span>')
   txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
@@ -78,7 +78,7 @@ export function run(context, { cmd, text, element = null }) {
     })
     context.commit(
       'executions/appendExecutionText',
-      "<span text-color='negative'>" + data.toString() + '</span>',
+      "<span class='text-negative'>" + data.toString() + '</span>',
       { root: true }
     )
   })
