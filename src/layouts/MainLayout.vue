@@ -50,6 +50,8 @@
           icon="mdi-tag"
           size="lg"
           class="q-mx-xs"
+          :disabled="$router.currentRoute.name === 'tags'"
+          @click="$router.push({ name: 'tags' })"
         >
           <q-tooltip>{{ $gettext('Tags') }}</q-tooltip>
         </q-btn>
@@ -117,6 +119,8 @@
           fab
           icon="mdi-play"
           color="secondary"
+          :loading="$store.state.executions.isRunningCommand"
+          :disabled="$store.state.executions.isRunningCommand"
           @click="synchronize($event)"
         >
           <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
