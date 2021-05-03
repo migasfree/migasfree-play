@@ -1,11 +1,11 @@
 let { PythonShell } = require('python-shell')
 
+const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-const confFile = 'settings.json'
-const filePath = path.join(process.cwd(), confFile)
+const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
 const router = express.Router()
 
 const settings = {
@@ -32,12 +32,14 @@ router.get('/', (req, res) => {
     if (data) res.json(JSON.parse(data))
     else res.json(settings)
   } else {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true })
     fs.writeFileSync(filePath, JSON.stringify(settings, null, 2))
     res.json(settings)
   }
 })
 
 router.post('/', (req, res) => {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2))
   res.send()
 })

@@ -1,9 +1,9 @@
+const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-const confFile = 'executions.json'
-const filePath = path.join(confFile)
+const filePath = path.join(os.homedir(), '.migasfree-play', 'executions.json')
 const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2))
   res.send()
 })
