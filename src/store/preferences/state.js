@@ -1,6 +1,7 @@
 export default function() {
   return {
     language: 'es_ES',
+    showComputerLink: true,
     showSyncDetails: false,
     showApps: true,
     showDevices: true,
