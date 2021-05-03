@@ -8,6 +8,7 @@ import executions from './executions'
 import filters from './filters'
 import packages from './packages'
 import preferences from './preferences'
+import tags from './tags'
 import ui from './ui'
 
 Vue.use(Vuex)
@@ -22,6 +23,7 @@ export default function(/* { ssrContext } */) {
       filters,
       packages,
       preferences,
+      tags,
       ui
     },
 
