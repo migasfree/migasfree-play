@@ -3,6 +3,7 @@ import Vue from 'vue'
 export function setPreferences(state, value) {
   state.language = value.language
   Vue.config.language = state.language
+  state.showComputerLink = value.show_computer_link
   state.showSyncDetails = value.show_sync_details
   state.showApps = value.show_apps
   state.showDevices = value.show_devices
