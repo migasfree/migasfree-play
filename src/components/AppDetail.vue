@@ -33,6 +33,8 @@
           v-if="isInstallable"
           color="positive"
           icon="mdi-download"
+          :loading="$store.state.executions.isRunningCommand"
+          :disabled="$store.state.executions.isRunningCommand"
           @click="installApp($event, name, packages)"
         >
           <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
@@ -42,6 +44,8 @@
           v-if="isRemovable"
           color="negative"
           icon="mdi-delete"
+          :loading="$store.state.executions.isRunningCommand"
+          :disabled="$store.state.executions.isRunningCommand"
           @click="removeApp($event, name, packages)"
         >
           <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
