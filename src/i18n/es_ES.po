@@ -26,6 +26,7 @@ msgid "All available"
 msgstr "Todos los disponibles"
 
 #: src/layouts/MainLayout.vue:55 src/pages/apps/index.vue:6
+#: src/pages/apps/index.vue:14
 msgid "Apps"
 msgstr "Aplicaciones"
 
@@ -45,11 +46,29 @@ msgstr "Cancelar"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/layouts/MainLayout.vue:119 src/pages/details/index.vue:6
+#: src/components/Tags.vue:42
+msgid "Communicate"
+msgstr "Comunicar"
+
+#: src/components/Tags.vue:29
+msgid "Communicate Tags"
+msgstr "Comunicar etiquetas"
+
+#: src/components/Tags.vue:53
+msgid "Communicate tags to the server"
+msgstr "Comunicar etiquetas al servidor"
+
+#: src/components/Tags.vue:25
+msgid "Communicating..."
+msgstr "Comunicando..."
+
+#: src/layouts/MainLayout.vue:121 src/pages/details/index.vue:6
+#: src/pages/details/index.vue:17
 msgid "Details"
 msgstr "Detalles"
 
 #: src/layouts/MainLayout.vue:77 src/pages/devices/index.vue:6
+#: src/pages/devices/index.vue:14
 msgid "Devices"
 msgstr "Dispositivos"
 
@@ -61,23 +80,24 @@ msgstr "discos"
 msgid "Hardware"
 msgstr "Hardware"
 
-#: src/layouts/MainLayout.vue:183
+#: src/layouts/MainLayout.vue:185
 msgid "Help"
 msgstr "Ayuda"
 
-#: src/layouts/MainLayout.vue:160 src/pages/info/index.vue:6
+#: src/layouts/MainLayout.vue:162 src/pages/info/index.vue:6
+#: src/pages/info/index.vue:14
 msgid "Info"
 msgstr "Información"
 
-#: src/components/AppDetail.vue:86 src/components/DeviceDetail.vue:100
+#: src/components/AppDetail.vue:88 src/components/DeviceDetail.vue:104
 msgid "Install"
 msgstr "Instalar"
 
-#: src/components/AppDetail.vue:122
+#: src/components/AppDetail.vue:126
 msgid "Install with privileges"
 msgstr "Instalar con privilegios"
 
-#: src/components/AppDetail.vue:155
+#: src/components/AppDetail.vue:159
 msgid "Installed"
 msgstr "Instalado"
 
@@ -97,11 +117,11 @@ msgstr "Idioma"
 msgid "Last synchronization"
 msgstr "Última sincronización"
 
-#: src/App.vue:20
+#: src/App.vue:25
 msgid "Loading data..."
 msgstr "Cargando datos..."
 
-#: src/components/AppDetail.vue:139
+#: src/components/AppDetail.vue:143
 msgid "Locked"
 msgstr "Bloqueado"
 
@@ -129,7 +149,8 @@ msgstr "Contraseña"
 msgid "Please wait, other process is running!!!"
 msgstr "¡Espere por favor, otro proceso está ejecutándose!"
 
-#: src/layouts/MainLayout.vue:139 src/pages/preferences/index.vue:6
+#: src/layouts/MainLayout.vue:141 src/pages/preferences/index.vue:6
+#: src/pages/preferences/index.vue:14
 msgid "Preferences"
 msgstr "Preferencias"
 
@@ -145,6 +166,22 @@ msgstr "Buscar"
 msgid "Search in name or description"
 msgstr "Buscar en nombre o descripción"
 
+#: src/components/Tags.vue:61
+msgid "Set"
+msgstr "Establecer"
+
+#: src/components/Tags.vue:41
+msgid "Set Tags"
+msgstr "Establecer etiquetas"
+
+#: src/components/Tags.vue:71
+msgid "Set tags at the server"
+msgstr "Establecer etiquetas en el servidor"
+
+#: src/components/Tags.vue:37
+msgid "Setting Tags..."
+msgstr "Estableciendo etiquetas..."
+
 #: src/components/Preferences.vue:38
 msgid "Show details when synchronizing"
 msgstr "Mostrar detalles durante la sincronización"
@@ -153,7 +190,7 @@ msgstr "Mostrar detalles durante la sincronización"
 msgid "Synchronization"
 msgstr "Sincronización"
 
-#: src/layouts/MainLayout.vue:215
+#: src/layouts/MainLayout.vue:219
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
@@ -161,11 +198,12 @@ msgstr "Sincronizar ordenador"
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
-#: src/layouts/MainLayout.vue:97
+#: src/components/Tags.vue:27 src/layouts/MainLayout.vue:99
+#: src/pages/tags/index.vue:6 src/pages/tags/index.vue:14
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/components/AppDetail.vue:104 src/components/DeviceDetail.vue:82
+#: src/components/AppDetail.vue:108 src/components/DeviceDetail.vue:84
 msgid "Uninstall"
 msgstr "Desinstalar"
 
