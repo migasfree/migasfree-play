@@ -3,6 +3,7 @@
     <q-header elevated class="print-hide">
       <q-toolbar>
         <q-btn
+          v-if="$store.state.preferences.showComputerLink"
           stretch
           flat
           :label="$store.getters['computer/getComputer'].name"
@@ -10,10 +11,13 @@
           type="a"
           target="_blank"
           no-caps
-          size="28px"
+          size="21px"
         >
           <q-tooltip>{{ $gettext('View Computer') }}</q-tooltip>
         </q-btn>
+        <q-toolbar-title v-else>{{
+          $store.getters['computer/getComputer'].name
+        }}</q-toolbar-title>
 
         <q-space />
 
@@ -70,18 +74,6 @@
         </q-btn>
 
         <q-btn
-          flat
-          round
-          icon="mdi-cog"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'preferences'"
-          @click="$router.push({ name: 'preferences' })"
-        >
-          <q-tooltip>{{ $gettext('Preferences') }}</q-tooltip>
-        </q-btn>
-
-        <q-btn
           v-if="$store.state.preferences.showInfo"
           flat
           round
@@ -92,6 +84,18 @@
           @click="$router.push({ name: 'info' })"
         >
           <q-tooltip>{{ $gettext('Info') }}</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          flat
+          round
+          icon="mdi-cog"
+          size="lg"
+          class="q-mx-xs"
+          :disabled="$router.currentRoute.name === 'preferences'"
+          @click="$router.push({ name: 'preferences' })"
+        >
+          <q-tooltip>{{ $gettext('Preferences') }}</q-tooltip>
         </q-btn>
 
         <q-btn
