@@ -34,6 +34,8 @@
               color="negative"
               icon="mdi-delete"
               class="float-right"
+              :loading="$store.state.executions.isRunningCommand"
+              :disabled="$store.state.executions.isRunningCommand"
               @click="removeDevice($event, item)"
             >
               <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
@@ -45,6 +47,8 @@
             color="positive"
             icon="mdi-download"
             class="float-right"
+            :loading="$store.state.executions.isRunningCommand"
+            :disabled="$store.state.executions.isRunningCommand"
             @click="installDevice($event, item)"
           >
             <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
