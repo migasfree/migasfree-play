@@ -38,12 +38,16 @@ yarn run lint
 yarn build
 ```
 
+### Build the package for Debian/Ubuntu distros
+
+```bash
+yarn build
+cd packaging
+debuild --no-tgz-check -us -uc
+```
+
 ### Execute app in production
 
 ```bash
 sudo migasfree-play --no-sandbox
 ```
-
-### Customize the configuration
-
-See [Configuring quasar.conf.js](https://v1.quasar.dev/quasar-cli/quasar-conf-js).
