@@ -16,6 +16,7 @@ export function savePreferences(context) {
   this.$axios
     .post(`${internalApi}/preferences`, {
       language: context.state.language,
+      show_computer_link: context.state.showComputerLink,
       show_sync_details: context.state.showSyncDetails,
       show_apps: context.state.showApps,
       show_devices: context.state.showDevices,
