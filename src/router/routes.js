@@ -15,6 +15,11 @@ const routes = [
         component: () => import('pages/devices/index')
       },
       {
+        path: '/tags',
+        name: 'tags',
+        component: () => import('pages/tags/index')
+      },
+      {
         path: '/details',
         name: 'details',
         component: () => import('pages/details/index')
