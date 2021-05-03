@@ -1,0 +1,14 @@
+Source: migasfree-play
+Section: utils
+Priority: extra
+Maintainer: Jose Antonio Chavarría <jachavar@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), devscripts
+Standards-Version: 4.1.4
+Homepage: http://github.com/migasfree/migasfree-play
+
+Package: migasfree-play
+Architecture: any
+Section: admin
+Depends: migasfree-client (>= 5.0), sudo, bash, cron
+Description: GUI for migasfree client
+ migasfree play is a GUI for migasfree client

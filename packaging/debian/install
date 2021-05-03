@@ -1,0 +1,3 @@
+etc/*
+../dist/electron/Packaged/linux-unpacked/* /usr/share/migasfree-play
+usr/*

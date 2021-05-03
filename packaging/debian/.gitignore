@@ -1,0 +1,6 @@
+/migasfree-play/
+/debhelper-build-stamp
+*.debhelper.log
+*.substvars
+/files
+/.debhelper/

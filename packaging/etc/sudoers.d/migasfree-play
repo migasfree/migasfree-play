@@ -1,0 +1,5 @@
+ALL ALL=(root) NOPASSWD: /usr/bin/migasfree
+ALL ALL=(root) NOPASSWD: /usr/sbin/dmidecode --string system-uuid
+ALL ALL=(root) NOPASSWD: /usr/sbin/dmidecode -t 0
+ALL ALL=(root) NOPASSWD: /usr/bin/migasfree-play
+ALL ALL=(root) NOPASSWD: /usr/bin/migasfree-play sync
