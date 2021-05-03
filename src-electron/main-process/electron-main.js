@@ -63,7 +63,7 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, '..', 'icons', 'linux-512x512.png'),
+    icon: path.resolve(__statics, 'img', 'migasfree-play.png'),
     width: 800,
     height: 800,
     useContentSize: true,
