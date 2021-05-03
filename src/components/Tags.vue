@@ -19,7 +19,6 @@
 
         <q-card-actions align="right">
           <q-btn
-            :label="$gettext('Communicate')"
             text-color="primary"
             class="q-ma-md"
             icon="mdi-comment-processing"
@@ -32,7 +31,6 @@
           >
 
           <q-btn
-            :label="$gettext('Set')"
             color="primary"
             icon="mdi-cog-transfer"
             :loading="$store.state.executions.isRunningCommand"
