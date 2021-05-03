@@ -8,6 +8,7 @@ const computerRouter = require('./routes/computer')
 const tokenRouter = require('./routes/token')
 const executionsRouter = require('./routes/executions')
 const userRouter = require('./routes/user')
+const tagsRouter = require('./routes/tags')
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use('/computer', computerRouter)
 app.use('/token', tokenRouter)
 app.use('/executions', executionsRouter)
 app.use('/user', userRouter)
+app.use('/tags', tagsRouter)
 
 // error handler
 app.use((err, req, res, next) => {
