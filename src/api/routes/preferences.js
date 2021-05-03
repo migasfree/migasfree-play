@@ -10,6 +10,7 @@ const router = express.Router()
 
 const settings = {
   language: 'es_ES',
+  show_computer_link: true,
   show_sync_details: false,
   show_apps: true,
   show_devices: true,
