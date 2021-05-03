@@ -29,6 +29,9 @@ export async function init(context) {
   await context.dispatch('devices/getAvailableDevices', {}, { root: true })
   await context.dispatch('devices/getFeaturesDevices', {}, { root: true })
 
+  await context.dispatch('tags/getAvailableTags', {}, { root: true })
+  await context.dispatch('tags/getAssignedTags', {}, { root: true })
+
   context.commit('ui/finished', null, { root: true })
 }
 
