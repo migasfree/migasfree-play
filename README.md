@@ -51,3 +51,11 @@ debuild --no-tgz-check -us -uc
 ```bash
 sudo migasfree-play --no-sandbox
 ```
+
+## Screenshots
+
+![migasfree-play Apps](./screenshots/play-apps.png 'migasfree-play Apps')
+
+![migasfree-play Devices](./screenshots/play-devices.png 'migasfree-play Devices')
+
+![migasfree-play Info](./screenshots/play-info.png 'migasfree-play Info')
