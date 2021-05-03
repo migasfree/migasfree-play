@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="no-print">
+    <div class="print-hide">
       <center>
         <p>
-          <img id="logo" src="img/migasfree-play.svg" />
+          <img width="200" src="img/migasfree-play.svg" />
         </p>
         <p id="app-name">{{ appName }} {{ appVersion }}</p>
         <p>{{ appDescription }}</p>
@@ -98,36 +98,35 @@
       </q-card>
     </div>
 
-    <div id="qr" class="ui grid">
-      <div class="two wide column"></div>
-      <div class="three wide column bordered">
-        <div class="image">
+    <q-item>
+      <q-item-section avatar>
+        <q-avatar square size="140px">
           <qrcode
             :value="qrCode"
             :options="{ width: 140, errorCorrectionLevel: 'low' }"
           />
-        </div>
-      </div>
-      <div class="nine wide column bordered">
-        <div class="item">
-          <div class="content">
-            <div class="header">
-              {{ computer.name }}
-            </div>
-            <div class="description">
-              <p>{{ computer.uuid }}</p>
-              <p>{{ $store.getters['app/host'] }}</p>
-              <p>{{ computer.helpdesk }}</p>
-            </div>
-            <div class="extra">
-              <q-btn color="positive" icon="mdi-printer" @click="printLabel">
-                <i class="print icon" />
-                <q-tooltip>{{ $gettext('Print') }}</q-tooltip>
-              </q-btn>
-            </div>
-          </div>
-        </div>
-      </div>
+        </q-avatar>
+      </q-item-section>
+
+      <q-item-section>
+        <q-item-label>{{ computer.name }}</q-item-label>
+        <q-item-label caption class="text-blue-grey">
+          <p>{{ computer.uuid }}</p>
+          <p>{{ $store.getters['app/host'] }}</p>
+          <p>{{ computer.helpdesk }}</p>
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <div class="text-center print-hide">
+      <q-btn
+        color="positive"
+        icon="mdi-printer"
+        class="q-mx-lg"
+        @click="printLabel"
+      >
+        <q-tooltip>{{ $gettext('Print Identification') }}</q-tooltip>
+      </q-btn>
     </div>
   </div>
 </template>
@@ -153,7 +152,6 @@ export default {
   },
   computed: {
     computer() {
-      console.log(this.$store.getters['computer/getComputer'])
       return this.$store.getters['computer/getComputer']
     },
 
@@ -165,22 +163,18 @@ export default {
     },
 
     computerRam() {
-      return this.bytesToGigas(this.computer.data.ram) + ' GB RAM'
+      return `${this.bytesToGigas(this.computer.data.ram)} GB RAM`
     },
 
     computerStorage() {
-      return (
-        this.bytesToGigas(this.computer.data.storage) +
-        ' GB (' +
-        this.computer.data.disks +
-        ' ' +
-        this.$gettext('disks') +
-        ')'
-      )
+      return `${this.bytesToGigas(this.computer.data.storage)} GB (${
+        this.computer.data.disks
+      } ${this.$gettext('disks')})`
     },
 
     computerMac() {
       const ret = []
+
       if (this.computer.data.mac_address) {
         let tmp = ''
         for (let i = 0; i < this.computer.data.mac_address.length; i += 12) {
@@ -234,7 +228,7 @@ export default {
 
     qrCode() {
       let info = {
-        model: 'Computer',
+        model: 'computer',
         id: this.computer.cid,
         server: this.$store.getters['app/host']
       }
@@ -253,31 +247,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#logo {
-  width: 20%;
-}
-
-#app-name {
-  font-size: 150%;
-}
-
-#qr {
-  margin: 14px 0;
-}
-
-.three.bordered {
-  border: 1px solid #000;
-  border-right: 0;
-}
-
-.nine.bordered {
-  border: 1px solid #000;
-  border-left: 0;
-}
-
-.nine .item {
-  padding-top: 18px;
-}
-</style>
