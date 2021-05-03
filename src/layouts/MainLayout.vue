@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="print-hide">
       <q-toolbar>
         <q-btn
           stretch
@@ -113,7 +113,11 @@
     <q-page-container>
       <router-view />
 
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-page-sticky
+        class="print-hide"
+        position="bottom-right"
+        :offset="[18, 18]"
+      >
         <q-btn
           ref="sync"
           fab
