@@ -3,35 +3,46 @@ import { tokenAuth, publicApi, tokenApi, internalApi } from 'config/app.conf'
 export async function init(context) {
   context.commit('ui/loading', null, { root: true })
 
+  context.commit('setStatus', this._vm.$gettext('Preferences'))
   await context.dispatch('preferences/readPreferences', {}, { root: true })
   await context.dispatch('apiProtocol')
   await context.dispatch('serverHost')
 
   context.commit('setInitialUrl')
 
+  context.commit('setStatus', this._vm.$gettext('Server'))
+  await context.dispatch('serverInfo')
+  await context.dispatch('getToken')
+
+  context.commit('setStatus', this._vm.$gettext('Computer'))
   await context.dispatch('computer/computerInfo', {}, { root: true })
   await context.dispatch('computer/computerNetwork', {}, { root: true })
   await context.dispatch('computer/computerId', {}, { root: true })
-
-  await context.dispatch('packages/setAvailablePackages', {}, { root: true })
-
-  await context.dispatch('serverInfo')
-  await context.dispatch('getToken')
-  await context.dispatch('getApps')
-
   await context.dispatch('computer/computerData', {}, { root: true })
   await context.dispatch('computer/computerAttribute', {}, { root: true })
+
+  context.commit('setStatus', this._vm.$gettext('Packages'))
+  await context.dispatch('packages/setAvailablePackages', {}, { root: true })
   await context.dispatch('packages/setInstalledPackages', {}, { root: true })
+
+  context.commit('setStatus', this._vm.$gettext('Apps'))
+  await context.dispatch('getApps')
+
+  context.commit('setStatus', this._vm.$gettext('Categories'))
   await context.dispatch('filters/setCategories', {}, { root: true })
+
   await context.dispatch('executions/getExecutions', {}, { root: true })
 
+  context.commit('setStatus', this._vm.$gettext('Devices'))
   await context.dispatch('devices/computerDevices', {}, { root: true })
   await context.dispatch('devices/getAvailableDevices', {}, { root: true })
   await context.dispatch('devices/getFeaturesDevices', {}, { root: true })
 
+  context.commit('setStatus', this._vm.$gettext('Tags'))
   await context.dispatch('tags/getAvailableTags', {}, { root: true })
   await context.dispatch('tags/getAssignedTags', {}, { root: true })
 
+  context.commit('setStatus', '')
   context.commit('ui/finished', null, { root: true })
 }
 
