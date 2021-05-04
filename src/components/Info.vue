@@ -3,131 +3,142 @@
     <div class="print-hide">
       <center>
         <p>
-          <img width="200" src="img/migasfree-play.svg" />
+          <img width="120" src="img/migasfree-play.svg" />
         </p>
-        <p id="app-name">{{ appName }} {{ appVersion }}</p>
+
+        <p>
+          <strong>{{ appName }} {{ appVersion }}</strong>
+        </p>
+
         <p>{{ appDescription }}</p>
+
         <p>{{ appCopyright }}</p>
+
         <p>{{ appAuthors }}</p>
       </center>
 
-      <q-card flat bordered class="flex flex-center q-ma-md">
-        <q-card-section>
-          <div class="text-h6">
-            <q-icon name="mdi-account" />
-            {{ computer.user }}
-          </div>
+      <div class="column items-center">
+        <q-card flat bordered class="half q-ma-md">
+          <q-card-section>
+            <div class="text-h6 q-mb-md">
+              <q-icon name="mdi-account" />
+              {{ computer.user }}
+            </div>
 
-          <div>
-            <q-icon name="mdi-calendar-check" />
-            {{ syncEndDate }}
-            <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
-          </div>
-        </q-card-section>
-      </q-card>
+            <p>
+              <q-icon name="mdi-calendar-check" />
+              {{ syncEndDate }}
+              <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
+            </p>
+          </q-card-section>
+        </q-card>
 
-      <q-card flat bordered class="flex flex-center q-ma-md">
-        <q-card-section>
-          <div class="text-h6">
-            <q-icon :name="productIcon" />
-            {{ computer.data.product }}
-          </div>
+        <q-card flat bordered class="half q-ma-md">
+          <q-card-section>
+            <div class="text-h6 q-mb-md">
+              <q-icon :name="productIcon" />
+              {{ computer.data.product }}
+            </div>
 
-          <div>
             <p>
               <q-icon :name="cpuIcon" />
               {{ computer.data.cpu }}
             </p>
+
             <p>
               <q-icon name="mdi-memory" />
               {{ computerRam }}
             </p>
+
             <p>
               <q-icon name="mdi-harddisk" />
               {{ computerStorage }}
             </p>
+
             <q-tooltip>{{ $gettext('Hardware') }}</q-tooltip>
-          </div>
-        </q-card-section>
-      </q-card>
+          </q-card-section>
+        </q-card>
 
-      <q-card flat bordered class="flex flex-center q-ma-md">
-        <q-card-section>
-          <div class="text-h6">
-            <q-icon name="mdi-information" />
-            {{ computer.data.fqdn }}
-          </div>
+        <q-card flat bordered class="half q-ma-md">
+          <q-card-section>
+            <div class="text-h6 q-mb-md">
+              <q-icon name="mdi-information" />
+              {{ computer.data.fqdn }}
+            </div>
 
-          <div>
             <p>
               <q-icon name="mdi-ip-network" />
               {{ computer.data.ip_address }}
               / {{ computer.mask }} ({{ computer.network }})
             </p>
+
             <p>
               <q-icon name="mdi-swap-vertical" />
               {{ computerMac }}
             </p>
-            <q-tooltip>{{ $gettext('Network Data') }}</q-tooltip>
-          </div>
-        </q-card-section>
-      </q-card>
 
-      <q-card flat bordered class="flex flex-center q-ma-md">
-        <q-card-section>
-          <div class="text-h6">
-            <q-icon name="mdi-server" />
-            {{ $store.getters['app/host'] }}
-          </div>
-          <div>
+            <q-tooltip>{{ $gettext('Network Data') }}</q-tooltip>
+          </q-card-section>
+        </q-card>
+
+        <q-card flat bordered class="half q-ma-md">
+          <q-card-section>
+            <div class="text-h6 q-mb-md">
+              <q-icon name="mdi-server" />
+              {{ $store.getters['app/host'] }}
+            </div>
+
             <p>
               <q-icon name="mdi-sitemap" />
               {{ computer.project }}
             </p>
+
             <p>
               <q-icon name="mdi-pound" />
               {{ computerId }}
             </p>
+
             <p>
               <q-icon :name="statusIcon" />
-              {{ computer.data.status }}
+              {{ statusText }}
             </p>
+
             <q-tooltip>{{ $gettext('Migasfree Data') }}</q-tooltip>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+
+    <q-card flat bordered>
+      <q-card-section horizontal>
+        <qrcode
+          :value="qrCode"
+          :options="{ width: 140, errorCorrectionLevel: 'low' }"
+        />
+
+        <q-card-section vertical class="justify-around q-px-md">
+          <p>{{ computer.name }} ({{ computerId }})</p>
+          <div class="text-caption text-blue-grey">
+            <p>{{ computer.uuid }}</p>
+            <p>{{ $store.getters['app/host'] }}</p>
+            <p>{{ computer.helpdesk }}</p>
           </div>
         </q-card-section>
-      </q-card>
-    </div>
+      </q-card-section>
 
-    <q-item>
-      <q-item-section avatar>
-        <q-avatar square size="140px">
-          <qrcode
-            :value="qrCode"
-            :options="{ width: 140, errorCorrectionLevel: 'low' }"
-          />
-        </q-avatar>
-      </q-item-section>
+      <q-separator inset />
 
-      <q-item-section>
-        <q-item-label>{{ computer.name }}</q-item-label>
-        <q-item-label caption class="text-blue-grey">
-          <p>{{ computer.uuid }}</p>
-          <p>{{ $store.getters['app/host'] }}</p>
-          <p>{{ computer.helpdesk }}</p>
-        </q-item-label>
-      </q-item-section>
-    </q-item>
-
-    <div class="text-center print-hide">
-      <q-btn
-        color="positive"
-        icon="mdi-printer"
-        class="q-mx-lg"
-        @click="printLabel"
-      >
-        <q-tooltip>{{ $gettext('Print Identification') }}</q-tooltip>
-      </q-btn>
-    </div>
+      <q-card-actions align="center" class="print-hide">
+        <q-btn
+          color="positive"
+          icon="mdi-printer"
+          class="q-mx-lg"
+          @click="printLabel"
+        >
+          <q-tooltip>{{ $gettext('Print Identification') }}</q-tooltip>
+        </q-btn>
+      </q-card-actions>
+    </q-card>
   </div>
 </template>
 
@@ -217,12 +228,29 @@ export default {
           return 'mdi-wrench'
         case 'reserved':
           return 'mdi-lock-alert'
-        case 'unknown':
-          return 'mdi-crosshairs-question'
+        case 'intended':
+          return 'mdi-heart-pulse'
         case 'unsubscribed':
           return 'mdi-recycle-variant'
         default:
-          return 'mdi-heart-pulse'
+          return 'mdi-crosshairs-question'
+      }
+    },
+
+    statusText() {
+      switch (this.computer.data.status) {
+        case 'available':
+          return this.$gettext('Available')
+        case 'in repair':
+          return this.$gettext('In repair')
+        case 'reserved':
+          return this.$gettext('Reserved')
+        case 'intended':
+          return this.$gettext('Intended')
+        case 'unsubscribed':
+          return this.$gettext('Unsubscribed')
+        default:
+          return this.$gettext('Unknown')
       }
     },
 
@@ -247,3 +275,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.half {
+  width: 100%;
+  max-width: 400px;
+}
+</style>
