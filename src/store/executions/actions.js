@@ -91,7 +91,6 @@ export function run(context, { cmd, text, element = null }) {
     if (element) element.disabled = false
 
     if (code !== 0) {
-      console.log('exit code:', code)
       context.dispatch('ui/notifyError', `Error: ${code} ${cmd}`, {
         root: true
       })

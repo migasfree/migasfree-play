@@ -6,7 +6,6 @@ export async function setCategories(context) {
       headers: { Authorization: context.rootState.app.tokenValue }
     })
     .then((response) => {
-      // console.log(response)
       context.commit('setCategories', response.data)
     })
     .catch((error) => {

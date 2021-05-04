@@ -4,7 +4,6 @@ export async function readPreferences(context) {
   await this.$axios
     .get(`${internalApi}/preferences`)
     .then((response) => {
-      console.log('readPreferences', response)
       context.commit('setPreferences', response.data)
     })
     .catch((error) => {

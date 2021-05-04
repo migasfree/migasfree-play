@@ -36,7 +36,6 @@ export async function init(context) {
 }
 
 export async function serverInfo(context) {
-  console.log(`${context.state.initialUrl.public}${publicApi.serverInfo}`)
   await this.$axios
     .post(`${context.state.initialUrl.public}${publicApi.serverInfo}`)
     .then((response) => {
@@ -49,7 +48,6 @@ export async function serverInfo(context) {
 
 export async function getToken(context) {
   let response = await this.$axios.get(`${internalApi}/token`)
-  console.log('getToken **************', response)
   if (!response.data.token) {
     response = await this.$axios.post(
       `${context.state.protocol}://${context.state.host}${tokenAuth.url}`,
@@ -58,9 +56,7 @@ export async function getToken(context) {
         password: tokenAuth.password
       }
     )
-    console.log('getToken again', response)
     if (response.data.token) {
-      console.log(response.data.token)
       await this.$axios.post(`${internalApi}/token`, {
         token: response.data.token
       })
@@ -110,7 +106,6 @@ export async function serverHost(context) {
 
 export async function getApps(context) {
   const computer = context.rootGetters['computer/getComputer']
-  console.log('getApps ************', computer)
 
   await this.$axios
     .get(

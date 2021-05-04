@@ -156,7 +156,6 @@ export default {
   },
   methods: {
     synchronize(event) {
-      console.log(event)
       event.srcElement.parentElement.parentElement.parentElement.disabled = true
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Synchronizing...'))
 

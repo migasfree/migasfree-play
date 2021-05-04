@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     communicate(event) {
-      console.log(event)
       event.srcElement.parentElement.parentElement.parentElement.disabled = true
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Communicating...'))
 
@@ -81,7 +80,6 @@ export default {
     },
 
     setTags(event) {
-      console.log(event)
       event.srcElement.parentElement.parentElement.parentElement.disabled = true
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Setting Tags...'))
 

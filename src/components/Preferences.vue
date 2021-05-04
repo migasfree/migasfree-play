@@ -66,13 +66,11 @@ export default {
   },
   methods: {
     setLanguage() {
-      console.log(this.language)
       this.$store.commit('preferences/setLanguage', this.language.id)
       this.$store.dispatch('preferences/savePreferences')
       Vue.config.language = this.language.id
     },
     setShowSyncDetails() {
-      console.log(this.showSyncDetails)
       this.$store.commit('preferences/setShowSyncDetails', this.showSyncDetails)
       this.$store.dispatch('preferences/savePreferences')
     }

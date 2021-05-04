@@ -4,7 +4,6 @@ export async function computerInfo(context) {
   await this.$axios
     .get(`${internalApi}/preferences/server`)
     .then((response) => {
-      console.log('computerInfo', response)
       context.commit('setComputerInfo', response.data)
     })
     .catch((error) => {
@@ -16,7 +15,6 @@ export async function computerNetwork(context) {
   await this.$axios
     .get(`${internalApi}/computer/network`)
     .then((response) => {
-      console.log('computerNetwork', response)
       context.commit('setComputerNetwork', response.data)
     })
     .catch((error) => {
@@ -28,7 +26,6 @@ export async function computerId(context) {
   await this.$axios
     .get(`${internalApi}/computer/id`)
     .then((response) => {
-      console.log('computerId', response)
       context.commit('setComputerId', response.data)
       context.commit('setComputerLink', {
         protocol: context.rootState.app.protocol,
@@ -42,7 +39,6 @@ export async function computerId(context) {
 }
 
 export async function computerData(context) {
-  console.log('computerData', context.rootState)
   await this.$axios
     .get(
       `${context.rootState.app.initialUrl.token}${tokenApi.computer}${context.state.cid}/`,

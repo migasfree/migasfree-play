@@ -4,7 +4,6 @@ export function setInitialUrl(state) {
   state.initialUrl.baseDomain = `${state.protocol}://${state.host}`
   state.initialUrl.public = `${state.initialUrl.baseDomain}${publicApi.prefix}`
   state.initialUrl.token = `${state.initialUrl.baseDomain}${tokenApi.prefix}`
-  console.log('setInitialUrl', state)
 }
 
 export function setToken(state, value) {
@@ -24,8 +23,6 @@ export function setApiProcotol(state, value) {
 }
 
 export function setApps(state, { value, project }) {
-  console.log('setApps', project)
-  console.log('setApps before', value)
   state.apps = []
   value.forEach((item) => {
     let filterPackages = item.packages_by_project.filter(
@@ -36,7 +33,6 @@ export function setApps(state, { value, project }) {
       state.apps.push(item)
     }
   })
-  console.log('setApps', state.apps)
 }
 
 export function privilegedUser(state) {
