@@ -21,6 +21,7 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:67
 #: ./src/pages/apps/index.vue:6
 #: ./src/pages/apps/index.vue:14
+#: ./src/store/app/actions.js:28
 msgid "Apps"
 msgstr ""
 
@@ -32,8 +33,16 @@ msgstr ""
 msgid "Assigned Devices"
 msgstr ""
 
+#: ./src/components/Info.vue:98
+msgid "Available"
+msgstr ""
+
 #: ./src/components/Login.vue:93
 msgid "Cancel"
+msgstr ""
+
+#: ./src/store/app/actions.js:31
+msgid "Categories"
 msgstr ""
 
 #: ./src/components/AppFilter.vue:42
@@ -52,6 +61,10 @@ msgstr ""
 msgid "Communicating..."
 msgstr ""
 
+#: ./src/store/app/actions.js:17
+msgid "Computer"
+msgstr ""
+
 #: ./src/layouts/MainLayout.vue:133
 #: ./src/pages/details/index.vue:6
 #: ./src/pages/details/index.vue:17
@@ -61,6 +74,7 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:89
 #: ./src/pages/devices/index.vue:6
 #: ./src/pages/devices/index.vue:14
+#: ./src/store/app/actions.js:36
 msgid "Devices"
 msgstr ""
 
@@ -76,6 +90,10 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#: ./src/components/Info.vue:100
+msgid "In repair"
+msgstr ""
+
 #: ./src/layouts/MainLayout.vue:155
 #: ./src/pages/info/index.vue:6
 #: ./src/pages/info/index.vue:14
@@ -83,7 +101,7 @@ msgid "Info"
 msgstr ""
 
 #: ./src/components/AppDetail.vue:88
-#: ./src/components/DeviceDetail.vue:104
+#: ./src/components/DeviceDetail.vue:106
 msgid "Install"
 msgstr ""
 
@@ -104,16 +122,20 @@ msgstr ""
 msgid "Installing %{name}"
 msgstr ""
 
+#: ./src/components/Info.vue:104
+msgid "Intended"
+msgstr ""
+
 #: ./src/components/Preferences.vue:25
 msgid "Language"
 msgstr ""
 
-#: ./src/components/Info.vue:59
+#: ./src/components/Info.vue:60
 msgid "Last synchronization"
 msgstr ""
 
 #: ./src/App.vue:32
-msgid "Loading data..."
+msgid "Loading data"
 msgstr ""
 
 #: ./src/components/AppDetail.vue:143
@@ -124,16 +146,20 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: ./src/components/Info.vue:169
+#: ./src/components/Info.vue:165
 msgid "Migasfree Data"
 msgstr ""
 
-#: ./src/components/Info.vue:131
+#: ./src/components/Info.vue:129
 msgid "Network Data"
 msgstr ""
 
 #: ./src/components/Preferences.vue:39
 msgid "Not show details when synchronizing"
+msgstr ""
+
+#: ./src/store/app/actions.js:24
+msgid "Packages"
 msgstr ""
 
 #: ./src/components/Login.vue:25
@@ -148,11 +174,16 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:175
 #: ./src/pages/preferences/index.vue:6
 #: ./src/pages/preferences/index.vue:14
+#: ./src/store/app/actions.js:6
 msgid "Preferences"
 msgstr ""
 
-#: ./src/components/Info.vue:235
+#: ./src/components/Info.vue:220
 msgid "Print Identification"
+msgstr ""
+
+#: ./src/components/Info.vue:102
+msgid "Reserved"
 msgstr ""
 
 #: ./src/components/DeviceFilter.vue:26
@@ -161,6 +192,10 @@ msgstr ""
 
 #: ./src/components/AppFilter.vue:27
 msgid "Search in name or description"
+msgstr ""
+
+#: ./src/store/app/actions.js:13
+msgid "Server"
 msgstr ""
 
 #: ./src/components/Tags.vue:39
@@ -179,7 +214,7 @@ msgstr ""
 msgid "Show details when synchronizing"
 msgstr ""
 
-#: ./src/layouts/MainLayout.vue:26
+#: ./src/layouts/MainLayout.vue:33
 msgid "Synchronization"
 msgstr ""
 
@@ -187,7 +222,7 @@ msgstr ""
 msgid "Synchronize Computer"
 msgstr ""
 
-#: ./src/layouts/MainLayout.vue:19
+#: ./src/layouts/MainLayout.vue:26
 msgid "Synchronizing..."
 msgstr ""
 
@@ -195,23 +230,32 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:111
 #: ./src/pages/tags/index.vue:6
 #: ./src/pages/tags/index.vue:14
+#: ./src/store/app/actions.js:41
 msgid "Tags"
 msgstr ""
 
-#: ./src/components/Apps.vue:37
-#: ./src/components/Devices.vue:35
-#: ./src/components/Executions.vue:30
+#: ./src/components/Apps.vue:44
+#: ./src/components/Devices.vue:42
+#: ./src/components/Executions.vue:37
 msgid "There are not items to show."
 msgstr ""
 
 #: ./src/components/AppDetail.vue:108
-#: ./src/components/DeviceDetail.vue:84
+#: ./src/components/DeviceDetail.vue:85
 msgid "Uninstall"
 msgstr ""
 
 #: ./src/components/AppDetail.vue:99
 #: ./src/components/AppDetail.vue:112
 msgid "Uninstalling %{name}"
+msgstr ""
+
+#: ./src/components/Info.vue:108
+msgid "Unknown"
+msgstr ""
+
+#: ./src/components/Info.vue:106
+msgid "Unsubscribed"
 msgstr ""
 
 #: ./src/components/Login.vue:13
