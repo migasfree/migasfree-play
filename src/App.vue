@@ -9,10 +9,12 @@
       </div>
 
       <div class="col-12 text-center">
-        <q-spinner color="primary" size="8em" />
+        <q-spinner-clock color="primary" size="6em" />
       </div>
 
-      <div class="col-12 text-center">{{ $gettext('Loading data...') }}</div>
+      <div class="col-12 text-center q-mt-md">
+        {{ $gettext('Loading data') }}: {{ $store.getters['app/status'] }}
+      </div>
     </div>
 
     <router-view v-else />
