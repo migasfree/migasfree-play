@@ -6,7 +6,7 @@
           v-if="$store.state.preferences.showComputerLink"
           stretch
           flat
-          :label="$store.getters['computer/getComputer'].name"
+          :label="computerText"
           :href="$store.getters['computer/getComputer'].link"
           type="a"
           target="_blank"
@@ -15,9 +15,7 @@
         >
           <q-tooltip>{{ $gettext('View Computer') }}</q-tooltip>
         </q-btn>
-        <q-toolbar-title v-else>{{
-          $store.getters['computer/getComputer'].name
-        }}</q-toolbar-title>
+        <q-toolbar-title v-else>{{ computerText }}</q-toolbar-title>
 
         <q-space />
 
@@ -147,6 +145,13 @@ export default {
   name: 'MainLayout',
   meta: {
     titleTemplate: (title) => `${title} | Migasfree Play`
+  },
+  computed: {
+    computerText() {
+      const computer = this.$store.getters['computer/getComputer']
+
+      return `${computer.name} (CID-${computer.cid})`
+    }
   },
   mounted() {
     if (remote.process.argv[1] === 'sync') {
