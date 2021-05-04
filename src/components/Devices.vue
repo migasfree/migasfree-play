@@ -2,7 +2,7 @@
   <div>
     <DeviceFilter />
 
-    <div class="row">
+    <div v-if="devicesByFilter.length > 0" class="row">
       <DeviceDetail
         v-for="item in devicesByFilter"
         :id="item.name"
@@ -15,6 +15,9 @@
         :logical="item.logical"
       />
     </div>
+    <q-banner v-else class="bg-info text-black q-ma-md">
+      {{ $gettext('There are not items to show.') }}
+    </q-banner>
   </div>
 </template>
 

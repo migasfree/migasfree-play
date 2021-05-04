@@ -1,5 +1,5 @@
 <template>
-  <q-list class="q-ma-md">
+  <q-list v-if="$store.state.executions.log.length > 0" class="q-ma-md">
     <ExecutionDetail
       v-for="(item, name, index) in $store.state.executions.log"
       :id="name"
@@ -8,6 +8,9 @@
       :text="item.text"
     />
   </q-list>
+  <q-banner v-else class="bg-info text-black q-ma-md">
+    {{ $gettext('There are not items to show.') }}
+  </q-banner>
 </template>
 
 <script>

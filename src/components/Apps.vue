@@ -2,7 +2,7 @@
   <div>
     <AppFilter />
 
-    <div class="row">
+    <div v-if="appsByFilter.length > 0" class="row">
       <AppDetail
         v-for="item in appsByFilter"
         :key="item.id"
@@ -16,6 +16,9 @@
         @openlogin="openLogin"
       />
     </div>
+    <q-banner v-else class="bg-info text-black q-ma-md">
+      {{ $gettext('There are not items to show.') }}
+    </q-banner>
 
     <Login v-model="showLogin" @canceled="showLogin = !showLogin" />
   </div>
@@ -42,7 +45,6 @@ export default {
   computed: {
     appsByFilter() {
       let results = this.$store.getters['app/getApps']
-      console.log('appsByFilter', results)
 
       const selectedCategory = this.$store.getters['filters/selectedCategory']
       if (selectedCategory && selectedCategory.id > 0)
@@ -76,7 +78,6 @@ export default {
   },
   methods: {
     openLogin() {
-      console.log('openLogin')
       this.showLogin = true
     }
   }
