@@ -21,3 +21,7 @@ export function userIsPrivileged(state) {
 export function host(state) {
   return state.host
 }
+
+export function status(state) {
+  return state.status
+}
