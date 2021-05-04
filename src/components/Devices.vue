@@ -16,6 +16,9 @@
       />
     </div>
     <q-banner v-else class="bg-info text-black q-ma-md">
+      <template #avatar>
+        <q-icon name="mdi-information-outline" color="white" />
+      </template>
       {{ $gettext('There are not items to show.') }}
     </q-banner>
   </div>
