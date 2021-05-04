@@ -38,3 +38,7 @@ export function setApps(state, { value, project }) {
 export function privilegedUser(state) {
   state.user.isPrivileged = true
 }
+
+export function setStatus(state, value) {
+  state.status = value
+}
