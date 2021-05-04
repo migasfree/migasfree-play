@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     name(item) {
-      return 'NAME' in item.data
+      return 'NAME' in item.data && item.data.NAME
         ? item.data.NAME
         : `${item.model.manufacturer.name} ${item.model.name}`
     },
