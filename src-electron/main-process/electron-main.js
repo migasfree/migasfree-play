@@ -81,6 +81,8 @@ function createWindow() {
 
   launchExpress()
 
+  mainWindow.webContents.session.setProxy({ mode: 'system' })
+
   mainWindow.loadURL(process.env.APP_URL)
 
   mainWindow.on('closed', () => {
