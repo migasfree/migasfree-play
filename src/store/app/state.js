@@ -12,6 +12,7 @@ export default function() {
     apps: [],
     user: {
       isPrivileged: false
-    }
+    },
+    status: ''
   }
 }
