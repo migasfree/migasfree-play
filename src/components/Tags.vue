@@ -24,7 +24,7 @@
             icon="mdi-comment-processing"
             :loading="$store.state.executions.isRunningCommand"
             :disabled="$store.state.executions.isRunningCommand"
-            @click="communicate($event)"
+            @click="communicate"
             ><q-tooltip>{{
               $gettext('Communicate tags to the server')
             }}</q-tooltip></q-btn
@@ -35,7 +35,7 @@
             icon="mdi-cog-transfer"
             :loading="$store.state.executions.isRunningCommand"
             :disabled="$store.state.executions.isRunningCommand"
-            @click="setTags($event)"
+            @click="setTags"
             ><q-tooltip>{{
               $gettext('Set tags at the server')
             }}</q-tooltip></q-btn
@@ -68,25 +68,21 @@ export default {
     this.tags = this.$store.state.tags.assigned
   },
   methods: {
-    communicate(event) {
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
+    communicate() {
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Communicating...'))
 
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --communicate ${this.tags.join(' ')}`,
-        text: this.$gettext('Communicate Tags'),
-        element: event.srcElement.parentElement.parentElement.parentElement
+        text: this.$gettext('Communicate Tags')
       })
     },
 
-    setTags(event) {
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
+    setTags() {
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Setting Tags...'))
 
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --set ${this.tags.join(' ')}`,
-        text: this.$gettext('Set Tags'),
-        element: event.srcElement.parentElement.parentElement.parentElement
+        text: this.$gettext('Set Tags')
       })
     },
 

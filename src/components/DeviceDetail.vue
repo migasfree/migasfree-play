@@ -37,7 +37,7 @@
               size="md"
               :loading="$store.state.executions.isRunningCommand"
               :disabled="$store.state.executions.isRunningCommand"
-              @click="removeDevice($event, item)"
+              @click="removeDevice(item)"
             >
               <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
             </q-btn>
@@ -51,7 +51,7 @@
             size="md"
             :loading="$store.state.executions.isRunningCommand"
             :disabled="$store.state.executions.isRunningCommand"
-            @click="installDevice($event, item)"
+            @click="installDevice(item)"
           >
             <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
           </q-btn>
@@ -103,17 +103,15 @@ export default {
       )
     },
 
-    installDevice(event, item) {
+    installDevice(item) {
       let attributes = item.attributes.slice() // copy value (not reference)
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
 
       if (!attributes.includes(this.$store.state.computer.attribute)) {
         attributes.push(this.$store.state.computer.attribute)
       }
       this.$store.dispatch('devices/changeDeviceAttributes', {
         id: item.id,
-        attributes,
-        element: event.srcElement.parentElement.parentElement.parentElement
+        attributes
       })
       this.$store.commit('devices/addAssignedDevice', {
         id: item.id,
@@ -122,17 +120,15 @@ export default {
       })
     },
 
-    removeDevice(event, item) {
+    removeDevice(item) {
       let attributes = item.attributes
 
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
       attributes = attributes.filter((x) => {
         return x !== this.$store.state.computer.attribute
       })
       this.$store.dispatch('devices/changeDeviceAttributes', {
         id: item.id,
-        attributes,
-        element: event.srcElement.parentElement.parentElement.parentElement
+        attributes
       })
       this.$store.commit('devices/removeAssignedDevice', item.id)
     }

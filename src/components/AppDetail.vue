@@ -35,7 +35,7 @@
           icon="mdi-download"
           :loading="$store.state.executions.isRunningCommand"
           :disabled="$store.state.executions.isRunningCommand"
-          @click="installApp($event, name, packages)"
+          @click="installApp(name, packages)"
         >
           <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
         </q-btn>
@@ -46,7 +46,7 @@
           icon="mdi-delete"
           :loading="$store.state.executions.isRunningCommand"
           :disabled="$store.state.executions.isRunningCommand"
-          @click="removeApp($event, name, packages)"
+          @click="removeApp(name, packages)"
         >
           <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
         </q-btn>
@@ -137,11 +137,10 @@ export default {
     }
   },
   methods: {
-    installApp(event, name, packages) {
+    installApp(name, packages) {
       const packagesToInstall = packages.join(' ')
       let cmd
 
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
       this.$store.dispatch(
         'ui/notifyInfo',
         this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
@@ -159,16 +158,14 @@ export default {
         cmd,
         text: this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
           name
-        }),
-        element: event.srcElement.parentElement.parentElement.parentElement
+        })
       })
     },
 
-    removeApp(event, name, packages) {
+    removeApp(name, packages) {
       const packagesToRemove = packages.join(' ')
       let cmd
 
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
       this.$store.dispatch(
         'ui/notifyInfo',
         this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
@@ -186,8 +183,7 @@ export default {
         cmd,
         text: this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
           name
-        }),
-        element: event.srcElement.parentElement.parentElement.parentElement
+        })
       })
     },
 
