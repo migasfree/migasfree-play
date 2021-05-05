@@ -10,6 +10,10 @@ export function setToken(state, value) {
   state.tokenValue = `Token ${value}`
 }
 
+export function setTokenChecked(state, value) {
+  state.tokenChecked = value
+}
+
 export function setServerVersion(state, value) {
   state.serverVersion = value
 }
