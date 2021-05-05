@@ -1,4 +1,10 @@
-import { tokenAuth, publicApi, tokenApi, internalApi } from 'config/app.conf'
+import {
+  tokenAuth,
+  publicApi,
+  tokenApi,
+  internalApi,
+  checkTokenApi
+} from 'config/app.conf'
 
 export async function init(context) {
   context.commit('ui/loading', null, { root: true })
@@ -13,6 +19,10 @@ export async function init(context) {
   context.commit('setStatus', this._vm.$gettext('Server'))
   await context.dispatch('serverInfo')
   await context.dispatch('getToken')
+  await context.dispatch('checkToken')
+  if (!context.state.tokenChecked) {
+    await context.dispatch('getToken')
+  }
 
   context.commit('setStatus', this._vm.$gettext('Computer'))
   await context.dispatch('computer/computerInfo', {}, { root: true })
@@ -75,6 +85,24 @@ export async function getToken(context) {
   }
 
   context.commit('setToken', response.data.token)
+}
+
+export async function checkToken(context) {
+  await this.$axios
+    .get(
+      `${context.state.protocol}://${context.state.host}${checkTokenApi.url}`
+    )
+    .then(() => {
+      context.commit('setTokenChecked', true)
+    })
+    .catch((error) => {
+      if (error.response.status === 403) {
+        this.$axios.post(`${internalApi}/token`, {
+          token: ''
+        })
+        context.commit('setTokenChecked', false)
+      }
+    })
 }
 
 export async function checkUser(context, { user, password }) {
