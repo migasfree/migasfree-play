@@ -1,5 +1,8 @@
 <template>
-  <q-list v-if="$store.state.executions.log.length > 0" class="q-ma-md">
+  <q-list
+    v-if="Object.keys($store.state.executions.log).length > 0"
+    class="q-ma-md"
+  >
     <ExecutionDetail
       v-for="(item, name, index) in $store.state.executions.log"
       :id="name"
