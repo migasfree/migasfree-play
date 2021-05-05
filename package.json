@@ -27,6 +27,7 @@
     "quasar": "^1.15.10",
     "tcp-port-used": "^1.0.2",
     "typeface-lato": "^1.1.13",
+    "typeface-ubuntu-mono": "^1.1.13",
     "vue-gettext": "^2.1.12"
   },
   "devDependencies": {
