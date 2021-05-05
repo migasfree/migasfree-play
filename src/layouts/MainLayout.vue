@@ -163,7 +163,10 @@ export default {
     synchronize() {
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Synchronizing...'))
 
-      if (this.$store.state.preferences.showSyncDetails)
+      if (
+        this.$store.state.preferences.showSyncDetails &&
+        this.$router.currentRoute.name !== 'details'
+      )
         this.$router.push({ name: 'details' })
 
       this.$store.dispatch('executions/run', {
