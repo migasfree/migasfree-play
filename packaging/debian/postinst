@@ -20,9 +20,7 @@ set -e
 case "$1" in
     configure)
         chmod +x /etc/xdg/autostart/migasfree-play-sync.desktop
-
-        # Link to the binary
-        ln -sf /usr/share/migasfree-play/migasfree-play /usr/bin/
+        chmod +x /usr/bin/migasfree-play
 
         # SUID chrome-sandbox for Electron 5+
         chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
