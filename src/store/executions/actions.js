@@ -108,6 +108,9 @@ export function run(context, { cmd, text }) {
       }
     }
 
+    context.dispatch('executions/setExecutions', null, { root: true })
+    context.commit('executions/finishedCmd', null, { root: true })
+
     if (cmd.includes('sync')) {
       if (win.isMinimized()) win.close()
 
@@ -115,8 +118,5 @@ export function run(context, { cmd, text }) {
         root: true
       })
     }
-
-    context.dispatch('executions/setExecutions', null, { root: true })
-    context.commit('executions/finishedCmd', null, { root: true })
   })
 }
