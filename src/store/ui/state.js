@@ -1,5 +1,6 @@
 export default function() {
   return {
-    isLoading: false
+    isLoading: false,
+    isUpdating: false
   }
 }
