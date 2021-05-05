@@ -36,6 +36,9 @@ function launchExpress() {
 }
 
 import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
+
+const gotTheLock = app.requestSingleInstanceLock()
+
 app.canExit = true
 
 try {
@@ -103,19 +106,32 @@ function createWindow() {
   mainWindow.on('close', (e) => {
     if (!app.canExit) e.preventDefault() // Prevents the window from closing
   })
+
   Menu.setApplicationMenu(null)
 }
 
-app.on('ready', createWindow)
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+  app.on('ready', createWindow)
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
+  })
+
+  app.on('activate', () => {
+    if (mainWindow === null) {
+      createWindow()
+    }
+  })
+}
