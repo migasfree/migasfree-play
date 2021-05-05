@@ -95,7 +95,7 @@ function createWindow() {
   })
 
   mainWindow.webContents.on('did-finish-load', () => {
-    if (process.argv[1] === 'sync') {
+    if (process.argv.includes('sync')) {
       mainWindow.minimize()
     }
   })
