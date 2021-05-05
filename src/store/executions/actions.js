@@ -41,7 +41,7 @@ export async function setExecutions(context) {
     })
 }
 
-export function run(context, { cmd, text, element = null }) {
+export function run(context, { cmd, text }) {
   if (context.state.isRunningCommand) {
     context.dispatch(
       'ui/notifyInfo',
@@ -87,8 +87,6 @@ export function run(context, { cmd, text, element = null }) {
   process.on('exit', (code) => {
     const { remote } = require('electron')
     const win = remote.getCurrentWindow()
-
-    if (element) element.disabled = false
 
     if (code !== 0) {
       context.dispatch('ui/notifyError', `Error: ${code} ${cmd}`, {
