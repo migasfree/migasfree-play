@@ -98,10 +98,6 @@ export function run(context, { cmd, text }) {
         context.dispatch('packages/setInstalledPackages', null, {
           root: true
         })
-
-        if (cmd.includes('sync') && win.isMinimized()) {
-          win.close()
-        }
       } else {
         context.dispatch('ui/notifyError', replaceColors(context.state.error), {
           root: true
@@ -113,6 +109,8 @@ export function run(context, { cmd, text }) {
     }
 
     if (cmd.includes('sync')) {
+      if (win.isMinimized()) win.close()
+
       context.dispatch('packages/setAvailablePackages', null, {
         root: true
       })
