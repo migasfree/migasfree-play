@@ -7,15 +7,21 @@
         size="sm"
         flat
         color="primary"
-        :loading="updating"
-        :disabled="updating"
+        :loading="$store.state.ui.isUpdating"
+        :disabled="$store.state.ui.isUpdating"
         @click="updateDevices"
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
     </q-breadcrumbs>
 
-    <Devices />
+    <div v-if="$store.state.ui.isUpdating" class="row q-ma-xl">
+      <div class="col-12 text-center">
+        <q-spinner color="primary" size="6em" />
+      </div>
+    </div>
+
+    <Devices v-else />
   </q-page>
 </template>
 
@@ -31,18 +37,13 @@ export default {
   components: {
     Devices
   },
-  data() {
-    return {
-      updating: false
-    }
-  },
   methods: {
     async updateDevices() {
-      this.updating = true
+      this.$store.commit('ui/updating')
       await this.$store.dispatch('devices/computerDevices')
       await this.$store.dispatch('devices/getAvailableDevices')
       await this.$store.dispatch('devices/getFeaturesDevices')
-      this.updating = false
+      this.$store.commit('ui/updatingFinished')
     }
   }
 }

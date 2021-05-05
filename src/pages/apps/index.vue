@@ -7,15 +7,21 @@
         size="sm"
         flat
         color="primary"
-        :loading="updating"
-        :disabled="updating"
+        :loading="$store.state.ui.isUpdating"
+        :disabled="$store.state.ui.isUpdating"
         @click="updateApps"
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
     </q-breadcrumbs>
 
-    <Apps />
+    <div v-if="$store.state.ui.isUpdating" class="row q-ma-xl">
+      <div class="col-12 text-center">
+        <q-spinner color="primary" size="6em" />
+      </div>
+    </div>
+
+    <Apps v-else />
   </q-page>
 </template>
 
@@ -31,17 +37,12 @@ export default {
   components: {
     Apps
   },
-  data() {
-    return {
-      updating: false
-    }
-  },
   methods: {
     async updateApps() {
-      this.updating = true
+      this.$store.commit('ui/updating')
       await this.$store.dispatch('app/getApps')
       await this.$store.dispatch('filters/setCategories')
-      this.updating = false
+      this.$store.commit('ui/updatingFinished')
     }
   }
 }
