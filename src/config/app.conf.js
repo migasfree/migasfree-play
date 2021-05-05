@@ -8,6 +8,10 @@ export const tokenAuth = {
   password: 'migasfree-play'
 }
 
+export const checkTokenApi = {
+  url: '/rest-auth/user/'
+}
+
 export const publicApi = {
   prefix: '/api/v1/public',
   serverInfo: '/server/info/',
