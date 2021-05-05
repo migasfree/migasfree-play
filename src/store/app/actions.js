@@ -43,7 +43,7 @@ export async function init(context) {
   await context.dispatch('tags/getAssignedTags', {}, { root: true })
 
   context.commit('setStatus', '')
-  context.commit('ui/finished', null, { root: true })
+  context.commit('ui/loadingFinished', null, { root: true })
 }
 
 export async function serverInfo(context) {
