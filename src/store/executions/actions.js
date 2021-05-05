@@ -12,11 +12,11 @@ function replaceAll(str, find, replace) {
 }
 
 function replaceColors(txt) {
-  txt = replaceAll(txt, '\u001b[92m', "<span class='text-green'>") // ok
-  txt = replaceAll(txt, '\u001b[93m', "<span class='text-yellow'>") // warning
-  txt = replaceAll(txt, '\u001b[91m', "<span class='text-negative'>") // error
-  txt = replaceAll(txt, '\u001b[32m', "<span class='text-blue'>") // info
-  txt = replaceAll(txt, '\u001b[0m', '</span>')
+  txt = replaceAll(txt, '\x1b[92m', "<span class='text-green'>") // ok
+  txt = replaceAll(txt, '\x1b[93m', "<span class='text-yellow'>") // warning
+  txt = replaceAll(txt, '\x1b[91m', "<span class='text-negative'>") // error
+  txt = replaceAll(txt, '\x1b[32m', "<span class='text-blue'>") // info
+  txt = replaceAll(txt, '\x1b[0m', '</span>')
   txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
   return txt
