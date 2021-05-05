@@ -56,16 +56,15 @@ export default {
             app.category.id ==
             this.$store.getters['filters/selectedCategory'].id
         )
-      if (this.$store.getters['filters/searchApp'])
+      if (this.$store.getters['filters/searchApp']) {
+        const pattern = this.$store.getters['filters/searchApp'].toLowerCase()
+
         results = results.filter(
           (app) =>
-            app.name
-              .toLowerCase()
-              .includes(this.$store.getters['filters/searchApp']) ||
-            app.description
-              .toLowerCase()
-              .includes(this.$store.getters['filters/searchApp'])
+            app.name.toLowerCase().includes(pattern) ||
+            app.description.toLowerCase().includes(pattern)
         )
+      }
 
       if (this.$store.getters['filters/onlyInstalledApps'])
         results = results.filter(
