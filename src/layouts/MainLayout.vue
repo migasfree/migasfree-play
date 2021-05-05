@@ -127,7 +127,7 @@
           color="secondary"
           :loading="$store.state.executions.isRunningCommand"
           :disabled="$store.state.executions.isRunningCommand"
-          @click="synchronize($event)"
+          @click="synchronize"
         >
           <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
         </q-btn>
@@ -154,14 +154,13 @@ export default {
     }
   },
   mounted() {
-    if (remote.process.argv[1] === 'sync') {
-      this.$refs.sync.click()
-      setInterval(this.$refs.sync.click(), 24 * 60 * 60 * 1000)
+    if (remote.process.argv.includes('sync')) {
+      this.synchronize()
+      setInterval(this.synchronize, 24 * 60 * 60 * 1000)
     }
   },
   methods: {
-    synchronize(event) {
-      event.srcElement.parentElement.parentElement.parentElement.disabled = true
+    synchronize() {
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Synchronizing...'))
 
       if (this.$store.state.preferences.showSyncDetails)
@@ -169,8 +168,7 @@ export default {
 
       this.$store.dispatch('executions/run', {
         cmd: 'migasfree sync',
-        text: this.$gettext('Synchronization'),
-        element: event.srcElement.parentElement.parentElement.parentElement
+        text: this.$gettext('Synchronization')
       })
     }
   }
