@@ -21,15 +21,15 @@ export async function init(context) {
   await context.dispatch('computer/computerData', {}, { root: true })
   await context.dispatch('computer/computerAttribute', {}, { root: true })
 
-  context.commit('setStatus', this._vm.$gettext('Packages'))
-  await context.dispatch('packages/setAvailablePackages', {}, { root: true })
-  await context.dispatch('packages/setInstalledPackages', {}, { root: true })
-
   context.commit('setStatus', this._vm.$gettext('Apps'))
   await context.dispatch('getApps')
 
   context.commit('setStatus', this._vm.$gettext('Categories'))
   await context.dispatch('filters/setCategories', {}, { root: true })
+
+  context.commit('setStatus', this._vm.$gettext('Packages'))
+  await context.dispatch('packages/setAvailablePackages', {}, { root: true })
+  await context.dispatch('packages/setInstalledPackages', {}, { root: true })
 
   await context.dispatch('executions/getExecutions', {}, { root: true })
 
