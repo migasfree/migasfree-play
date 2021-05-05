@@ -8,7 +8,7 @@
     <q-separator />
 
     <q-card>
-      <q-card-section v-html="text"> </q-card-section>
+      <q-card-section class="text-mono" v-html="text"> </q-card-section>
     </q-card>
   </q-expansion-item>
 </template>
