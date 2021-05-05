@@ -93,6 +93,12 @@ function createWindow() {
     }
   })
 
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (process.argv[1] === 'sync') {
+      mainWindow.minimize()
+    }
+  })
+
   Menu.setApplicationMenu(null)
 }
 
