@@ -36,6 +36,7 @@ function launchExpress() {
 }
 
 import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
+app.canExit = true
 
 try {
   if (
@@ -99,6 +100,9 @@ function createWindow() {
     }
   })
 
+  mainWindow.on('close', (e) => {
+    if (!app.canExit) e.preventDefault() // Prevents the window from closing
+  })
   Menu.setApplicationMenu(null)
 }
 
