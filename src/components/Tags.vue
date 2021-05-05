@@ -13,7 +13,23 @@
               input-debounce="0"
               :options="options"
               @filter="filterFn"
-            />
+            >
+              <template #selected-item="scope">
+                <q-chip
+                  outline
+                  square
+                  removable
+                  dense
+                  color="primary"
+                  class="q-pa-md"
+                  icon="mdi-tag"
+                  :tabindex="scope.tabindex"
+                  @remove="scope.removeAtIndex(scope.index)"
+                >
+                  {{ scope.opt }}
+                </q-chip>
+              </template>
+            </q-select>
           </p>
         </q-card-section>
 
