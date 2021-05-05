@@ -6,7 +6,7 @@
           <p>
             <q-input
               v-model="searchDevice"
-              :placeholder="$gettext('Search')"
+              :placeholder="$gettext('Search in name or model or manufacturer')"
               clearable
               @input="setSearchDevice"
               ><template #prepend><q-icon name="mdi-magnify"/></template
