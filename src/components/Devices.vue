@@ -43,17 +43,17 @@ export default {
     devicesByFilter() {
       let results = this.devices
 
-      if (this.$store.state.filters.searchDevice)
+      if (this.$store.state.filters.searchDevice) {
+        const pattern = this.$store.state.filters.searchDevice.toLowerCase()
+
         results = results.filter(
           (device) =>
-            device.model.name
-              .toLowerCase()
-              .includes(this.$store.state.filters.searchDevice) ||
+            device.model.name.toLowerCase().includes(pattern) ||
+            device.model.manufacturer.name.toLowerCase().includes(pattern) ||
             ('NAME' in device.data &&
-              device.data.NAME.toLowerCase().includes(
-                this.$store.state.filters.searchDevice
-              ))
+              device.data.NAME.toLowerCase().includes(pattern))
         )
+      }
 
       if (this.$store.state.filters.onlyAssignedDevices)
         results = results.filter((device) => {
@@ -68,7 +68,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('devices/getFeaturesDevices') // FIXME I don't know why!!!
     this.devices = this.$store.getters['devices/getAvailableDevices']
   },
   methods: {
