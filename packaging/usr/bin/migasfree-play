@@ -1,0 +1,51 @@
+#!/bin/bash
+
+if [ "$(id -u)" != "0" ]
+then
+   echo "Sorry. This app must be run as root. Try: sudo migasfree-play $1" 1>&2
+   exit 1
+fi
+
+_PYTHON=$(which python3)
+[ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
+if [ $? -ne 0 -o -z "$_PYTHON" ]
+then
+    echo "Python 3 is not available. Impossible to continue."
+    exit 2
+fi
+
+_WAIT_IP="
+import time
+from migasfree_client.network import get_gateway
+WAIT_IP_TIMEOUT = 120 # seconds
+def has_ip_address():
+    _cont = WAIT_IP_TIMEOUT
+    while (get_gateway() is None or get_gateway() == '') and _cont > 0:
+        time.sleep(1)
+        _cont -= 1
+    return get_gateway() != '' and get_gateway() is not None
+print(has_ip_address())
+"
+_CONECTIVITY=$($_PYTHON -c "$_WAIT_IP")
+
+_USER=$($_PYTHON -c "from migasfree_client import utils; print(utils.get_graphic_user(utils.get_graphic_pid()[0]))")
+
+if [ "$1" = "sync" ]
+then
+    # user root enabled in X
+    xhost si:localuser:root
+
+    # Cron every 24 hours
+    _FILE="/tmp/migasfree-sync.txt"
+    _TASK="sudo /usr/bin/migasfree-play sync"
+    su -c "crontab -l | grep -v '$_TASK' > $_FILE" -l $_USER
+    _TIME=$(date "+%M %H")
+    su -c "echo '$_TIME * * * export DISPLAY=$DISPLAY; $_TASK' >> $_FILE" -l $_USER
+    su -c "crontab $_FILE" -l $_USER
+    rm $_FILE
+fi
+
+if [ "$_CONECTIVITY" = "True" ]
+then
+    /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox
+fi
