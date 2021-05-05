@@ -20,8 +20,8 @@ msgstr ""
 
 #: ./src/layouts/MainLayout.vue:67
 #: ./src/pages/apps/index.vue:6
-#: ./src/pages/apps/index.vue:14
-#: ./src/store/app/actions.js:28
+#: ./src/pages/apps/index.vue:23
+#: ./src/store/app/actions.js:24
 msgid "Apps"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ./src/store/app/actions.js:31
+#: ./src/store/app/actions.js:27
 msgid "Categories"
 msgstr ""
 
@@ -73,7 +73,7 @@ msgstr ""
 
 #: ./src/layouts/MainLayout.vue:89
 #: ./src/pages/devices/index.vue:6
-#: ./src/pages/devices/index.vue:14
+#: ./src/pages/devices/index.vue:23
 #: ./src/store/app/actions.js:36
 msgid "Devices"
 msgstr ""
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Not show details when synchronizing"
 msgstr ""
 
-#: ./src/store/app/actions.js:24
+#: ./src/store/app/actions.js:30
 msgid "Packages"
 msgstr ""
 
@@ -186,12 +186,12 @@ msgstr ""
 msgid "Reserved"
 msgstr ""
 
-#: ./src/components/DeviceFilter.vue:26
-msgid "Search"
-msgstr ""
-
 #: ./src/components/AppFilter.vue:27
 msgid "Search in name or description"
+msgstr ""
+
+#: ./src/components/DeviceFilter.vue:26
+msgid "Search in name or model or manufacturer"
 msgstr ""
 
 #: ./src/store/app/actions.js:13
@@ -229,7 +229,7 @@ msgstr ""
 #: ./src/components/Tags.vue:27
 #: ./src/layouts/MainLayout.vue:111
 #: ./src/pages/tags/index.vue:6
-#: ./src/pages/tags/index.vue:14
+#: ./src/pages/tags/index.vue:23
 #: ./src/store/app/actions.js:41
 msgid "Tags"
 msgstr ""
@@ -256,6 +256,12 @@ msgstr ""
 
 #: ./src/components/Info.vue:106
 msgid "Unsubscribed"
+msgstr ""
+
+#: ./src/pages/apps/index.vue:38
+#: ./src/pages/devices/index.vue:38
+#: ./src/pages/tags/index.vue:38
+msgid "Update"
 msgstr ""
 
 #: ./src/components/Login.vue:13

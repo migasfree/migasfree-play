@@ -26,7 +26,7 @@ msgid "All available"
 msgstr "Todos los disponibles"
 
 #: src/layouts/MainLayout.vue:67 src/pages/apps/index.vue:6
-#: src/pages/apps/index.vue:14 src/store/app/actions.js:28
+#: src/pages/apps/index.vue:23 src/store/app/actions.js:24
 msgid "Apps"
 msgstr "Aplicaciones"
 
@@ -46,7 +46,7 @@ msgstr "Disponible"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/store/app/actions.js:31
+#: src/store/app/actions.js:27
 msgid "Categories"
 msgstr "Categorías"
 
@@ -76,7 +76,7 @@ msgid "Details"
 msgstr "Detalles"
 
 #: src/layouts/MainLayout.vue:89 src/pages/devices/index.vue:6
-#: src/pages/devices/index.vue:14 src/store/app/actions.js:36
+#: src/pages/devices/index.vue:23 src/store/app/actions.js:36
 msgid "Devices"
 msgstr "Dispositivos"
 
@@ -157,7 +157,7 @@ msgstr "Datos de red"
 msgid "Not show details when synchronizing"
 msgstr "No mostrar detalles durante la sincronización"
 
-#: src/store/app/actions.js:24
+#: src/store/app/actions.js:30
 msgid "Packages"
 msgstr "Paquetes"
 
@@ -182,13 +182,13 @@ msgstr "Imprimir identificación"
 msgid "Reserved"
 msgstr "Reservado"
 
-#: src/components/DeviceFilter.vue:26
-msgid "Search"
-msgstr "Buscar"
-
 #: src/components/AppFilter.vue:27
 msgid "Search in name or description"
 msgstr "Buscar en nombre o descripción"
+
+#: src/components/DeviceFilter.vue:26
+msgid "Search in name or model or manufacturer"
+msgstr "Buscar en nombre o modelo o fabricante"
 
 #: src/store/app/actions.js:13
 msgid "Server"
@@ -223,7 +223,7 @@ msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
 #: src/components/Tags.vue:27 src/layouts/MainLayout.vue:111
-#: src/pages/tags/index.vue:6 src/pages/tags/index.vue:14
+#: src/pages/tags/index.vue:6 src/pages/tags/index.vue:23
 #: src/store/app/actions.js:41
 msgid "Tags"
 msgstr "Etiquetas"
@@ -249,6 +249,11 @@ msgstr "Desconocido"
 msgid "Unsubscribed"
 msgstr "Baja"
 
+#: src/pages/apps/index.vue:38 src/pages/devices/index.vue:38
+#: src/pages/tags/index.vue:38
+msgid "Update"
+msgstr "Actualizar"
+
 #: src/components/Login.vue:13 src/components/Login.vue:1
 msgid "User"
 msgstr "Usuario"
@@ -260,6 +265,9 @@ msgstr "Usuario con privilegios en el ordenador"
 #: src/layouts/MainLayout.vue:39
 msgid "View Computer"
 msgstr "Ver ordenador"
+
+#~ msgid "Search"
+#~ msgstr "Buscar"
 
 #~ msgid "Communicate"
 #~ msgstr "Comunicar"
