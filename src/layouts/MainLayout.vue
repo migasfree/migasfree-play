@@ -150,7 +150,9 @@ export default {
     computerText() {
       const computer = this.$store.getters['computer/getComputer']
 
-      return `${computer.name} (CID-${computer.cid})`
+      return computer.cid
+        ? `${computer.name} (CID-${computer.cid})`
+        : computer.name
     }
   },
   mounted() {
