@@ -24,14 +24,14 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "python-shell": "^3.0.0",
-    "quasar": "^1.15.10",
+    "quasar": "^1.15.13",
     "tcp-port-used": "^1.0.2",
     "typeface-lato": "^1.1.13",
     "typeface-ubuntu-mono": "^1.1.13",
     "vue-gettext": "^2.1.12"
   },
   "devDependencies": {
-    "@quasar/app": "^2.2.4",
+    "@quasar/app": "^2.2.6",
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "babel-eslint": "^10.0.1",
     "devtron": "^1.4.0",
@@ -48,15 +48,7 @@
     "eslint-webpack-plugin": "^2.4.0"
   },
   "browserslist": [
-    "last 10 Chrome versions",
-    "last 10 Firefox versions",
-    "last 4 Edge versions",
-    "last 7 Safari versions",
-    "last 8 Android versions",
-    "last 8 ChromeAndroid versions",
-    "last 8 FirefoxAndroid versions",
-    "last 10 iOS versions",
-    "last 5 Opera versions"
+    "chrome > 82"
   ],
   "engines": {
     "node": ">= 10.18.1",
