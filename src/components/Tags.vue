@@ -36,7 +36,7 @@
         <q-card-actions align="right">
           <q-btn
             text-color="primary"
-            class="q-ma-md"
+            class="q-ma-md q-px-sm"
             icon="mdi-comment-processing"
             size="lg"
             :loading="$store.state.executions.isRunningCommand"
@@ -49,6 +49,7 @@
 
           <q-btn
             color="primary"
+            class="q-px-sm"
             icon="mdi-cog-transfer"
             size="lg"
             :loading="$store.state.executions.isRunningCommand"
