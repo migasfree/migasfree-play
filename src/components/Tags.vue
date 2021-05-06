@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-card class="q-ma-md" flat>
+      <q-card v-if="options.length > 0 || tags.length > 0" class="q-ma-md" flat>
         <q-card-section>
           <p>
             <q-select
@@ -12,7 +12,7 @@
               use-input
               input-debounce="0"
               :options="options"
-              @filter="filterFn"
+              @filter="filterTags"
             >
               <template #selected-item="scope">
                 <q-chip
@@ -38,6 +38,7 @@
             text-color="primary"
             class="q-ma-md"
             icon="mdi-comment-processing"
+            size="lg"
             :loading="$store.state.executions.isRunningCommand"
             :disabled="$store.state.executions.isRunningCommand"
             @click="communicate"
@@ -49,6 +50,7 @@
           <q-btn
             color="primary"
             icon="mdi-cog-transfer"
+            size="lg"
             :loading="$store.state.executions.isRunningCommand"
             :disabled="$store.state.executions.isRunningCommand"
             @click="setTags"
@@ -58,6 +60,13 @@
           >
         </q-card-actions>
       </q-card>
+
+      <q-banner v-else class="bg-info text-black q-ma-md">
+        <template #avatar>
+          <q-icon name="mdi-information-outline" color="white" />
+        </template>
+        {{ $gettext('There are not items to show.') }}
+      </q-banner>
     </div>
   </div>
 </template>
@@ -102,7 +111,7 @@ export default {
       })
     },
 
-    filterFn(val, update) {
+    filterTags(val, update) {
       if (val === '') {
         update(() => {
           this.options = this.allOptions
