@@ -13,7 +13,7 @@
         </q-card-section>
 
         <q-card-section class="col-3">
-          <img :src="icon" @error="defaultIcon" />
+          <img :src="icon" width="64" @error="defaultIcon" />
         </q-card-section>
       </q-card-section>
 
