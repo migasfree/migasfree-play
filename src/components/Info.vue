@@ -10,11 +10,9 @@
           <strong>{{ appName }} {{ appVersion }}</strong>
         </p>
 
-        <p>{{ appDescription }}</p>
-
-        <p>{{ appCopyright }}</p>
-
-        <p>{{ appAuthors }}</p>
+        <p class="text-caption">
+          {{ appDescription }} <br />{{ appCopyright }} <br />{{ appAuthors }}
+        </p>
       </center>
 
       <div class="column items-center">
