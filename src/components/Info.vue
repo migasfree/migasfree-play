@@ -6,7 +6,7 @@
           <img width="120" src="img/migasfree-play.svg" />
         </p>
 
-        <p>
+        <p class="text-h5">
           <strong>{{ appName }} {{ appVersion }}</strong>
         </p>
 
@@ -18,7 +18,7 @@
       </center>
 
       <div class="column items-center">
-        <q-card flat bordered class="half q-ma-md">
+        <q-card v-if="computer.user" flat bordered class="half q-ma-md">
           <q-card-section>
             <div class="text-h6 q-mb-md">
               <q-icon name="mdi-account" />
@@ -28,12 +28,18 @@
             <p>
               <q-icon name="mdi-calendar-check" />
               {{ syncEndDate }}
-              <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
             </p>
+
+            <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
           </q-card-section>
         </q-card>
 
-        <q-card flat bordered class="half q-ma-md">
+        <q-card
+          v-if="'product' in computer.data"
+          flat
+          bordered
+          class="half q-ma-md"
+        >
           <q-card-section>
             <div class="text-h6 q-mb-md">
               <q-icon :name="productIcon" />
@@ -59,7 +65,12 @@
           </q-card-section>
         </q-card>
 
-        <q-card flat bordered class="half q-ma-md">
+        <q-card
+          v-if="'mac_address' in computer.data"
+          flat
+          bordered
+          class="half q-ma-md"
+        >
           <q-card-section>
             <div class="text-h6 q-mb-md">
               <q-icon name="mdi-information" />
@@ -109,36 +120,38 @@
       </div>
     </div>
 
-    <q-card flat bordered>
-      <q-card-section horizontal>
-        <qrcode
-          :value="qrCode"
-          :options="{ width: 140, errorCorrectionLevel: 'low' }"
-        />
+    <div class="column items-center">
+      <q-card flat bordered class="identification">
+        <q-card-section horizontal>
+          <qrcode
+            :value="qrCode"
+            :options="{ width: 140, errorCorrectionLevel: 'low' }"
+          />
 
-        <q-card-section vertical class="justify-around q-px-md">
-          <p>{{ computer.name }} ({{ computerId }})</p>
-          <div class="text-caption text-blue-grey">
-            <p>{{ computer.uuid }}</p>
-            <p>{{ $store.getters['app/host'] }}</p>
-            <p>{{ computer.helpdesk }}</p>
-          </div>
+          <q-card-section vertical class="justify-around q-px-md">
+            <p>{{ computer.name }} ({{ computerId }})</p>
+            <div class="text-caption text-blue-grey">
+              <p>{{ computer.uuid }}</p>
+              <p>{{ $store.getters['app/host'] }}</p>
+              <p>{{ computer.helpdesk }}</p>
+            </div>
+          </q-card-section>
         </q-card-section>
-      </q-card-section>
 
-      <q-separator inset />
+        <q-separator inset />
 
-      <q-card-actions align="center" class="print-hide">
-        <q-btn
-          color="positive"
-          icon="mdi-printer"
-          class="q-mx-lg"
-          @click="printLabel"
-        >
-          <q-tooltip>{{ $gettext('Print Identification') }}</q-tooltip>
-        </q-btn>
-      </q-card-actions>
-    </q-card>
+        <q-card-actions align="center" class="print-hide">
+          <q-btn
+            color="positive"
+            icon="mdi-printer"
+            class="q-mx-lg"
+            @click="printLabel"
+          >
+            <q-tooltip>{{ $gettext('Print Identification') }}</q-tooltip>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </div>
   </div>
 </template>
 
@@ -146,6 +159,7 @@
 import { date } from 'quasar'
 import Vue from 'vue'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
+
 const app = require('../../package.json')
 
 Vue.component(VueQrcode.name, VueQrcode)
@@ -167,20 +181,26 @@ export default {
     },
 
     syncEndDate() {
-      return date.formatDate(
-        Date.parse(this.computer.data.sync_end_date),
-        'YYYY-MM-DD HH:mm:ss'
-      )
+      return 'sync_end_date' in this.computer.data
+        ? date.formatDate(
+            Date.parse(this.computer.data.sync_end_date),
+            'YYYY-MM-DD HH:mm:ss'
+          )
+        : ''
     },
 
     computerRam() {
-      return `${this.bytesToGigas(this.computer.data.ram)} GB RAM`
+      return 'ram' in this.computer.data
+        ? `${this.bytesToGigas(this.computer.data.ram)} GB RAM`
+        : ''
     },
 
     computerStorage() {
-      return `${this.bytesToGigas(this.computer.data.storage)} GB (${
-        this.computer.data.disks
-      } ${this.$gettext('disks')})`
+      return 'storage' in this.computer.data
+        ? `${this.bytesToGigas(this.computer.data.storage)} GB (${
+            this.computer.data.disks
+          } ${this.$gettext('disks')})`
+        : ''
     },
 
     computerMac() {
@@ -198,7 +218,7 @@ export default {
     },
 
     computerId() {
-      return `CID-${this.computer.cid}`
+      return this.computer.cid ? `CID-${this.computer.cid}` : 'CID-?'
     },
 
     productIcon() {
@@ -280,5 +300,10 @@ export default {
 .half {
   width: 100%;
   max-width: 400px;
+}
+
+.identification {
+  width: 100%;
+  max-width: 600px;
 }
 </style>
