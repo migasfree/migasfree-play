@@ -25,3 +25,7 @@ export function host(state) {
 export function status(state) {
   return state.status
 }
+
+export function stoppedApp(state) {
+  return state.stopApp
+}
