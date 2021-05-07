@@ -44,3 +44,4 @@ yarn-error.log*
 /migasfree-play_2.0.0_amd64.changes
 /migasfree-play_2.0.0_amd64.deb
 /packaging/rpm/rpmbuild/*
+/.env
