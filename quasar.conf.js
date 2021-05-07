@@ -180,6 +180,7 @@ module.exports = function(/* ctx */) {
         // https://www.electron.build/configuration/configuration
         appId: 'com.electron.migasfree-play',
         icon: 'public/img/migasfree-play.svg',
+        compression: 'maximum',
         asarUnpack: [
           'api.js',
           '**/node_modules/accepts/**/*.js',
