@@ -3,9 +3,7 @@ export const executionsMaxLength = 5
 export const internalApi = 'http://localhost:3000'
 
 export const tokenAuth = {
-  url: '/token-auth/',
-  user: 'migasfree-play',
-  password: 'migasfree-play'
+  url: '/token-auth/'
 }
 
 export const checkTokenApi = {
@@ -14,8 +12,7 @@ export const checkTokenApi = {
 
 export const publicApi = {
   prefix: '/api/v1/public',
-  serverInfo: '/server/info/',
-  computerInfo: '/get_computer_info/?uuid='
+  serverInfo: '/server/info/'
 }
 
 export const tokenApi = {
