@@ -11,6 +11,7 @@ export async function init(context) {
 
   context.commit('setStatus', this._vm.$gettext('Preferences'))
   await context.dispatch('preferences/readPreferences', {}, { root: true })
+  if (context.rootGetters['app/stoppedApp']) return
   await context.dispatch('apiProtocol')
   await context.dispatch('serverHost')
 
@@ -18,8 +19,10 @@ export async function init(context) {
 
   context.commit('setStatus', this._vm.$gettext('Server'))
   await context.dispatch('serverInfo')
+  if (context.rootGetters['app/stoppedApp']) return
   await context.dispatch('getToken')
   await context.dispatch('checkToken')
+  if (context.rootGetters['app/stoppedApp']) return
   if (!context.state.tokenChecked) {
     await context.dispatch('getToken')
   }
@@ -63,7 +66,13 @@ export async function serverInfo(context) {
       context.commit('setServerVersion', response.data.version)
     })
     .catch((error) => {
-      context.dispatch('ui/notifyError', error, { root: true })
+      if (!error.response) {
+        context.commit(
+          'setStatus',
+          this._vm.$gettext('There is no connection to the server')
+        )
+        context.commit('stopApp')
+      } else context.dispatch('ui/notifyError', error, { root: true })
     })
 }
 
@@ -96,11 +105,19 @@ export async function checkToken(context) {
       context.commit('setTokenChecked', true)
     })
     .catch((error) => {
-      if (error.response.status === 403) {
-        this.$axios.post(`${internalApi}/token`, {
-          token: ''
-        })
-        context.commit('setTokenChecked', false)
+      if (!error.response) {
+        context.commit(
+          'setStatus',
+          this._vm.$gettext('There is no connection to the server')
+        )
+        context.commit('stopApp')
+      } else {
+        if (error.response.status === 403) {
+          this.$axios.post(`${internalApi}/token`, {
+            token: ''
+          })
+          context.commit('setTokenChecked', false)
+        }
       }
     })
 }
