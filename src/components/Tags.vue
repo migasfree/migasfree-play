@@ -99,7 +99,8 @@ export default {
 
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --communicate ${this.tags.join(' ')}`,
-        text: this.$gettext('Communicate Tags')
+        text: this.$gettext('Communicate Tags'),
+        icon: 'mdi-comment-processing'
       })
     },
 
@@ -108,7 +109,8 @@ export default {
 
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --set ${this.tags.join(' ')}`,
-        text: this.$gettext('Set Tags')
+        text: this.$gettext('Set Tags'),
+        icon: 'mdi-cog-transfer'
       })
     },
 
