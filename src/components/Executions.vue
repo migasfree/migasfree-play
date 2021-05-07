@@ -9,6 +9,7 @@
       :key="index"
       :command="item.command"
       :text="item.text"
+      :icon="item.icon || ''"
     />
   </q-list>
   <q-banner v-else class="bg-info text-black q-ma-md">
