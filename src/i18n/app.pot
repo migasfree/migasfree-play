@@ -21,7 +21,7 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:67
 #: ./src/pages/apps/index.vue:6
 #: ./src/pages/apps/index.vue:23
-#: ./src/store/app/actions.js:24
+#: ./src/store/app/actions.js:37
 msgid "Apps"
 msgstr ""
 
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Assigned Devices"
 msgstr ""
 
-#: ./src/components/Info.vue:98
+#: ./src/components/Info.vue:105
 msgid "Available"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ./src/store/app/actions.js:27
+#: ./src/store/app/actions.js:40
 msgid "Categories"
 msgstr ""
 
@@ -49,19 +49,19 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: ./src/components/Tags.vue:28
+#: ./src/components/Tags.vue:27
 msgid "Communicate Tags"
 msgstr ""
 
-#: ./src/components/Tags.vue:52
+#: ./src/components/Tags.vue:78
 msgid "Communicate tags to the server"
 msgstr ""
 
-#: ./src/components/Tags.vue:24
+#: ./src/components/Tags.vue:23
 msgid "Communicating..."
 msgstr ""
 
-#: ./src/store/app/actions.js:17
+#: ./src/store/app/actions.js:30
 msgid "Computer"
 msgstr ""
 
@@ -74,15 +74,15 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:89
 #: ./src/pages/devices/index.vue:6
 #: ./src/pages/devices/index.vue:23
-#: ./src/store/app/actions.js:36
+#: ./src/store/app/actions.js:49
 msgid "Devices"
 msgstr ""
 
-#: ./src/components/Info.vue:38
+#: ./src/components/Info.vue:44
 msgid "disks"
 msgstr ""
 
-#: ./src/components/Info.vue:97
+#: ./src/components/Info.vue:111
 msgid "Hardware"
 msgstr ""
 
@@ -90,7 +90,11 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: ./src/components/Info.vue:100
+#: ./src/App.vue:50
+msgid "Impossible to continue."
+msgstr ""
+
+#: ./src/components/Info.vue:107
 msgid "In repair"
 msgstr ""
 
@@ -100,16 +104,16 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:88
+#: ./src/components/AppDetail.vue:89
 #: ./src/components/DeviceDetail.vue:106
 msgid "Install"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:126
+#: ./src/components/AppDetail.vue:127
 msgid "Install with privileges"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:159
+#: ./src/components/AppDetail.vue:160
 msgid "Installed"
 msgstr ""
 
@@ -117,12 +121,12 @@ msgstr ""
 msgid "Installed Apps"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:72
-#: ./src/components/AppDetail.vue:85
+#: ./src/components/AppDetail.vue:71
+#: ./src/components/AppDetail.vue:84
 msgid "Installing %{name}"
 msgstr ""
 
-#: ./src/components/Info.vue:104
+#: ./src/components/Info.vue:111
 msgid "Intended"
 msgstr ""
 
@@ -130,15 +134,15 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ./src/components/Info.vue:60
+#: ./src/components/Info.vue:72
 msgid "Last synchronization"
 msgstr ""
 
-#: ./src/App.vue:32
+#: ./src/App.vue:40
 msgid "Loading data"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:143
+#: ./src/components/AppDetail.vue:144
 msgid "Locked"
 msgstr ""
 
@@ -146,11 +150,11 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: ./src/components/Info.vue:165
+#: ./src/components/Info.vue:183
 msgid "Migasfree Data"
 msgstr ""
 
-#: ./src/components/Info.vue:129
+#: ./src/components/Info.vue:146
 msgid "Network Data"
 msgstr ""
 
@@ -158,7 +162,7 @@ msgstr ""
 msgid "Not show details when synchronizing"
 msgstr ""
 
-#: ./src/store/app/actions.js:30
+#: ./src/store/app/actions.js:43
 msgid "Packages"
 msgstr ""
 
@@ -174,15 +178,15 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:175
 #: ./src/pages/preferences/index.vue:6
 #: ./src/pages/preferences/index.vue:14
-#: ./src/store/app/actions.js:6
+#: ./src/store/app/actions.js:12
 msgid "Preferences"
 msgstr ""
 
-#: ./src/components/Info.vue:220
+#: ./src/components/Info.vue:240
 msgid "Print Identification"
 msgstr ""
 
-#: ./src/components/Info.vue:102
+#: ./src/components/Info.vue:109
 msgid "Reserved"
 msgstr ""
 
@@ -194,19 +198,19 @@ msgstr ""
 msgid "Search in name or model or manufacturer"
 msgstr ""
 
-#: ./src/store/app/actions.js:13
+#: ./src/store/app/actions.js:20
 msgid "Server"
 msgstr ""
 
-#: ./src/components/Tags.vue:39
+#: ./src/components/Tags.vue:36
 msgid "Set Tags"
 msgstr ""
 
-#: ./src/components/Tags.vue:69
+#: ./src/components/Tags.vue:97
 msgid "Set tags at the server"
 msgstr ""
 
-#: ./src/components/Tags.vue:35
+#: ./src/components/Tags.vue:32
 msgid "Setting Tags..."
 msgstr ""
 
@@ -214,7 +218,7 @@ msgstr ""
 msgid "Show details when synchronizing"
 msgstr ""
 
-#: ./src/layouts/MainLayout.vue:33
+#: ./src/layouts/MainLayout.vue:37
 msgid "Synchronization"
 msgstr ""
 
@@ -222,39 +226,46 @@ msgstr ""
 msgid "Synchronize Computer"
 msgstr ""
 
-#: ./src/layouts/MainLayout.vue:26
+#: ./src/layouts/MainLayout.vue:27
 msgid "Synchronizing..."
 msgstr ""
 
-#: ./src/components/Tags.vue:27
+#: ./src/components/Tags.vue:32
 #: ./src/layouts/MainLayout.vue:111
 #: ./src/pages/tags/index.vue:6
 #: ./src/pages/tags/index.vue:23
-#: ./src/store/app/actions.js:41
+#: ./src/store/app/actions.js:54
 msgid "Tags"
 msgstr ""
 
 #: ./src/components/Apps.vue:44
 #: ./src/components/Devices.vue:42
 #: ./src/components/Executions.vue:37
+#: ./src/components/Tags.vue:121
 msgid "There are not items to show."
 msgstr ""
 
-#: ./src/components/AppDetail.vue:108
+#: ./src/store/app/actions.js:72
+#: ./src/store/app/actions.js:111
+#: ./src/store/preferences/actions.js:13
+msgid "There is no connection to the server"
+msgstr ""
+
+#: ./src/components/AppDetail.vue:109
 #: ./src/components/DeviceDetail.vue:85
 msgid "Uninstall"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:99
-#: ./src/components/AppDetail.vue:112
+#: ./src/components/AppDetail.vue:96
+#: ./src/components/AppDetail.vue:109
 msgid "Uninstalling %{name}"
 msgstr ""
 
-#: ./src/components/Info.vue:108
+#: ./src/components/Info.vue:115
 msgid "Unknown"
 msgstr ""
 
-#: ./src/components/Info.vue:106
+#: ./src/components/Info.vue:113
 msgid "Unsubscribed"
 msgstr ""
 
