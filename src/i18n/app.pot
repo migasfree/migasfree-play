@@ -21,7 +21,7 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:67
 #: ./src/pages/apps/index.vue:6
 #: ./src/pages/apps/index.vue:23
-#: ./src/store/app/actions.js:37
+#: ./src/store/app/actions.js:39
 msgid "Apps"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ./src/store/app/actions.js:40
+#: ./src/store/app/actions.js:42
 msgid "Categories"
 msgstr ""
 
@@ -61,8 +61,12 @@ msgstr ""
 msgid "Communicating..."
 msgstr ""
 
-#: ./src/store/app/actions.js:30
+#: ./src/store/app/actions.js:32
 msgid "Computer"
+msgstr ""
+
+#: ./src/store/app/actions.js:96
+msgid "Credentials are not valid. Review app settings."
 msgstr ""
 
 #: ./src/layouts/MainLayout.vue:133
@@ -74,7 +78,7 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:89
 #: ./src/pages/devices/index.vue:6
 #: ./src/pages/devices/index.vue:23
-#: ./src/store/app/actions.js:49
+#: ./src/store/app/actions.js:51
 msgid "Devices"
 msgstr ""
 
@@ -162,7 +166,7 @@ msgstr ""
 msgid "Not show details when synchronizing"
 msgstr ""
 
-#: ./src/store/app/actions.js:43
+#: ./src/store/app/actions.js:45
 msgid "Packages"
 msgstr ""
 
@@ -178,7 +182,7 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:175
 #: ./src/pages/preferences/index.vue:6
 #: ./src/pages/preferences/index.vue:14
-#: ./src/store/app/actions.js:12
+#: ./src/store/app/actions.js:14
 msgid "Preferences"
 msgstr ""
 
@@ -198,11 +202,11 @@ msgstr ""
 msgid "Search in name or model or manufacturer"
 msgstr ""
 
-#: ./src/store/app/actions.js:20
+#: ./src/store/app/actions.js:22
 msgid "Server"
 msgstr ""
 
-#: ./src/components/Tags.vue:36
+#: ./src/components/Tags.vue:37
 msgid "Set Tags"
 msgstr ""
 
@@ -210,7 +214,7 @@ msgstr ""
 msgid "Set tags at the server"
 msgstr ""
 
-#: ./src/components/Tags.vue:32
+#: ./src/components/Tags.vue:33
 msgid "Setting Tags..."
 msgstr ""
 
@@ -234,19 +238,19 @@ msgstr ""
 #: ./src/layouts/MainLayout.vue:111
 #: ./src/pages/tags/index.vue:6
 #: ./src/pages/tags/index.vue:23
-#: ./src/store/app/actions.js:54
+#: ./src/store/app/actions.js:56
 msgid "Tags"
 msgstr ""
 
 #: ./src/components/Apps.vue:44
 #: ./src/components/Devices.vue:42
-#: ./src/components/Executions.vue:37
+#: ./src/components/Executions.vue:38
 #: ./src/components/Tags.vue:121
 msgid "There are not items to show."
 msgstr ""
 
-#: ./src/store/app/actions.js:72
-#: ./src/store/app/actions.js:111
+#: ./src/store/app/actions.js:74
+#: ./src/store/app/actions.js:128
 #: ./src/store/preferences/actions.js:13
 msgid "There is no connection to the server"
 msgstr ""
@@ -256,8 +260,8 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:96
-#: ./src/components/AppDetail.vue:109
+#: ./src/components/AppDetail.vue:97
+#: ./src/components/AppDetail.vue:110
 msgid "Uninstalling %{name}"
 msgstr ""
 
