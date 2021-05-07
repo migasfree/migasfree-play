@@ -46,6 +46,14 @@ cd packaging
 debuild --no-tgz-check -us -uc
 ```
 
+### Build the package for RPM based distros
+
+```bash
+yarn build
+cd packaging/rpm
+create-package
+```
+
 ### Execute app in production
 
 ```bash
