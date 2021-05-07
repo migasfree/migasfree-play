@@ -41,7 +41,7 @@ export async function setExecutions(context) {
     })
 }
 
-export function run(context, { cmd, text }) {
+export function run(context, { cmd, text, icon }) {
   if (context.state.isRunningCommand) {
     context.dispatch(
       'ui/notifyInfo',
@@ -62,7 +62,11 @@ export function run(context, { cmd, text }) {
     process = spawn('cmd', ['/C', cmd])
   }
 
-  context.commit('executions/addExecution', text, { root: true })
+  context.commit(
+    'executions/addExecution',
+    { command: text, icon },
+    { root: true }
+  )
 
   process.stdout.on('data', (data) => {
     context.commit(
