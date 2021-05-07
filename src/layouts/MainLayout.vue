@@ -173,7 +173,8 @@ export default {
 
       this.$store.dispatch('executions/run', {
         cmd: 'migasfree sync',
-        text: this.$gettext('Synchronization')
+        text: this.$gettext('Synchronization'),
+        icon: 'mdi-sync'
       })
     }
   }
