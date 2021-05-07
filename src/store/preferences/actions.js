@@ -7,7 +7,14 @@ export async function readPreferences(context) {
       context.commit('setPreferences', response.data)
     })
     .catch((error) => {
-      context.dispatch('ui/notifyError', error, { root: true })
+      if (!error.response) {
+        context.commit(
+          'app/setStatus',
+          this._vm.$gettext('There is no connection to the server'),
+          { root: true }
+        )
+        context.commit('app/stopApp', null, { root: true })
+      } else context.dispatch('ui/notifyError', error, { root: true })
     })
 }
 
