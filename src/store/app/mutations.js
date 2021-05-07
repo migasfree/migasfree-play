@@ -46,3 +46,7 @@ export function privilegedUser(state) {
 export function setStatus(state, value) {
   state.status = value
 }
+
+export function stopApp(state) {
+  state.stopApp = true
+}
