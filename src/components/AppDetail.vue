@@ -158,7 +158,8 @@ export default {
         cmd,
         text: this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
           name
-        })
+        }),
+        icon: 'mdi-download'
       })
     },
 
@@ -183,7 +184,8 @@ export default {
         cmd,
         text: this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
           name
-        })
+        }),
+        icon: 'mdi-delete'
       })
     },
 
