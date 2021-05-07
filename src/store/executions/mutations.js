@@ -20,10 +20,11 @@ export function finishedCmd(state) {
   app.canExit = true
 }
 
-export function addExecution(state, command) {
+export function addExecution(state, { command, icon }) {
   state.lastId = date.formatDate(Date.parse(new Date()), 'YYYY-MM-DD HH:mm:ss')
   Vue.set(state.log, state.lastId, {
     command,
+    icon,
     text: ''
   })
   while (Object.keys(state.log).length > executionsMaxLength)
