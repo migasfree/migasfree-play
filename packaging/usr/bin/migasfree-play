@@ -6,7 +6,7 @@ then
    exit 1
 fi
 
-_PYTHON=$(which python3)
+_PYTHON=$(command -v python3)
 [ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
 if [ $? -ne 0 -o -z "$_PYTHON" ]
 then
@@ -38,14 +38,15 @@ then
     # Cron every 24 hours
     _FILE="/tmp/migasfree-sync.txt"
     _TASK="sudo /usr/bin/migasfree-play sync"
-    su -c "crontab -l | grep -v '$_TASK' > $_FILE" -l $_USER
+    su -c "crontab -l | grep -v '$_TASK' > $_FILE" -l "$_USER"
     _TIME=$(date "+%M %H")
-    su -c "echo '$_TIME * * * export DISPLAY=$DISPLAY; $_TASK' >> $_FILE" -l $_USER
-    su -c "crontab $_FILE" -l $_USER
+    su -c "echo '$_TIME * * * export DISPLAY=$DISPLAY; $_TASK' >> $_FILE" -l "$_USER"
+    su -c "crontab $_FILE" -l "$_USER"
     rm $_FILE
 fi
 
 if [ "$_CONECTIVITY" = "True" ]
 then
+    cd /usr/share/migasfree-play || :
     /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox
 fi
