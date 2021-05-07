@@ -6,6 +6,8 @@ import {
   checkTokenApi
 } from 'config/app.conf'
 
+require('dotenv').config()
+
 export async function init(context) {
   context.commit('ui/loading', null, { root: true })
 
@@ -78,28 +80,43 @@ export async function serverInfo(context) {
 
 export async function getToken(context) {
   let response = await this.$axios.get(`${internalApi}/token`)
-  if (!response.data.token) {
-    response = await this.$axios.post(
-      `${context.state.protocol}://${context.state.host}${tokenAuth.url}`,
-      {
-        username: tokenAuth.user,
-        password: tokenAuth.password
-      }
-    )
-    if (response.data.token) {
+  if (!'data' in response || !response.data.token) {
+    response = await this.$axios
+      .post(
+        `${context.state.protocol}://${context.state.host}${tokenAuth.url}`,
+        {
+          username: process.env.MIGASFREE_USER || 'migasfree-play',
+          password: process.env.MIGASFREE_PASSWORD || 'migasfree-play'
+        }
+      )
+      .catch((error) => {
+        if (error.response.status === 400) {
+          context.commit(
+            'setStatus',
+            this._vm.$gettext('Credentials are not valid. Review app settings.')
+          )
+          context.commit('stopApp')
+        }
+      })
+    if (response && response.data.token) {
       await this.$axios.post(`${internalApi}/token`, {
         token: response.data.token
       })
     }
   }
 
-  context.commit('setToken', response.data.token)
+  context.commit('setToken', response ? response.data.token : '')
 }
 
 export async function checkToken(context) {
   await this.$axios
     .get(
-      `${context.state.protocol}://${context.state.host}${checkTokenApi.url}`
+      `${context.state.protocol}://${context.state.host}${checkTokenApi.url}`,
+      {
+        headers: {
+          Authorization: context.state.tokenValue
+        }
+      }
     )
     .then(() => {
       context.commit('setTokenChecked', true)
