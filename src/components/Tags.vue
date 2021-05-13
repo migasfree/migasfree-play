@@ -13,6 +13,7 @@
               input-debounce="0"
               :options="options"
               @filter="filterTags"
+              @input="updateTags"
             >
               <template #selected-item="scope">
                 <q-chip
@@ -90,13 +91,20 @@ export default {
     })
 
     this.allOptions = Array.from(options).sort()
+    this.options = this.allOptions
 
     this.tags = this.$store.state.tags.assigned
   },
   methods: {
+    updateTags() {
+      if (this.tags === null) this.tags = []
+      this.$store.commit('tags/setAssignedTags', this.tags)
+    },
+
     communicate() {
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Communicating...'))
 
+      if (this.tags === null) this.tags = []
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --communicate ${this.tags.join(' ')}`,
         text: this.$gettext('Communicate Tags'),
@@ -107,6 +115,7 @@ export default {
     setTags() {
       this.$store.dispatch('ui/notifyInfo', this.$gettext('Setting Tags...'))
 
+      if (this.tags === null) this.tags = []
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --set ${this.tags.join(' ')}`,
         text: this.$gettext('Set Tags'),
