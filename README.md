@@ -57,7 +57,7 @@ create-package
 ### Execute app in production
 
 ```bash
-sudo migasfree-play --no-sandbox
+sudo migasfree-play
 ```
 
 ## Screenshots
