@@ -1,5 +1,4 @@
-let { PythonShell } = require('python-shell')
-
+const { PythonShell } = require('python-shell')
 const os = require('os')
 const fs = require('fs')
 const path = require('path')
@@ -19,10 +18,6 @@ const settings = {
   show_preferences: true,
   show_info: true,
   show_help: true
-}
-
-PythonShell.defaultOptions = {
-  pythonPath: '/usr/bin/python3'
 }
 
 router.get('/', (req, res) => {

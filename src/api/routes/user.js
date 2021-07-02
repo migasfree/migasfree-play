@@ -1,9 +1,7 @@
-let { PythonShell } = require('python-shell')
-
+const { PythonShell } = require('python-shell')
 const express = require('express')
-const router = express.Router()
 
-PythonShell.defaultOptions = { pythonPath: '/usr/bin/python3' }
+const router = express.Router()
 
 router.post('/check', (req, res) => {
   const code = `
