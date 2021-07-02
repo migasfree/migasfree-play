@@ -179,7 +179,7 @@ module.exports = function(/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
         appId: 'com.electron.migasfree-play',
-        icon: 'public/img/migasfree-play.svg',
+        // icon: 'public/img/migasfree-play.svg',
         compression: 'maximum',
         asarUnpack: [
           'api.js',
@@ -256,6 +256,9 @@ module.exports = function(/* ctx */) {
           depends: ['migasfree-client (>= 5.0)', 'sudo', 'bash', 'cron'],
           packageCategory: 'utils',
           priority: 'optional'
+        },
+        win: {
+          target: ['nsis', 'msi']
         }
       },
 
