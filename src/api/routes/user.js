@@ -77,7 +77,7 @@ print(is_privileged)
   PythonShell.runString(code, null, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
-    res.send({ is_privileged: results[0] })
+    res.send({ is_privileged: results[0] === 'True' })
   })
 })
 
