@@ -23,7 +23,7 @@
       {{ $gettext('There are not items to show.') }}
     </q-banner>
 
-    <Login v-model="showLogin" @canceled="showLogin = !showLogin" />
+    <Login v-model="showLogin" @closed="showLogin = !showLogin" />
   </div>
 </template>
 
