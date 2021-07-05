@@ -57,7 +57,7 @@
           icon="mdi-wizard-hat"
           @click="$emit('openlogin')"
         >
-          <q-tooltip>{{ $gettext('Install with privileges') }}</q-tooltip>
+          <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
         </q-btn>
 
         <q-btn v-if="!isAvailable" color="brown" icon="mdi-lock">
