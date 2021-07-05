@@ -148,6 +148,12 @@ export async function checkUser(context, { user, password }) {
     .then((response) => {
       if (response.data.is_privileged) {
         context.commit('privilegedUser')
+      } else {
+        context.dispatch(
+          'ui/notifyError',
+          this._vm.$gettext('User without privileges'),
+          { root: true }
+        )
       }
     })
     .catch((error) => {
