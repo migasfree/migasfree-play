@@ -42,7 +42,7 @@ msgstr "Dispositivos asignados"
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Login.vue:93
+#: src/components/Login.vue:94
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -54,15 +54,15 @@ msgstr "Categorías"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/components/Tags.vue:27
+#: src/components/Tags.vue:36
 msgid "Communicate Tags"
 msgstr "Comunicar etiquetas"
 
-#: src/components/Tags.vue:78
+#: src/components/Tags.vue:80
 msgid "Communicate tags to the server"
 msgstr "Comunicar etiquetas al servidor"
 
-#: src/components/Tags.vue:23
+#: src/components/Tags.vue:32
 msgid "Communicating..."
 msgstr "Comunicando..."
 
@@ -113,10 +113,6 @@ msgstr "Información"
 msgid "Install"
 msgstr "Instalar"
 
-#: src/components/AppDetail.vue:127
-msgid "Install with privileges"
-msgstr "Instalar con privilegios"
-
 #: src/components/AppDetail.vue:160
 msgid "Installed"
 msgstr "Instalado"
@@ -149,9 +145,13 @@ msgstr "Cargando datos"
 msgid "Locked"
 msgstr "Bloqueado"
 
-#: src/components/Login.vue:102
+#: src/components/Login.vue:103
 msgid "Login"
 msgstr "Iniciar sesión"
+
+#: src/components/AppDetail.vue:127
+msgid "Manage with privileges"
+msgstr "Gestionar con privilegios"
 
 #: src/components/Info.vue:183
 msgid "Migasfree Data"
@@ -202,15 +202,15 @@ msgstr "Buscar en nombre o modelo o fabricante"
 msgid "Server"
 msgstr "Servidor"
 
-#: src/components/Tags.vue:37
+#: src/components/Tags.vue:46
 msgid "Set Tags"
 msgstr "Establecer etiquetas"
 
-#: src/components/Tags.vue:97
+#: src/components/Tags.vue:99
 msgid "Set tags at the server"
 msgstr "Establecer etiquetas en el servidor"
 
-#: src/components/Tags.vue:33
+#: src/components/Tags.vue:42
 msgid "Setting Tags..."
 msgstr "Estableciendo etiquetas..."
 
@@ -237,7 +237,7 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #: src/components/Apps.vue:44 src/components/Devices.vue:42
-#: src/components/Executions.vue:38 src/components/Tags.vue:121
+#: src/components/Executions.vue:38 src/components/Tags.vue:123
 msgid "There are not items to show."
 msgstr "No hay elementos para mostrar."
 

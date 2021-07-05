@@ -37,7 +37,7 @@ msgstr ""
 msgid "Available"
 msgstr ""
 
-#: ./src/components/Login.vue:93
+#: ./src/components/Login.vue:94
 msgid "Cancel"
 msgstr ""
 
@@ -49,15 +49,15 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: ./src/components/Tags.vue:27
+#: ./src/components/Tags.vue:36
 msgid "Communicate Tags"
 msgstr ""
 
-#: ./src/components/Tags.vue:78
+#: ./src/components/Tags.vue:80
 msgid "Communicate tags to the server"
 msgstr ""
 
-#: ./src/components/Tags.vue:23
+#: ./src/components/Tags.vue:32
 msgid "Communicating..."
 msgstr ""
 
@@ -113,10 +113,6 @@ msgstr ""
 msgid "Install"
 msgstr ""
 
-#: ./src/components/AppDetail.vue:127
-msgid "Install with privileges"
-msgstr ""
-
 #: ./src/components/AppDetail.vue:160
 msgid "Installed"
 msgstr ""
@@ -150,8 +146,12 @@ msgstr ""
 msgid "Locked"
 msgstr ""
 
-#: ./src/components/Login.vue:102
+#: ./src/components/Login.vue:103
 msgid "Login"
+msgstr ""
+
+#: ./src/components/AppDetail.vue:127
+msgid "Manage with privileges"
 msgstr ""
 
 #: ./src/components/Info.vue:183
@@ -206,15 +206,15 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
-#: ./src/components/Tags.vue:37
+#: ./src/components/Tags.vue:46
 msgid "Set Tags"
 msgstr ""
 
-#: ./src/components/Tags.vue:97
+#: ./src/components/Tags.vue:99
 msgid "Set tags at the server"
 msgstr ""
 
-#: ./src/components/Tags.vue:33
+#: ./src/components/Tags.vue:42
 msgid "Setting Tags..."
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 #: ./src/components/Apps.vue:44
 #: ./src/components/Devices.vue:42
 #: ./src/components/Executions.vue:38
-#: ./src/components/Tags.vue:121
+#: ./src/components/Tags.vue:123
 msgid "There are not items to show."
 msgstr ""
 
