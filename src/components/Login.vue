@@ -32,6 +32,7 @@
             lazy-rules
             :rules="[(val) => !!val || $gettext('* Required')]"
             :type="showPassword ? 'text' : 'password'"
+            @keyup.enter="login"
           >
             <template #label>
               <translate>Password</translate>
@@ -57,7 +58,7 @@
           flat
           color="primary"
           :label="$gettext('Cancel')"
-          @click="$emit('canceled')"
+          @click="$emit('closed')"
         />
         <q-btn
           v-close-popup
@@ -106,6 +107,7 @@ export default {
           user: this.username,
           password: this.password
         })
+        this.$emit('closed')
       }
     }
   }
