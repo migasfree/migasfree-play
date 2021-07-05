@@ -150,7 +150,7 @@ export default {
 
       if (os.type() === 'Linux') {
         cmd = 'LANG_ALL=C echo "y" | migasfree install ' + packagesToInstall
-      } else if (os.type() === 'Window_NT') {
+      } else if (os.type() === 'Windows_NT') {
         cmd = 'migasfree install ' + packagesToInstall
       }
 
@@ -176,7 +176,7 @@ export default {
 
       if (os.type() === 'Linux') {
         cmd = 'LANG_ALL=C echo "y" | migasfree purge ' + packagesToRemove
-      } else if (os.type() === 'Window_NT') {
+      } else if (os.type() === 'Windows_NT') {
         cmd = 'migasfree purge ' + packagesToRemove
       }
 
