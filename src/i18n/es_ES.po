@@ -275,6 +275,10 @@ msgstr "Usuario"
 msgid "User with privileges on the computer"
 msgstr "Usuario con privilegios en el ordenador"
 
+#: src/store/app/actions.js:154
+msgid "User without privileges"
+msgstr "Usuario sin privilegios"
+
 #: src/layouts/MainLayout.vue:39
 msgid "View Computer"
 msgstr "Ver ordenador"

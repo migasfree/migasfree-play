@@ -288,6 +288,10 @@ msgstr ""
 msgid "User with privileges on the computer"
 msgstr ""
 
+#: ./src/store/app/actions.js:154
+msgid "User without privileges"
+msgstr ""
+
 #: ./src/layouts/MainLayout.vue:39
 msgid "View Computer"
 msgstr ""
