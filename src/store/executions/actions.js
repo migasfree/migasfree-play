@@ -53,15 +53,13 @@ export function run(context, { cmd, text, icon }) {
   context.commit('executions/startedCmd', null, { root: true })
 
   const os = require('os')
-  let spawn
+  const spawn = require('child_process').spawn
   let process
 
   if (os.type() === 'Linux') {
-    spawn = require('child_process').spawn
     process = spawn('bash', ['-c', cmd])
-  } else if (os.type() === 'Window_NT') {
-    spawn = require('cross-spawn')
-    process = spawn(cmd)
+  } else if (os.type() === 'Windows_NT') {
+    process = spawn('cmd', ['/C', cmd])
   }
 
   context.commit(
