@@ -1,8 +1,8 @@
 export function setCategories(state, value) {
   Object.entries(value).map(([key, val]) => {
     state.categories.push({
-      id: parseInt(key),
-      name: val
+      id: val.id,
+      name: val.name
     })
   })
 }
