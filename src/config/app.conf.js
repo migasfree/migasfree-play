@@ -18,7 +18,7 @@ export const publicApi = {
 export const tokenApi = {
   prefix: '/api/v1/token',
   apps: '/catalog/apps/available/?cid=',
-  categories: '/catalog/apps/categories/',
+  categories: '/catalog/categories/',
   computer: '/computers/',
   availableDevices: '/devices/devices/available/?cid=',
   availableLogicalDevices: '/devices/logical/available/?cid=',
