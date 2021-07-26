@@ -1,19 +1,19 @@
-import Vue from 'vue'
-import GetTextPlugin from 'vue-gettext'
+import { boot } from 'quasar/wrappers'
+import { createGettext } from '@jshmrtn/vue3-gettext'
 import translations from '../i18n/translations.json'
 
-Vue.use(GetTextPlugin, {
+const gettext = createGettext({
   availableLanguages: {
     en_US: 'American English',
-    es_ES: 'Español'
-  },
-  languageVmMixin: {
-    computed: {
-      currentKebabCase: function() {
-        return this.current.toLowerCase().replace('_', '-')
-      }
-    }
+    es_ES: 'Español',
   },
   translations,
-  defaultLanguage: 'es_ES'
+  defaultLanguage: 'es_ES',
+  setGlobalProperties: true,
+})
+
+export default boot(({ app, store }) => {
+  app.config.globalProperties.$gettext = gettext
+  app.use(gettext)
+  store.$gettext = gettext
 })
