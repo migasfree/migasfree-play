@@ -10,7 +10,7 @@
           <strong>{{ appName }} {{ appVersion }}</strong>
         </p>
 
-        <p class="text-caption">
+        <p class="text-caption text-center">
           {{ appDescription }} <br />{{ appCopyright }} <br />{{ appAuthors }}
         </p>
 
