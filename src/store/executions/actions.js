@@ -78,7 +78,7 @@ export function run(context, { cmd, text, icon }) {
 
   process.stderr.on('data', (data) => {
     context.commit('executions/appendExecutionError', data.toString(), {
-      root: true
+      root: true,
     })
     context.commit(
       'executions/appendExecutionText',
@@ -89,25 +89,24 @@ export function run(context, { cmd, text, icon }) {
 
   // when the spawn child process exits, check if there were any errors
   process.on('exit', (code) => {
-    const { remote } = require('electron')
-    const win = remote.getCurrentWindow()
+    const win = window.electronRemote.getCurrentWindow() // electron-preload.js
 
     if (code !== 0) {
       context.dispatch('ui/notifyError', `Error: ${code} ${cmd}`, {
-        root: true
+        root: true,
       })
       win.show()
     } else {
       if (context.state.error === '') {
         context.dispatch('packages/setInstalledPackages', null, {
-          root: true
+          root: true,
         })
       } else {
         context.dispatch('ui/notifyError', replaceColors(context.state.error), {
-          root: true
+          root: true,
         })
         context.commit('executions/resetExecutionError', null, {
-          root: true
+          root: true,
         })
       }
     }
@@ -119,7 +118,7 @@ export function run(context, { cmd, text, icon }) {
       if (win.isMinimized()) win.close()
 
       context.dispatch('packages/setAvailablePackages', null, {
-        root: true
+        root: true,
       })
     }
   })
