@@ -1,5 +1,5 @@
+import path from 'path'
 const tcpPortUsed = require('tcp-port-used')
-const path = require('path')
 const spawn = require('child_process').spawn
 
 let expressProcess = undefined
@@ -8,12 +8,12 @@ function launchExpress() {
   const isProduction = process.env.NODE_ENV === 'production'
 
   tcpPortUsed.check(3000, '127.0.0.1').then(
-    function(inUse) {
+    function (inUse) {
       console.log('Port 3000 usage: ' + inUse) // debug
       if (!inUse) {
         const expressApi = isProduction
           ? path.join(__dirname, '..', 'app.asar.unpacked', 'api.js')
-          : path.join(__dirname, '..', '..', 'src', 'api')
+          : path.join(__dirname, '..', 'src', 'api')
 
         // Instantiate Express App
         console.log('instantiating express app...!!!', expressApi) // debug
@@ -29,13 +29,14 @@ function launchExpress() {
         })
       }
     },
-    function(err) {
+    function (err) {
       console.error('Error on check:', err.message)
     }
   )
 }
 
 import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
+require('@electron/remote/main').initialize()
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -52,14 +53,6 @@ try {
   }
 } catch (_) {}
 
-/**
- * Set `__statics` path to static files in production;
- * The reason we are setting it here is that the path needs to be evaluated at runtime
- */
-if (process.env.PROD) {
-  global.__statics = __dirname
-}
-
 let mainWindow
 
 function createWindow() {
@@ -67,20 +60,21 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__statics, 'img', 'migasfree-play.png'),
+    icon: path.resolve(__dirname, 'img', 'migasfree-play.png'),
     width: 800,
     height: 800,
     useContentSize: true,
     webPreferences: {
-      // Change from /quasar.conf.js > electron > nodeIntegration;
-      // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
-      nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
-      nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION,
-      enableRemoteModule: true
+      contextIsolation: false,
+      nodeIntegration: true, //process.env.QUASAR_NODE_INTEGRATION,
+      nodeIntegrationInWorker: true, // process.env.QUASAR_NODE_INTEGRATION,
+
+      // Enable @electron/remote
+      enableRemoteModule: true,
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
-      // preload: path.resolve(__dirname, 'electron-preload.js')
-    }
+      preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
+    },
   })
 
   launchExpress()
@@ -88,6 +82,16 @@ function createWindow() {
   mainWindow.webContents.session.setProxy({ mode: 'system' })
 
   mainWindow.loadURL(process.env.APP_URL)
+
+  if (process.env.DEBUGGING) {
+    // if on DEV or Production with debug enabled
+    mainWindow.webContents.openDevTools()
+  } else {
+    // we're on production; no access to devtools pls
+    mainWindow.webContents.on('devtools-opened', () => {
+      mainWindow.webContents.closeDevTools()
+    })
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -102,6 +106,11 @@ function createWindow() {
       mainWindow.minimize()
     }
   })
+
+  // Prevent opening external URL in app, open in default browser instead
+  /* mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    require('electron').shell.openExternal(url)
+  }) */
 
   mainWindow.on('close', (e) => {
     if (!app.canExit) e.preventDefault() // Prevents the window from closing
