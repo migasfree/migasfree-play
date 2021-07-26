@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="print-hide">
-      <center>
+      <div class="column items-center">
         <p>
           <img width="120" src="img/migasfree-play.svg" />
         </p>
@@ -13,9 +13,7 @@
         <p class="text-caption">
           {{ appDescription }} <br />{{ appCopyright }} <br />{{ appAuthors }}
         </p>
-      </center>
 
-      <div class="column items-center">
         <q-card v-if="computer.user" flat bordered class="half q-ma-md">
           <q-card-section>
             <div class="text-h6 q-mb-md">
@@ -121,7 +119,7 @@
     <div class="column items-center">
       <q-card flat bordered class="identification">
         <q-card-section horizontal>
-          <qrcode
+          <vue-qrcode
             :value="qrCode"
             :options="{ width: 140, errorCorrectionLevel: 'low' }"
           />
@@ -155,22 +153,22 @@
 
 <script>
 import { date } from 'quasar'
-import Vue from 'vue'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 const app = require('../../package.json')
 
-Vue.component(VueQrcode.name, VueQrcode)
-
 export default {
   name: 'Info',
+  components: {
+    VueQrcode,
+  },
   data() {
     return {
       appName: app.name,
       appVersion: app.version,
       appDescription: app.description,
       appAuthors: app.author,
-      appCopyright: app.copyright
+      appCopyright: app.copyright,
     }
   },
   computed: {
@@ -276,11 +274,11 @@ export default {
       let info = {
         model: 'computer',
         id: this.computer.cid,
-        server: this.$store.getters['app/host']
+        server: this.$store.getters['app/host'],
       }
 
       return JSON.stringify(info)
-    }
+    },
   },
   methods: {
     bytesToGigas(value) {
@@ -289,8 +287,8 @@ export default {
 
     printLabel() {
       window.print()
-    }
-  }
+    },
+  },
 }
 </script>
 
