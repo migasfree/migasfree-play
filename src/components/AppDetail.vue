@@ -9,7 +9,7 @@
           <div class="text-caption text-blue-grey">
             {{ category }}
           </div>
-          <q-rating :value="score" color="primary" readonly />
+          <q-rating v-model="rating" color="primary" readonly />
         </q-card-section>
 
         <q-card-section class="col-3">
@@ -84,9 +84,13 @@ export default {
     score: { type: Number, required: false, default: 0 },
     description: { type: String, required: false, default: '' },
     level: { type: String, required: false, default: 'U' },
-    packages: { type: Array, required: false, default: () => [] }
+    packages: { type: Array, required: false, default: () => [] },
   },
   computed: {
+    rating() {
+      return this.score
+    },
+
     truncatedDescription() {
       return this.description.split('\n')[0]
     },
@@ -134,7 +138,7 @@ export default {
         this.level === 'A' &&
         !this.$store.getters['app/userIsPrivileged']
       )
-    }
+    },
   },
   methods: {
     installApp(name, packages) {
@@ -144,7 +148,7 @@ export default {
       this.$store.dispatch(
         'ui/notifyInfo',
         this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
-          name
+          name,
         })
       )
 
@@ -157,9 +161,9 @@ export default {
       this.$store.dispatch('executions/run', {
         cmd,
         text: this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
-          name
+          name,
         }),
-        icon: 'mdi-download'
+        icon: 'mdi-download',
       })
     },
 
@@ -170,7 +174,7 @@ export default {
       this.$store.dispatch(
         'ui/notifyInfo',
         this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
-          name
+          name,
         })
       )
 
@@ -183,21 +187,15 @@ export default {
       this.$store.dispatch('executions/run', {
         cmd,
         text: this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
-          name
+          name,
         }),
-        icon: 'mdi-delete'
+        icon: 'mdi-delete',
       })
     },
 
     defaultIcon(event) {
       event.target.src = 'img/migasfree-play.svg'
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped>
-.half {
-  /*width: 350px;*/
-}
-</style>
