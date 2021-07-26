@@ -9,8 +9,8 @@
               :placeholder="$gettext('Search in name or description')"
               clearable
               autofocus
-              @input="setSearchApp"
-              ><template #prepend><q-icon name="mdi-magnify"/></template
+              @update:model-value="setSearchApp"
+              ><template #prepend><q-icon name="mdi-magnify" /></template
             ></q-input>
           </p>
 
@@ -22,7 +22,7 @@
               option-value="id"
               option-label="name"
               clearable
-              @input="setCategory"
+              @update:model-value="setCategory"
             />
           </p>
 
@@ -36,7 +36,7 @@
               "
               :false-value="false"
               :true-value="true"
-              @input="setOnlyInstalledApps"
+              @update:model-value="setOnlyInstalledApps"
             />
           </p>
         </q-card-section>
@@ -52,7 +52,7 @@ export default {
     return {
       category: null,
       searchApp: '',
-      onlyInstalledApps: false
+      onlyInstalledApps: false,
     }
   },
   computed: {
@@ -62,7 +62,7 @@ export default {
 
     categories() {
       return this.$store.getters['filters/getCategories']
-    }
+    },
   },
   mounted() {
     this.category = this.$store.getters['filters/selectedCategory']
@@ -80,7 +80,7 @@ export default {
 
     setOnlyInstalledApps() {
       this.$store.commit('filters/setOnlyInstalledApps', this.onlyInstalledApps)
-    }
-  }
+    },
+  },
 }
 </script>
