@@ -10,7 +10,7 @@
               :options="availableLocales"
               option-value="id"
               option-label="name"
-              @input="setLanguage"
+              @update:model-value="setLanguage"
             />
           </p>
 
@@ -24,7 +24,7 @@
               "
               :false-value="false"
               :true-value="true"
-              @input="setShowSyncDetails"
+              @update:model-value="setShowSyncDetails"
             />
           </p>
         </q-card-section>
@@ -34,14 +34,12 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
 export default {
   name: 'Preferences',
   data() {
     return {
       language: null,
-      showSyncDetails: false
+      showSyncDetails: false,
     }
   },
   computed: {
@@ -51,12 +49,12 @@ export default {
       Object.entries(this.$language.available).map(([key, val]) => {
         items.push({
           id: key,
-          name: val
+          name: val,
         })
       })
 
       return items
-    }
+    },
   },
   mounted() {
     this.language = this.availableLocales.find(
@@ -68,12 +66,12 @@ export default {
     setLanguage() {
       this.$store.commit('preferences/setLanguage', this.language.id)
       this.$store.dispatch('preferences/savePreferences')
-      Vue.config.language = this.language.id
+      this.$language.current = this.language.id
     },
     setShowSyncDetails() {
       this.$store.commit('preferences/setShowSyncDetails', this.showSyncDetails)
       this.$store.dispatch('preferences/savePreferences')
-    }
-  }
+    },
+  },
 }
 </script>
