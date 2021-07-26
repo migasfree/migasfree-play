@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { store } from 'quasar/wrappers'
+import { createStore } from 'vuex'
 
 import app from './app'
 import computer from './computer'
@@ -11,10 +11,8 @@ import preferences from './preferences'
 import tags from './tags'
 import ui from './ui'
 
-Vue.use(Vuex)
-
-export default function(/* { ssrContext } */) {
-  const Store = new Vuex.Store({
+export default store(function (/* { ssrContext } */) {
+  const Store = createStore({
     modules: {
       app,
       computer,
@@ -24,13 +22,13 @@ export default function(/* { ssrContext } */) {
       packages,
       preferences,
       tags,
-      ui
+      ui,
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEBUGGING
+    strict: process.env.DEBUGGING,
   })
 
   return Store
-}
+})
