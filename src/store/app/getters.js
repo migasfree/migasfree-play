@@ -29,3 +29,7 @@ export function status(state) {
 export function stoppedApp(state) {
   return state.stopApp
 }
+
+export function token(state) {
+  return state.tokenValue
+}
