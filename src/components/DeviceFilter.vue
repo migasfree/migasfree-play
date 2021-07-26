@@ -8,8 +8,8 @@
               v-model="searchDevice"
               :placeholder="$gettext('Search in name or model or manufacturer')"
               clearable
-              @input="setSearchDevice"
-              ><template #prepend><q-icon name="mdi-magnify"/></template
+              @update:model-value="setSearchDevice"
+              ><template #prepend><q-icon name="mdi-magnify" /></template
             ></q-input>
           </p>
 
@@ -23,7 +23,7 @@
               "
               :false-value="false"
               :true-value="true"
-              @input="setOnlyAssignedDevices"
+              @update:model-value="setOnlyAssignedDevices"
             />
           </p>
         </q-card-section>
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       searchDevice: '',
-      onlyAssignedDevices: false
+      onlyAssignedDevices: false,
     }
   },
   mounted() {
@@ -55,7 +55,7 @@ export default {
         'filters/setOnlyAssignedDevices',
         this.onlyAssignedDevices
       )
-    }
-  }
+    },
+  },
 }
 </script>
