@@ -13,7 +13,7 @@
               input-debounce="0"
               :options="options"
               @filter="filterTags"
-              @input="updateTags"
+              @update:model-value="updateTags"
               @clear="resetTags"
             >
               <template #selected-item="scope">
@@ -81,7 +81,7 @@ export default {
     return {
       tags: [],
       options: [],
-      allOptions: []
+      allOptions: [],
     }
   },
   mounted() {
@@ -111,7 +111,7 @@ export default {
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --communicate ${this.tags.join(' ')}`,
         text: this.$gettext('Communicate Tags'),
-        icon: 'mdi-comment-processing'
+        icon: 'mdi-comment-processing',
       })
     },
 
@@ -121,7 +121,7 @@ export default {
       this.$store.dispatch('executions/run', {
         cmd: `migasfree --quiet tags --set ${this.tags.join(' ')}`,
         text: this.$gettext('Set Tags'),
-        icon: 'mdi-cog-transfer'
+        icon: 'mdi-cog-transfer',
       })
     },
 
@@ -139,7 +139,7 @@ export default {
           (v) => v.toLowerCase().indexOf(needle) > -1
         )
       })
-    }
-  }
+    },
+  },
 }
 </script>
