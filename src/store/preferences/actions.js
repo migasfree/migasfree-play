@@ -5,12 +5,13 @@ export async function readPreferences(context) {
     .get(`${internalApi}/preferences`)
     .then((response) => {
       context.commit('setPreferences', response.data)
+      this.$gettext.current = response.data.language
     })
     .catch((error) => {
       if (!error.response) {
         context.commit(
           'app/setStatus',
-          this._vm.$gettext('There is no connection to the server'),
+          this.$gettext.$gettext('There is no connection to the server'),
           { root: true }
         )
         context.commit('app/stopApp', null, { root: true })
@@ -30,7 +31,7 @@ export function savePreferences(context) {
       show_details: context.state.showDetails,
       show_preferences: context.state.showPreferences,
       show_info: context.state.showInfo,
-      show_help: context.state.showHelp
+      show_help: context.state.showHelp,
     })
     .catch((error) => {
       context.dispatch('ui/notifyError', error, { root: true })
