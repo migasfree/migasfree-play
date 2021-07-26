@@ -23,7 +23,7 @@
       {{ $gettext('There are not items to show.') }}
     </q-banner>
 
-    <Login v-model="showLogin" @closed="showLogin = !showLogin" />
+    <Login :value="showLogin" @closed="showLogin = !showLogin" />
   </div>
 </template>
 
@@ -37,12 +37,12 @@ export default {
   components: {
     AppFilter,
     AppDetail,
-    Login
+    Login,
   },
   data() {
     return {
       apps: [],
-      showLogin: false
+      showLogin: false,
     }
   },
   computed: {
@@ -76,12 +76,12 @@ export default {
         )
 
       return results
-    }
+    },
   },
   methods: {
     openLogin() {
       this.showLogin = true
-    }
-  }
+    },
+  },
 }
 </script>
