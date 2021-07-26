@@ -5,14 +5,14 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module' // Allows for the use of imports
+    sourceType: 'module', // Allows for the use of imports
   },
 
   env: {
     browser: true,
-    node: true
+    // node: true,
   },
 
   // Rules order is important, please avoid shuffling them
@@ -29,14 +29,14 @@ module.exports = {
 
     // https://github.com/prettier/eslint-config-prettier#installation
     // usage with Prettier, provided by 'eslint-config-prettier'.
-    'prettier'
+    'prettier',
   ],
 
   plugins: [
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-file
     // required to lint *.vue files
     'vue',
-    'prettier'
+    'prettier',
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/389#issuecomment-509292674
     // Prettier has not been included as plugin to avoid performance impact
@@ -47,9 +47,13 @@ module.exports = {
     ga: 'readonly', // Google Analytics
     cordova: 'readonly',
     __statics: 'readonly',
+    __QUASAR_SSR__: 'readonly',
+    __QUASAR_SSR_SERVER__: 'readonly',
+    __QUASAR_SSR_CLIENT__: 'readonly',
+    __QUASAR_SSR_PWA__: 'readonly',
     process: 'readonly',
     Capacitor: 'readonly',
-    chrome: 'readonly'
+    chrome: 'readonly',
   },
 
   // add your custom rules here
@@ -58,6 +62,6 @@ module.exports = {
     'vue/no-v-html': 0,
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
-  }
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+  },
 }
