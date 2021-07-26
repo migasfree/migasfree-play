@@ -1,4 +1,4 @@
-import { scroll } from 'quasar'
+import { scroll, Notify } from 'quasar'
 
 const { getScrollTarget, setScrollPosition } = scroll
 
@@ -50,28 +50,28 @@ export function notifyError(context, error) {
     message = error
   }
 
-  this._vm.$q.notify({
+  Notify.create({
     color: 'negative',
     position: 'bottom',
     message,
-    icon: 'mdi-alert-circle-outline'
+    icon: 'mdi-alert-circle-outline',
   })
 }
 
 export function notifySuccess(context, message) {
-  this._vm.$q.notify({
+  Notify.create({
     color: 'positive',
     position: 'bottom',
     message,
-    icon: 'mdi-check-bold'
+    icon: 'mdi-check-bold',
   })
 }
 
 export function notifyInfo(context, message) {
-  this._vm.$q.notify({
+  Notify.create({
     color: 'info',
     position: 'bottom',
     message,
-    icon: 'mdi-check-bold'
+    icon: 'mdi-check-bold',
   })
 }
