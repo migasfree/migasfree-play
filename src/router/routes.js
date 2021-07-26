@@ -7,42 +7,42 @@ const routes = [
       {
         path: '/apps',
         name: 'apps',
-        component: () => import('pages/apps/index')
+        component: () => import('pages/apps/index'),
       },
       {
         path: '/devices',
         name: 'devices',
-        component: () => import('pages/devices/index')
+        component: () => import('pages/devices/index'),
       },
       {
         path: '/tags',
         name: 'tags',
-        component: () => import('pages/tags/index')
+        component: () => import('pages/tags/index'),
       },
       {
         path: '/details',
         name: 'details',
-        component: () => import('pages/details/index')
+        component: () => import('pages/details/index'),
       },
       {
         path: '/preferences',
         name: 'preferences',
-        component: () => import('pages/preferences/index')
+        component: () => import('pages/preferences/index'),
       },
       {
         path: '/info',
         name: 'info',
-        component: () => import('pages/info/index')
-      }
-    ]
+        component: () => import('pages/info/index'),
+      },
+    ],
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
-    path: '*',
-    component: () => import('pages/Error404.vue')
-  }
+    path: '/:catchAll(.*)*',
+    component: () => import('pages/Error404.vue'),
+  },
 ]
 
 export default routes
