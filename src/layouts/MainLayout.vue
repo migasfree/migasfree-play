@@ -139,12 +139,10 @@
 <script>
 import { setInterval } from 'timers'
 
-const { remote } = require('electron')
-
 export default {
   name: 'MainLayout',
   meta: {
-    titleTemplate: (title) => `${title} | Migasfree Play`
+    titleTemplate: (title) => `${title} | Migasfree Play`,
   },
   computed: {
     computerText() {
@@ -153,10 +151,11 @@ export default {
       return computer.cid
         ? `${computer.name} (CID-${computer.cid})`
         : computer.name
-    }
+    },
   },
   mounted() {
-    if (remote.process.argv.includes('sync')) {
+    // FIXME process (remote) ???
+    if (process.argv.includes('sync')) {
       this.synchronize()
       setInterval(this.synchronize, 24 * 60 * 60 * 1000)
     }
@@ -174,9 +173,9 @@ export default {
       this.$store.dispatch('executions/run', {
         cmd: 'migasfree sync',
         text: this.$gettext('Synchronization'),
-        icon: 'mdi-sync'
+        icon: 'mdi-sync',
       })
-    }
-  }
+    },
+  },
 }
 </script>
