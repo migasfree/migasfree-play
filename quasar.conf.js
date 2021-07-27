@@ -73,15 +73,11 @@ module.exports = configure(function (ctx) {
       },
 
       extendWebpack(cfg, { isServer, isClient }) {
-        cfg.resolve.fallback = {
-          ...cfg.resolve.fallback,
-          path: require.resolve('path-browserify'),
-        }
-
         cfg.externals = {
           ...cfg.externals,
           os: 'require("os")',
           fs: 'require("fs")',
+          path: 'require("path")',
           child_process: 'require("child_process")',
           timers: 'require("timers")',
           qrcode: 'require("qrcode")',
