@@ -152,11 +152,8 @@ export default {
         })
       )
 
-      if (os.type() === 'Linux') {
-        cmd = 'LANG_ALL=C echo "y" | migasfree install ' + packagesToInstall
-      } else if (os.type() === 'Windows_NT') {
-        cmd = 'migasfree install ' + packagesToInstall
-      }
+      cmd = `migasfree install ${packagesToInstall}`
+      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
       this.$store.dispatch('executions/run', {
         cmd,
@@ -178,11 +175,8 @@ export default {
         })
       )
 
-      if (os.type() === 'Linux') {
-        cmd = 'LANG_ALL=C echo "y" | migasfree purge ' + packagesToRemove
-      } else if (os.type() === 'Windows_NT') {
-        cmd = 'migasfree purge ' + packagesToRemove
-      }
+      cmd = `migasfree purge ${packagesToRemove}`
+      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
       this.$store.dispatch('executions/run', {
         cmd,
