@@ -79,37 +79,38 @@ export default {
   props: {
     value: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
+  emits: ['closed'],
   data() {
     return {
       username: '',
       password: '',
       showPassword: false,
-      showing: this.value
+      showing: this.value,
     }
   },
   computed: {
     isValid() {
       return this.username !== '' && this.password !== ''
-    }
+    },
   },
   watch: {
     value(newVal) {
       this.showing = newVal
-    }
+    },
   },
   methods: {
     login() {
       if (this.username && this.password) {
         this.$store.dispatch('app/checkUser', {
           user: this.username,
-          password: this.password
+          password: this.password,
         })
         this.$emit('closed')
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -86,6 +86,7 @@ export default {
     level: { type: String, required: false, default: 'U' },
     packages: { type: Array, required: false, default: () => [] },
   },
+  emits: ['openlogin'],
   computed: {
     rating() {
       return this.score
