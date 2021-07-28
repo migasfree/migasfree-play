@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { watch } from 'vue'
 import { date } from 'quasar'
 
 export default {
@@ -33,17 +34,21 @@ export default {
     id: { type: String, required: true },
     command: { type: String, required: true },
     text: { type: String, required: false, default: '' },
-    icon: { type: String, required: false, default: '' }
+    icon: { type: String, required: false, default: '' },
   },
-  watch: {
-    text: function() {
-      window.scrollTo(0, document.getElementById('main').scrollHeight)
-    }
-  },
-  methods: {
-    showDate(isoString, format = '') {
+  setup(props) {
+    watch(
+      () => props.text,
+      () => {
+        window.scrollTo(0, document.getElementById('main').scrollHeight)
+      }
+    )
+
+    const showDate = (isoString) => {
       return date.formatDate(Date.parse(isoString), 'YYYY-MM-DD HH:mm:ss')
     }
-  }
+
+    return { showDate }
+  },
 }
 </script>
