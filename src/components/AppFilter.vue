@@ -46,41 +46,52 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   name: 'AppFilter',
-  data() {
-    return {
-      category: null,
-      searchApp: '',
-      onlyInstalledApps: false,
+  setup() {
+    const store = useStore()
+
+    const category = ref(null)
+    const searchApp = ref('')
+    const onlyInstalledApps = ref(false)
+
+    const selectedCategory = computed(
+      () => store.getters['filters/selectedCategory']
+    )
+
+    const categories = computed(() => store.getters['filters/getCategories'])
+
+    const setCategory = () => {
+      store.commit('filters/setSelectedCategory', category.value)
     }
-  },
-  computed: {
-    selectedCategory() {
-      return this.$store.getters['filters/selectedCategory']
-    },
 
-    categories() {
-      return this.$store.getters['filters/getCategories']
-    },
-  },
-  mounted() {
-    this.category = this.$store.getters['filters/selectedCategory']
-    this.searchApp = this.$store.getters['filters/searchApp']
-    this.onlyInstalledApps = this.$store.getters['filters/onlyInstalledApps']
-  },
-  methods: {
-    setCategory() {
-      this.$store.commit('filters/setSelectedCategory', this.category)
-    },
+    const setSearchApp = () => {
+      store.commit('filters/setSearchApp', searchApp.value)
+    }
 
-    setSearchApp() {
-      this.$store.commit('filters/setSearchApp', this.searchApp)
-    },
+    const setOnlyInstalledApps = () => {
+      store.commit('filters/setOnlyInstalledApps', onlyInstalledApps.value)
+    }
 
-    setOnlyInstalledApps() {
-      this.$store.commit('filters/setOnlyInstalledApps', this.onlyInstalledApps)
-    },
+    onMounted(() => {
+      category.value = store.getters['filters/selectedCategory']
+      searchApp.value = store.getters['filters/searchApp']
+      onlyInstalledApps.value = store.getters['filters/onlyInstalledApps']
+    })
+
+    return {
+      category,
+      searchApp,
+      onlyInstalledApps,
+      selectedCategory,
+      categories,
+      setCategory,
+      setSearchApp,
+      setOnlyInstalledApps,
+    }
   },
 }
 </script>
