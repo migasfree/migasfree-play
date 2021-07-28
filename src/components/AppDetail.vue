@@ -91,7 +91,7 @@ export default {
     packages: { type: Array, required: false, default: () => [] },
   },
   emits: ['openlogin'],
-  setup(props, context) {
+  setup(props) {
     const store = useStore()
     const { $gettext, interpolate } = useGettext()
 
