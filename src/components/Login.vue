@@ -74,6 +74,9 @@
 </template>
 
 <script>
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   name: 'Login',
   props: {
@@ -83,34 +86,43 @@ export default {
     },
   },
   emits: ['closed'],
-  data() {
-    return {
-      username: '',
-      password: '',
-      showPassword: false,
-      showing: this.value,
-    }
-  },
-  computed: {
-    isValid() {
-      return this.username !== '' && this.password !== ''
-    },
-  },
-  watch: {
-    value(newVal) {
-      this.showing = newVal
-    },
-  },
-  methods: {
-    login() {
-      if (this.username && this.password) {
-        this.$store.dispatch('app/checkUser', {
-          user: this.username,
-          password: this.password,
+  setup(props, { emit }) {
+    const store = useStore()
+
+    const username = ref('')
+    const password = ref('')
+    const showPassword = ref(false)
+    const showing = ref(props.value)
+
+    const isValid = computed(
+      () => username.value !== '' && password.value !== ''
+    )
+
+    const login = () => {
+      if (username.value && password.value) {
+        store.dispatch('app/checkUser', {
+          user: username.value,
+          password: password.value,
         })
-        this.$emit('closed')
+        emit('closed')
       }
-    },
+    }
+
+    watch(
+      () => props.value,
+      (newVal) => {
+        showing.value = newVal
+      }
+    )
+
+    return {
+      username,
+      password,
+      showPassword,
+      showing,
+      isValid,
+      login,
+    }
   },
 }
 </script>
