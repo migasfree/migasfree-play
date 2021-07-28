@@ -1,33 +1,34 @@
 <template>
-  <div>
-    <AppFilter />
+  <AppFilter />
 
-    <div v-if="appsByFilter.length > 0" class="row">
-      <AppDetail
-        v-for="item in appsByFilter"
-        :key="item.id"
-        :icon="item.icon"
-        :name="item.name"
-        :category="item.category.name"
-        :score="item.score"
-        :description="item.description"
-        :packages="item.packages_to_install"
-        :level="item.level.id"
-        @openlogin="openLogin"
-      />
-    </div>
-    <q-banner v-else class="bg-info text-black q-ma-md">
-      <template #avatar>
-        <q-icon name="mdi-information-outline" color="white" />
-      </template>
-      {{ $gettext('There are not items to show.') }}
-    </q-banner>
-
-    <Login :value="showLogin" @closed="showLogin = !showLogin" />
+  <div v-if="appsByFilter.length > 0" class="row">
+    <AppDetail
+      v-for="item in appsByFilter"
+      :key="item.id"
+      :icon="item.icon"
+      :name="item.name"
+      :category="item.category.name"
+      :score="item.score"
+      :description="item.description"
+      :packages="item.packages_to_install"
+      :level="item.level.id"
+      @openlogin="openLogin"
+    />
   </div>
+  <q-banner v-else class="bg-info text-black q-ma-md">
+    <template #avatar>
+      <q-icon name="mdi-information-outline" color="white" />
+    </template>
+    {{ $gettext('There are not items to show.') }}
+  </q-banner>
+
+  <Login :value="showLogin" @closed="showLogin = !showLogin" />
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+
 import AppFilter from 'components/AppFilter.vue'
 import AppDetail from 'components/AppDetail.vue'
 import Login from 'components/Login'
@@ -39,25 +40,27 @@ export default {
     AppDetail,
     Login,
   },
-  data() {
-    return {
-      apps: [],
-      showLogin: false,
-    }
-  },
-  computed: {
-    appsByFilter() {
-      let results = this.$store.getters['app/getApps']
+  setup() {
+    const store = useStore()
 
-      const selectedCategory = this.$store.getters['filters/selectedCategory']
+    const apps = ref([])
+    const showLogin = ref(false)
+
+    const installedPackages = computed(() =>
+      JSON.parse(JSON.stringify(store.state.packages.installed))
+    )
+
+    const appsByFilter = computed(() => {
+      let results = store.getters['app/getApps']
+
+      const selectedCategory = store.getters['filters/selectedCategory']
       if (selectedCategory && selectedCategory.id > 0)
         results = results.filter(
           (app) =>
-            app.category.id ==
-            this.$store.getters['filters/selectedCategory'].id
+            app.category.id == store.getters['filters/selectedCategory'].id
         )
-      if (this.$store.getters['filters/searchApp']) {
-        const pattern = this.$store.getters['filters/searchApp'].toLowerCase()
+      if (store.getters['filters/searchApp']) {
+        const pattern = store.getters['filters/searchApp'].toLowerCase()
 
         results = results.filter(
           (app) =>
@@ -66,22 +69,23 @@ export default {
         )
       }
 
-      if (this.$store.getters['filters/onlyInstalledApps'])
+      if (store.getters['filters/onlyInstalledApps'])
         results = results.filter(
           (app) =>
             app.packages_to_install.length > 0 &&
             app.packages_to_install.filter(
-              (x) => !this.$store.state.packages.installed.includes(x)
+              (x) => !installedPackages.value.includes(x)
             ).length === 0
         )
 
       return results
-    },
-  },
-  methods: {
-    openLogin() {
-      this.showLogin = true
-    },
+    })
+
+    const openLogin = () => {
+      showLogin.value = true
+    }
+
+    return { apps, showLogin, appsByFilter, openLogin }
   },
 }
 </script>
