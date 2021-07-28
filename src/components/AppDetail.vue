@@ -73,6 +73,10 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useGettext } from '@jshmrtn/vue3-gettext'
+
 const os = require('os')
 
 export default {
@@ -87,110 +91,122 @@ export default {
     packages: { type: Array, required: false, default: () => [] },
   },
   emits: ['openlogin'],
-  computed: {
-    rating() {
-      return this.score
-    },
+  setup(props, context) {
+    const store = useStore()
+    const { $gettext, interpolate } = useGettext()
 
-    truncatedDescription() {
-      return this.description.split('\n')[0]
-    },
+    const rating = computed(() => props.score)
 
-    moreInfo() {
-      let items = this.description.split('\n')
+    const truncatedDescription = computed(
+      () => props.description.split('\n')[0]
+    )
+
+    const moreInfo = computed(() => {
+      let items = props.description.split('\n')
       items.shift()
       return items.join('\n')
-    },
+    })
 
-    isInstalled() {
-      return (
-        this.packages.length > 0 &&
-        this.packages.filter(
-          (x) => !this.$store.state.packages.installed.includes(x)
-        ).length === 0
-      )
-    },
+    const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
+    const installedPackages = computed(() =>
+      JSON.parse(JSON.stringify(store.state.packages.installed))
+    )
+    const availablePackages = computed(() =>
+      JSON.parse(JSON.stringify(store.state.packages.available))
+    )
 
-    isAvailable() {
-      return this.packages.filter(
-        (x) => !this.$store.state.packages.available.includes(x)
-      )
-    },
+    const isInstalled = computed(
+      () =>
+        packages.value.length > 0 &&
+        packages.value.filter((x) => !installedPackages.value.includes(x))
+          .length === 0
+    )
 
-    isInstallable() {
-      return (
-        (this.level === 'U' || this.$store.getters['app/userIsPrivileged']) &&
-        this.isAvailable &&
-        !this.isInstalled &&
-        this.packages.length > 0
-      )
-    },
+    const isAvailable = computed(() =>
+      packages.value.filter((x) => !availablePackages.value.includes(x))
+    )
 
-    isRemovable() {
-      return (
-        this.isInstalled &&
-        (this.level === 'U' || this.$store.getters['app/userIsPrivileged'])
-      )
-    },
+    const isInstallable = computed(
+      () =>
+        (props.level === 'U' || store.getters['app/userIsPrivileged']) &&
+        isAvailable.value &&
+        !isInstalled.value &&
+        packages.value.length > 0
+    )
 
-    isPrivileged() {
-      return (
-        this.isAvailable &&
-        this.level === 'A' &&
-        !this.$store.getters['app/userIsPrivileged']
-      )
-    },
-  },
-  methods: {
-    installApp(name, packages) {
+    const isRemovable = computed(
+      () =>
+        isInstalled.value &&
+        (props.level === 'U' || store.getters['app/userIsPrivileged'])
+    )
+
+    const isPrivileged = computed(
+      () =>
+        isAvailable.value &&
+        props.level === 'A' &&
+        !store.getters['app/userIsPrivileged']
+    )
+
+    const installApp = (name, packages) => {
       const packagesToInstall = packages.join(' ')
-      let cmd
+      let cmd = `migasfree install ${packagesToInstall}`
 
-      this.$store.dispatch(
+      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+
+      store.dispatch(
         'ui/notifyInfo',
-        this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
+        interpolate($gettext('Installing %{name}'), {
           name,
         })
       )
 
-      cmd = `migasfree install ${packagesToInstall}`
-      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
-
-      this.$store.dispatch('executions/run', {
+      store.dispatch('executions/run', {
         cmd,
-        text: this.$gettextInterpolate(this.$gettext('Installing %{name}'), {
+        text: interpolate($gettext('Installing %{name}'), {
           name,
         }),
         icon: 'mdi-download',
       })
-    },
+    }
 
-    removeApp(name, packages) {
+    const removeApp = (name, packages) => {
       const packagesToRemove = packages.join(' ')
-      let cmd
+      let cmd = `migasfree purge ${packagesToRemove}`
+      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      this.$store.dispatch(
+      store.dispatch(
         'ui/notifyInfo',
-        this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
+        interpolate($gettext('Uninstalling %{name}'), {
           name,
         })
       )
 
-      cmd = `migasfree purge ${packagesToRemove}`
-      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
-
-      this.$store.dispatch('executions/run', {
+      store.dispatch('executions/run', {
         cmd,
-        text: this.$gettextInterpolate(this.$gettext('Uninstalling %{name}'), {
+        text: interpolate($gettext('Uninstalling %{name}'), {
           name,
         }),
         icon: 'mdi-delete',
       })
-    },
+    }
 
-    defaultIcon(event) {
+    const defaultIcon = (event) => {
       event.target.src = 'img/migasfree-play.svg'
-    },
+    }
+
+    return {
+      rating,
+      truncatedDescription,
+      moreInfo,
+      isInstalled,
+      isAvailable,
+      isInstallable,
+      isRemovable,
+      isPrivileged,
+      installApp,
+      removeApp,
+      defaultIcon,
+    }
   },
 }
 </script>
