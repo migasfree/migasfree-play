@@ -62,6 +62,9 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   name: 'DeviceDetail',
   props: {
@@ -71,67 +74,79 @@ export default {
     connection: { type: String, required: true },
     description: { type: String, required: false, default: '' },
     ip: { type: String, required: false, default: '' },
-    logical: { type: Array, required: false, default: () => [] }
+    logical: { type: Array, required: false, default: () => [] },
   },
-  computed: {
-    tooltip() {
-      if (this.ip) return `${this.connection} (${this.ip})`
-      else return this.connection
-    },
+  setup(props) {
+    const store = useStore()
 
-    visibleLogicalDevices() {
-      if (!this.$store.state.filters.onlyAssignedDevices) return this.logical
+    const tooltip = computed(() => {
+      if (props.ip) return `${props.connection} (${props.ip})`
+      else return props.connection
+    })
+
+    const logical = computed(() => JSON.parse(JSON.stringify(props.logical)))
+
+    const visibleLogicalDevices = computed(() => {
+      if (!store.state.filters.onlyAssignedDevices) return logical.value
       else
-        return this.logical.filter((item) => {
-          return this.isAssigned(item.id)
+        return logical.value.filter((item) => {
+          return isAssigned(item.id)
         })
-    }
-  },
-  methods: {
-    capabilityName(item) {
-      return item.alternative_capability_name || item.capability.name
-    },
+    })
 
-    isAssigned(id) {
+    const capabilityName = (item) => {
+      return item.alternative_capability_name || item.capability.name
+    }
+
+    const isAssigned = (id) => {
       return (
-        this.$store.state.devices.assigned.find((item) => {
+        store.state.devices.assigned.find((item) => {
           return item.id === id
         }) ||
-        this.$store.state.devices.inflicted.find((item) => {
+        store.state.devices.inflicted.find((item) => {
           return item.id === id
         })
       )
-    },
+    }
 
-    installDevice(item) {
+    const installDevice = (item) => {
       let attributes = item.attributes.slice() // copy value (not reference)
 
-      if (!attributes.includes(this.$store.state.computer.attribute)) {
-        attributes.push(this.$store.state.computer.attribute)
+      if (!attributes.includes(store.state.computer.attribute)) {
+        attributes.push(store.state.computer.attribute)
       }
-      this.$store.dispatch('devices/changeDeviceAttributes', {
+      store.dispatch('devices/changeDeviceAttributes', {
         id: item.id,
-        attributes
+        attributes,
       })
-      this.$store.commit('devices/addAssignedDevice', {
+      store.commit('devices/addAssignedDevice', {
         id: item.id,
         device: item.device,
-        capability: item.capability
+        capability: item.capability,
       })
-    },
+    }
 
-    removeDevice(item) {
+    const removeDevice = (item) => {
       let attributes = item.attributes
 
-      attributes = attributes.filter((x) => {
-        return x !== this.$store.state.computer.attribute
-      })
-      this.$store.dispatch('devices/changeDeviceAttributes', {
+      attributes = attributes.filter(
+        (x) => x !== store.state.computer.attribute
+      )
+      store.dispatch('devices/changeDeviceAttributes', {
         id: item.id,
-        attributes
+        attributes,
       })
-      this.$store.commit('devices/removeAssignedDevice', item.id)
+      store.commit('devices/removeAssignedDevice', item.id)
     }
-  }
+
+    return {
+      tooltip,
+      visibleLogicalDevices,
+      capabilityName,
+      isAssigned,
+      installDevice,
+      removeDevice,
+    }
+  },
 }
 </script>
