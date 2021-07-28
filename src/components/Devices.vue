@@ -1,30 +1,31 @@
 <template>
-  <div>
-    <DeviceFilter />
+  <DeviceFilter />
 
-    <div v-if="devicesByFilter.length > 0" class="row">
-      <DeviceDetail
-        v-for="item in devicesByFilter"
-        :id="item.name"
-        :key="item.id"
-        :icon="icon(item.connection.name)"
-        :name="name(item)"
-        :connection="item.connection.name"
-        :description="description(item.data)"
-        :ip="ipAddress(item.data)"
-        :logical="item.logical"
-      />
-    </div>
-    <q-banner v-else class="bg-info text-black q-ma-md">
-      <template #avatar>
-        <q-icon name="mdi-information-outline" color="white" />
-      </template>
-      {{ $gettext('There are not items to show.') }}
-    </q-banner>
+  <div v-if="devicesByFilter.length > 0" class="row">
+    <DeviceDetail
+      v-for="item in devicesByFilter"
+      :id="item.name"
+      :key="item.id"
+      :icon="icon(item.connection.name)"
+      :name="name(item)"
+      :connection="item.connection.name"
+      :description="description(item.data)"
+      :ip="ipAddress(item.data)"
+      :logical="item.logical"
+    />
   </div>
+  <q-banner v-else class="bg-info text-black q-ma-md">
+    <template #avatar>
+      <q-icon name="mdi-information-outline" color="white" />
+    </template>
+    {{ $gettext('There are not items to show.') }}
+  </q-banner>
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+
 import DeviceFilter from 'components/DeviceFilter.vue'
 import DeviceDetail from 'components/DeviceDetail.vue'
 
@@ -32,19 +33,18 @@ export default {
   name: 'Devices',
   components: {
     DeviceFilter,
-    DeviceDetail
+    DeviceDetail,
   },
-  data() {
-    return {
-      devices: []
-    }
-  },
-  computed: {
-    devicesByFilter() {
-      let results = this.devices
+  setup() {
+    const store = useStore()
 
-      if (this.$store.state.filters.searchDevice) {
-        const pattern = this.$store.state.filters.searchDevice.toLowerCase()
+    const devices = ref([])
+
+    const devicesByFilter = computed(() => {
+      let results = devices.value
+
+      if (store.state.filters.searchDevice) {
+        const pattern = store.state.filters.searchDevice.toLowerCase()
 
         results = results.filter(
           (device) =>
@@ -55,41 +55,43 @@ export default {
         )
       }
 
-      if (this.$store.state.filters.onlyAssignedDevices)
+      if (store.state.filters.onlyAssignedDevices)
         results = results.filter((device) => {
           return (
-            this.$store.state.devices.assigned.filter((x) => {
+            store.state.devices.assigned.filter((x) => {
               return x.device.id === device.id
             }).length !== 0
           )
         })
 
       return results
-    }
-  },
-  mounted() {
-    this.devices = this.$store.getters['devices/getAvailableDevices']
-  },
-  methods: {
-    name(item) {
+    })
+
+    const name = (item) => {
       return 'NAME' in item.data && item.data.NAME
         ? item.data.NAME
         : `${item.model.manufacturer.name} ${item.model.name}`
-    },
+    }
 
-    icon(connection) {
+    const icon = (connection) => {
       return connection === 'TCP'
         ? 'img/printer-net.png'
         : 'img/printer-local.png'
-    },
+    }
 
-    ipAddress(value) {
+    const ipAddress = (value) => {
       return value.IP || ''
-    },
+    }
 
-    description(value) {
+    const description = (value) => {
       return value.LOCATION || ''
     }
-  }
+
+    onMounted(() => {
+      devices.value = store.getters['devices/getAvailableDevices']
+    })
+
+    return { devices, devicesByFilter, name, icon, ipAddress, description }
+  },
 }
 </script>
