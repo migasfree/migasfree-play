@@ -34,19 +34,23 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useGettext } from '@jshmrtn/vue3-gettext'
+
 export default {
   name: 'Preferences',
-  data() {
-    return {
-      language: null,
-      showSyncDetails: false,
-    }
-  },
-  computed: {
-    availableLocales() {
+  setup() {
+    const store = useStore()
+    const i18n = useGettext()
+
+    const language = ref(null)
+    const showSyncDetails = ref(false)
+
+    const availableLocales = computed(() => {
       let items = []
 
-      Object.entries(this.$language.available).map(([key, val]) => {
+      Object.entries(i18n.available).map(([key, val]) => {
         items.push({
           id: key,
           name: val,
@@ -54,24 +58,33 @@ export default {
       })
 
       return items
-    },
-  },
-  mounted() {
-    this.language = this.availableLocales.find(
-      (x) => x.id === this.$store.state.preferences.language
-    )
-    this.showSyncDetails = this.$store.state.preferences.showSyncDetails
-  },
-  methods: {
-    setLanguage() {
-      this.$store.commit('preferences/setLanguage', this.language.id)
-      this.$store.dispatch('preferences/savePreferences')
-      this.$language.current = this.language.id
-    },
-    setShowSyncDetails() {
-      this.$store.commit('preferences/setShowSyncDetails', this.showSyncDetails)
-      this.$store.dispatch('preferences/savePreferences')
-    },
+    })
+
+    const setLanguage = () => {
+      store.commit('preferences/setLanguage', language.value.id)
+      store.dispatch('preferences/savePreferences')
+      i18n.current = language.value.id
+    }
+
+    const setShowSyncDetails = () => {
+      store.commit('preferences/setShowSyncDetails', showSyncDetails.value)
+      store.dispatch('preferences/savePreferences')
+    }
+
+    onMounted(() => {
+      language.value = availableLocales.value.find(
+        (x) => x.id === store.state.preferences.language
+      )
+      showSyncDetails.value = store.state.preferences.showSyncDetails
+    })
+
+    return {
+      language,
+      showSyncDetails,
+      availableLocales,
+      setLanguage,
+      setShowSyncDetails,
+    }
   },
 }
 </script>
