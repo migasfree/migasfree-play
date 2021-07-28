@@ -33,29 +33,36 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   name: 'DeviceFilter',
-  data() {
-    return {
-      searchDevice: '',
-      onlyAssignedDevices: false,
-    }
-  },
-  mounted() {
-    this.searchDevice = this.$store.state.filters.searchDevice
-    this.onlyAssignedDevices = this.$store.state.filters.onlyAssignedDevices
-  },
-  methods: {
-    setSearchDevice() {
-      this.$store.commit('filters/setSearchDevice', this.searchDevice)
-    },
+  setup() {
+    const store = useStore()
 
-    setOnlyAssignedDevices() {
-      this.$store.commit(
-        'filters/setOnlyAssignedDevices',
-        this.onlyAssignedDevices
-      )
-    },
+    const searchDevice = ref('')
+    const onlyAssignedDevices = ref(false)
+
+    const setSearchDevice = () => {
+      store.commit('filters/setSearchDevice', searchDevice.value)
+    }
+
+    const setOnlyAssignedDevices = () => {
+      store.commit('filters/setOnlyAssignedDevices', onlyAssignedDevices.value)
+    }
+
+    onMounted(() => {
+      searchDevice.value = store.state.filters.searchDevice
+      onlyAssignedDevices.value = store.state.filters.onlyAssignedDevices
+    })
+
+    return {
+      searchDevice,
+      onlyAssignedDevices,
+      setSearchDevice,
+      setOnlyAssignedDevices,
+    }
   },
 }
 </script>
