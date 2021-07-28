@@ -75,71 +75,87 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useGettext } from '@jshmrtn/vue3-gettext'
+
 export default {
   name: 'Tags',
-  data() {
-    return {
-      tags: [],
-      options: [],
-      allOptions: [],
+  setup() {
+    const store = useStore()
+    const { $gettext } = useGettext()
+
+    const tags = ref([])
+    const options = ref([])
+    const allOptions = ref([])
+
+    const resetTags = () => {
+      tags.value = []
     }
-  },
-  mounted() {
-    const options = new Set(this.$store.state.tags.assigned)
 
-    Object.entries(this.$store.state.tags.available).map(([key, val]) => {
-      val.forEach((element) => options.add(element))
-    })
+    const updateTags = () => {
+      store.commit('tags/setAssignedTags', tags.value)
+    }
 
-    this.allOptions = Array.from(options).sort()
-    this.options = this.allOptions
+    const communicate = () => {
+      store.dispatch('ui/notifyInfo', $gettext('Communicating...'))
 
-    this.tags = this.$store.state.tags.assigned
-  },
-  methods: {
-    resetTags() {
-      this.tags = []
-    },
-
-    updateTags() {
-      this.$store.commit('tags/setAssignedTags', this.tags)
-    },
-
-    communicate() {
-      this.$store.dispatch('ui/notifyInfo', this.$gettext('Communicating...'))
-
-      this.$store.dispatch('executions/run', {
-        cmd: `migasfree --quiet tags --communicate ${this.tags.join(' ')}`,
-        text: this.$gettext('Communicate Tags'),
+      store.dispatch('executions/run', {
+        cmd: `migasfree --quiet tags --communicate ${tags.value.join(' ')}`,
+        text: $gettext('Communicate Tags'),
         icon: 'mdi-comment-processing',
       })
-    },
+    }
 
-    setTags() {
-      this.$store.dispatch('ui/notifyInfo', this.$gettext('Setting Tags...'))
+    const setTags = () => {
+      store.dispatch('ui/notifyInfo', $gettext('Setting Tags...'))
 
-      this.$store.dispatch('executions/run', {
-        cmd: `migasfree --quiet tags --set ${this.tags.join(' ')}`,
-        text: this.$gettext('Set Tags'),
+      store.dispatch('executions/run', {
+        cmd: `migasfree --quiet tags --set ${tags.value.join(' ')}`,
+        text: $gettext('Set Tags'),
         icon: 'mdi-cog-transfer',
       })
-    },
+    }
 
-    filterTags(val, update) {
+    const filterTags = (val, update) => {
       if (val === '') {
         update(() => {
-          this.options = this.allOptions
+          options.value = allOptions.value
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.options = this.allOptions.filter(
+        options.value = allOptions.value.filter(
           (v) => v.toLowerCase().indexOf(needle) > -1
         )
       })
-    },
+    }
+
+    onMounted(() => {
+      const optionsTmp = new Set(store.state.tags.assigned)
+
+      Object.entries(store.state.tags.available).map(([key, val]) => {
+        val.forEach((element) => optionsTmp.add(element))
+      })
+
+      allOptions.value = Array.from(optionsTmp).sort()
+      options.value = allOptions.value
+
+      tags.value = store.state.tags.assigned
+    })
+
+    return {
+      tags,
+      options,
+      allOptions,
+      resetTags,
+      updateTags,
+      communicate,
+      setTags,
+      filterTags,
+    }
   },
 }
 </script>
