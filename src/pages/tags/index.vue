@@ -26,24 +26,30 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+
 import Tags from 'components/Tags'
 
 export default {
   meta() {
     return {
-      title: this.$gettext('Tags')
+      title: this.$gettext('Tags'),
     }
   },
   components: {
-    Tags
+    Tags,
   },
-  methods: {
-    async updateTags() {
-      this.$store.commit('ui/updating')
-      await this.$store.dispatch('tags/getAvailableTags')
-      await this.$store.dispatch('tags/getAssignedTags')
-      this.$store.commit('ui/updatingFinished')
+  setup() {
+    const store = useStore()
+
+    const updateTags = async () => {
+      store.commit('ui/updating')
+      await store.dispatch('tags/getAvailableTags')
+      await store.dispatch('tags/getAssignedTags')
+      store.commit('ui/updatingFinished')
     }
-  }
+
+    return { updateTags }
+  },
 }
 </script>
