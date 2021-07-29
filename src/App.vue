@@ -2,7 +2,13 @@
   <div id="q-app">
     <div
       v-if="$store.state.ui.isLoading"
-      class="row window-height window-width justify-center items-center content-center"
+      class="
+        row
+        window-height window-width
+        justify-center
+        items-center
+        content-center
+      "
     >
       <div class="col-12 text-center q-ma-md">
         <img id="logo" src="img/migasfree-play.svg" width="200" />
@@ -32,10 +38,14 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+
 export default {
   name: 'App',
-  async created() {
-    await this.$store.dispatch('app/init')
-  }
+  setup() {
+    const store = useStore()
+
+    store.dispatch('app/init')
+  },
 }
 </script>
