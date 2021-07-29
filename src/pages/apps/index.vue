@@ -26,24 +26,30 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+
 import Apps from 'components/Apps.vue'
 
 export default {
   meta() {
     return {
-      title: this.$gettext('Apps')
+      title: this.$gettext('Apps'),
     }
   },
   components: {
-    Apps
+    Apps,
   },
-  methods: {
-    async updateApps() {
-      this.$store.commit('ui/updating')
-      await this.$store.dispatch('app/getApps')
-      await this.$store.dispatch('filters/setCategories')
-      this.$store.commit('ui/updatingFinished')
+  setup() {
+    const store = useStore()
+
+    const updateApps = async () => {
+      store.commit('ui/updating')
+      await store.dispatch('app/getApps')
+      await store.dispatch('filters/setCategories')
+      store.commit('ui/updatingFinished')
     }
-  }
+
+    return { updateApps }
+  },
 }
 </script>
