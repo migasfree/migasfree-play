@@ -137,6 +137,10 @@
 </template>
 
 <script>
+import { computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { useGettext } from '@jshmrtn/vue3-gettext'
 import { setInterval } from 'timers'
 
 export default {
@@ -144,38 +148,43 @@ export default {
   meta: {
     titleTemplate: (title) => `${title} | Migasfree Play`,
   },
-  computed: {
-    computerText() {
-      const computer = this.$store.getters['computer/getComputer']
+  setup() {
+    const store = useStore()
+    const router = useRouter()
+    const { $gettext } = useGettext()
+
+    const computerText = computed(() => {
+      const computer = store.getters['computer/getComputer']
 
       return computer.cid
         ? `${computer.name} (CID-${computer.cid})`
         : computer.name
-    },
-  },
-  mounted() {
-    // FIXME process (remote) ???
-    if (process.argv.includes('sync')) {
-      this.synchronize()
-      setInterval(this.synchronize, 24 * 60 * 60 * 1000)
-    }
-  },
-  methods: {
-    synchronize() {
-      this.$store.dispatch('ui/notifyInfo', this.$gettext('Synchronizing...'))
+    })
+
+    const synchronize = () => {
+      store.dispatch('ui/notifyInfo', $gettext('Synchronizing...'))
 
       if (
-        this.$store.state.preferences.showSyncDetails &&
-        this.$router.currentRoute.name !== 'details'
+        store.state.preferences.showSyncDetails &&
+        router.currentRoute.name !== 'details'
       )
-        this.$router.push({ name: 'details' })
+        router.push({ name: 'details' })
 
-      this.$store.dispatch('executions/run', {
+      store.dispatch('executions/run', {
         cmd: 'migasfree sync',
-        text: this.$gettext('Synchronization'),
+        text: $gettext('Synchronization'),
         icon: 'mdi-sync',
       })
-    },
+    }
+
+    onMounted(() => {
+      if (process.argv.includes('sync')) {
+        synchronize()
+        setInterval(synchronize, 24 * 60 * 60 * 1000)
+      }
+    })
+
+    return { computerText, synchronize }
   },
 }
 </script>
