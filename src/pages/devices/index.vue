@@ -26,25 +26,31 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+
 import Devices from 'components/Devices.vue'
 
 export default {
   meta() {
     return {
-      title: this.$gettext('Devices')
+      title: this.$gettext('Devices'),
     }
   },
   components: {
-    Devices
+    Devices,
   },
-  methods: {
-    async updateDevices() {
-      this.$store.commit('ui/updating')
-      await this.$store.dispatch('devices/computerDevices')
-      await this.$store.dispatch('devices/getAvailableDevices')
-      await this.$store.dispatch('devices/getFeaturesDevices')
-      this.$store.commit('ui/updatingFinished')
+  setup() {
+    const store = useStore()
+
+    const updateDevices = async () => {
+      store.commit('ui/updating')
+      await store.dispatch('devices/computerDevices')
+      await store.dispatch('devices/getAvailableDevices')
+      await store.dispatch('devices/getFeaturesDevices')
+      store.commit('ui/updatingFinished')
     }
-  }
+
+    return { updateDevices }
+  },
 }
 </script>
