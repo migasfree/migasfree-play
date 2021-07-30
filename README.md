@@ -51,7 +51,7 @@ debuild --no-tgz-check -us -uc
 ```bash
 yarn build
 cd packaging/rpm
-create-package
+./create-package
 ```
 
 ### Execute app in production
