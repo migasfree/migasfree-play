@@ -12,17 +12,20 @@ function replaceAll(str, find, replace) {
 }
 
 function replaceColors(txt) {
+  txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
+  txt = txt.replace(/⠼|⠹|⠴|⠸|⠙|⠋|⠦|⠇|⠧|⠏/g, '')
   txt = replaceAll(txt, '\x1b[92m', "<span class='text-green'>") // ok
+  txt = replaceAll(txt, '\x1b[1;32m', "<span class='text-green'>") // ok
+  txt = replaceAll(txt, '\x1b[1;92m', "<span class='text-light-green'>") // ok
   txt = replaceAll(txt, '\x1b[93m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[91m', "<span class='text-negative'>") // error
   txt = replaceAll(txt, '\x1b[33m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[32m', "<span class='text-blue'>") // info
+  txt = replaceAll(txt, '\x1b[1;34m', "<span class='text-blue'>") // info
   txt = replaceAll(txt, '\x1b[2;36m', "<span class='text-teal'>") // time
   txt = replaceAll(txt, '\x1b[0m', '</span>')
   txt = replaceAll(txt, '\x1b[2K', '')
   txt = replaceAll(txt, '\x1b[1A', '')
-  // txt = txt.replace(/⠼|⠹|⠴|⠸|⠙|⠋|⠦|⠇|⠧|⠏/g, '')
-  txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
   txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
   return txt
