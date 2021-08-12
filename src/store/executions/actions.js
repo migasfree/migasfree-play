@@ -13,10 +13,16 @@ function replaceAll(str, find, replace) {
 
 function replaceColors(txt) {
   txt = replaceAll(txt, '\x1b[92m', "<span class='text-green'>") // ok
-  txt = replaceAll(txt, '\x1b[93m', "<span class='text-yellow'>") // warning
+  txt = replaceAll(txt, '\x1b[93m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[91m', "<span class='text-negative'>") // error
+  txt = replaceAll(txt, '\x1b[33m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[32m', "<span class='text-blue'>") // info
+  txt = replaceAll(txt, '\x1b[2;36m', "<span class='text-teal'>") // time
   txt = replaceAll(txt, '\x1b[0m', '</span>')
+  txt = replaceAll(txt, '\x1b[2K', '')
+  txt = replaceAll(txt, '\x1b[1A', '')
+  // txt = txt.replace(/⠼|⠹|⠴|⠸|⠙|⠋|⠦|⠇|⠧|⠏/g, '')
+  txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
   txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
   return txt
@@ -54,12 +60,12 @@ export function run(context, { cmd, text, icon }) {
 
   const os = require('os')
   const spawn = require('child_process').spawn
-  let process
+  let subprocess
 
   if (os.type() === 'Linux') {
-    process = spawn('bash', ['-c', cmd])
+    subprocess = spawn('bash', ['-c', cmd])
   } else if (os.type() === 'Windows_NT') {
-    process = spawn('cmd', ['/C', cmd])
+    subprocess = spawn('cmd', ['/C', cmd])
   }
 
   context.commit(
@@ -68,7 +74,7 @@ export function run(context, { cmd, text, icon }) {
     { root: true }
   )
 
-  process.stdout.on('data', (data) => {
+  subprocess.stdout.on('data', (data) => {
     context.commit(
       'executions/appendExecutionText',
       replaceColors(data.toString()),
@@ -76,7 +82,7 @@ export function run(context, { cmd, text, icon }) {
     )
   })
 
-  process.stderr.on('data', (data) => {
+  subprocess.stderr.on('data', (data) => {
     context.commit('executions/appendExecutionError', data.toString(), {
       root: true,
     })
@@ -88,7 +94,7 @@ export function run(context, { cmd, text, icon }) {
   })
 
   // when the spawn child process exits, check if there were any errors
-  process.on('exit', (code) => {
+  subprocess.on('exit', (code) => {
     const win = window.electronRemote.getCurrentWindow() // electron-preload.js
 
     if (code !== 0) {
