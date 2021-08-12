@@ -14,14 +14,18 @@ const app = express()
 
 app.use(
   cors({
-    origin: 'http://localhost:9999'
+    origin: 'http://localhost:9999',
   })
 )
 app.use(express.json())
 app.use(
-  bodyParser.urlencoded({ extended: true, limit: '5mb', parameterLimit: 50000 })
+  bodyParser.urlencoded({
+    extended: true,
+    limit: '10mb',
+    parameterLimit: 100000,
+  })
 )
-app.use(bodyParser.json({ limit: '5mb' }))
+app.use(bodyParser.json({ limit: '10mb' }))
 
 app.use('/packages', packagesRouter)
 app.use('/preferences', preferencesRouter)
