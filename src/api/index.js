@@ -17,7 +17,6 @@ app.use(
     origin: 'http://localhost:9999',
   })
 )
-app.use(express.json())
 app.use(
   bodyParser.urlencoded({
     extended: true,
