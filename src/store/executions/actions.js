@@ -13,18 +13,46 @@ function replaceAll(str, find, replace) {
 
 function replaceColors(txt) {
   txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
-  txt = txt.replace(/⠼|⠹|⠴|⠸|⠙|⠋|⠦|⠇|⠧|⠏/g, '')
+
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠋\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠙\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠹\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠸\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠼\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠴\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠦\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠧\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠇\x1b[0m', '')
+  txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠏\x1b[0m', '')
+
+  txt = replaceAll(txt, '\x1b[32m⠋\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠙\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠹\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠸\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠼\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠴\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠦\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠧\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠇\x1b[0m', '')
+  txt = replaceAll(txt, '\x1b[32m⠏\x1b[0m', '')
+
+  txt = replaceAll(txt, '\x1b[95m', "<span class='text-purple'>") // accent
+  txt = replaceAll(txt, '\x1b[35m', "<span class='text-purple'>") // accent
   txt = replaceAll(txt, '\x1b[92m', "<span class='text-green'>") // ok
   txt = replaceAll(txt, '\x1b[1;32m', "<span class='text-green'>") // ok
   txt = replaceAll(txt, '\x1b[1;92m', "<span class='text-light-green'>") // ok
   txt = replaceAll(txt, '\x1b[93m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[91m', "<span class='text-negative'>") // error
+  txt = replaceAll(txt, '\x1b[1;91m', "<span class='text-negative'>") // error
   txt = replaceAll(txt, '\x1b[33m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[32m', "<span class='text-blue'>") // info
   txt = replaceAll(txt, '\x1b[1;34m', "<span class='text-blue'>") // info
   txt = replaceAll(txt, '\x1b[2;36m', "<span class='text-teal'>") // time
   txt = replaceAll(txt, '\x1b[0m', '</span>')
+  txt = replaceAll(txt, '\r\x1b[2K', '')
   txt = replaceAll(txt, '\x1b[2K', '')
+  txt = replaceAll(txt, '\x1b[?25l', '')
+  txt = replaceAll(txt, '\x1b[?25h', '')
   txt = replaceAll(txt, '\x1b[1A', '')
   txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
@@ -86,14 +114,11 @@ export function run(context, { cmd, text, icon }) {
   })
 
   subprocess.stderr.on('data', (data) => {
-    context.commit('executions/appendExecutionError', data.toString(), {
+    const text = replaceColors(data.toString())
+    context.commit('executions/appendExecutionError', text, {
       root: true,
     })
-    context.commit(
-      'executions/appendExecutionText',
-      "<span class='text-negative'>" + data.toString() + '</span>',
-      { root: true }
-    )
+    context.commit('executions/appendExecutionText', text, { root: true })
   })
 
   // when the spawn child process exits, check if there were any errors
@@ -111,9 +136,13 @@ export function run(context, { cmd, text, icon }) {
           root: true,
         })
       } else {
-        context.dispatch('ui/notifyError', replaceColors(context.state.error), {
-          root: true,
-        })
+        context.dispatch(
+          'ui/notifyError',
+          replaceColors(context.state.error).replace(/(<([^>]+)>)/gi, ''),
+          {
+            root: true,
+          }
+        )
         context.commit('executions/resetExecutionError', null, {
           root: true,
         })
