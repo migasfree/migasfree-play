@@ -19,96 +19,102 @@
 
         <q-space />
 
-        <q-btn
-          v-if="$store.state.preferences.showApps"
-          flat
-          round
-          icon="apps"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'apps'"
-          @click="$router.push({ name: 'apps' })"
-        >
-          <q-tooltip>{{ $gettext('Apps') }}</q-tooltip>
-        </q-btn>
+        <div class="gt-xs">
+          <q-btn
+            v-if="$store.state.preferences.showApps"
+            flat
+            round
+            icon="apps"
+            size="lg"
+            class="q-mx-xs"
+            :disabled="$route.name === 'apps'"
+            @click="$router.push({ name: 'apps' })"
+          >
+            <q-tooltip>{{ $gettext('Apps') }}</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          v-if="$store.state.preferences.showDevices"
-          flat
-          round
-          icon="mdi-printer"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'devices'"
-          @click="$router.push({ name: 'devices' })"
-        >
-          <q-tooltip>{{ $gettext('Devices') }}</q-tooltip>
-        </q-btn>
+          <q-btn
+            v-if="$store.state.preferences.showDevices"
+            flat
+            round
+            icon="mdi-printer"
+            size="lg"
+            class="q-mx-xs"
+            :disabled="$route.name === 'devices'"
+            @click="$router.push({ name: 'devices' })"
+          >
+            <q-tooltip>{{ $gettext('Devices') }}</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          v-if="$store.state.preferences.showTags"
-          flat
-          round
-          icon="mdi-tag"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'tags'"
-          @click="$router.push({ name: 'tags' })"
-        >
-          <q-tooltip>{{ $gettext('Tags') }}</q-tooltip>
-        </q-btn>
+          <q-btn
+            v-if="$store.state.preferences.showTags"
+            flat
+            round
+            icon="mdi-tag"
+            size="lg"
+            class="q-mx-xs"
+            :disabled="$route.name === 'tags'"
+            @click="$router.push({ name: 'tags' })"
+          >
+            <q-tooltip>{{ $gettext('Tags') }}</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          v-if="$store.state.preferences.showDetails"
-          flat
-          round
-          icon="mdi-list-status"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'details'"
-          @click="$router.push({ name: 'details' })"
-        >
-          <q-tooltip>{{ $gettext('Details') }}</q-tooltip>
-        </q-btn>
+          <q-btn
+            v-if="$store.state.preferences.showDetails"
+            flat
+            round
+            icon="mdi-list-status"
+            size="lg"
+            class="q-mx-xs"
+            :disabled="$route.name === 'details'"
+            @click="$router.push({ name: 'details' })"
+          >
+            <q-tooltip>{{ $gettext('Details') }}</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          v-if="$store.state.preferences.showInfo"
-          flat
-          round
-          icon="info"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'info'"
-          @click="$router.push({ name: 'info' })"
-        >
-          <q-tooltip>{{ $gettext('Info') }}</q-tooltip>
-        </q-btn>
+          <q-btn
+            v-if="$store.state.preferences.showInfo"
+            flat
+            round
+            icon="info"
+            size="lg"
+            class="q-mx-xs"
+            :disabled="$route.name === 'info'"
+            @click="$router.push({ name: 'info' })"
+          >
+            <q-tooltip>{{ $gettext('Info') }}</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          flat
-          round
-          icon="mdi-cog"
-          size="lg"
-          class="q-mx-xs"
-          :disabled="$router.currentRoute.name === 'preferences'"
-          @click="$router.push({ name: 'preferences' })"
-        >
-          <q-tooltip>{{ $gettext('Preferences') }}</q-tooltip>
-        </q-btn>
+          <q-btn
+            flat
+            round
+            icon="mdi-cog"
+            size="lg"
+            class="q-mx-xs"
+            :disabled="$route.name === 'preferences'"
+            @click="$router.push({ name: 'preferences' })"
+          >
+            <q-tooltip>{{ $gettext('Preferences') }}</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          v-if="$store.state.preferences.showHelp"
-          flat
-          round
-          icon="help"
-          size="lg"
-          class="q-mx-xs"
-          type="a"
-          target="_blank"
-          href="https://fun-with-migasfree.readthedocs.io/es/master/chapter10.html#migasfree-play"
-        >
-          <q-tooltip>{{ $gettext('Help') }}</q-tooltip>
-        </q-btn>
+          <q-btn
+            v-if="$store.state.preferences.showHelp"
+            flat
+            round
+            icon="help"
+            size="lg"
+            class="q-mx-xs"
+            type="a"
+            target="_blank"
+            :href="urlHelp"
+          >
+            <q-tooltip>{{ $gettext('Help') }}</q-tooltip>
+          </q-btn>
+        </div>
+
+        <div class="lt-sm">
+          <Menu />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -139,17 +145,24 @@
 <script>
 import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from '@jshmrtn/vue3-gettext'
 import { setInterval } from 'timers'
+
+import { urlHelp } from 'config/app.conf'
+import Menu from 'components/Menu.vue'
 
 export default {
   name: 'MainLayout',
   meta: {
     titleTemplate: (title) => `${title} | Migasfree Play`,
   },
+  components: {
+    Menu,
+  },
   setup() {
     const store = useStore()
+    const route = useRoute()
     const router = useRouter()
     const { $gettext } = useGettext()
 
@@ -164,10 +177,7 @@ export default {
     const synchronize = () => {
       store.dispatch('ui/notifyInfo', $gettext('Synchronizing...'))
 
-      if (
-        store.state.preferences.showSyncDetails &&
-        router.currentRoute.name !== 'details'
-      )
+      if (store.state.preferences.showSyncDetails && route.name !== 'details')
         router.push({ name: 'details' })
 
       store.dispatch('executions/run', {
@@ -184,7 +194,7 @@ export default {
       }
     })
 
-    return { computerText, synchronize }
+    return { computerText, synchronize, urlHelp }
   },
 }
 </script>
