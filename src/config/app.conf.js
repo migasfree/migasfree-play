@@ -2,17 +2,20 @@ export const executionsMaxLength = 5
 
 export const internalApi = 'http://localhost:3000'
 
+export const urlHelp =
+  'https://fun-with-migasfree.readthedocs.io/es/master/chapter10.html#migasfree-play'
+
 export const tokenAuth = {
-  url: '/token-auth/'
+  url: '/token-auth/',
 }
 
 export const checkTokenApi = {
-  url: '/rest-auth/user/'
+  url: '/rest-auth/user/',
 }
 
 export const publicApi = {
   prefix: '/api/v1/public',
-  serverInfo: '/server/info/'
+  serverInfo: '/server/info/',
 }
 
 export const tokenApi = {
@@ -23,5 +26,5 @@ export const tokenApi = {
   availableDevices: '/devices/devices/available/?cid=',
   availableLogicalDevices: '/devices/logical/available/?cid=',
   logicalDevice: '/devices/logical/',
-  cidAttribute: '/attributes/?property_att__prefix=CID&value='
+  cidAttribute: '/attributes/?property_att__prefix=CID&value=',
 }
