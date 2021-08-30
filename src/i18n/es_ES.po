@@ -25,8 +25,9 @@ msgstr "Todas las aplicaciones"
 msgid "All available"
 msgstr "Todos los disponibles"
 
-#: src/layouts/MainLayout.vue:67 src/pages/apps/index.vue:6
-#: src/pages/apps/index.vue:23 src/store/app/actions.js:39
+#: src/components/Menu.vue:14 src/layouts/MainLayout.vue:72
+#: src/pages/apps/index.vue:8 src/pages/apps/index.vue:23
+#: src/store/app/actions.js:39
 msgid "Apps"
 msgstr "Aplicaciones"
 
@@ -38,7 +39,7 @@ msgstr "Asignado"
 msgid "Assigned Devices"
 msgstr "Dispositivos asignados"
 
-#: src/components/Info.vue:105
+#: src/components/Info.vue:107
 msgid "Available"
 msgstr "Disponible"
 
@@ -54,7 +55,7 @@ msgstr "Categorías"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/components/Tags.vue:36
+#: src/components/Tags.vue:28
 msgid "Communicate Tags"
 msgstr "Comunicar etiquetas"
 
@@ -62,7 +63,7 @@ msgstr "Comunicar etiquetas"
 msgid "Communicate tags to the server"
 msgstr "Comunicar etiquetas al servidor"
 
-#: src/components/Tags.vue:32
+#: src/components/Tags.vue:24
 msgid "Communicating..."
 msgstr "Comunicando..."
 
@@ -74,17 +75,18 @@ msgstr "Ordenador"
 msgid "Credentials are not valid. Review app settings."
 msgstr "Las credenciales no son válidas. Revise la configuración de la aplicación."
 
-#: src/layouts/MainLayout.vue:133 src/pages/details/index.vue:6
-#: src/pages/details/index.vue:17
+#: src/components/Menu.vue:38 src/layouts/MainLayout.vue:138
+#: src/pages/details/index.vue:6 src/pages/details/index.vue:17
 msgid "Details"
 msgstr "Detalles"
 
-#: src/layouts/MainLayout.vue:89 src/pages/devices/index.vue:6
-#: src/pages/devices/index.vue:23 src/store/app/actions.js:51
+#: src/components/Menu.vue:22 src/layouts/MainLayout.vue:94
+#: src/pages/devices/index.vue:8 src/pages/devices/index.vue:23
+#: src/store/app/actions.js:51
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: src/components/Info.vue:44
+#: src/components/Info.vue:46
 msgid "disks"
 msgstr "discos"
 
@@ -92,7 +94,7 @@ msgstr "discos"
 msgid "Hardware"
 msgstr "Hardware"
 
-#: src/layouts/MainLayout.vue:197
+#: src/components/Menu.vue:65 src/layouts/MainLayout.vue:202
 msgid "Help"
 msgstr "Ayuda"
 
@@ -100,12 +102,12 @@ msgstr "Ayuda"
 msgid "Impossible to continue."
 msgstr "Imposible continuar."
 
-#: src/components/Info.vue:107
+#: src/components/Info.vue:109
 msgid "In repair"
 msgstr "En reparación"
 
-#: src/layouts/MainLayout.vue:155 src/pages/info/index.vue:6
-#: src/pages/info/index.vue:14
+#: src/components/Menu.vue:46 src/layouts/MainLayout.vue:160
+#: src/pages/info/index.vue:6 src/pages/info/index.vue:14
 msgid "Info"
 msgstr "Información"
 
@@ -121,11 +123,11 @@ msgstr "Instalado"
 msgid "Installed Apps"
 msgstr "Aplicaciones instaladas"
 
-#: src/components/AppDetail.vue:75 src/components/AppDetail.vue:88
+#: src/components/AppDetail.vue:83 src/components/AppDetail.vue:90
 msgid "Installing %{name}"
 msgstr "Instalando %{name}"
 
-#: src/components/Info.vue:111
+#: src/components/Info.vue:113
 msgid "Intended"
 msgstr "Asignado"
 
@@ -153,6 +155,10 @@ msgstr "Iniciar sesión"
 msgid "Manage with privileges"
 msgstr "Gestionar con privilegios"
 
+#: src/components/Menu.vue:5 src/components/Menu.vue:3
+msgid "Menu"
+msgstr "Menú"
+
 #: src/components/Info.vue:177
 msgid "Migasfree Data"
 msgstr "Datos de migasfree"
@@ -173,12 +179,13 @@ msgstr "Paquetes"
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/store/executions/actions.js:48
+#: src/store/executions/actions.js:85
 msgid "Please wait, other process is running!!!"
 msgstr "¡Espere por favor, otro proceso está ejecutándose!"
 
-#: src/layouts/MainLayout.vue:175 src/pages/preferences/index.vue:6
-#: src/pages/preferences/index.vue:14 src/store/app/actions.js:14
+#: src/components/Menu.vue:57 src/layouts/MainLayout.vue:180
+#: src/pages/preferences/index.vue:6 src/pages/preferences/index.vue:14
+#: src/store/app/actions.js:14
 msgid "Preferences"
 msgstr "Preferencias"
 
@@ -186,7 +193,7 @@ msgstr "Preferencias"
 msgid "Print Identification"
 msgstr "Imprimir identificación"
 
-#: src/components/Info.vue:109
+#: src/components/Info.vue:111
 msgid "Reserved"
 msgstr "Reservado"
 
@@ -202,7 +209,7 @@ msgstr "Buscar en nombre o modelo o fabricante"
 msgid "Server"
 msgstr "Servidor"
 
-#: src/components/Tags.vue:46
+#: src/components/Tags.vue:38
 msgid "Set Tags"
 msgstr "Establecer etiquetas"
 
@@ -210,7 +217,7 @@ msgstr "Establecer etiquetas"
 msgid "Set tags at the server"
 msgstr "Establecer etiquetas en el servidor"
 
-#: src/components/Tags.vue:42
+#: src/components/Tags.vue:34
 msgid "Setting Tags..."
 msgstr "Estableciendo etiquetas..."
 
@@ -218,21 +225,21 @@ msgstr "Estableciendo etiquetas..."
 msgid "Show details when synchronizing"
 msgstr "Mostrar detalles durante la sincronización"
 
-#: src/layouts/MainLayout.vue:35
+#: src/layouts/MainLayout.vue:40
 msgid "Synchronization"
 msgstr "Sincronización"
 
-#: src/layouts/MainLayout.vue:232
+#: src/layouts/MainLayout.vue:241
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
-#: src/layouts/MainLayout.vue:25
+#: src/layouts/MainLayout.vue:33
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
-#: src/components/Tags.vue:35 src/layouts/MainLayout.vue:111
-#: src/pages/tags/index.vue:6 src/pages/tags/index.vue:23
-#: src/store/app/actions.js:56
+#: src/components/Menu.vue:30 src/components/Tags.vue:35
+#: src/layouts/MainLayout.vue:116 src/pages/tags/index.vue:8
+#: src/pages/tags/index.vue:23 src/store/app/actions.js:56
 msgid "Tags"
 msgstr "Etiquetas"
 
@@ -250,15 +257,15 @@ msgstr "No hay conexión con el servidor"
 msgid "Uninstall"
 msgstr "Desinstalar"
 
-#: src/components/AppDetail.vue:101 src/components/AppDetail.vue:114
+#: src/components/AppDetail.vue:104 src/components/AppDetail.vue:111
 msgid "Uninstalling %{name}"
 msgstr "Desinstalando %{name}"
 
-#: src/components/Info.vue:115
+#: src/components/Info.vue:117
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/components/Info.vue:113
+#: src/components/Info.vue:115
 msgid "Unsubscribed"
 msgstr "Baja"
 
@@ -279,7 +286,7 @@ msgstr "Usuario con privilegios en el ordenador"
 msgid "User without privileges"
 msgstr "Usuario sin privilegios"
 
-#: src/layouts/MainLayout.vue:39
+#: src/layouts/MainLayout.vue:43
 msgid "View Computer"
 msgstr "Ver ordenador"
 
