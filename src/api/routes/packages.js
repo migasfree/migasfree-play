@@ -7,7 +7,9 @@ router.get('/available', (req, res) => {
   const code = `
 import json
 from migasfree_client.sync import MigasFreeSync
-print(json.dumps(MigasFreeSync().pms.available_packages()))`
+mfs = MigasFreeSync()
+mfs.run()
+print(json.dumps(mfs.pms.available_packages()))`
 
   PythonShell.runString(code, null, (err, results) => {
     if (err) throw err
@@ -23,6 +25,7 @@ import json
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
+mfc.run()
 installed = []
 
 packages = ${packages}
