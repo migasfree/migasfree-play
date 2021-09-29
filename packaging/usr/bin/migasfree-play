@@ -15,18 +15,47 @@ then
 fi
 
 _WAIT_IP="
-import time
+from time import sleep
 from migasfree_client.network import get_gateway
-WAIT_IP_TIMEOUT = 120 # seconds
+
+
 def has_ip_address():
-    _cont = WAIT_IP_TIMEOUT
-    while (get_gateway() is None or get_gateway() == '') and _cont > 0:
-        time.sleep(1)
-        _cont -= 1
+    cont = 120  # seconds
+    while (get_gateway() is None or get_gateway() == '') and cont > 0:
+        sleep(1)
+        cont -= 1
     return get_gateway() != '' and get_gateway() is not None
+
+
 print(has_ip_address())
 "
-_CONECTIVITY=$($_PYTHON -c "$_WAIT_IP")
+_CONNECTIVITY=$($_PYTHON -c "$_WAIT_IP")
+if [ "$_CONNECTIVITY" = "False" ]
+then
+    echo "There is not network connectivity. Impossible to continue."
+    exit 2
+fi
+
+# wait server
+_SRC="
+from __future__ import print_function
+from migasfree_client.settings import CONF_FILE
+from migasfree_client.utils import get_config
+
+print(get_config(CONF_FILE, 'client').get('server', 'localhost'), end='')
+"
+_SERVER=$($_PYTHON -c "$_SRC")
+
+while true
+do
+    _STATUS=$(curl --write-out %{http_code} --silent --output /dev/null "$_SERVER") || :
+    if [ "$_STATUS" = "200" ]
+    then
+       break
+    fi
+
+    sleep 1
+done
 
 _USER=$($_PYTHON -c "from migasfree_client import utils; print(utils.get_graphic_user(utils.get_graphic_pid()[0]))")
 
@@ -42,10 +71,10 @@ then
     _TIME=$(date "+%M %H")
     su -c "echo '$_TIME * * * export DISPLAY=$DISPLAY; $_TASK' >> $_FILE" -l "$_USER"
     su -c "crontab $_FILE" -l "$_USER"
-    rm $_FILE
+    rm "$_FILE"
 fi
 
-if [ "$_CONECTIVITY" = "True" ]
+if [ "$_CONNECTIVITY" = "True" ]
 then
     cd /usr/share/migasfree-play || :
     /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox
