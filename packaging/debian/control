@@ -9,6 +9,6 @@ Homepage: http://github.com/migasfree/migasfree-play
 Package: migasfree-play
 Architecture: any
 Section: admin
-Depends: migasfree-client (>= 5.0), sudo, bash, cron
+Depends: migasfree-client (>= 5.0), sudo, bash, cron, curl
 Description: GUI for migasfree client
  migasfree play is a GUI for migasfree client
