@@ -57,8 +57,6 @@ do
     sleep 1
 done
 
-_USER=$($_PYTHON -c "from migasfree_client import utils; print(utils.get_graphic_user(utils.get_graphic_pid()[0]))")
-
 if [ "$1" = "sync" ]
 then
     # user root enabled in X
@@ -67,10 +65,10 @@ then
     # Cron every 24 hours
     _FILE="/tmp/migasfree-sync.txt"
     _TASK="sudo /usr/bin/migasfree-play sync"
-    su -c "crontab -l | grep -v '$_TASK' > $_FILE" -l "$_USER"
+    crontab -l | grep --invert-match "$_TASK" > "$_FILE"
     _TIME=$(date "+%M %H")
-    su -c "echo '$_TIME * * * export DISPLAY=$DISPLAY; $_TASK' >> $_FILE" -l "$_USER"
-    su -c "crontab $_FILE" -l "$_USER"
+    echo "$_TIME * * * export DISPLAY=$DISPLAY; $_TASK" >> "$_FILE"
+    crontab "$_FILE"
     rm "$_FILE"
 fi
 
