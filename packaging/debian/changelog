@@ -1,5 +1,5 @@
-migasfree-play (2.0.0) unstable; urgency=low
+migasfree-play (5.0.0) unstable; urgency=low
 
   * App rewritten in Vue and Quasar frameworks.
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 3 May 2021 12:47:47 +0200
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 10 Nov 2021 09:41:47 +0100
