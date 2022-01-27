@@ -54,6 +54,7 @@ function replaceColors(txt) {
   txt = replaceAll(txt, '\x1b[?25l', '')
   txt = replaceAll(txt, '\x1b[?25h', '')
   txt = replaceAll(txt, '\x1b[1A', '')
+  txt = replaceAll(txt, '\x1b[1m', '')
   txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
   return txt
