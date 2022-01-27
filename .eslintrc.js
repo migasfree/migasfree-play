@@ -61,6 +61,7 @@ module.exports = {
     'prefer-promise-reject-errors': 'off',
     'vue/no-v-html': 0,
     'vue/no-multiple-template-root': 'off',
+    'vue/multi-word-component-names': 'off',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
