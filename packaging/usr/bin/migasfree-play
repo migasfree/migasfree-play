@@ -51,9 +51,11 @@ do
     _STATUS=$(curl --write-out %{http_code} --silent --output /dev/null "$_SERVER") || :
     if [ "$_STATUS" = "200" ]
     then
+        echo "Connection established with the server."
        break
     fi
 
+    echo "Trying to connect to the server. Unexpected status code $_STATUS."
     sleep 1
 done
 
@@ -75,5 +77,5 @@ fi
 if [ "$_CONNECTIVITY" = "True" ]
 then
     cd /usr/share/migasfree-play || :
-    /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox
+    /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox --disable-gpu-sandbox
 fi
