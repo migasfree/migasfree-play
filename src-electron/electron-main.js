@@ -68,6 +68,8 @@ function createWindow() {
       contextIsolation: false,
       nodeIntegration: true, //process.env.QUASAR_NODE_INTEGRATION,
       nodeIntegrationInWorker: true, // process.env.QUASAR_NODE_INTEGRATION,
+      nativeWindowOpen: true,
+      sandbox: false,
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
