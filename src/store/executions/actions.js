@@ -47,6 +47,7 @@ function replaceColors(txt) {
   txt = replaceAll(txt, '\x1b[33m', "<span class='text-amber'>") // warning
   txt = replaceAll(txt, '\x1b[32m', "<span class='text-blue'>") // info
   txt = replaceAll(txt, '\x1b[1;34m', "<span class='text-blue'>") // info
+  txt = replaceAll(txt, '\x1b[1;36m', "<span class='text-indigo'>") // info
   txt = replaceAll(txt, '\x1b[2;36m', "<span class='text-teal'>") // time
   txt = replaceAll(txt, '\x1b[0m', '</span>')
   txt = replaceAll(txt, '\r\x1b[2K', '')
