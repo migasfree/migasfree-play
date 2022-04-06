@@ -188,7 +188,9 @@ export default {
     }
 
     onMounted(() => {
-      if (process.argv.includes('sync')) {
+      const app = window.electronRemote.app
+
+      if (app.syncAfterStart) {
         synchronize()
         setInterval(synchronize, 24 * 60 * 60 * 1000)
       }
