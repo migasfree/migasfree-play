@@ -41,6 +41,7 @@ require('@electron/remote/main').initialize()
 const gotTheLock = app.requestSingleInstanceLock()
 
 app.canExit = true
+app.syncAfterStart = false
 
 try {
   if (
@@ -105,6 +106,7 @@ function createWindow() {
   mainWindow.webContents.on('did-finish-load', () => {
     if (process.argv.includes('sync')) {
       mainWindow.minimize()
+      app.syncAfterStart = true
     }
   })
 
