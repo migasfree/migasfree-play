@@ -77,7 +77,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useGettext } from '@jshmrtn/vue3-gettext'
+import { useGettext } from 'vue3-gettext'
 
 export default {
   name: 'Tags',
