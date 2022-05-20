@@ -1,5 +1,5 @@
 import { boot } from 'quasar/wrappers'
-import { createGettext } from '@jshmrtn/vue3-gettext'
+import { createGettext } from 'vue3-gettext'
 import translations from '../i18n/translations.json'
 
 const gettext = createGettext({
