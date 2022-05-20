@@ -60,8 +60,10 @@ module.exports = {
   rules: {
     'prefer-promise-reject-errors': 'off',
     'vue/no-v-html': 0,
+    'vue/no-v-text-v-html-on-component': 0,
     'vue/no-multiple-template-root': 'off',
     'vue/multi-word-component-names': 'off',
+    'vue/no-reserved-component-names': 'off',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
