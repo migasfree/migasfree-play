@@ -152,7 +152,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { useGettext } from '@jshmrtn/vue3-gettext'
+import { useGettext } from 'vue3-gettext'
 import { date } from 'quasar'
 
 import VueQrcode from '@chenfengyuan/vue-qrcode'
