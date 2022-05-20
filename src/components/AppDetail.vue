@@ -75,7 +75,7 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { useGettext } from '@jshmrtn/vue3-gettext'
+import { useGettext } from 'vue3-gettext'
 
 const os = require('os')
 
