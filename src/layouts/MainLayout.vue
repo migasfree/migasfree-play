@@ -146,7 +146,7 @@
 import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { useGettext } from '@jshmrtn/vue3-gettext'
+import { useGettext } from 'vue3-gettext'
 import { setInterval } from 'timers'
 
 import { urlHelp } from 'config/app.conf'
