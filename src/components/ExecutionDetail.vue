@@ -14,6 +14,15 @@
         {{ command }}
         <div class="text-caption text-blue-grey">{{ showDate(id) }}</div>
       </q-item-section>
+
+      <q-item-section side>
+        <q-btn
+          flat
+          icon="mdi-content-copy"
+          color="primary"
+          @click.stop="copyDetails"
+        />
+      </q-item-section>
     </template>
 
     <q-separator />
@@ -26,7 +35,10 @@
 
 <script>
 import { watch } from 'vue'
-import { date } from 'quasar'
+import { useStore } from 'vuex'
+import { useGettext } from 'vue3-gettext'
+import { copyToClipboard, date } from 'quasar'
+import { htmlToText } from 'html-to-text'
 
 export default {
   name: 'ExecutionDetail',
@@ -37,6 +49,9 @@ export default {
     icon: { type: String, required: false, default: '' },
   },
   setup(props) {
+    const store = useStore()
+    const { $gettext } = useGettext()
+
     watch(
       () => props.text,
       () => {
@@ -48,7 +63,13 @@ export default {
       return date.formatDate(Date.parse(isoString), 'YYYY-MM-DD HH:mm:ss')
     }
 
-    return { showDate }
+    const copyDetails = () => {
+      copyToClipboard(htmlToText(props.text)).then(() => {
+        store.dispatch('ui/notifySuccess', $gettext('Text copied to clipboard'))
+      })
+    }
+
+    return { showDate, copyDetails }
   },
 }
 </script>
