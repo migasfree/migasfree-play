@@ -19,6 +19,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:33
 #: src/pages/apps/index.vue:36
 #: src/pages/apps/index.vue:4
+#: src/store/app/actions.js:39
 msgid "Apps"
 msgstr ""
 
@@ -38,6 +39,10 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: src/store/app/actions.js:42
+msgid "Categories"
+msgstr ""
+
 #: src/components/AppFilter.vue:20
 msgid "Category"
 msgstr ""
@@ -54,6 +59,14 @@ msgstr ""
 msgid "Communicating..."
 msgstr ""
 
+#: src/store/app/actions.js:32
+msgid "Computer"
+msgstr ""
+
+#: src/store/app/actions.js:96
+msgid "Credentials are not valid. Review app settings."
+msgstr ""
+
 #: src/components/Menu.vue:55
 #: src/layouts/MainLayout.vue:72
 #: src/pages/details/index.vue:17
@@ -65,6 +78,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:46
 #: src/pages/devices/index.vue:36
 #: src/pages/devices/index.vue:4
+#: src/store/app/actions.js:51
 msgid "Devices"
 msgstr ""
 
@@ -158,6 +172,10 @@ msgstr ""
 msgid "Not show details when synchronizing"
 msgstr ""
 
+#: src/store/app/actions.js:45
+msgid "Packages"
+msgstr ""
+
 #: src/components/Login.vue:38
 msgid "Password"
 msgstr ""
@@ -170,6 +188,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:97
 #: src/pages/preferences/index.vue:17
 #: src/pages/preferences/index.vue:4
+#: src/store/app/actions.js:14
 msgid "Preferences"
 msgstr ""
 
@@ -187,6 +206,10 @@ msgstr ""
 
 #: src/components/DeviceFilter.vue:9
 msgid "Search in name or model or manufacturer"
+msgstr ""
+
+#: src/store/app/actions.js:22
+msgid "Server"
 msgstr ""
 
 #: src/components/Tags.vue:115
@@ -222,6 +245,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:59
 #: src/pages/tags/index.vue:36
 #: src/pages/tags/index.vue:4
+#: src/store/app/actions.js:56
 msgid "Tags"
 msgstr ""
 
@@ -234,6 +258,11 @@ msgstr ""
 #: src/components/Executions.vue:19
 #: src/components/Tags.vue:71
 msgid "There are not items to show."
+msgstr ""
+
+#: src/store/app/actions.js:128
+#: src/store/app/actions.js:74
+msgid "There is no connection to the server"
 msgstr ""
 
 #: src/components/AppDetail.vue:51
@@ -266,6 +295,10 @@ msgstr ""
 
 #: src/components/Login.vue:6
 msgid "User with privileges on the computer"
+msgstr ""
+
+#: src/store/app/actions.js:154
+msgid "User without privileges"
 msgstr ""
 
 #: src/layouts/MainLayout.vue:16
