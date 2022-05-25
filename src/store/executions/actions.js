@@ -1,3 +1,4 @@
+import { useGettext } from 'vue3-gettext'
 import { internalApi } from 'config/app.conf'
 
 function escapeRegExp(text) {
@@ -81,10 +82,12 @@ export async function setExecutions(context) {
 }
 
 export function run(context, { cmd, text, icon }) {
+  const { $gettext } = useGettext()
+
   if (context.state.isRunningCommand) {
     context.dispatch(
       'ui/notifyInfo',
-      this.$gettext('Please wait, other process is running!!!'),
+      $gettext('Please wait, other process is running!!!'),
       { root: true }
     )
     return
