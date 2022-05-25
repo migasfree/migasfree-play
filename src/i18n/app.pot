@@ -19,7 +19,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:33
 #: src/pages/apps/index.vue:36
 #: src/pages/apps/index.vue:4
-#: src/store/app/actions.js:39
+#: src/store/app/actions.js:43
 msgid "Apps"
 msgstr ""
 
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/store/app/actions.js:42
+#: src/store/app/actions.js:46
 msgid "Categories"
 msgstr ""
 
@@ -59,11 +59,11 @@ msgstr ""
 msgid "Communicating..."
 msgstr ""
 
-#: src/store/app/actions.js:32
+#: src/store/app/actions.js:36
 msgid "Computer"
 msgstr ""
 
-#: src/store/app/actions.js:96
+#: src/store/app/actions.js:100
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:46
 #: src/pages/devices/index.vue:36
 #: src/pages/devices/index.vue:4
-#: src/store/app/actions.js:51
+#: src/store/app/actions.js:55
 msgid "Devices"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgstr ""
 msgid "Not show details when synchronizing"
 msgstr ""
 
-#: src/store/app/actions.js:45
+#: src/store/app/actions.js:49
 msgid "Packages"
 msgstr ""
 
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/store/executions/actions.js:87
+#: src/store/executions/actions.js:90
 msgid "Please wait, other process is running!!!"
 msgstr ""
 
@@ -188,7 +188,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:97
 #: src/pages/preferences/index.vue:17
 #: src/pages/preferences/index.vue:4
-#: src/store/app/actions.js:14
+#: src/store/app/actions.js:18
 msgid "Preferences"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Search in name or model or manufacturer"
 msgstr ""
 
-#: src/store/app/actions.js:22
+#: src/store/app/actions.js:26
 msgid "Server"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:59
 #: src/pages/tags/index.vue:36
 #: src/pages/tags/index.vue:4
-#: src/store/app/actions.js:56
+#: src/store/app/actions.js:60
 msgid "Tags"
 msgstr ""
 
@@ -260,8 +260,8 @@ msgstr ""
 msgid "There are not items to show."
 msgstr ""
 
-#: src/store/app/actions.js:128
-#: src/store/app/actions.js:74
+#: src/store/app/actions.js:132
+#: src/store/app/actions.js:78
 msgid "There is no connection to the server"
 msgstr ""
 
@@ -297,7 +297,7 @@ msgstr ""
 msgid "User with privileges on the computer"
 msgstr ""
 
-#: src/store/app/actions.js:154
+#: src/store/app/actions.js:160
 msgid "User without privileges"
 msgstr ""
 
