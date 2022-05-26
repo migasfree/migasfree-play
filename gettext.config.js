@@ -9,7 +9,6 @@ module.exports = {
     potPath: './app.pot',
     jsonPath: './translations.json',
     locales: ['es_ES'],
-    mutedLanguages: ['en_US'],
     flat: true,
     linguas: false,
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
