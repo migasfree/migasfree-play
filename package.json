@@ -19,7 +19,6 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@electron/remote": "^2.0.8",
-    "vue3-gettext": "^2.2.3",
     "@quasar/extras": "1.14.0",
     "axios": "^0.27.2",
     "core-js": "^3.22.5",
@@ -34,6 +33,7 @@
     "typeface-ubuntu-mono": "^1.1.13",
     "vue": "^3.2.34",
     "vue-router": "^4.0.15",
+    "vue3-gettext": "^2.2.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
@@ -42,7 +42,6 @@
     "@quasar/quasar-app-extension-qmarkdown": "2.0.0-beta.7",
     "autoprefixer": "10.4.7",
     "devtron": "^1.4.0",
-    "easygettext": "^2.17.0",
     "electron": "16.0.8",
     "electron-builder": "22.8.1",
     "electron-debug": "^3.2.0",
