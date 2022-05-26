@@ -9,6 +9,7 @@ const gettext = createGettext({
   },
   translations,
   defaultLanguage: 'es_ES',
+  mutedLanguages: ['en_US'],
   setGlobalProperties: true,
 })
 
