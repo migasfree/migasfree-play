@@ -1,20 +1,17 @@
-import { useGettext } from 'vue3-gettext'
 import { internalApi } from 'config/app.conf'
 
 export async function readPreferences(context) {
-  const i18n = useGettext()
-
   await this.$axios
     .get(`${internalApi}/preferences`)
     .then((response) => {
       context.commit('setPreferences', response.data)
-      i18n.current = response.data.language
+      this.$gettext.current = response.data.language
     })
     .catch((error) => {
       if (!error.response) {
         context.commit(
           'app/setStatus',
-          i18n.$gettext('There is no connection to the server'),
+          this.$gettext.$gettext('There is no connection to the server'),
           { root: true }
         )
         context.commit('app/stopApp', null, { root: true })

@@ -1,5 +1,3 @@
-import { useGettext } from 'vue3-gettext'
-
 import {
   tokenAuth,
   publicApi,
@@ -11,11 +9,9 @@ import {
 require('dotenv').config()
 
 export async function init(context) {
-  const { $gettext } = useGettext()
-
   context.commit('ui/loading', null, { root: true })
 
-  context.commit('setStatus', $gettext('Preferences'))
+  context.commit('setStatus', this.$gettext.$gettext('Preferences'))
   await context.dispatch('preferences/readPreferences', {}, { root: true })
   if (context.rootGetters['app/stoppedApp']) return
   await context.dispatch('apiProtocol')
@@ -23,7 +19,7 @@ export async function init(context) {
 
   context.commit('setInitialUrl')
 
-  context.commit('setStatus', $gettext('Server'))
+  context.commit('setStatus', this.$gettext.$gettext('Server'))
   await context.dispatch('serverInfo')
   if (context.rootGetters['app/stoppedApp']) return
   await context.dispatch('getToken')
@@ -33,31 +29,31 @@ export async function init(context) {
     await context.dispatch('getToken')
   }
 
-  context.commit('setStatus', $gettext('Computer'))
+  context.commit('setStatus', this.$gettext.$gettext('Computer'))
   await context.dispatch('computer/computerInfo', {}, { root: true })
   await context.dispatch('computer/computerNetwork', {}, { root: true })
   await context.dispatch('computer/computerId', {}, { root: true })
   await context.dispatch('computer/computerData', {}, { root: true })
   await context.dispatch('computer/computerAttribute', {}, { root: true })
 
-  context.commit('setStatus', $gettext('Apps'))
+  context.commit('setStatus', this.$gettext.$gettext('Apps'))
   await context.dispatch('getApps')
 
-  context.commit('setStatus', $gettext('Categories'))
+  context.commit('setStatus', this.$gettext.$gettext('Categories'))
   await context.dispatch('filters/setCategories', {}, { root: true })
 
-  context.commit('setStatus', $gettext('Packages'))
+  context.commit('setStatus', this.$gettext.$gettext('Packages'))
   await context.dispatch('packages/setAvailablePackages', {}, { root: true })
   await context.dispatch('packages/setInstalledPackages', {}, { root: true })
 
   await context.dispatch('executions/getExecutions', {}, { root: true })
 
-  context.commit('setStatus', $gettext('Devices'))
+  context.commit('setStatus', this.$gettext.$gettext('Devices'))
   await context.dispatch('devices/computerDevices', {}, { root: true })
   await context.dispatch('devices/getAvailableDevices', {}, { root: true })
   await context.dispatch('devices/getFeaturesDevices', {}, { root: true })
 
-  context.commit('setStatus', $gettext('Tags'))
+  context.commit('setStatus', this.$gettext.$gettext('Tags'))
   await context.dispatch('tags/getAvailableTags', {}, { root: true })
   await context.dispatch('tags/getAssignedTags', {}, { root: true })
 
@@ -75,7 +71,7 @@ export async function serverInfo(context) {
       if (!error.response) {
         context.commit(
           'setStatus',
-          $gettext('There is no connection to the server')
+          this.$gettext.$gettext('There is no connection to the server')
         )
         context.commit('stopApp')
       } else context.dispatch('ui/notifyError', error, { root: true })
@@ -97,7 +93,9 @@ export async function getToken(context) {
         if (error.response.status === 400) {
           context.commit(
             'setStatus',
-            $gettext('Credentials are not valid. Review app settings.')
+            this.$gettext.$gettext(
+              'Credentials are not valid. Review app settings.'
+            )
           )
           context.commit('stopApp')
         }
@@ -129,7 +127,7 @@ export async function checkToken(context) {
       if (!error.response) {
         context.commit(
           'setStatus',
-          $gettext('There is no connection to the server')
+          this.$gettext.$gettext('There is no connection to the server')
         )
         context.commit('stopApp')
       } else {
@@ -144,8 +142,6 @@ export async function checkToken(context) {
 }
 
 export async function checkUser(context, { user, password }) {
-  const { $gettext } = useGettext()
-
   await this.$axios
     .post(`${internalApi}/user/check`, {
       user,
@@ -157,7 +153,7 @@ export async function checkUser(context, { user, password }) {
       } else {
         context.dispatch(
           'ui/notifyError',
-          $gettext('User without privileges'),
+          this.$gettext.$gettext('User without privileges'),
           { root: true }
         )
       }
