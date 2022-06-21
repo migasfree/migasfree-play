@@ -2,7 +2,7 @@ import path from 'path'
 const tcpPortUsed = require('tcp-port-used')
 const spawn = require('child_process').spawn
 
-let expressProcess = undefined
+let expressProcess
 
 function launchExpress() {
   const isProduction = process.env.NODE_ENV === 'production'
