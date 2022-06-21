@@ -80,7 +80,7 @@ export async function serverInfo(context) {
 
 export async function getToken(context) {
   let response = await this.$axios.get(`${internalApi}/token`)
-  if (!'data' in response || !response.data.token) {
+  if (!('data' in response) || !response.data.token) {
     response = await this.$axios
       .post(
         `${context.state.protocol}://${context.state.host}${tokenAuth.url}`,
