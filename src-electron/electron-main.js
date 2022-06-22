@@ -12,7 +12,7 @@ function launchExpress() {
       console.log('Port 3000 usage: ' + inUse) // debug
       if (!inUse) {
         const expressApi = isProduction
-          ? path.join(__dirname, '..', 'app.asar.unpacked', 'api.js')
+          ? path.join(__dirname, '..', 'app', 'api.js') // ? path.join(__dirname, '..', 'app.asar.unpacked', 'api.js')
           : path.join(__dirname, '..', 'src', 'api')
 
         // Instantiate Express App
