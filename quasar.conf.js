@@ -6,10 +6,11 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli/quasar-conf-js
 
-/* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
-const path = require('path')
+
 const { configure } = require('quasar/wrappers')
+
+const path = require('path')
 
 module.exports = configure(function (ctx) {
   return {
@@ -46,6 +47,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       // transpile: false,
+      // publicPath: '/',
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
       // (from node_modules, which are by default not transpiled).
@@ -63,13 +65,15 @@ module.exports = configure(function (ctx) {
 
       // https://v2.quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
+
       chainWebpack(chain) {
         chain
           .plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
-        chain.resolve.alias.merge({
-          config: 'src/config',
-        })
+        chain.resolve.alias.set(
+          'config',
+          path.resolve(__dirname, './src/config')
+        )
       },
 
       extendWebpack(cfg, { isServer, isClient }) {
@@ -87,21 +91,19 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      https: false,
+      server: {
+        type: 'http',
+      },
       port: 9999,
       open: true, // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      iconSet: 'material-icons', // Quasar icon set
-      lang: 'en-US', // Quasar language pack
       config: {},
 
-      // Possible values for "importStrategy":
-      // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
-      // * 'all'  - Manually specify what to import
-      importStrategy: 'auto',
+      iconSet: 'material-icons', // Quasar icon set
+      lang: 'en-US', // Quasar language pack
 
       // For special cases outside of where "auto" importStrategy can have an impact
       // (like functional components as one of the examples),
