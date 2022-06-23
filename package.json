@@ -36,6 +36,9 @@
     "vue3-gettext": "2.3.0",
     "vuex": "4.0.2"
   },
+  "resolutions": {
+    "express": "4.17.3"
+  },
   "devDependencies": {
     "@babel/eslint-parser": "7.18.2",
     "@quasar/app-webpack": "3.4.7",
