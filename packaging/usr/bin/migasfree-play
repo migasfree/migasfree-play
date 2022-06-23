@@ -2,8 +2,8 @@
 
 if [ "$(id -u)" != "0" ]
 then
-   echo "Sorry. This app must be run as root. Try: sudo migasfree-play $1" 1>&2
-   exit 1
+    echo "Sorry. This app must be run as root. Try: sudo migasfree-play $1" 1>&2
+    exit 1
 fi
 
 _PYTHON=$(command -v python3)
@@ -24,6 +24,7 @@ def has_ip_address():
     while (get_gateway() is None or get_gateway() == '') and cont > 0:
         sleep(1)
         cont -= 1
+
     return get_gateway() != '' and get_gateway() is not None
 
 
@@ -49,10 +50,10 @@ _SERVER=$($_PYTHON -c "$_SRC")
 while true
 do
     _STATUS=$(curl --write-out %{http_code} --silent --output /dev/null "$_SERVER") || :
-    if [ "$_STATUS" = "200" ]
+    if [ "$_STATUS" = "200" -o "$_STATUS" = "302" ]
     then
         echo "Connection established with the server."
-       break
+        break
     fi
 
     echo "Trying to connect to the server. Unexpected status code $_STATUS."
