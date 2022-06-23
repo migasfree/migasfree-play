@@ -6,13 +6,14 @@ let expressProcess
 
 function launchExpress() {
   const isProduction = process.env.NODE_ENV === 'production'
+  const port = 3000
 
-  tcpPortUsed.check(3000, '127.0.0.1').then(
+  tcpPortUsed.check(port, '127.0.0.1').then(
     function (inUse) {
-      console.log('Port 3000 usage: ' + inUse) // debug
+      console.log(`Port ${port} usage: ${inUse}`) // debug
       if (!inUse) {
         const expressApi = isProduction
-          ? path.join(__dirname, '..', 'app', 'api.js')
+          ? path.join(process.resourcesPath, 'app', 'api.js')
           : path.join(__dirname, '..', 'src', 'api')
 
         // Instantiate Express App
