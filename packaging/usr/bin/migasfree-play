@@ -77,6 +77,5 @@ fi
 
 if [ "$_CONNECTIVITY" = "True" ]
 then
-    cd /usr/share/migasfree-play || :
     /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox --disable-gpu-sandbox
 fi
