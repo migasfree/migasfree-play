@@ -91,14 +91,15 @@ export function run(context, { cmd, text, icon }) {
   }
   context.commit('executions/startedCmd', null, { root: true })
 
-  const os = require('os')
   const spawn = require('child_process').spawn
   let subprocess
 
-  if (os.type() === 'Linux') {
-    subprocess = spawn('bash', ['-c', cmd])
-  } else if (os.type() === 'Windows_NT') {
-    subprocess = spawn('cmd', ['/C', cmd])
+  const [command, ...args] = cmd.split(' ')
+
+  if (process.platform === 'linux') {
+    subprocess = spawn(command, args, { shell: '/bin/bash' })
+  } else if (process.platform === 'win32') {
+    subprocess = spawn(command, args, { shell: true })
   }
 
   context.commit(
