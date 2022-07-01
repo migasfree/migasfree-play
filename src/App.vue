@@ -2,13 +2,7 @@
   <div id="q-app">
     <div
       v-if="$store.state.ui.isLoading"
-      class="
-        row
-        window-height window-width
-        justify-center
-        items-center
-        content-center
-      "
+      class="row window-height window-width justify-center items-center content-center"
     >
       <div class="col-12 text-center q-ma-md">
         <img id="logo" src="img/migasfree-play.svg" width="200" />
@@ -39,11 +33,14 @@
 
 <script>
 import { useStore } from 'vuex'
+import { useMeta } from 'quasar'
 
 export default {
   name: 'App',
   setup() {
     const store = useStore()
+
+    useMeta({ title: 'Migasfree Play' })
 
     store.dispatch('app/init')
   },

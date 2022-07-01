@@ -9,16 +9,19 @@
 </template>
 
 <script>
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
 import Info from 'components/Info.vue'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Info')
-    }
-  },
   components: {
-    Info
-  }
+    Info,
+  },
+  setup() {
+    const { $gettext } = useGettext()
+
+    useMeta({ title: $gettext('Info') })
+  },
 }
 </script>

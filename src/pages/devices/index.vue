@@ -27,20 +27,20 @@
 
 <script>
 import { useStore } from 'vuex'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
 
 import Devices from 'components/Devices.vue'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Devices'),
-    }
-  },
   components: {
     Devices,
   },
   setup() {
     const store = useStore()
+    const { $gettext } = useGettext()
+
+    useMeta({ title: $gettext('Devices') })
 
     const updateDevices = async () => {
       store.commit('ui/updating')

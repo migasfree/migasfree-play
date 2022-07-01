@@ -9,16 +9,19 @@
 </template>
 
 <script>
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
 import Executions from 'components/Executions.vue'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Details')
-    }
-  },
   components: {
-    Executions
-  }
+    Executions,
+  },
+  setup() {
+    const { $gettext } = useGettext()
+
+    useMeta({ title: $gettext('Details') })
+  },
 }
 </script>

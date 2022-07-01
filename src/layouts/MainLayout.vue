@@ -147,6 +147,7 @@ import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
 import { setInterval } from 'timers'
 
 import { urlHelp } from 'config/app.conf'
@@ -154,9 +155,6 @@ import Menu from 'components/Menu.vue'
 
 export default {
   name: 'MainLayout',
-  meta: {
-    titleTemplate: (title) => `${title} | Migasfree Play`,
-  },
   components: {
     Menu,
   },
@@ -165,6 +163,8 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const { $gettext } = useGettext()
+
+    useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
 
     const computerText = computed(() => {
       const computer = store.getters['computer/getComputer']
