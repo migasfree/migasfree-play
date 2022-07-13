@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: easygettext\n"
-"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: easygettext\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: src/components/Login.vue:16 src/components/Login.vue:33
 msgid "* Required"
@@ -26,8 +26,7 @@ msgid "All available"
 msgstr "Todos los disponibles"
 
 #: src/components/Menu.vue:19 src/layouts/MainLayout.vue:33
-#: src/pages/apps/index.vue:36 src/pages/apps/index.vue:4
-#: src/store/app/actions.js:43
+#: src/pages/apps/index.vue:4 src/pages/apps/index.vue:43
 msgid "Apps"
 msgstr "Aplicaciones"
 
@@ -47,10 +46,6 @@ msgstr "Disponible"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/store/app/actions.js:46
-msgid "Categories"
-msgstr "Categorías"
-
 #: src/components/AppFilter.vue:20
 msgid "Category"
 msgstr "Categoría"
@@ -67,23 +62,13 @@ msgstr "Comunicar etiquetas al servidor"
 msgid "Communicating..."
 msgstr "Comunicando..."
 
-#: src/store/app/actions.js:36
-msgid "Computer"
-msgstr "Ordenador"
-
-#: src/store/app/actions.js:100
-msgid "Credentials are not valid. Review app settings."
-msgstr ""
-"Las credenciales no son válidas. Revise la configuración de la aplicación."
-
 #: src/components/Menu.vue:55 src/layouts/MainLayout.vue:72
-#: src/pages/details/index.vue:17 src/pages/details/index.vue:4
+#: src/pages/details/index.vue:24 src/pages/details/index.vue:4
 msgid "Details"
 msgstr "Detalles"
 
 #: src/components/Menu.vue:31 src/layouts/MainLayout.vue:46
-#: src/pages/devices/index.vue:36 src/pages/devices/index.vue:4
-#: src/store/app/actions.js:55
+#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:43
 msgid "Devices"
 msgstr "Dispositivos"
 
@@ -99,7 +84,7 @@ msgstr "Hardware"
 msgid "Help"
 msgstr "Ayuda"
 
-#: src/App.vue:32
+#: src/App.vue:26
 msgid "Impossible to continue."
 msgstr "Imposible continuar."
 
@@ -108,7 +93,7 @@ msgid "In repair"
 msgstr "En reparación"
 
 #: src/components/Menu.vue:67 src/layouts/MainLayout.vue:85
-#: src/pages/info/index.vue:17 src/pages/info/index.vue:4
+#: src/pages/info/index.vue:24 src/pages/info/index.vue:4
 msgid "Info"
 msgstr "Información"
 
@@ -140,7 +125,7 @@ msgstr "Idioma"
 msgid "Last synchronization"
 msgstr "Última sincronización"
 
-#: src/App.vue:22
+#: src/App.vue:16
 msgid "Loading data"
 msgstr "Cargando datos"
 
@@ -172,21 +157,12 @@ msgstr "Datos de red"
 msgid "Not show details when synchronizing"
 msgstr "No mostrar detalles durante la sincronización"
 
-#: src/store/app/actions.js:49
-msgid "Packages"
-msgstr "Paquetes"
-
 #: src/components/Login.vue:38
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/store/executions/actions.js:90
-msgid "Please wait, other process is running!!!"
-msgstr "¡Espere por favor, otro proceso está ejecutándose!"
-
 #: src/components/Menu.vue:82 src/layouts/MainLayout.vue:97
-#: src/pages/preferences/index.vue:17 src/pages/preferences/index.vue:4
-#: src/store/app/actions.js:18
+#: src/pages/preferences/index.vue:24 src/pages/preferences/index.vue:4
 msgid "Preferences"
 msgstr "Preferencias"
 
@@ -206,10 +182,6 @@ msgstr "Buscar en nombre o descripción"
 msgid "Search in name or model or manufacturer"
 msgstr "Buscar en nombre o modelo o fabricante"
 
-#: src/store/app/actions.js:26
-msgid "Server"
-msgstr "Servidor"
-
 #: src/components/Tags.vue:115
 msgid "Set Tags"
 msgstr "Establecer etiquetas"
@@ -226,21 +198,29 @@ msgstr "Estableciendo etiquetas..."
 msgid "Show details when synchronizing"
 msgstr "Mostrar detalles durante la sincronización"
 
-#: src/layouts/MainLayout.vue:185
+#: src/components/Preferences.vue:37
+msgid "Switch to Dark mode"
+msgstr "Cambiar al modo oscuro"
+
+#: src/components/Preferences.vue:36
+msgid "Switch to Light mode"
+msgstr "Cambiar al modo luminoso"
+
+#: src/layouts/MainLayout.vue:186
 msgid "Synchronization"
 msgstr "Sincronización"
 
-#: src/layouts/MainLayout.vue:138
+#: src/layouts/MainLayout.vue:139
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
-#: src/layouts/MainLayout.vue:178
+#: src/layouts/MainLayout.vue:179
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
 #: src/components/Menu.vue:43 src/components/Tags.vue:9
-#: src/layouts/MainLayout.vue:59 src/pages/tags/index.vue:36
-#: src/pages/tags/index.vue:4 src/store/app/actions.js:60
+#: src/layouts/MainLayout.vue:59 src/pages/tags/index.vue:4
+#: src/pages/tags/index.vue:43
 msgid "Tags"
 msgstr "Etiquetas"
 
@@ -252,10 +232,6 @@ msgstr "Texto copiado al portapapeles"
 #: src/components/Executions.vue:19 src/components/Tags.vue:71
 msgid "There are not items to show."
 msgstr "No hay elementos para mostrar."
-
-#: src/store/app/actions.js:132 src/store/app/actions.js:78
-msgid "There is no connection to the server"
-msgstr "No hay conexión con el servidor"
 
 #: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:42
 msgid "Uninstall"
@@ -286,13 +262,33 @@ msgstr "Usuario"
 msgid "User with privileges on the computer"
 msgstr "Usuario con privilegios en el ordenador"
 
-#: src/store/app/actions.js:160
-msgid "User without privileges"
-msgstr "Usuario sin privilegios"
-
 #: src/layouts/MainLayout.vue:16
 msgid "View Computer"
 msgstr "Ver ordenador"
+
+#~ msgid "Categories"
+#~ msgstr "Categorías"
+
+#~ msgid "Computer"
+#~ msgstr "Ordenador"
+
+#~ msgid "Credentials are not valid. Review app settings."
+#~ msgstr "Las credenciales no son válidas. Revise la configuración de la aplicación."
+
+#~ msgid "Packages"
+#~ msgstr "Paquetes"
+
+#~ msgid "Please wait, other process is running!!!"
+#~ msgstr "¡Espere por favor, otro proceso está ejecutándose!"
+
+#~ msgid "Server"
+#~ msgstr "Servidor"
+
+#~ msgid "There is no connection to the server"
+#~ msgstr "No hay conexión con el servidor"
+
+#~ msgid "User without privileges"
+#~ msgstr "Usuario sin privilegios"
 
 #~ msgid "Search"
 #~ msgstr "Buscar"
