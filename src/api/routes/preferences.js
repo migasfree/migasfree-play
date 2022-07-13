@@ -17,7 +17,8 @@ const settings = {
   show_details: true,
   show_preferences: true,
   show_info: true,
-  show_help: true
+  show_help: true,
+  dark_mode: false,
 }
 
 router.get('/', (req, res) => {
