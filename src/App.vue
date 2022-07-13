@@ -33,12 +33,15 @@
 
 <script>
 import { useStore } from 'vuex'
-import { useMeta } from 'quasar'
+import { useMeta, useQuasar } from 'quasar'
 
 export default {
   name: 'App',
   setup() {
     const store = useStore()
+    const $q = useQuasar()
+
+    $q.dark.set($q.localStorage.getItem('darkMode') || false)
 
     useMeta({ title: 'Migasfree Play' })
 
