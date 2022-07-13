@@ -1,5 +1,5 @@
 import { internalApi } from 'config/app.conf'
-import { Dark } from 'quasar'
+import { Dark, LocalStorage } from 'quasar'
 
 export async function readPreferences(context) {
   await this.$axios
@@ -8,6 +8,7 @@ export async function readPreferences(context) {
       context.commit('setPreferences', response.data)
       this.$gettext.current = response.data.language
       Dark.set(response.data.dark_mode)
+      LocalStorage.set('darkMode', response.data.dark_mode)
     })
     .catch((error) => {
       if (!error.response) {
@@ -35,6 +36,11 @@ export function savePreferences(context) {
       show_info: context.state.showInfo,
       show_help: context.state.showHelp,
       dark_mode: context.state.darkMode,
+      show_dark_mode: context.state.showDarkMode,
+    })
+    .then(() => {
+      Dark.set(context.state.darkMode)
+      LocalStorage.set('darkMode', context.state.darkMode)
     })
     .catch((error) => {
       context.dispatch('ui/notifyError', error, { root: true })
