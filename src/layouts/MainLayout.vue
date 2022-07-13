@@ -130,7 +130,7 @@
           ref="sync"
           fab
           icon="mdi-play"
-          color="secondary"
+          :color="$q.dark.isActive ? 'indigo' : 'secondary'"
           :loading="$store.state.executions.isRunningCommand"
           :disabled="$store.state.executions.isRunningCommand"
           @click="synchronize"
