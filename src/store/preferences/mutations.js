@@ -10,6 +10,7 @@ export function setPreferences(state, value) {
   state.showInfo = value.show_info
   state.showHelp = value.show_help
   state.darkMode = value.dark_mode
+  state.showDarkMode = value.show_dark_mode
 }
 
 export function setLanguage(state, value) {
