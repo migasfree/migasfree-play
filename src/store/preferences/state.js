@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     language: 'es_ES',
     showComputerLink: true,
@@ -9,6 +9,7 @@ export default function() {
     showDetails: true,
     showPreferences: true,
     showInfo: true,
-    showHelp: true
+    showHelp: true,
+    darkMode: false,
   }
 }
