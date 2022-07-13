@@ -137,7 +137,7 @@
 
       <q-card-actions align="center" class="print-hide">
         <q-btn
-          color="positive"
+          :color="$q.dark.isActive ? 'indigo' : 'positive'"
           icon="mdi-printer"
           class="q-mx-lg"
           @click="printLabel"
