@@ -27,6 +27,20 @@
               @update:model-value="setShowSyncDetails"
             />
           </p>
+
+          <p>
+            <q-toggle
+              v-model="darkMode"
+              :label="
+                darkMode
+                  ? $gettext('Switch to Light mode')
+                  : $gettext('Switch to Dark mode')
+              "
+              :false-value="false"
+              :true-value="true"
+              @update:model-value="setDarkMode"
+            />
+          </p>
         </q-card-section>
       </q-card>
     </div>
@@ -37,15 +51,18 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useGettext } from 'vue3-gettext'
+import { useQuasar } from 'quasar'
 
 export default {
   name: 'Preferences',
   setup() {
     const store = useStore()
     const i18n = useGettext()
+    const $q = useQuasar()
 
     const language = ref(null)
     const showSyncDetails = ref(false)
+    const darkMode = ref(false)
 
     const availableLocales = computed(() => {
       let items = []
@@ -71,19 +88,28 @@ export default {
       store.dispatch('preferences/savePreferences')
     }
 
+    const setDarkMode = () => {
+      store.commit('preferences/setDarkMode', darkMode.value)
+      store.dispatch('preferences/savePreferences')
+      $q.dark.set(darkMode.value)
+    }
+
     onMounted(() => {
       language.value = availableLocales.value.find(
         (x) => x.id === store.state.preferences.language
       )
       showSyncDetails.value = store.state.preferences.showSyncDetails
+      darkMode.value = store.state.preferences.darkMode
     })
 
     return {
       language,
       showSyncDetails,
+      darkMode,
       availableLocales,
       setLanguage,
       setShowSyncDetails,
+      setDarkMode,
     }
   },
 }
