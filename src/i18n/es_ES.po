@@ -206,15 +206,15 @@ msgstr "Cambiar al modo oscuro"
 msgid "Switch to Light mode"
 msgstr "Cambiar al modo luminoso"
 
-#: src/layouts/MainLayout.vue:186
+#: src/layouts/MainLayout.vue:185
 msgid "Synchronization"
 msgstr "Sincronización"
 
-#: src/layouts/MainLayout.vue:139
+#: src/layouts/MainLayout.vue:138
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
-#: src/layouts/MainLayout.vue:179
+#: src/layouts/MainLayout.vue:178
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
@@ -273,7 +273,8 @@ msgstr "Ver ordenador"
 #~ msgstr "Ordenador"
 
 #~ msgid "Credentials are not valid. Review app settings."
-#~ msgstr "Las credenciales no son válidas. Revise la configuración de la aplicación."
+#~ msgstr ""
+#~ "Las credenciales no son válidas. Revise la configuración de la aplicación."
 
 #~ msgid "Packages"
 #~ msgstr "Paquetes"

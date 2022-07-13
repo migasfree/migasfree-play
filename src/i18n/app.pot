@@ -209,15 +209,15 @@ msgstr ""
 msgid "Switch to Light mode"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:186
+#: src/layouts/MainLayout.vue:185
 msgid "Synchronization"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:139
+#: src/layouts/MainLayout.vue:138
 msgid "Synchronize Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:179
+#: src/layouts/MainLayout.vue:178
 msgid "Synchronizing..."
 msgstr ""
 
