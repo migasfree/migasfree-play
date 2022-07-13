@@ -19,6 +19,7 @@ const settings = {
   show_info: true,
   show_help: true,
   dark_mode: false,
+  show_dark_mode: true,
 }
 
 router.get('/', (req, res) => {
