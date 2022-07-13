@@ -11,5 +11,6 @@ export default function () {
     showInfo: true,
     showHelp: true,
     darkMode: false,
+    showDarkMode: true,
   }
 }
