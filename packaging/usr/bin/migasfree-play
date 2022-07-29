@@ -47,6 +47,12 @@ print(get_config(CONF_FILE, 'client').get('server', 'localhost'), end='')
 "
 _SERVER=$($_PYTHON -c "$_SRC")
 
+# server with :443 port need https protocol
+if [[ $_SERVER =~ ":443" ]]
+then
+    _SERVER="https://$_SERVER"
+fi
+
 while true
 do
     _STATUS=$(curl --write-out %{http_code} --silent --output /dev/null "$_SERVER") || :
