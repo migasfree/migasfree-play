@@ -63,7 +63,7 @@ export async function init(context) {
 
 export async function serverInfo(context) {
   await this.$axios
-    .post(`${context.state.initialUrl.public}${publicApi.serverInfo}`)
+    .get(`${context.state.initialUrl.public}${publicApi.serverInfo}`)
     .then((response) => {
       context.commit('setServerVersion', response.data.version)
     })
