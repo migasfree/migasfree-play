@@ -1,20 +1,21 @@
-export default function() {
+export default function () {
   return {
     protocol: '',
     host: '',
     initialUrl: {
       baseDomain: '',
       public: '',
-      token: ''
+      token: '',
     },
     tokenValue: '',
     tokenChecked: false,
     serverVersion: '',
+    organization: '',
     apps: [],
     user: {
-      isPrivileged: false
+      isPrivileged: false,
     },
     status: '',
-    stopApp: false
+    stopApp: false,
   }
 }
