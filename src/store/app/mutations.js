@@ -18,6 +18,10 @@ export function setServerVersion(state, value) {
   state.serverVersion = value
 }
 
+export function setOrganization(state, value) {
+  state.organization = value
+}
+
 export function setServerHost(state, value) {
   state.host = value.server
 }
