@@ -22,6 +22,10 @@ export function host(state) {
   return state.host
 }
 
+export function organization(state) {
+  return state.organization
+}
+
 export function status(state) {
   return state.status
 }
