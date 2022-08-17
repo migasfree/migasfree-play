@@ -66,6 +66,7 @@ export async function serverInfo(context) {
     .get(`${context.state.initialUrl.public}${publicApi.serverInfo}`)
     .then((response) => {
       context.commit('setServerVersion', response.data.version)
+      context.commit('setOrganization', response.data.organization)
     })
     .catch((error) => {
       if (!error.response) {
