@@ -94,6 +94,11 @@
             {{ $store.getters['app/host'] }}
           </div>
 
+          <p v-if="$store.getters['app/organization']">
+            <q-icon name="mdi-bank" />
+            {{ $store.getters['app/organization'] }}
+          </p>
+
           <p>
             <q-icon name="mdi-sitemap" />
             {{ computer.project }}
