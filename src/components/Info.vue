@@ -14,19 +14,23 @@
       </p>
 
       <q-card v-if="computer.user" flat bordered class="half q-ma-md">
-        <q-card-section>
-          <div class="text-h6 q-mb-md">
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-account" />
-            {{ computer.user }}
-          </div>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{ computer.user }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-calendar-check" />
-            {{ syncEndDate }}
-          </p>
+          </q-item-section>
 
-          <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
-        </q-card-section>
+          <q-item-section class="text-h6">{{ syncEndDate }}</q-item-section>
+        </q-item>
+
+        <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
       </q-card>
 
       <q-card
@@ -35,29 +39,43 @@
         bordered
         class="half q-ma-md"
       >
-        <q-card-section>
-          <div class="text-h6 q-mb-md">
+        <q-item>
+          <q-item-section avatar>
             <q-icon :name="productIcon" />
-            {{ computer.data.product }}
-          </div>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{
+            computer.data.product
+          }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon :name="cpuIcon" />
-            {{ computer.data.cpu }}
-          </p>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{
+            computer.data.cpu
+          }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-memory" />
-            {{ computerRam }}
-          </p>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{ computerRam }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-harddisk" />
-            {{ computerStorage }}
-          </p>
+          </q-item-section>
 
-          <q-tooltip>{{ $gettext('Hardware') }}</q-tooltip>
-        </q-card-section>
+          <q-item-section class="text-h6">{{ computerStorage }}</q-item-section>
+        </q-item>
+
+        <q-tooltip>{{ $gettext('Hardware') }}</q-tooltip>
       </q-card>
 
       <q-card
@@ -66,56 +84,87 @@
         bordered
         class="half q-ma-md"
       >
-        <q-card-section>
-          <div class="text-h6 q-mb-md">
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-information" />
-            {{ computer.data.fqdn }}
-          </div>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{
+            computer.data.fqdn
+          }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-ip-network" />
-            {{ computer.data.ip_address }}
-            / {{ computer.mask }} ({{ computer.network }})
-          </p>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6"
+            >{{ computer.data.ip_address }} / {{ computer.mask }} ({{
+              computer.network
+            }})</q-item-section
+          >
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-swap-vertical" />
-            {{ computerMac }}
-          </p>
+          </q-item-section>
 
-          <q-tooltip>{{ $gettext('Network Data') }}</q-tooltip>
-        </q-card-section>
+          <q-item-section class="text-h6">{{ computerMac }}</q-item-section>
+        </q-item>
+
+        <q-tooltip>{{ $gettext('Network Data') }}</q-tooltip>
       </q-card>
 
       <q-card flat bordered class="half q-ma-md">
-        <q-card-section>
-          <div class="text-h6 q-mb-md">
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-server" />
-            {{ $store.getters['app/host'] }}
-          </div>
+          </q-item-section>
 
-          <p v-if="$store.getters['app/organization']">
+          <q-item-section class="text-h6">{{
+            $store.getters['app/host']
+          }}</q-item-section>
+        </q-item>
+
+        <q-item v-if="$store.getters['app/organization']">
+          <q-item-section avatar>
             <q-icon name="mdi-bank" />
-            {{ $store.getters['app/organization'] }}
-          </p>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{
+            $store.getters['app/organization']
+          }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-sitemap" />
-            {{ computer.project }}
-          </p>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{
+            computer.project
+          }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon name="mdi-pound" />
-            {{ computerId }}
-          </p>
+          </q-item-section>
 
-          <p>
+          <q-item-section class="text-h6">{{ computerId }}</q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
             <q-icon :name="statusIcon" />
-            {{ statusText }}
-          </p>
+          </q-item-section>
 
-          <q-tooltip>{{ $gettext('Migasfree Data') }}</q-tooltip>
-        </q-card-section>
+          <q-item-section class="text-h6">{{ statusText }}</q-item-section>
+        </q-item>
+
+        <q-tooltip>{{ $gettext('Migasfree Data') }}</q-tooltip>
       </q-card>
     </div>
   </div>
