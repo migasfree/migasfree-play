@@ -30,7 +30,7 @@ export async function computerId(context) {
       context.commit('setComputerLink', {
         protocol: context.rootState.app.protocol,
         host: context.rootState.app.host,
-        cid: response.data
+        cid: response.data,
       })
     })
     .catch((error) => {
@@ -39,30 +39,32 @@ export async function computerId(context) {
 }
 
 export async function computerData(context) {
-  await this.$axios
-    .get(
-      `${context.rootState.app.initialUrl.token}${tokenApi.computer}${context.state.cid}/`,
-      { headers: { Authorization: context.rootState.app.tokenValue } }
-    )
-    .then((response) => {
-      context.commit('setComputerData', response.data)
-    })
-    .catch((error) => {
-      context.dispatch('ui/notifyError', error, { root: true })
-    })
+  if (context.state.cid)
+    await this.$axios
+      .get(
+        `${context.rootState.app.initialUrl.token}${tokenApi.computer}${context.state.cid}/`,
+        { headers: { Authorization: context.rootState.app.tokenValue } }
+      )
+      .then((response) => {
+        context.commit('setComputerData', response.data)
+      })
+      .catch((error) => {
+        context.dispatch('ui/notifyError', error, { root: true })
+      })
 }
 
 export async function computerAttribute(context) {
-  await this.$axios
-    .get(
-      `${context.rootState.app.initialUrl.token}${tokenApi.cidAttribute}${context.state.cid}`,
-      { headers: { Authorization: context.rootState.app.tokenValue } }
-    )
-    .then((response) => {
-      if (response.data.count === 1)
-        context.commit('setComputerAttribute', response.data.results[0].id)
-    })
-    .catch((error) => {
-      context.dispatch('ui/notifyError', error, { root: true })
-    })
+  if (context.state.cid)
+    await this.$axios
+      .get(
+        `${context.rootState.app.initialUrl.token}${tokenApi.cidAttribute}${context.state.cid}`,
+        { headers: { Authorization: context.rootState.app.tokenValue } }
+      )
+      .then((response) => {
+        if (response.data.count === 1)
+          context.commit('setComputerAttribute', response.data.results[0].id)
+      })
+      .catch((error) => {
+        context.dispatch('ui/notifyError', error, { root: true })
+      })
 }
