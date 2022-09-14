@@ -189,22 +189,23 @@ export async function serverHost(context) {
 export async function getApps(context) {
   const computer = context.rootGetters['computer/getComputer']
 
-  await this.$axios
-    .get(
-      `${context.state.initialUrl.token}${tokenApi.apps}${computer.cid}&page_size=${Number.MAX_SAFE_INTEGER}`,
-      {
-        headers: {
-          Authorization: context.state.tokenValue,
-        },
-      }
-    )
-    .then((response) => {
-      context.commit('setApps', {
-        value: response.data.results,
-        project: computer.project,
+  if (computer.cid)
+    await this.$axios
+      .get(
+        `${context.state.initialUrl.token}${tokenApi.apps}${computer.cid}&page_size=${Number.MAX_SAFE_INTEGER}`,
+        {
+          headers: {
+            Authorization: context.state.tokenValue,
+          },
+        }
+      )
+      .then((response) => {
+        context.commit('setApps', {
+          value: response.data.results,
+          project: computer.project,
+        })
       })
-    })
-    .catch((error) => {
-      context.dispatch('ui/notifyError', error, { root: true })
-    })
+      .catch((error) => {
+        context.dispatch('ui/notifyError', error, { root: true })
+      })
 }
