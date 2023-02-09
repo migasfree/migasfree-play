@@ -3,13 +3,15 @@ const express = require('express')
 
 const router = express.Router()
 
+const options = { env: { MIGASFREE_CLIENT_DEBUG: 0 } }
+
 router.get('/id', (req, res) => {
   const code = `
 from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().get_computer_id())`
 
-  PythonShell.runString(code, null, (err, results) => {
+  PythonShell.runString(code, options, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
     res.send(results[0])

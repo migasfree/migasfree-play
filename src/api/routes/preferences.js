@@ -7,6 +7,8 @@ const express = require('express')
 const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
 const router = express.Router()
 
+const options = { env: { MIGASFREE_CLIENT_DEBUG: 0 } }
+
 const settings = {
   language: 'es_ES',
   show_computer_link: true,
@@ -71,7 +73,7 @@ from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().api_protocol())`
 
-  PythonShell.runString(code, null, (err, results) => {
+  PythonShell.runString(code, options, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
     res.send(results[0])
