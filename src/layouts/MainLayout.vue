@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="print-hide">
+    <q-header unelevated class="print-hide">
       <q-toolbar>
         <q-btn
           v-if="$store.state.preferences.showComputerLink"
