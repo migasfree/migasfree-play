@@ -11,14 +11,7 @@ export async function readPreferences(context) {
       LocalStorage.set('darkMode', response.data.dark_mode)
     })
     .catch((error) => {
-      if (!error.response) {
-        context.commit(
-          'app/setStatus',
-          this.$gettext.$gettext('There is no connection to the server'),
-          { root: true }
-        )
-        context.commit('app/stopApp', null, { root: true })
-      } else context.dispatch('ui/notifyError', error, { root: true })
+      context.dispatch('ui/notifyError', error, { root: true })
     })
 }
 
