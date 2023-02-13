@@ -3,14 +3,10 @@ import axios from 'axios'
 
 export const cancelSource = axios.CancelToken.source()
 
-const axiosInstance = axios.create({
-  paramsSerializer: (params) => {
-    return qs.stringify(params, { arrayFormat: 'repeat' })
-  },
-})
+const api = axios.create()
 
 export default boot(({ app, store }) => {
-  axiosInstance.interceptors.request.use(
+  api.interceptors.request.use(
     (config) => {
       /* const authToken = store.getters['app/token']
 
@@ -37,7 +33,7 @@ export default boot(({ app, store }) => {
     }
   )
 
-  axiosInstance.interceptors.response.use(
+  api.interceptors.response.use(
     (response) => {
       console.log('[ RESPONSE ]', response.config.url, response)
       return response
@@ -48,6 +44,7 @@ export default boot(({ app, store }) => {
       if ('response' in error)
         console.error(error.response.status, error.message)
       else console.error(error)
+
       return Promise.reject(error)
     }
   )
@@ -58,11 +55,11 @@ export default boot(({ app, store }) => {
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file
 
-  app.config.globalProperties.$api = axiosInstance
+  app.config.globalProperties.$api = api
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
 
-  store.$axios = axiosInstance
+  store.$axios = api
 })
 
-export { axios, axiosInstance }
+export { axios, api }
