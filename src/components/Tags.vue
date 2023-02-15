@@ -41,8 +41,8 @@
             class="q-ma-md q-px-sm"
             icon="mdi-comment-processing"
             size="lg"
-            :loading="$store.state.executions.isRunningCommand"
-            :disabled="$store.state.executions.isRunningCommand"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
             @click="communicate"
             ><q-tooltip>{{
               $gettext('Communicate tags to the server')
@@ -54,8 +54,8 @@
             class="q-px-sm"
             icon="mdi-cog-transfer"
             size="lg"
-            :loading="$store.state.executions.isRunningCommand"
-            :disabled="$store.state.executions.isRunningCommand"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
             @click="setTags"
             ><q-tooltip>{{
               $gettext('Set tags at the server')
@@ -76,14 +76,22 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
+
+import { useExecutionsStore } from 'src/stores/executions'
+import { useTagsStore } from 'src/stores/tags'
+import { useUiStore } from 'src/stores/ui'
 
 export default {
   name: 'Tags',
   setup() {
-    const store = useStore()
     const { $gettext } = useGettext()
+
+    const executionsStore = useExecutionsStore()
+    const tagsStore = useTagsStore()
+    const uiStore = useUiStore()
+    const { isRunningCommand } = storeToRefs(executionsStore)
 
     const tags = ref([])
     const options = ref([])
@@ -94,13 +102,13 @@ export default {
     }
 
     const updateTags = () => {
-      store.commit('tags/setAssignedTags', tags.value)
+      tagsStore.setAssignedTags(tags.value)
     }
 
     const communicate = () => {
-      store.dispatch('ui/notifyInfo', $gettext('Communicating...'))
+      uiStore.notifyInfo($gettext('Communicating...'))
 
-      store.dispatch('executions/run', {
+      executionsStore.run({
         cmd: `migasfree --quiet tags --communicate ${tags.value.join(' ')}`,
         text: $gettext('Communicate Tags'),
         icon: 'mdi-comment-processing',
@@ -108,9 +116,9 @@ export default {
     }
 
     const setTags = () => {
-      store.dispatch('ui/notifyInfo', $gettext('Setting Tags...'))
+      uiStore.notifyInfo($gettext('Setting Tags...'))
 
-      store.dispatch('executions/run', {
+      executionsStore.run({
         cmd: `migasfree --quiet tags --set ${tags.value.join(' ')}`,
         text: $gettext('Set Tags'),
         icon: 'mdi-cog-transfer',
@@ -134,19 +142,20 @@ export default {
     }
 
     onMounted(() => {
-      const optionsTmp = new Set(store.state.tags.assigned)
+      const optionsTmp = new Set(tagsStore.assigned)
 
-      Object.entries(store.state.tags.available).map(([key, val]) => {
+      Object.entries(tagsStore.available).map(([key, val]) => {
         val.forEach((element) => optionsTmp.add(element))
       })
 
       allOptions.value = Array.from(optionsTmp).sort()
       options.value = allOptions.value
 
-      tags.value = store.state.tags.assigned
+      tags.value = tagsStore.assigned
     })
 
     return {
+      isRunningCommand,
       tags,
       options,
       allOptions,
