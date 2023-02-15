@@ -1,8 +1,5 @@
 <template>
-  <q-expansion-item
-    popup
-    :default-opened="id === $store.state.executions.lastId ? true : false"
-  >
+  <q-expansion-item popup :default-opened="id === lastId ? true : false">
     <template #header>
       <q-item-section v-if="icon" avatar>
         <q-avatar>
@@ -35,10 +32,13 @@
 
 <script>
 import { watch } from 'vue'
-import { useStore } from 'vuex'
+import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard, date } from 'quasar'
 import { htmlToText } from 'html-to-text'
+
+import { useExecutionsStore } from 'src/stores/executions'
+import { useUiStore } from 'src/stores/ui'
 
 export default {
   name: 'ExecutionDetail',
@@ -49,8 +49,11 @@ export default {
     icon: { type: String, required: false, default: '' },
   },
   setup(props) {
-    const store = useStore()
     const { $gettext } = useGettext()
+
+    const uiStore = useUiStore()
+    const executionsStore = useExecutionsStore()
+    const { lastId } = storeToRefs(executionsStore)
 
     watch(
       () => props.text,
@@ -65,11 +68,11 @@ export default {
 
     const copyDetails = () => {
       copyToClipboard(htmlToText(props.text)).then(() => {
-        store.dispatch('ui/notifySuccess', $gettext('Text copied to clipboard'))
+        uiStore.notifySuccess($gettext('Text copied to clipboard'))
       })
     }
 
-    return { showDate, copyDetails }
+    return { lastId, showDate, copyDetails }
   },
 }
 </script>
