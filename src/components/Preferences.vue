@@ -49,14 +49,15 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import { useGettext } from 'vue3-gettext'
+
+import { usePreferencesStore } from 'src/stores/preferences'
 
 export default {
   name: 'Preferences',
   setup() {
-    const store = useStore()
     const i18n = useGettext()
+    const preferencesStore = usePreferencesStore()
 
     const language = ref(null)
     const showSyncDetails = ref(false)
@@ -77,28 +78,28 @@ export default {
     })
 
     const setLanguage = () => {
-      store.commit('preferences/setLanguage', language.value.id)
-      store.dispatch('preferences/savePreferences')
+      preferencesStore.setLanguage(language.value.id)
+      preferencesStore.savePreferences()
       i18n.current = language.value.id
     }
 
     const setShowSyncDetails = () => {
-      store.commit('preferences/setShowSyncDetails', showSyncDetails.value)
-      store.dispatch('preferences/savePreferences')
+      preferencesStore.setShowSyncDetails(showSyncDetails.value)
+      preferencesStore.savePreferences()
     }
 
     const setDarkMode = () => {
-      store.commit('preferences/setDarkMode', darkMode.value)
-      store.dispatch('preferences/savePreferences')
+      preferencesStore.setDarkMode(darkMode.value)
+      preferencesStore.savePreferences()
     }
 
     onMounted(() => {
       language.value = availableLocales.value.find(
-        (x) => x.id === store.state.preferences.language
+        (x) => x.id === preferencesStore.language
       )
-      showSyncDetails.value = store.state.preferences.showSyncDetails
-      darkMode.value = store.state.preferences.darkMode
-      showDarkMode.value = store.state.preferences.showDarkMode
+      showSyncDetails.value = preferencesStore.showSyncDetails
+      darkMode.value = preferencesStore.darkMode
+      showDarkMode.value = preferencesStore.showDarkMode
     })
 
     return {
