@@ -7,15 +7,15 @@
         size="sm"
         flat
         color="primary"
-        :loading="$store.state.ui.isUpdating"
-        :disabled="$store.state.ui.isUpdating"
+        :loading="isUpdating"
+        :disabled="isUpdating"
         @click="updateTags"
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
     </q-breadcrumbs>
 
-    <div v-if="$store.state.ui.isUpdating" class="row q-ma-xl">
+    <div v-if="isUpdating" class="row q-ma-xl">
       <div class="col-12 text-center">
         <q-spinner color="primary" size="6em" />
       </div>
@@ -26,30 +26,36 @@
 </template>
 
 <script>
-import { useStore } from 'vuex'
+import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import Tags from 'components/Tags'
+
+import { useTagsStore } from 'src/stores/tags'
+import { useUiStore } from 'src/stores/ui'
 
 export default {
   components: {
     Tags,
   },
   setup() {
-    const store = useStore()
     const { $gettext } = useGettext()
+
+    const tagsStore = useTagsStore()
+    const uiStore = useUiStore()
+    const { isUpdating } = storeToRefs(uiStore)
 
     useMeta({ title: $gettext('Tags') })
 
     const updateTags = async () => {
-      store.commit('ui/updating')
-      await store.dispatch('tags/getAvailableTags')
-      await store.dispatch('tags/getAssignedTags')
-      store.commit('ui/updatingFinished')
+      uiStore.updating()
+      await tagsStore.getAvailableTags()
+      await tagsStore.getAssignedTags()
+      uiStore.updatingFinished()
     }
 
-    return { updateTags }
+    return { isUpdating, updateTags }
   },
 }
 </script>
