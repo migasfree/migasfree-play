@@ -8,7 +8,7 @@
     </template>
     <q-list bordered separator>
       <q-item
-        v-if="$store.state.preferences.showApps && $route.name !== 'apps'"
+        v-if="preferencesStore.showApps && $route.name !== 'apps'"
         clickable
         @click="$router.push({ name: 'apps' })"
       >
@@ -20,7 +20,7 @@
       </q-item>
 
       <q-item
-        v-if="$store.state.preferences.showDevices && $route.name !== 'devices'"
+        v-if="preferencesStore.showDevices && $route.name !== 'devices'"
         clickable
         @click="$router.push({ name: 'devices' })"
       >
@@ -32,7 +32,7 @@
       </q-item>
 
       <q-item
-        v-if="$store.state.preferences.showTags && $route.name !== 'tags'"
+        v-if="preferencesStore.showTags && $route.name !== 'tags'"
         clickable
         @click="$router.push({ name: 'tags' })"
       >
@@ -44,7 +44,7 @@
       </q-item>
 
       <q-item
-        v-if="$store.state.preferences.showDetails && $route.name !== 'details'"
+        v-if="preferencesStore.showDetails && $route.name !== 'details'"
         clickable
         @click="$router.push({ name: 'details' })"
       >
@@ -56,7 +56,7 @@
       </q-item>
 
       <q-item
-        v-if="$store.state.preferences.showInfo && $route.name !== 'info'"
+        v-if="preferencesStore.showInfo && $route.name !== 'info'"
         clickable
         @click="$router.push({ name: 'info' })"
       >
@@ -68,10 +68,7 @@
       </q-item>
 
       <q-item
-        v-if="
-          $store.state.preferences.showPreferences &&
-          $route.name !== 'preferences'
-        "
+        v-if="preferencesStore.showPreferences && $route.name !== 'preferences'"
         clickable
         @click="$router.push({ name: 'preferences' })"
       >
@@ -83,7 +80,7 @@
       </q-item>
 
       <q-item
-        v-if="$store.state.preferences.showHelp"
+        v-if="preferencesStore.showHelp"
         clickable
         tag="a"
         target="_blank"
@@ -102,9 +99,13 @@
 <script>
 import { urlHelp } from 'config/app.conf'
 
+import { usePreferencesStore } from 'src/stores/preferences'
+
 export default {
   setup() {
-    return { urlHelp }
+    const preferencesStore = usePreferencesStore()
+
+    return { urlHelp, preferencesStore }
   },
 }
 </script>
