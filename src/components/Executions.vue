@@ -1,10 +1,7 @@
 <template>
-  <q-list
-    v-if="Object.keys($store.state.executions.log).length > 0"
-    class="q-ma-md"
-  >
+  <q-list v-if="Object.keys(log).length > 0" class="q-ma-md">
     <ExecutionDetail
-      v-for="(item, name, index) in $store.state.executions.log"
+      v-for="(item, name, index) in log"
       :id="name"
       :key="index"
       :command="item.command"
@@ -21,12 +18,22 @@
 </template>
 
 <script>
+import { storeToRefs } from 'pinia'
+
 import ExecutionDetail from 'components/ExecutionDetail.vue'
+
+import { useExecutionsStore } from 'src/stores/executions'
 
 export default {
   name: 'Executions',
   components: {
-    ExecutionDetail
-  }
+    ExecutionDetail,
+  },
+  setup() {
+    const executionsStore = useExecutionsStore()
+    const { log } = storeToRefs(executionsStore)
+
+    return { log }
+  },
 }
 </script>
