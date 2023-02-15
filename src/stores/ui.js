@@ -36,7 +36,6 @@ export const useUiStore = defineStore('ui', {
         !error.response
       ) {
         const appStore = useAppStore()
-        console.log(appStore)
 
         appStore.setStatus(
           gettext.$gettext('There is no connection to the server')
