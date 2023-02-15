@@ -34,27 +34,28 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import { useStore } from 'vuex'
+
+import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'DeviceFilter',
   setup() {
-    const store = useStore()
+    const filtersStore = useFiltersStore()
 
     const searchDevice = ref('')
     const onlyAssignedDevices = ref(false)
 
     const setSearchDevice = () => {
-      store.commit('filters/setSearchDevice', searchDevice.value)
+      filtersStore.setSearchDevice(searchDevice.value)
     }
 
     const setOnlyAssignedDevices = () => {
-      store.commit('filters/setOnlyAssignedDevices', onlyAssignedDevices.value)
+      filtersStore.setOnlyAssignedDevices(onlyAssignedDevices.value)
     }
 
     onMounted(() => {
-      searchDevice.value = store.state.filters.searchDevice
-      onlyAssignedDevices.value = store.state.filters.onlyAssignedDevices
+      searchDevice.value = filtersStore.searchDevice
+      onlyAssignedDevices.value = filtersStore.onlyAssignedDevices
     })
 
     return {
