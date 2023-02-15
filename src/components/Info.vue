@@ -123,19 +123,15 @@
             <q-icon name="mdi-server" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{
-            $store.getters['app/host']
-          }}</q-item-section>
+          <q-item-section class="text-h6">{{ host }}</q-item-section>
         </q-item>
 
-        <q-item v-if="$store.getters['app/organization']">
+        <q-item v-if="organization">
           <q-item-section avatar>
             <q-icon name="mdi-bank" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{
-            $store.getters['app/organization']
-          }}</q-item-section>
+          <q-item-section class="text-h6">{{ organization }}</q-item-section>
         </q-item>
 
         <q-item>
@@ -181,7 +177,7 @@
           <p>{{ computer.name }} ({{ computerId }})</p>
           <div class="text-caption text-blue-grey">
             <p>{{ computer.uuid }}</p>
-            <p>{{ $store.getters['app/host'] }}</p>
+            <p>{{ host }}</p>
             <p>{{ computer.helpdesk }}</p>
           </div>
         </q-card-section>
@@ -205,11 +201,12 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
 import { useGettext } from 'vue3-gettext'
 import { date } from 'quasar'
-
 import VueQrcode from '@chenfengyuan/vue-qrcode'
+
+import { useAppStore } from 'src/stores/app'
+import { useComputerStore } from 'src/stores/computer'
 
 const app = require('../../package.json')
 
@@ -219,8 +216,10 @@ export default {
     VueQrcode,
   },
   setup() {
-    const store = useStore()
     const { $gettext } = useGettext()
+
+    const appStore = useAppStore()
+    const computerStore = useComputerStore()
 
     const appName = ref(app.name)
     const appVersion = ref(app.version)
@@ -228,7 +227,7 @@ export default {
     const appAuthors = ref(app.author)
     const appCopyright = ref(app.copyright)
 
-    const computer = computed(() => store.getters['computer/getComputer'])
+    const computer = computed(() => computerStore.getComputer)
 
     const syncEndDate = computed(() =>
       'sync_end_date' in computer.value.data
@@ -328,7 +327,7 @@ export default {
       let info = {
         model: 'computer',
         id: computer.value.cid,
-        server: store.getters['app/host'],
+        server: appStore.host,
       }
 
       return JSON.stringify(info)
@@ -359,6 +358,8 @@ export default {
       statusIcon,
       statusText,
       qrCode,
+      host: appStore.host,
+      organization: appStore.organization,
       printLabel,
     }
   },
