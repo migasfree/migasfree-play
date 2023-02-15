@@ -24,10 +24,12 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 
 import DeviceFilter from 'components/DeviceFilter.vue'
 import DeviceDetail from 'components/DeviceDetail.vue'
+
+import { useDevicesStore } from 'src/stores/devices'
+import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'Devices',
@@ -36,15 +38,16 @@ export default {
     DeviceDetail,
   },
   setup() {
-    const store = useStore()
+    const devicesStore = useDevicesStore()
+    const filtersStore = useFiltersStore()
 
     const devices = ref([])
 
     const devicesByFilter = computed(() => {
       let results = devices.value
 
-      if (store.state.filters.searchDevice) {
-        const pattern = store.state.filters.searchDevice.toLowerCase()
+      if (filtersStore.searchDevice) {
+        const pattern = filtersStore.searchDevice.toLowerCase()
 
         results = results.filter(
           (device) =>
@@ -55,10 +58,10 @@ export default {
         )
       }
 
-      if (store.state.filters.onlyAssignedDevices)
+      if (filtersStore.onlyAssignedDevices)
         results = results.filter((device) => {
           return (
-            store.state.devices.assigned.filter((x) => {
+            devicesStore.assigned.filter((x) => {
               return x.device.id === device.id
             }).length !== 0
           )
@@ -88,7 +91,7 @@ export default {
     }
 
     onMounted(() => {
-      devices.value = store.getters['devices/getAvailableDevices']
+      devices.value = devicesStore.getAvailable
     })
 
     return { devices, devicesByFilter, name, icon, ipAddress, description }
