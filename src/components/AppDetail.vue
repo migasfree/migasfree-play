@@ -33,8 +33,8 @@
           v-if="isInstallable"
           color="positive"
           icon="mdi-download"
-          :loading="$store.state.executions.isRunningCommand"
-          :disabled="$store.state.executions.isRunningCommand"
+          :loading="isRunningCommand"
+          :disabled="isRunningCommand"
           @click="installApp(name, packages)"
         >
           <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
@@ -44,8 +44,8 @@
           v-if="isRemovable"
           color="negative"
           icon="mdi-delete"
-          :loading="$store.state.executions.isRunningCommand"
-          :disabled="$store.state.executions.isRunningCommand"
+          :loading="isRunningCommand"
+          :disabled="isRunningCommand"
           @click="removeApp(name, packages)"
         >
           <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
@@ -74,8 +74,13 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
+
+import { useAppStore } from 'src/stores/app'
+import { useExecutionsStore } from 'src/stores/executions'
+import { usePackagesStore } from 'src/stores/packages'
+import { useUiStore } from 'src/stores/ui'
 
 const os = require('os')
 
@@ -92,8 +97,14 @@ export default {
   },
   emits: ['openlogin'],
   setup(props) {
-    const store = useStore()
     const { $gettext, interpolate } = useGettext()
+
+    const appStore = useAppStore()
+    const executionsStore = useExecutionsStore()
+    const packagesStore = usePackagesStore()
+    const uiStore = useUiStore()
+
+    const { isRunningCommand } = storeToRefs(executionsStore)
 
     const rating = computed(() => props.score)
 
@@ -109,10 +120,10 @@ export default {
 
     const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
     const installedPackages = computed(() =>
-      JSON.parse(JSON.stringify(store.state.packages.installed))
+      JSON.parse(JSON.stringify(packagesStore.installed))
     )
     const availablePackages = computed(() =>
-      JSON.parse(JSON.stringify(store.state.packages.available))
+      JSON.parse(JSON.stringify(packagesStore.available))
     )
 
     const isInstalled = computed(
@@ -128,7 +139,7 @@ export default {
 
     const isInstallable = computed(
       () =>
-        (props.level === 'U' || store.getters['app/userIsPrivileged']) &&
+        (props.level === 'U' || appStore.userIsPrivileged) &&
         isAvailable.value &&
         !isInstalled.value &&
         packages.value.length > 0
@@ -136,15 +147,12 @@ export default {
 
     const isRemovable = computed(
       () =>
-        isInstalled.value &&
-        (props.level === 'U' || store.getters['app/userIsPrivileged'])
+        isInstalled.value && (props.level === 'U' || appStore.userIsPrivileged)
     )
 
     const isPrivileged = computed(
       () =>
-        isAvailable.value &&
-        props.level === 'A' &&
-        !store.getters['app/userIsPrivileged']
+        isAvailable.value && props.level === 'A' && !appStore.userIsPrivileged
     )
 
     const installApp = (name, packages) => {
@@ -153,14 +161,13 @@ export default {
 
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      store.dispatch(
-        'ui/notifyInfo',
+      uiStore.notifyInfo(
         interpolate($gettext('Installing %{name}'), {
           name,
         })
       )
 
-      store.dispatch('executions/run', {
+      executionsStore.run({
         cmd,
         text: interpolate($gettext('Installing %{name}'), {
           name,
@@ -174,14 +181,13 @@ export default {
       let cmd = `migasfree purge ${packagesToRemove}`
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      store.dispatch(
-        'ui/notifyInfo',
+      uiStore.notifyInfo(
         interpolate($gettext('Uninstalling %{name}'), {
           name,
         })
       )
 
-      store.dispatch('executions/run', {
+      executionsStore.run({
         cmd,
         text: interpolate($gettext('Uninstalling %{name}'), {
           name,
@@ -203,6 +209,7 @@ export default {
       isInstallable,
       isRemovable,
       isPrivileged,
+      isRunningCommand,
       installApp,
       removeApp,
       defaultIcon,
