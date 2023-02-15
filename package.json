@@ -25,6 +25,7 @@
     "cors": "2.8.5",
     "express": "4.18.2",
     "html-to-text": "8.2.1",
+    "pinia": "2.0.30",
     "python-shell": "3.0.1",
     "qrcode": "1.5.1",
     "quasar": "2.11.5",
@@ -33,8 +34,7 @@
     "typeface-ubuntu-mono": "1.1.13",
     "vue": "3.2.47",
     "vue-router": "4.1.6",
-    "vue3-gettext": "2.4.0",
-    "vuex": "4.1.0"
+    "vue3-gettext": "2.4.0"
   },
   "resolutions": {
     "express": "4.18.2"
