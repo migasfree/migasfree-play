@@ -75,7 +75,8 @@
 
 <script>
 import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
+
+import { useAppStore } from 'src/stores/app'
 
 export default {
   name: 'Login',
@@ -87,7 +88,7 @@ export default {
   },
   emits: ['closed'],
   setup(props, { emit }) {
-    const store = useStore()
+    const appStore = useAppStore()
 
     const username = ref('')
     const password = ref('')
@@ -100,7 +101,7 @@ export default {
 
     const login = () => {
       if (username.value && password.value) {
-        store.dispatch('app/checkUser', {
+        appStore.checkUser({
           user: username.value,
           password: password.value,
         })
