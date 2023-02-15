@@ -1,20 +1,24 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 
+import { usePreferencesStore } from 'src/stores/preferences'
+
 export const cancelSource = axios.CancelToken.source()
 
 const api = axios.create()
 
 export default boot(({ app, store }) => {
+  const preferencesStore = usePreferencesStore(store)
+
   api.interceptors.request.use(
     (config) => {
-      /* const authToken = store.getters['app/token']
+      /* const authToken = appStore.token
 
       if (authToken) {
         config.headers.Authorization = authToken
       } */ // TODO
 
-      const language = store.getters['preferences/getLanguage']
+      const language = preferencesStore.getLanguage
 
       config.headers['Accept-Language'] = `${language.replace('_', '-')},${
         language.split('_')[0]
