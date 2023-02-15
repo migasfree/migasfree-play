@@ -47,39 +47,40 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+
+import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'AppFilter',
   setup() {
-    const store = useStore()
+    const filtersStore = useFiltersStore()
 
     const category = ref(null)
     const searchApp = ref('')
     const onlyInstalledApps = ref(false)
 
     const selectedCategory = computed(
-      () => store.getters['filters/selectedCategory']
+      () => filtersStore.selectedCategory
     )
 
-    const categories = computed(() => store.getters['filters/getCategories'])
+    const categories = computed(() => filtersStore.getCategories)
 
     const setCategory = () => {
-      store.commit('filters/setSelectedCategory', category.value)
+      filtersStore.setSelectedCategory(category.value)
     }
 
     const setSearchApp = () => {
-      store.commit('filters/setSearchApp', searchApp.value)
+      filtersStore.setSearchApp(searchApp.value)
     }
 
     const setOnlyInstalledApps = () => {
-      store.commit('filters/setOnlyInstalledApps', onlyInstalledApps.value)
+      filtersStore.setOnlyInstalledApps(onlyInstalledApps.value)
     }
 
     onMounted(() => {
-      category.value = store.getters['filters/selectedCategory']
-      searchApp.value = store.getters['filters/searchApp']
-      onlyInstalledApps.value = store.getters['filters/onlyInstalledApps']
+      category.value = filtersStore.selectedCategory
+      searchApp.value = filtersStore.searchApp
+      onlyInstalledApps.value = filtersStore.onlyInstalledApps
     })
 
     return {
