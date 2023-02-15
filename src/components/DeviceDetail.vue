@@ -35,8 +35,8 @@
               icon="mdi-delete"
               class="float-right"
               size="md"
-              :loading="$store.state.executions.isRunningCommand"
-              :disabled="$store.state.executions.isRunningCommand"
+              :loading="isRunningCommand"
+              :disabled="isRunningCommand"
               @click="removeDevice(item)"
             >
               <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
@@ -49,8 +49,8 @@
             icon="mdi-download"
             class="float-right"
             size="md"
-            :loading="$store.state.executions.isRunningCommand"
-            :disabled="$store.state.executions.isRunningCommand"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
             @click="installDevice(item)"
           >
             <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
@@ -63,7 +63,12 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { storeToRefs } from 'pinia'
+
+import { useComputerStore } from 'src/stores/computer'
+import { useDevicesStore } from 'src/stores/devices'
+import { useExecutionsStore } from 'src/stores/executions'
+import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'DeviceDetail',
@@ -77,7 +82,12 @@ export default {
     logical: { type: Array, required: false, default: () => [] },
   },
   setup(props) {
-    const store = useStore()
+    const computerStore = useComputerStore()
+    const devicesStore = useDevicesStore()
+    const executionsStore = useExecutionsStore()
+    const filtersStore = useFiltersStore()
+
+    const { isRunningCommand } = storeToRefs(executionsStore)
 
     const tooltip = computed(() => {
       if (props.ip) return `${props.connection} (${props.ip})`
@@ -87,7 +97,7 @@ export default {
     const logical = computed(() => JSON.parse(JSON.stringify(props.logical)))
 
     const visibleLogicalDevices = computed(() => {
-      if (!store.state.filters.onlyAssignedDevices) return logical.value
+      if (!filtersStore.onlyAssignedDevices) return logical.value
       else
         return logical.value.filter((item) => {
           return isAssigned(item.id)
@@ -100,10 +110,10 @@ export default {
 
     const isAssigned = (id) => {
       return (
-        store.state.devices.assigned.find((item) => {
+        devicesStore.assigned.find((item) => {
           return item.id === id
         }) ||
-        store.state.devices.inflicted.find((item) => {
+        devicesStore.inflicted.find((item) => {
           return item.id === id
         })
       )
@@ -112,14 +122,14 @@ export default {
     const installDevice = (item) => {
       let attributes = item.attributes.slice() // copy value (not reference)
 
-      if (!attributes.includes(store.state.computer.attribute)) {
-        attributes.push(store.state.computer.attribute)
+      if (!attributes.includes(computerStore.attribute)) {
+        attributes.push(computerStore.attribute)
       }
-      store.dispatch('devices/changeDeviceAttributes', {
+      devicesStore.changeDeviceAttributes({
         id: item.id,
         attributes,
       })
-      store.commit('devices/addAssignedDevice', {
+      devicesStore.addAssignedDevice({
         id: item.id,
         device: item.device,
         capability: item.capability,
@@ -129,17 +139,16 @@ export default {
     const removeDevice = (item) => {
       let attributes = item.attributes
 
-      attributes = attributes.filter(
-        (x) => x !== store.state.computer.attribute
-      )
-      store.dispatch('devices/changeDeviceAttributes', {
+      attributes = attributes.filter((x) => x !== computerStore.attribute)
+      devicesStore.changeDeviceAttributes({
         id: item.id,
         attributes,
       })
-      store.commit('devices/removeAssignedDevice', item.id)
+      devicesStore.removeAssignedDevice(item.id)
     }
 
     return {
+      isRunningCommand,
       tooltip,
       visibleLogicalDevices,
       capabilityName,
