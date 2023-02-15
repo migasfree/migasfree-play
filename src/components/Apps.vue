@@ -27,11 +27,14 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
 
 import AppFilter from 'components/AppFilter.vue'
 import AppDetail from 'components/AppDetail.vue'
 import Login from 'components/Login'
+
+import { useAppStore } from 'src/stores/app'
+import { useFiltersStore } from 'src/stores/filters'
+import { usePackagesStore } from 'src/stores/packages'
 
 export default {
   name: 'Apps',
@@ -41,26 +44,28 @@ export default {
     Login,
   },
   setup() {
-    const store = useStore()
+    const appStore = useAppStore()
+    const filtersStore = useFiltersStore()
+    const packagesStore = usePackagesStore()
 
     const apps = ref([])
     const showLogin = ref(false)
 
     const installedPackages = computed(() =>
-      JSON.parse(JSON.stringify(store.state.packages.installed))
+      JSON.parse(JSON.stringify(packagesStore.installed))
     )
 
     const appsByFilter = computed(() => {
-      let results = store.getters['app/getApps']
+      let results = appStore.getApps
 
-      const selectedCategory = store.getters['filters/selectedCategory']
+      const selectedCategory = filtersStore.selectedCategory
       if (selectedCategory && selectedCategory.id > 0)
         results = results.filter(
           (app) =>
-            app.category.id == store.getters['filters/selectedCategory'].id
+            app.category.id == filtersStore.selectedCategory.id
         )
-      if (store.getters['filters/searchApp']) {
-        const pattern = store.getters['filters/searchApp'].toLowerCase()
+      if (filtersStore.searchApp) {
+        const pattern = filtersStore.searchApp.toLowerCase()
 
         results = results.filter(
           (app) =>
@@ -69,7 +74,7 @@ export default {
         )
       }
 
-      if (store.getters['filters/onlyInstalledApps'])
+      if (filtersStore.onlyInstalledApps)
         results = results.filter(
           (app) =>
             app.packages_to_install.length > 0 &&
