@@ -3,11 +3,11 @@
     <q-header unelevated class="print-hide">
       <q-toolbar>
         <q-btn
-          v-if="$store.state.preferences.showComputerLink"
+          v-if="preferencesStore.showComputerLink"
           stretch
           flat
           :label="computerText"
-          :href="$store.getters['computer/getComputer'].link"
+          :href="computerLink"
           type="a"
           target="_blank"
           no-caps
@@ -21,7 +21,7 @@
 
         <div class="gt-xs">
           <q-btn
-            v-if="$store.state.preferences.showApps"
+            v-if="preferencesStore.showApps"
             flat
             round
             icon="apps"
@@ -34,7 +34,7 @@
           </q-btn>
 
           <q-btn
-            v-if="$store.state.preferences.showDevices"
+            v-if="preferencesStore.showDevices"
             flat
             round
             icon="mdi-printer"
@@ -47,7 +47,7 @@
           </q-btn>
 
           <q-btn
-            v-if="$store.state.preferences.showTags"
+            v-if="preferencesStore.showTags"
             flat
             round
             icon="mdi-tag"
@@ -60,7 +60,7 @@
           </q-btn>
 
           <q-btn
-            v-if="$store.state.preferences.showDetails"
+            v-if="preferencesStore.showDetails"
             flat
             round
             icon="mdi-list-status"
@@ -73,7 +73,7 @@
           </q-btn>
 
           <q-btn
-            v-if="$store.state.preferences.showInfo"
+            v-if="preferencesStore.showInfo"
             flat
             round
             icon="info"
@@ -98,7 +98,7 @@
           </q-btn>
 
           <q-btn
-            v-if="$store.state.preferences.showHelp"
+            v-if="preferencesStore.showHelp"
             flat
             round
             icon="help"
@@ -131,8 +131,8 @@
           fab
           icon="mdi-play"
           :color="$q.dark.isActive ? 'indigo' : 'secondary'"
-          :loading="$store.state.executions.isRunningCommand"
-          :disabled="$store.state.executions.isRunningCommand"
+          :loading="isRunningCommand"
+          :disabled="isRunningCommand"
           @click="synchronize"
         >
           <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
@@ -144,8 +144,8 @@
 
 <script>
 import { computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { setInterval } from 'timers'
@@ -153,34 +153,49 @@ import { setInterval } from 'timers'
 import { urlHelp } from 'config/app.conf'
 import Menu from 'components/Menu.vue'
 
+import { useComputerStore } from 'src/stores/computer'
+import { useExecutionsStore } from 'src/stores/executions'
+import { usePreferencesStore } from 'src/stores/preferences'
+import { useUiStore } from 'src/stores/ui'
+
 export default {
   name: 'MainLayout',
   components: {
     Menu,
   },
   setup() {
-    const store = useStore()
     const route = useRoute()
     const router = useRouter()
     const { $gettext } = useGettext()
 
+    const computerStore = useComputerStore()
+    const executionsStore = useExecutionsStore()
+    const preferencesStore = usePreferencesStore()
+    const uiStore = useUiStore()
+
+    const { isRunningCommand } = storeToRefs(executionsStore)
+
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
 
     const computerText = computed(() => {
-      const computer = store.getters['computer/getComputer']
+      const computer = computerStore.getComputer
 
       return computer.cid
         ? `${computer.name} (CID-${computer.cid})`
         : computer.name
     })
 
-    const synchronize = () => {
-      store.dispatch('ui/notifyInfo', $gettext('Synchronizing...'))
+    const computerLink = computed(() => {
+      return computerStore.getLink
+    })
 
-      if (store.state.preferences.showSyncDetails && route.name !== 'details')
+    const synchronize = () => {
+      uiStore.notifyInfo($gettext('Synchronizing...'))
+
+      if (preferencesStore.showSyncDetails && route.name !== 'details')
         router.push({ name: 'details' })
 
-      store.dispatch('executions/run', {
+      executionsStore.run({
         cmd: 'migasfree sync',
         text: $gettext('Synchronization'),
         icon: 'mdi-sync',
@@ -196,7 +211,14 @@ export default {
       }
     })
 
-    return { computerText, synchronize, urlHelp }
+    return {
+      computerText,
+      computerLink,
+      synchronize,
+      urlHelp,
+      isRunningCommand,
+      preferencesStore,
+    }
   },
 }
 </script>
