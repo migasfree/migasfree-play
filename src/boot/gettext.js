@@ -18,3 +18,5 @@ export default boot(({ app, store }) => {
   app.use(gettext)
   store.$gettext = gettext
 })
+
+export { gettext }
