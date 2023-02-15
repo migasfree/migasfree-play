@@ -1,25 +1,22 @@
 <template>
   <div id="q-app">
     <div
-      v-if="$store.state.ui.isLoading"
+      v-if="isLoading"
       class="row window-height window-width justify-center items-center content-center"
     >
       <div class="col-12 text-center q-ma-md">
         <img id="logo" src="img/migasfree-play.svg" width="200" />
       </div>
 
-      <div v-if="!$store.getters['app/stoppedApp']" class="col-12 text-center">
+      <div v-if="!stopApp" class="col-12 text-center">
         <q-spinner-clock color="primary" size="6em" />
       </div>
 
       <div class="col-12 text-center q-mt-md">
-        {{ $gettext('Loading data') }}: {{ $store.getters['app/status'] }}
+        {{ $gettext('Loading data') }}: {{ status }}
       </div>
 
-      <q-banner
-        v-if="$store.getters['app/stoppedApp']"
-        class="text-white bg-red q-ma-md"
-      >
+      <q-banner v-if="stopApp" class="text-white bg-red q-ma-md">
         <template #avatar>
           <q-icon name="mdi-alert-octagon" />
         </template>
@@ -32,20 +29,33 @@
 </template>
 
 <script>
-import { useStore } from 'vuex'
+import { storeToRefs } from 'pinia'
 import { useMeta, useQuasar } from 'quasar'
+
+import { useAppStore } from './stores/app'
+import { useUiStore } from './stores/ui'
 
 export default {
   name: 'App',
   setup() {
-    const store = useStore()
+    const appStore = useAppStore()
+    const uiStore = useUiStore()
     const $q = useQuasar()
+
+    const { stopApp, status } = storeToRefs(appStore)
+    const { isLoading } = storeToRefs(uiStore)
 
     $q.dark.set($q.localStorage.getItem('darkMode') || false)
 
     useMeta({ title: 'Migasfree Play' })
 
-    store.dispatch('app/init')
+    appStore.init()
+
+    return {
+      stopApp,
+      status,
+      isLoading,
+    }
   },
 }
 </script>
