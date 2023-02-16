@@ -16,29 +16,29 @@
 
           <p>
             <q-toggle
-              v-model="showSyncDetails"
+              v-model="preferencesStore.showSyncDetails"
               :label="
-                showSyncDetails
+                preferencesStore.showSyncDetails
                   ? $gettext('Show details when synchronizing')
                   : $gettext('Not show details when synchronizing')
               "
               :false-value="false"
               :true-value="true"
-              @update:model-value="setShowSyncDetails"
+              @update:model-value="preferencesStore.savePreferences"
             />
           </p>
 
-          <p v-if="showDarkMode">
+          <p v-if="preferencesStore.showDarkMode">
             <q-toggle
-              v-model="darkMode"
+              v-model="preferencesStore.darkMode"
               :label="
-                darkMode
+                preferencesStore.darkMode
                   ? $gettext('Switch to Light mode')
                   : $gettext('Switch to Dark mode')
               "
               :false-value="false"
               :true-value="true"
-              @update:model-value="setDarkMode"
+              @update:model-value="preferencesStore.savePreferences"
             />
           </p>
         </q-card-section>
@@ -60,9 +60,6 @@ export default {
     const preferencesStore = usePreferencesStore()
 
     const language = ref(null)
-    const showSyncDetails = ref(false)
-    const darkMode = ref(false)
-    const showDarkMode = ref(false)
 
     const availableLocales = computed(() => {
       let items = []
@@ -80,37 +77,19 @@ export default {
     const setLanguage = () => {
       preferencesStore.setLanguage(language.value.id)
       preferencesStore.savePreferences()
-      i18n.current = language.value.id
-    }
-
-    const setShowSyncDetails = () => {
-      preferencesStore.setShowSyncDetails(showSyncDetails.value)
-      preferencesStore.savePreferences()
-    }
-
-    const setDarkMode = () => {
-      preferencesStore.setDarkMode(darkMode.value)
-      preferencesStore.savePreferences()
     }
 
     onMounted(() => {
       language.value = availableLocales.value.find(
         (x) => x.id === preferencesStore.language
       )
-      showSyncDetails.value = preferencesStore.showSyncDetails
-      darkMode.value = preferencesStore.darkMode
-      showDarkMode.value = preferencesStore.showDarkMode
     })
 
     return {
+      preferencesStore,
       language,
-      showSyncDetails,
-      darkMode,
-      showDarkMode,
       availableLocales,
       setLanguage,
-      setShowSyncDetails,
-      setDarkMode,
     }
   },
 }
