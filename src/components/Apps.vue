@@ -5,7 +5,7 @@
     <AppDetail
       v-for="item in appsByFilter"
       :key="item.id"
-      :icon="item.icon"
+      :icon="item.icon || ''"
       :name="item.name"
       :category="item.category.name"
       :score="item.score"
@@ -61,8 +61,7 @@ export default {
       const selectedCategory = filtersStore.selectedCategory
       if (selectedCategory && selectedCategory.id > 0)
         results = results.filter(
-          (app) =>
-            app.category.id == filtersStore.selectedCategory.id
+          (app) => app.category.id == filtersStore.selectedCategory.id
         )
       if (filtersStore.searchApp) {
         const pattern = filtersStore.searchApp.toLowerCase()
