@@ -48,7 +48,6 @@ export default {
     const filtersStore = useFiltersStore()
     const packagesStore = usePackagesStore()
 
-    const apps = ref([])
     const showLogin = ref(false)
 
     const installedPackages = computed(() =>
@@ -89,7 +88,7 @@ export default {
       showLogin.value = true
     }
 
-    return { apps, showLogin, appsByFilter, openLogin }
+    return { showLogin, appsByFilter, openLogin }
   },
 }
 </script>
