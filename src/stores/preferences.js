@@ -87,14 +87,7 @@ export const usePreferencesStore = defineStore('preferences', {
 
     setLanguage(value) {
       this.language = value
-    },
-
-    setShowSyncDetails(value) {
-      this.showSyncDetails = value
-    },
-
-    setDarkMode(value) {
-      this.darkMode = value
+      gettext.current = value
     },
   },
 })
