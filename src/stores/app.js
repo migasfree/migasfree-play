@@ -61,7 +61,7 @@ export const useAppStore = defineStore('app', {
     getHost: (state) => state.host,
     getOrganization: (state) => state.organization,
     getStatus: (state) => state.status,
-    stoppedApp: (state) => state.stopApp,
+    appIsStopped: (state) => state.stopApp,
     token: (state) => state.tokenValue,
   },
   actions: {
@@ -79,7 +79,7 @@ export const useAppStore = defineStore('app', {
 
       this.setStatus(gettext.$gettext('Preferences'))
       await preferencesStore.readPreferences()
-      if (this.stoppedApp) return
+      if (this.appIsStopped) return
       await this.apiProtocol()
       await this.serverHost()
 
@@ -87,10 +87,10 @@ export const useAppStore = defineStore('app', {
 
       this.setStatus(gettext.$gettext('Server'))
       await this.serverInfo()
-      if (this.stoppedApp) return
+      if (this.appIsStopped) return
       await this.getToken()
       await this.checkToken()
-      if (this.stoppedApp) return
+      if (this.appIsStopped) return
       if (!this.tokenChecked) {
         await this.getToken()
       }
