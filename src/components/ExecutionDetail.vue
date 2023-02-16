@@ -9,7 +9,7 @@
 
       <q-item-section>
         {{ command }}
-        <div class="text-caption text-blue-grey">{{ showDate(id) }}</div>
+        <div class="text-caption text-blue-grey"><DateView :value="id" /></div>
       </q-item-section>
 
       <q-item-section side>
@@ -34,14 +34,17 @@
 import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { copyToClipboard, date } from 'quasar'
+import { copyToClipboard } from 'quasar'
 import { htmlToText } from 'html-to-text'
+
+import DateView from 'components/DateView'
 
 import { useExecutionsStore } from 'src/stores/executions'
 import { useUiStore } from 'src/stores/ui'
 
 export default {
   name: 'ExecutionDetail',
+  components: { DateView },
   props: {
     id: { type: String, required: true },
     command: { type: String, required: true },
@@ -62,17 +65,13 @@ export default {
       }
     )
 
-    const showDate = (isoString) => {
-      return date.formatDate(Date.parse(isoString), 'YYYY-MM-DD HH:mm:ss')
-    }
-
     const copyDetails = () => {
       copyToClipboard(htmlToText(props.text)).then(() => {
         uiStore.notifySuccess($gettext('Text copied to clipboard'))
       })
     }
 
-    return { lastId, showDate, copyDetails }
+    return { lastId, copyDetails }
   },
 }
 </script>
