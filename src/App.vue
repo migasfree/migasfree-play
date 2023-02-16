@@ -8,7 +8,7 @@
         <img id="logo" src="img/migasfree-play.svg" width="200" />
       </div>
 
-      <div v-if="!stopApp" class="col-12 text-center">
+      <div v-if="!appIsStopped" class="col-12 text-center">
         <q-spinner-clock color="primary" size="6em" />
       </div>
 
@@ -16,7 +16,7 @@
         {{ $gettext('Loading data') }}: {{ status }}
       </div>
 
-      <q-banner v-if="stopApp" class="text-white bg-red q-ma-md">
+      <q-banner v-if="appIsStopped" class="text-white bg-red q-ma-md">
         <template #avatar>
           <q-icon name="mdi-alert-octagon" />
         </template>
@@ -42,7 +42,7 @@ export default {
     const uiStore = useUiStore()
     const $q = useQuasar()
 
-    const { stopApp, status } = storeToRefs(appStore)
+    const { appIsStopped, status } = storeToRefs(appStore)
     const { isLoading } = storeToRefs(uiStore)
 
     $q.dark.set($q.localStorage.getItem('darkMode') || false)
@@ -52,7 +52,7 @@ export default {
     appStore.init()
 
     return {
-      stopApp,
+      appIsStopped,
       status,
       isLoading,
     }
