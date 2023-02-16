@@ -18,11 +18,6 @@ export const useFiltersStore = defineStore('filters', {
   }),
   getters: {
     getCategories: (state) => state.categories,
-    getSelectedCategory: (state) => state.selectedCategory,
-    getSearchApp: (state) => state.searchApp,
-    getOnlyInstalledApps: (state) => state.onlyInstalledApps,
-    getSearchDevice: (state) => state.searchDevice,
-    getOnlyAssignedDevices: (state) => state.onlyAssignedDevices,
   },
   actions: {
     async setCategories() {
@@ -44,26 +39,6 @@ export const useFiltersStore = defineStore('filters', {
         .catch((error) => {
           uiStore.notifyError(error)
         })
-    },
-
-    setSelectedCategory(value) {
-      this.selectedCategory = value
-    },
-
-    setSearchApp(value) {
-      this.searchApp = value
-    },
-
-    setOnlyInstalledApps(value) {
-      this.onlyInstalledApps = value
-    },
-
-    setSearchDevice(value) {
-      this.searchDevice = value
-    },
-
-    setOnlyAssignedDevices(value) {
-      this.onlyAssignedDevices = value
     },
   },
 })
