@@ -27,10 +27,14 @@
             <q-icon name="mdi-calendar-check" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{ syncEndDate }}</q-item-section>
+          <q-item-section class="text-h6"
+            ><DateView :value="syncEndDate"
+          /></q-item-section>
         </q-item>
 
-        <q-tooltip>{{ $gettext('Last synchronization') }}</q-tooltip>
+        <q-tooltip anchor="top middle">{{
+          $gettext('Last synchronization')
+        }}</q-tooltip>
       </q-card>
 
       <q-card
@@ -202,8 +206,9 @@
 <script>
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { date } from 'quasar'
+
 import VueQrcode from '@chenfengyuan/vue-qrcode'
+import DateView from 'components/DateView'
 
 import { useAppStore } from 'src/stores/app'
 import { useComputerStore } from 'src/stores/computer'
@@ -213,6 +218,7 @@ const app = require('../../package.json')
 export default {
   name: 'Info',
   components: {
+    DateView,
     VueQrcode,
   },
   setup() {
@@ -231,10 +237,7 @@ export default {
 
     const syncEndDate = computed(() =>
       'sync_end_date' in computer.value.data
-        ? date.formatDate(
-            Date.parse(computer.value.data.sync_end_date),
-            'YYYY-MM-DD HH:mm:ss'
-          )
+        ? computer.value.data.sync_end_date
         : ''
     )
 
