@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { computed } from 'vue'
 
 import DeviceFilter from 'components/DeviceFilter.vue'
 import DeviceDetail from 'components/DeviceDetail.vue'
@@ -41,10 +41,8 @@ export default {
     const devicesStore = useDevicesStore()
     const filtersStore = useFiltersStore()
 
-    const devices = ref([])
-
     const devicesByFilter = computed(() => {
-      let results = devices.value
+      let results = devicesStore.getAvailable
 
       if (filtersStore.searchDevice) {
         const pattern = filtersStore.searchDevice.toLowerCase()
@@ -90,11 +88,7 @@ export default {
       return value.LOCATION || ''
     }
 
-    onMounted(() => {
-      devices.value = devicesStore.getAvailable
-    })
-
-    return { devices, devicesByFilter, name, icon, ipAddress, description }
+    return { devicesByFilter, name, icon, ipAddress, description }
   },
 }
 </script>
