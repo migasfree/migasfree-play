@@ -6,11 +6,11 @@
       </p>
 
       <p class="text-h5">
-        <strong>{{ appName }} {{ appVersion }}</strong>
+        <strong>{{ app.name }} {{ app.version }}</strong>
       </p>
 
       <p class="text-caption text-center">
-        {{ appDescription }} <br />{{ appCopyright }} <br />{{ appAuthors }}
+        {{ app.description }} <br />{{ app.copyright }} <br />{{ app.author }}
       </p>
 
       <q-card v-if="computer.user" flat bordered class="half q-ma-md">
@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 
 import VueQrcode from '@chenfengyuan/vue-qrcode'
@@ -226,12 +226,6 @@ export default {
 
     const appStore = useAppStore()
     const computerStore = useComputerStore()
-
-    const appName = ref(app.name)
-    const appVersion = ref(app.version)
-    const appDescription = ref(app.description)
-    const appAuthors = ref(app.author)
-    const appCopyright = ref(app.copyright)
 
     const computer = computed(() => computerStore.getComputer)
 
@@ -345,11 +339,7 @@ export default {
     }
 
     return {
-      appName,
-      appVersion,
-      appDescription,
-      appAuthors,
-      appCopyright,
+      app,
       computer,
       syncEndDate,
       computerRam,
