@@ -5,7 +5,7 @@ import { api } from 'boot/axios'
 import { useAppStore } from './app'
 import { useUiStore } from './ui'
 
-import { tokenApi } from 'config/app.conf'
+import { tokenApi, tokenApiv4 } from 'config/app.conf'
 
 export const useFiltersStore = defineStore('filters', {
   state: () => ({
@@ -24,17 +24,30 @@ export const useFiltersStore = defineStore('filters', {
       const appStore = useAppStore()
       const uiStore = useUiStore()
 
+      let url = `${appStore.initialUrl.token}${tokenApi.categories}`
+      if (appStore.serverVersion.startsWith('4.'))
+        url = `${appStore.initialUrl.token}${tokenApiv4.categories}`
+
       await api
-        .get(`${appStore.initialUrl.token}${tokenApi.categories}`, {
+        .get(url, {
           headers: { Authorization: appStore.token },
         })
         .then((response) => {
-          Object.entries(response.data.results).map(([key, val]) => {
-            this.categories.push({
-              id: val.id,
-              name: val.name,
+          if (appStore.serverVersion.startsWith('4.')) {
+            Object.entries(response.data).map(([key, val]) => {
+              this.categories.push({
+                id: key,
+                name: val,
+              })
             })
-          })
+          } else {
+            Object.entries(response.data.results).map(([key, val]) => {
+              this.categories.push({
+                id: val.id,
+                name: val.name,
+              })
+            })
+          }
         })
         .catch((error) => {
           uiStore.notifyError(error)
