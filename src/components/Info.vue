@@ -127,7 +127,17 @@
             <q-icon name="mdi-server" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{ host }}</q-item-section>
+          <q-item-section class="text-h6"
+            >{{ host }} ({{ serverVersion }})</q-item-section
+          >
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
+            <q-icon name="mdi-desktop-classic" />
+          </q-item-section>
+
+          <q-item-section class="text-h6">{{ client }}</q-item-section>
         </q-item>
 
         <q-item v-if="organization">
@@ -352,7 +362,9 @@ export default {
       statusText,
       qrCode,
       host: appStore.host,
+      serverVersion: appStore.serverVersion,
       organization: appStore.organization,
+      client: appStore.clientVersion,
       printLabel,
     }
   },
