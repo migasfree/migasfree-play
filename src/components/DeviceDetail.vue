@@ -124,7 +124,7 @@ export default {
     }
 
     const installDevice = (item) => {
-      let attributes = item.attributes.slice() // copy value (not reference)
+      let attributes = item.attributes.map((value) => value.id)
 
       if (!attributes.includes(computerStore.attribute)) {
         attributes.push(computerStore.attribute)
@@ -141,7 +141,7 @@ export default {
     }
 
     const removeDevice = (item) => {
-      let attributes = item.attributes
+      let attributes = item.attributes.map((value) => value.id)
 
       attributes = attributes.filter((x) => x !== computerStore.attribute)
       devicesStore.changeDeviceAttributes({
