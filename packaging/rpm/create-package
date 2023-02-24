@@ -1,17 +1,19 @@
+#!/bin/bash
+
 _PATH=$(pwd)/rpmbuild
 _SPECS=$_PATH/SPECS
 _SOURCES=$_PATH/SOURCES
-_APP=migasfree-play-2.0
+_APP=migasfree-play-5.0
 
-mkdir -p $_SPECS || :
-mkdir -p $_SOURCES || :
+mkdir -p "$_SPECS" || :
+mkdir -p "$_SOURCES" || :
 
-cp migasfree-play.spec $_SPECS
-rm -rf $_SOURCES/* || :
-mkdir -p $_SOURCES/$_APP/usr/share/migasfree-play || :
-cp -r ../../dist/electron/Packaged/linux-unpacked/* $_SOURCES/$_APP/usr/share/migasfree-play
-cp -r ../etc $_SOURCES/$_APP
-cp -r ../usr $_SOURCES/$_APP
-pushd $_SOURCES
+cp migasfree-play.spec "$_SPECS"
+rm -rf "$_SOURCES"/* || :
+mkdir -p "$_SOURCES"/$_APP/usr/share/migasfree-play || :
+cp -r ../../dist/electron/Packaged/linux-unpacked/* "$_SOURCES"/$_APP/usr/share/migasfree-play
+cp -r ../etc "$_SOURCES"/$_APP
+cp -r ../usr "$_SOURCES"/$_APP
+pushd "$_SOURCES" || exit
 tar -cvzf $_APP.tar.gz $_APP
-rpmbuild -ba --define "_topdir $_PATH" $_SPECS/migasfree-play.spec
+rpmbuild -ba --define "_topdir $_PATH" "$_SPECS"/migasfree-play.spec
