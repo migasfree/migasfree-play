@@ -125,6 +125,8 @@ export default {
 
     const installDevice = (item) => {
       let attributes = item.attributes.map((value) => value.id)
+      if (appStore.serverVersion.startsWith('4.'))
+        attributes = item.attributes.slice()
 
       if (!attributes.includes(computerStore.attribute)) {
         attributes.push(computerStore.attribute)
@@ -142,6 +144,8 @@ export default {
 
     const removeDevice = (item) => {
       let attributes = item.attributes.map((value) => value.id)
+      if (appStore.serverVersion.startsWith('4.'))
+        attributes = item.attributes.slice()
 
       attributes = attributes.filter((x) => x !== computerStore.attribute)
       devicesStore.changeDeviceAttributes({
