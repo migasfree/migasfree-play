@@ -14,10 +14,13 @@ export const usePackagesStore = defineStore('packages', {
   }),
   actions: {
     async setAvailablePackages() {
+      const appStore = useAppStore()
       const uiStore = useUiStore()
 
       await api
-        .get(`${internalApi}/packages/available`)
+        .get(
+          `${internalApi}/packages/available/?version=${appStore.clientVersion}`
+        )
         .then((response) => {
           this.available = response.data
         })
@@ -31,7 +34,10 @@ export const usePackagesStore = defineStore('packages', {
       const uiStore = useUiStore()
 
       await api
-        .post(`${internalApi}/packages/installed`, appStore.getAppsPackages)
+        .post(
+          `${internalApi}/packages/installed/?version=${appStore.clientVersion}`,
+          appStore.getAppsPackages
+        )
         .then((response) => {
           this.installed = response.data
         })
