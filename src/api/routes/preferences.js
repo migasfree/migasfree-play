@@ -67,11 +67,34 @@ print(json.dumps(ret))`
   })
 })
 
-router.get('/protocol', (req, res) => {
+router.get('/client', (req, res) => {
   const code = `
+import json
+from migasfree_client.utils import get_mfc_release
+
+ret = {'version': get_mfc_release()}
+print(json.dumps(ret))`
+
+  PythonShell.runString(code, options, (err, results) => {
+    if (err) throw err
+    res.setHeader('Content-Type', 'text/plain')
+    res.send(results[0])
+  })
+})
+
+router.get('/protocol', (req, res) => {
+  let code = `
 from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().api_protocol())`
+
+  if (req.query.version.startsWith('4.')) {
+    code = `
+from migasfree_client.command import MigasFreeCommand
+
+ssl_cert = MigasFreeCommand().migas_ssl_cert
+print('https' if ssl_cert else 'http')`
+  }
 
   PythonShell.runString(code, options, (err, results) => {
     if (err) throw err
