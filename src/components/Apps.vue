@@ -60,7 +60,7 @@ export default {
       const selectedCategory = filtersStore.selectedCategory
       if (selectedCategory && selectedCategory.id > 0)
         results = results.filter(
-          (app) => app.category.id == filtersStore.selectedCategory.id
+          (app) => app.category.id == selectedCategory.id
         )
       if (filtersStore.searchApp) {
         const pattern = filtersStore.searchApp.toLowerCase()
