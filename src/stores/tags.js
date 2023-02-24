@@ -15,13 +15,16 @@ export const useTagsStore = defineStore('tags', {
   }),
   actions: {
     async getAvailableTags() {
+      const appStore = useAppStore()
       const computerStore = useComputerStore()
       const uiStore = useUiStore()
       const computer = computerStore.getComputer
 
       if (computer.cid)
         await api
-          .get(`${internalApi}/tags/available`)
+          .get(
+            `${internalApi}/tags/available/?version=${appStore.clientVersion}`
+          )
           .then((response) => {
             this.setAvailableTags(response.data)
           })
@@ -31,13 +34,16 @@ export const useTagsStore = defineStore('tags', {
     },
 
     async getAssignedTags() {
+      const appStore = useAppStore()
       const computerStore = useComputerStore()
       const uiStore = useUiStore()
       const computer = computerStore.getComputer
 
       if (computer.cid)
         await api
-          .get(`${internalApi}/tags/assigned`)
+          .get(
+            `${internalApi}/tags/assigned/?version=${appStore.clientVersion}`
+          )
           .then((response) => {
             this.setAssignedTags(response.data)
           })
