@@ -79,6 +79,7 @@ import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
+import { useAppStore } from 'src/stores/app'
 import { useExecutionsStore } from 'src/stores/executions'
 import { useTagsStore } from 'src/stores/tags'
 import { useUiStore } from 'src/stores/ui'
@@ -88,6 +89,7 @@ export default {
   setup() {
     const { $gettext } = useGettext()
 
+    const appStore = useAppStore()
     const executionsStore = useExecutionsStore()
     const tagsStore = useTagsStore()
     const uiStore = useUiStore()
@@ -102,14 +104,21 @@ export default {
     }
 
     const updateTags = () => {
+      if (tags.value === null) resetTags()
       tagsStore.setAssignedTags(tags.value)
     }
 
     const communicate = () => {
       uiStore.notifyInfo($gettext('Communicating...'))
 
+      let cmd = `migasfree --quiet tags --communicate ${tags.value.join(' ')}`
+      if (appStore.clientVersion.startsWith('4.')) {
+        if (tags.value.length === 0) cmd = 'migasfree-tags --communicate ""'
+        else cmd = `migasfree-tags --communicate ${tags.value.join(' ')}`
+      }
+
       executionsStore.run({
-        cmd: `migasfree --quiet tags --communicate ${tags.value.join(' ')}`,
+        cmd,
         text: $gettext('Communicate Tags'),
         icon: 'mdi-comment-processing',
       })
@@ -118,8 +127,14 @@ export default {
     const setTags = () => {
       uiStore.notifyInfo($gettext('Setting Tags...'))
 
+      let cmd = `migasfree --quiet tags --set ${tags.value.join(' ')}`
+      if (appStore.clientVersion.startsWith('4.')) {
+        if (tags.value.length === 0) cmd = 'migasfree-tags --set ""'
+        else cmd = `migasfree-tags --set ${tags.value.join(' ')}`
+      }
+
       executionsStore.run({
-        cmd: `migasfree --quiet tags --set ${tags.value.join(' ')}`,
+        cmd,
         text: $gettext('Set Tags'),
         icon: 'mdi-cog-transfer',
       })
