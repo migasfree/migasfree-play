@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { compareVersions } from 'compare-versions'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
@@ -18,6 +19,7 @@ import {
   tokenApi,
   internalApi,
   checkTokenApi,
+  minimumClientVersion,
 } from 'config/app.conf'
 
 require('dotenv').config()
@@ -33,6 +35,7 @@ export const useAppStore = defineStore('app', {
     },
     tokenValue: '',
     tokenChecked: false,
+    clientVersion: '',
     serverVersion: '',
     organization: '',
     apps: [],
@@ -79,6 +82,9 @@ export const useAppStore = defineStore('app', {
 
       this.setStatus(gettext.$gettext('Preferences'))
       await preferencesStore.readPreferences()
+      if (this.appIsStopped) return
+      await this.clientInfo()
+      this.checkClientVersion()
       if (this.appIsStopped) return
       await this.apiProtocol()
       await this.serverHost()
@@ -127,15 +133,59 @@ export const useAppStore = defineStore('app', {
       uiStore.loadingFinished()
     },
 
-    async serverInfo() {
+    async clientInfo() {
+      const uiStore = useUiStore()
+
       await api
-        .get(`${this.initialUrl.public}${publicApi.serverInfo}`)
+        .get(`${internalApi}/preferences/client`)
         .then((response) => {
-          this.setServerVersion(response.data.version)
-          this.setOrganization(response.data.organization)
+          this.clientVersion = response.data.version
         })
         .catch((error) => {
           uiStore.notifyError(error)
+        })
+    },
+
+    checkClientVersion() {
+      if (compareVersions(this.clientVersion, minimumClientVersion) < 0) {
+        this.setStatus(
+          gettext.interpolate(
+            gettext.$gettext(
+              'This app requires at least Migasfree Client %{version}'
+            ),
+            {
+              version: minimumClientVersion,
+            }
+          )
+        )
+        this.setStopApp()
+      }
+    },
+
+    async serverInfo() {
+      const uiStore = useUiStore()
+
+      await api
+        .get(`${this.initialUrl.public}${publicApi.serverInfo}`)
+        .then((response) => {
+          this.serverVersion = response.data.version
+          this.organization = response.data.organization
+        })
+        .catch((error) => {
+          if (
+            'response' in error &&
+            'status' in error.response &&
+            error.response.status === 405
+          ) {
+            api
+              .post(`${this.initialUrl.public}${publicApi.serverInfo}`)
+              .then((response) => {
+                this.serverVersion = response.data.version
+              })
+              .catch((error) => {
+                uiStore.notifyError(error)
+              })
+          } else uiStore.notifyError(error)
         })
     },
 
@@ -204,7 +254,7 @@ export const useAppStore = defineStore('app', {
         })
         .then((response) => {
           if (response.data.is_privileged) {
-            this.privilegedUser()
+            this.user.isPrivileged = true
           } else {
             uiStore.notifyError(gettext.$gettext('User without privileges'))
           }
@@ -218,9 +268,12 @@ export const useAppStore = defineStore('app', {
       const uiStore = useUiStore()
 
       await api
-        .get(`${internalApi}/preferences/protocol`)
+        .get(
+          `${internalApi}/preferences/protocol/?version=${this.clientVersion}`
+        )
         .then((response) => {
-          this.setApiProcotol(response.data)
+          console.log(response)
+          this.protocol = response.data
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -233,7 +286,7 @@ export const useAppStore = defineStore('app', {
       await api
         .get(`${internalApi}/preferences/server`)
         .then((response) => {
-          this.setServerHost(response.data)
+          this.host = response.data.server
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -280,22 +333,6 @@ export const useAppStore = defineStore('app', {
       this.tokenChecked = value
     },
 
-    setServerVersion(value) {
-      this.serverVersion = value
-    },
-
-    setOrganization(value) {
-      this.organization = value
-    },
-
-    setServerHost(value) {
-      this.host = value.server
-    },
-
-    setApiProcotol(value) {
-      this.protocol = value
-    },
-
     setApps({ value, project }) {
       this.apps = []
       value.forEach((item) => {
@@ -307,10 +344,6 @@ export const useAppStore = defineStore('app', {
           this.apps.push(item)
         }
       })
-    },
-
-    privilegedUser() {
-      this.user.isPrivileged = true
     },
 
     setStatus(value) {
