@@ -8,7 +8,7 @@ Packager:      Jose Antonio Chavarría
 Vendor:        migasfree team
 Source0:       %{name}-%{version}.tar.gz
 URL:           https://github.com/jact/migasfree-play
-Requires:      migasfree-client >= 5.0, sudo, bash, cronie, curl, nodejs >= 12
+Requires:      migasfree-client >= 4.20, sudo, bash, cronie, curl, nodejs >= 12
 BuildRoot:     %{_tmppath}/%{name}-%{version}
 
 %description
