@@ -153,6 +153,7 @@ import { setInterval } from 'timers'
 import { urlHelp } from 'config/app.conf'
 import Menu from 'components/Menu.vue'
 
+import { useAppStore } from 'src/stores/app'
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePreferencesStore } from 'src/stores/preferences'
@@ -168,6 +169,7 @@ export default {
     const router = useRouter()
     const { $gettext } = useGettext()
 
+    const appStore = useAppStore()
     const computerStore = useComputerStore()
     const executionsStore = useExecutionsStore()
     const preferencesStore = usePreferencesStore()
@@ -195,8 +197,11 @@ export default {
       if (preferencesStore.showSyncDetails && route.name !== 'details')
         router.push({ name: 'details' })
 
+      let cmd = 'migasfree sync'
+      if (appStore.clientVersion.startsWith('4.')) cmd = 'migasfree --update'
+
       executionsStore.run({
-        cmd: 'migasfree sync',
+        cmd,
         text: $gettext('Synchronization'),
         icon: 'mdi-sync',
       })
