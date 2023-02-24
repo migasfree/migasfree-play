@@ -28,3 +28,9 @@ export const tokenApi = {
   logicalDevice: '/devices/logical/',
   cidAttribute: '/attributes/?property_att__prefix=CID&value=',
 }
+
+export const tokenApiv4 = {
+  categories: '/catalog/apps/categories/',
+}
+
+export const minimumClientVersion = '4.20'
