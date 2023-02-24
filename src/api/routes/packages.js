@@ -4,12 +4,19 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/available', (req, res) => {
-  const code = `
+  let code = `
 import json
 from migasfree_client.sync import MigasFreeSync
 mfs = MigasFreeSync()
 mfs.pms_selection()
 print(json.dumps(mfs.pms.available_packages()))`
+  if (req.query.version.startsWith('4.'))
+    code = `
+import json
+from migasfree_client.client import MigasFreeClient
+
+mfc = MigasFreeClient()
+print(json.dumps(mfc.pms.available_packages()))`
 
   PythonShell.runString(code, null, (err, results) => {
     if (err) throw err
@@ -20,12 +27,28 @@ print(json.dumps(mfs.pms.available_packages()))`
 
 router.post('/installed', (req, res) => {
   const packages = JSON.stringify(req.body)
-  const code = `
+  let code = `
 import json
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 mfc.pms_selection()
+installed = []
+
+packages = ${packages}
+for pkg in packages:
+    if mfc.pms.is_installed(pkg):
+        if pkg not in installed:
+            installed.append(pkg)
+
+print(json.dumps(installed))`
+
+  if (req.query.version.startsWith('4.'))
+    code = `
+import json
+from migasfree_client.command import MigasFreeCommand
+
+mfc = MigasFreeCommand()
 installed = []
 
 packages = ${packages}
