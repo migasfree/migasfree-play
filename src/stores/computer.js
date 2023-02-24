@@ -32,7 +32,10 @@ export const useComputerStore = defineStore('computer', {
       await api
         .get(`${internalApi}/preferences/server`)
         .then((response) => {
-          this.setComputerInfo(response.data)
+          this.uuid = response.data.uuid
+          this.name = response.data.computer_name
+          this.user = response.data.user
+          this.project = response.data.project
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -45,7 +48,8 @@ export const useComputerStore = defineStore('computer', {
       await api
         .get(`${internalApi}/computer/network`)
         .then((response) => {
-          this.setComputerNetwork(response.data)
+          this.mask = response.data.mask
+          this.network = response.data.network
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -56,19 +60,29 @@ export const useComputerStore = defineStore('computer', {
       const appStore = useAppStore()
       const uiStore = useUiStore()
 
-      await api
-        .get(`${internalApi}/computer/id`)
-        .then((response) => {
-          this.setComputerId(response.data)
-          this.setComputerLink({
-            protocol: appStore.protocol,
-            host: appStore.host,
-            cid: response.data,
+      if (appStore.clientVersion.startsWith('4.')) {
+        await api
+          .get(
+            `${appStore.protocol}://${appStore.host}/get_computer_info/?uuid=${this.uuid}`
+          )
+          .then((response) => {
+            this.cid = response.data.id
+            this.setComputerLink()
           })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+      } else {
+        await api
+          .get(`${internalApi}/computer/id`)
+          .then((response) => {
+            this.cid = response.data
+            this.setComputerLink()
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+      }
     },
 
     async computerData() {
@@ -81,7 +95,7 @@ export const useComputerStore = defineStore('computer', {
             headers: { Authorization: appStore.token },
           })
           .then((response) => {
-            this.setComputerData(response.data)
+            this.data = response.data
           })
           .catch((error) => {
             uiStore.notifyError(error)
@@ -100,39 +114,20 @@ export const useComputerStore = defineStore('computer', {
           )
           .then((response) => {
             if (response.data.count === 1)
-              this.setComputerAttribute(response.data.results[0].id)
+              this.attribute = response.data.results[0].id
           })
           .catch((error) => {
             uiStore.notifyError(error)
           })
     },
 
-    setComputerInfo(value) {
-      this.uuid = value.uuid
-      this.name = value.computer_name
-      this.user = value.user
-      this.project = value.project
-    },
+    setComputerLink() {
+      const appStore = useAppStore()
 
-    setComputerId(value) {
-      this.cid = value
-    },
-
-    setComputerLink(value) {
-      this.link = `${value.protocol}://${value.host}/computers/results/${value.cid}/`
-    },
-
-    setComputerData(value) {
-      this.data = value
-    },
-
-    setComputerAttribute(value) {
-      this.attribute = value
-    },
-
-    setComputerNetwork(value) {
-      this.mask = value.mask
-      this.network = value.network
+      if (appStore.serverVersion.startsWith('4.'))
+        this.link = `${appStore.protocol}://${appStore.host}/admin/server/computer/${this.cid}/change/`
+      else
+        this.link = `${appStore.protocol}://${appStore.host}/computers/results/${this.cid}/`
     },
   },
 })
