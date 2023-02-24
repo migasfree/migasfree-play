@@ -55,6 +55,11 @@ export const useDevicesStore = defineStore('devices', {
           )
           .then((response) => {
             this.available = response.data.results
+            if (appStore.serverVersion.startsWith('4.')) {
+              this.available.forEach((value) => {
+                value.data = JSON.parse(value.data)
+              })
+            }
           })
           .catch((error) => {
             uiStore.notifyError(error)
