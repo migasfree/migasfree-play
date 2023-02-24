@@ -158,6 +158,8 @@ export default {
     const installApp = (name, packages) => {
       const packagesToInstall = packages.join(' ')
       let cmd = `migasfree install ${packagesToInstall}`
+      if (appStore.clientVersion.startsWith('4.'))
+        cmd = `migasfree --install --package=${packagesToInstall}`
 
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
@@ -179,6 +181,9 @@ export default {
     const removeApp = (name, packages) => {
       const packagesToRemove = packages.join(' ')
       let cmd = `migasfree purge ${packagesToRemove}`
+      if (appStore.clientVersion.startsWith('4.'))
+        cmd = `migasfree --remove --package=${packagesToRemove}`
+
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
       uiStore.notifyInfo(
