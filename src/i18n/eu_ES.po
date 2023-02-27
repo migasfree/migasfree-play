@@ -16,17 +16,16 @@ msgstr ""
 msgid "* Required"
 msgstr "* Beharrezkoa"
 
-#: src/components/AppFilter.vue:35
+#: src/components/AppFilter.vue:33
 msgid "All Apps"
 msgstr "Aplikazio guztiak"
 
-#: src/components/DeviceFilter.vue:22
+#: src/components/DeviceFilter.vue:21
 msgid "All available"
 msgstr "Guztiak eskuragarri"
 
 #: src/components/Menu.vue:19 src/layouts/MainLayout.vue:33
-#: src/pages/apps/index.vue:4 src/pages/apps/index.vue:43
-#: src/store/app/actions.js:39
+#: src/pages/apps/index.vue:4 src/pages/apps/index.vue:52 src/stores/app.js:111
 msgid "Apps"
 msgstr "Aplikazioak"
 
@@ -34,11 +33,11 @@ msgstr "Aplikazioak"
 msgid "Assigned"
 msgstr "Esleitua"
 
-#: src/components/DeviceFilter.vue:21
+#: src/components/DeviceFilter.vue:20
 msgid "Assigned Devices"
 msgstr "Esleitutako gailuak"
 
-#: src/components/Info.vue:259
+#: src/components/Info.vue:319
 msgid "Available"
 msgstr "Eskuragarri"
 
@@ -46,15 +45,15 @@ msgstr "Eskuragarri"
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/store/app/actions.js:42
+#: src/stores/app.js:114
 msgid "Categories"
 msgstr "Kategoriak"
 
-#: src/components/AppFilter.vue:20
+#: src/components/AppFilter.vue:19
 msgid "Category"
 msgstr "Kategoria"
 
-#: src/components/Tags.vue:105
+#: src/components/Tags.vue:122
 msgid "Communicate Tags"
 msgstr "Etiketak komunikatu"
 
@@ -62,15 +61,15 @@ msgstr "Etiketak komunikatu"
 msgid "Communicate tags to the server"
 msgstr "Komunikatu etiketak zerbitzariari"
 
-#: src/components/Tags.vue:101
+#: src/components/Tags.vue:112
 msgid "Communicating..."
 msgstr "Komunikatzen..."
 
-#: src/store/app/actions.js:32
+#: src/stores/app.js:104
 msgid "Computer"
 msgstr "Ordenagailua"
 
-#: src/store/app/actions.js:96
+#: src/stores/app.js:201
 msgid "Credentials are not valid. Review app settings."
 msgstr "Kredentzialak ez dira baliozkoak. Berrikusi aplikazioaren ezarpenak."
 
@@ -80,33 +79,33 @@ msgid "Details"
 msgstr "Xehetasunak"
 
 #: src/components/Menu.vue:31 src/layouts/MainLayout.vue:46
-#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:43
-#: src/store/app/actions.js:51
+#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:50
+#: src/stores/app.js:123
 msgid "Devices"
 msgstr "Gailuak"
 
-#: src/components/Info.vue:198
+#: src/components/Info.vue:258
 msgid "disks"
 msgstr "diskoak"
 
-#: src/components/Info.vue:59
+#: src/components/Info.vue:82
 msgid "Hardware"
 msgstr "Hardwarea"
 
-#: src/components/Menu.vue:96 src/layouts/MainLayout.vue:111
+#: src/components/Menu.vue:93 src/layouts/MainLayout.vue:111
 msgid "Help"
 msgstr "Laguntza"
 
-#: src/App.vue:26
+#: src/App.vue:23
 msgid "Impossible to continue."
 msgstr "Ezinezkoa da jarraitzea."
 
-#: src/components/Info.vue:261
+#: src/components/Info.vue:321
 msgid "In repair"
 msgstr "Konponketan"
 
 #: src/components/Menu.vue:67 src/layouts/MainLayout.vue:85
-#: src/pages/info/index.vue:24 src/pages/info/index.vue:4
+#: src/pages/info/index.vue:4 src/pages/info/index.vue:50
 msgid "Info"
 msgstr "Informazioa"
 
@@ -118,15 +117,15 @@ msgstr "Instalatu"
 msgid "Installed"
 msgstr "Instalatua"
 
-#: src/components/AppFilter.vue:34
+#: src/components/AppFilter.vue:32
 msgid "Installed Apps"
 msgstr "Instalatutako aplikazioak"
 
-#: src/components/AppDetail.vue:158 src/components/AppDetail.vue:165
+#: src/components/AppDetail.vue:167 src/components/AppDetail.vue:174
 msgid "Installing %{name}"
 msgstr "Instalatzen %{name}"
 
-#: src/components/Info.vue:265
+#: src/components/Info.vue:325
 msgid "Intended"
 msgstr "Asmoa"
 
@@ -134,7 +133,7 @@ msgstr "Asmoa"
 msgid "Language"
 msgstr "Hizkuntza"
 
-#: src/components/Info.vue:28
+#: src/components/Info.vue:36
 msgid "Last synchronization"
 msgstr "Azken sinkronizazioa"
 
@@ -158,11 +157,11 @@ msgstr "Kudeatu pribilegioekin"
 msgid "Menu"
 msgstr "Menua"
 
-#: src/components/Info.vue:112
+#: src/components/Info.vue:177
 msgid "Migasfree Data"
 msgstr "Migasfree datuak"
 
-#: src/components/Info.vue:86
+#: src/components/Info.vue:121
 msgid "Network Data"
 msgstr "Sareko datuak"
 
@@ -170,7 +169,7 @@ msgstr "Sareko datuak"
 msgid "Not show details when synchronizing"
 msgstr "Ez erakutsi xehetasunak sinkronizatzean"
 
-#: src/store/app/actions.js:45
+#: src/stores/app.js:117
 msgid "Packages"
 msgstr "Paketeak"
 
@@ -178,17 +177,21 @@ msgstr "Paketeak"
 msgid "Password"
 msgstr "Pasahitza"
 
-#: src/components/Menu.vue:82 src/layouts/MainLayout.vue:97
+#: src/stores/executions.js:114
+msgid "Please wait, other process is running!!!"
+msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
+
+#: src/components/Menu.vue:79 src/layouts/MainLayout.vue:97
 #: src/pages/preferences/index.vue:24 src/pages/preferences/index.vue:4
-#: src/store/app/actions.js:14
+#: src/stores/app.js:83
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/components/Info.vue:145
+#: src/components/Info.vue:209
 msgid "Print Identification"
 msgstr "Inprimatu Identifikazioa"
 
-#: src/components/Info.vue:263
+#: src/components/Info.vue:323
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
@@ -200,11 +203,11 @@ msgstr "Bilatu izenean edo deskribapenean"
 msgid "Search in name or model or manufacturer"
 msgstr "Bilatu izena edo modeloa edo fabrikatzailea"
 
-#: src/store/app/actions.js:22
+#: src/stores/app.js:94
 msgid "Server"
 msgstr "Zerbitzaria"
 
-#: src/components/Tags.vue:115
+#: src/components/Tags.vue:138
 msgid "Set Tags"
 msgstr "Ezarri etiketak"
 
@@ -212,7 +215,7 @@ msgstr "Ezarri etiketak"
 msgid "Set tags at the server"
 msgstr "Ezarri etiketak zerbitzarian"
 
-#: src/components/Tags.vue:111
+#: src/components/Tags.vue:128
 msgid "Setting Tags..."
 msgstr "Etiketak ezartzea..."
 
@@ -228,7 +231,7 @@ msgstr "Aldatu modu ilunera"
 msgid "Switch to Light mode"
 msgstr "Aldatu argi modura"
 
-#: src/layouts/MainLayout.vue:185
+#: src/layouts/MainLayout.vue:205
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
@@ -236,47 +239,51 @@ msgstr "Sinkronizazioa"
 msgid "Synchronize Computer"
 msgstr "Ordenagailua sinkronizatu"
 
-#: src/layouts/MainLayout.vue:178
+#: src/layouts/MainLayout.vue:195
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
 #: src/components/Menu.vue:43 src/components/Tags.vue:9
 #: src/layouts/MainLayout.vue:59 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:43 src/store/app/actions.js:56
+#: src/pages/tags/index.vue:49 src/stores/app.js:128
 msgid "Tags"
 msgstr "Etiketak"
 
-#: src/components/ExecutionDetail.vue:68
+#: src/components/ExecutionDetail.vue:70
 msgid "Text copied to clipboard"
 msgstr "Testua arbelean kopiatu da"
 
 #: src/components/Apps.vue:22 src/components/Devices.vue:21
-#: src/components/Executions.vue:19 src/components/Tags.vue:71
+#: src/components/Executions.vue:16 src/components/Tags.vue:71
 msgid "There are not items to show."
 msgstr "Ez dago elementurik erakusteko."
 
-#: src/store/app/actions.js:128 src/store/app/actions.js:74
+#: src/stores/app.js:228 src/stores/ui.js:40
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
+
+#: src/stores/app.js:153
+msgid "This app requires at least Migasfree Client %{version}"
+msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
 
 #: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:42
 msgid "Uninstall"
 msgstr "Desinstalatu"
 
-#: src/components/AppDetail.vue:179 src/components/AppDetail.vue:186
+#: src/components/AppDetail.vue:190 src/components/AppDetail.vue:197
 msgid "Uninstalling %{name}"
 msgstr "Desinstalatzen %{name}"
 
-#: src/components/Info.vue:269
+#: src/components/Info.vue:329
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/components/Info.vue:267
+#: src/components/Info.vue:327
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
 #: src/pages/apps/index.vue:14 src/pages/devices/index.vue:14
-#: src/pages/tags/index.vue:14
+#: src/pages/info/index.vue:14 src/pages/tags/index.vue:14
 msgid "Update"
 msgstr "Eguneratu"
 
@@ -288,7 +295,7 @@ msgstr "Erabiltzailea"
 msgid "User with privileges on the computer"
 msgstr "Ordenagailuan pribilegioak dituen erabiltzailea"
 
-#: src/store/app/actions.js:154
+#: src/stores/app.js:253
 msgid "User without privileges"
 msgstr "Pribilegiorik gabeko erabiltzailea"
 
