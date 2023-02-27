@@ -1,9 +1,13 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
+const getPython = require('../utils')
 
 const router = express.Router()
 
-const options = { env: { MIGASFREE_CLIENT_DEBUG: 0 } }
+const options = {
+  pythonPath: getPython(),
+  env: { MIGASFREE_CLIENT_DEBUG: 0 },
+}
 
 router.get('/id', (req, res) => {
   const code = `

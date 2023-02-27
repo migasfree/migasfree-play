@@ -3,11 +3,15 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const getPython = require('../utils')
 
 const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
 const router = express.Router()
 
-const options = { env: { MIGASFREE_CLIENT_DEBUG: 0 } }
+const options = {
+  pythonPath: getPython(),
+  env: { MIGASFREE_CLIENT_DEBUG: 0 },
+}
 
 const settings = {
   language: 'es_ES',

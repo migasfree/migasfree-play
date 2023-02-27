@@ -1,7 +1,12 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
+const getPython = require('../utils')
 
 const router = express.Router()
+
+const options = {
+  pythonPath: getPython(),
+}
 
 router.get('/available', (req, res) => {
   let code = `
@@ -18,7 +23,7 @@ from migasfree_client.client import MigasFreeClient
 mfc = MigasFreeClient()
 print(json.dumps(mfc.pms.available_packages()))`
 
-  PythonShell.runString(code, null, (err, results) => {
+  PythonShell.runString(code, options, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send(results[0])
@@ -59,7 +64,7 @@ for pkg in packages:
 
 print(json.dumps(installed))`
 
-  PythonShell.runString(code, null, (err, results) => {
+  PythonShell.runString(code, options, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send(results[0])

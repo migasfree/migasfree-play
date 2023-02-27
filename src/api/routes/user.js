@@ -1,7 +1,12 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
+const getPython = require('../utils')
 
 const router = express.Router()
+
+const options = {
+  pythonPath: getPython(),
+}
 
 router.post('/check', (req, res) => {
   const code = `
@@ -74,7 +79,7 @@ elif platform.system() == "Linux":
 print(is_privileged)
 `
 
-  PythonShell.runString(code, null, (err, results) => {
+  PythonShell.runString(code, options, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send({ is_privileged: results[0] === 'True' })
