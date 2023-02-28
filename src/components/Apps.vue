@@ -1,9 +1,9 @@
 <template>
   <AppFilter />
 
-  <div v-if="appsByFilter.length > 0" class="row">
+  <div v-if="filteredApps.length > 0" class="row">
     <AppDetail
-      v-for="item in appsByFilter"
+      v-for="item in filteredApps"
       :key="item.id"
       :icon="item.icon || ''"
       :name="item.name"
@@ -26,15 +26,14 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 import AppFilter from 'components/AppFilter.vue'
 import AppDetail from 'components/AppDetail.vue'
 import Login from 'components/Login'
 
 import { useAppStore } from 'src/stores/app'
-import { useFiltersStore } from 'src/stores/filters'
-import { usePackagesStore } from 'src/stores/packages'
 
 export default {
   name: 'Apps',
@@ -45,50 +44,15 @@ export default {
   },
   setup() {
     const appStore = useAppStore()
-    const filtersStore = useFiltersStore()
-    const packagesStore = usePackagesStore()
 
+    const { filteredApps } = storeToRefs(appStore)
     const showLogin = ref(false)
-
-    const installedPackages = computed(() =>
-      JSON.parse(JSON.stringify(packagesStore.installed))
-    )
-
-    const appsByFilter = computed(() => {
-      let results = appStore.getApps
-
-      const selectedCategory = filtersStore.selectedCategory
-      if (selectedCategory && selectedCategory.id > 0)
-        results = results.filter(
-          (app) => app.category.id == selectedCategory.id
-        )
-      if (filtersStore.searchApp) {
-        const pattern = filtersStore.searchApp.toLowerCase()
-
-        results = results.filter(
-          (app) =>
-            app.name.toLowerCase().includes(pattern) ||
-            app.description.toLowerCase().includes(pattern)
-        )
-      }
-
-      if (filtersStore.onlyInstalledApps)
-        results = results.filter(
-          (app) =>
-            app.packages_to_install.length > 0 &&
-            app.packages_to_install.filter(
-              (x) => !installedPackages.value.includes(x)
-            ).length === 0
-        )
-
-      return results
-    })
 
     const openLogin = () => {
       showLogin.value = true
     }
 
-    return { showLogin, appsByFilter, openLogin }
+    return { filteredApps, showLogin, openLogin }
   },
 }
 </script>
