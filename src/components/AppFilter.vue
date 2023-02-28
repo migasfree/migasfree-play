@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-card class="q-ma-md" flat>
+      <q-card class="q-ma-sm" flat>
         <q-card-section>
           <p>
             <q-input
@@ -9,6 +9,7 @@
               :placeholder="$gettext('Search in name or description')"
               clearable
               autofocus
+              @update:model-value="appStore.filterApps"
               ><template #prepend><q-icon name="mdi-magnify" /></template
             ></q-input>
           </p>
@@ -21,6 +22,7 @@
               option-value="id"
               option-label="name"
               clearable
+              @update:model-value="appStore.filterApps"
             />
           </p>
 
@@ -34,6 +36,7 @@
               "
               :false-value="false"
               :true-value="true"
+              @update:model-value="appStore.filterApps"
             />
           </p>
         </q-card-section>
@@ -43,14 +46,16 @@
 </template>
 
 <script>
+import { useAppStore } from 'src/stores/app'
 import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'AppFilter',
   setup() {
+    const appStore = useAppStore()
     const filtersStore = useFiltersStore()
 
-    return { filtersStore }
+    return { appStore, filtersStore }
   },
 }
 </script>
