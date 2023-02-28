@@ -3,7 +3,7 @@
     <div class="col">
       <q-card class="q-ma-md" flat>
         <q-card-section>
-          <p>
+          <p v-if="preferencesStore.showLanguage">
             <q-select
               v-model="language"
               :label="$gettext('Language')"
