@@ -2,6 +2,16 @@
   <q-page padding>
     <q-breadcrumbs>
       <q-breadcrumbs-el :label="$gettext('Devices')" icon="mdi-printer" />
+      <q-chip
+        v-if="filteredDevices.length > 0"
+        outline
+        color="primary"
+        text-color="white"
+        class="text-right"
+        size="sm"
+      >
+        {{ filteredDevices.length }}
+      </q-chip>
       <q-btn
         icon="mdi-sync"
         size="sm"
@@ -45,6 +55,7 @@ export default {
     const devicesStore = useDevicesStore()
     const uiStore = useUiStore()
 
+    const { filteredDevices } = storeToRefs(devicesStore)
     const { isUpdating } = storeToRefs(uiStore)
 
     useMeta({ title: $gettext('Devices') })
@@ -57,7 +68,7 @@ export default {
       uiStore.updatingFinished()
     }
 
-    return { isUpdating, updateDevices }
+    return { filteredDevices, isUpdating, updateDevices }
   },
 }
 </script>
