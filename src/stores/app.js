@@ -39,6 +39,7 @@ export const useAppStore = defineStore('app', {
     serverVersion: '',
     organization: '',
     apps: [],
+    filteredApps: [],
     user: {
       isPrivileged: false,
     },
@@ -313,10 +314,49 @@ export const useAppStore = defineStore('app', {
               value: response.data.results,
               project: computer.project,
             })
+            this.filterApps()
           })
           .catch((error) => {
             uiStore.notifyError(error)
           })
+    },
+
+    filterApps() {
+      const filtersStore = useFiltersStore()
+      const packagesStore = usePackagesStore()
+
+      let results = this.apps
+
+      const selectedCategory = filtersStore.selectedCategory
+      if (selectedCategory && selectedCategory.id > 0)
+        results = results.filter(
+          (app) => app.category.id == selectedCategory.id
+        )
+      if (filtersStore.searchApp) {
+        const pattern = filtersStore.searchApp.toLowerCase()
+
+        results = results.filter(
+          (app) =>
+            app.name.toLowerCase().includes(pattern) ||
+            app.description.toLowerCase().includes(pattern)
+        )
+      }
+
+      if (filtersStore.onlyInstalledApps) {
+        const installedPackages = JSON.parse(
+          JSON.stringify(packagesStore.installed)
+        )
+
+        results = results.filter(
+          (app) =>
+            app.packages_to_install.length > 0 &&
+            app.packages_to_install.filter(
+              (x) => !installedPackages.includes(x)
+            ).length === 0
+        )
+      }
+
+      this.filteredApps = results
     },
 
     setInitialUrl() {
