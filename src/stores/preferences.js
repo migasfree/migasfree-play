@@ -11,6 +11,7 @@ import { internalApi } from 'config/app.conf'
 export const usePreferencesStore = defineStore('preferences', {
   state: () => ({
     language: 'es_ES',
+    showLanguage: true,
     showComputerLink: true,
     showSyncDetails: false,
     showApps: true,
@@ -49,6 +50,7 @@ export const usePreferencesStore = defineStore('preferences', {
       api
         .post(`${internalApi}/preferences`, {
           language: this.language,
+          show_language: this.showLanguage,
           show_computer_link: this.showComputerLink,
           show_sync_details: this.showSyncDetails,
           show_apps: this.showApps,
@@ -72,6 +74,7 @@ export const usePreferencesStore = defineStore('preferences', {
 
     setPreferences(value) {
       this.language = value.language
+      this.showLanguage = value.show_language
       this.showComputerLink = value.show_computer_link
       this.showSyncDetails = value.show_sync_details
       this.showApps = value.show_apps
