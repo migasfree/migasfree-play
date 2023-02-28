@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-card class="q-ma-md" flat>
+      <q-card class="q-ma-sm" flat>
         <q-card-section>
           <p v-if="preferencesStore.showLanguage">
             <q-select
