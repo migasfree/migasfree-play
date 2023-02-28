@@ -2,6 +2,17 @@
   <q-page padding>
     <q-breadcrumbs>
       <q-breadcrumbs-el :label="$gettext('Apps')" icon="apps" />
+      <q-chip
+        v-if="filteredApps.length > 0"
+        outline
+        color="primary"
+        text-color="white"
+        class="text-right"
+        size="sm"
+      >
+        {{ filteredApps.length }}
+      </q-chip>
+
       <q-btn
         icon="mdi-sync"
         size="sm"
@@ -47,6 +58,7 @@ export default {
     const filtersStore = useFiltersStore()
     const uiStore = useUiStore()
 
+    const { filteredApps } = storeToRefs(appStore)
     const { isUpdating } = storeToRefs(uiStore)
 
     useMeta({ title: $gettext('Apps') })
@@ -58,7 +70,7 @@ export default {
       uiStore.updatingFinished()
     }
 
-    return { isUpdating, updateApps }
+    return { isUpdating, updateApps, filteredApps }
   },
 }
 </script>
