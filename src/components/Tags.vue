@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-card v-if="options.length > 0 || tags.length > 0" class="q-ma-md" flat>
+      <q-card v-if="options.length > 0 || tags.length > 0" class="q-ma-sm" flat>
         <q-card-section>
           <p>
             <q-select
