@@ -294,8 +294,8 @@ export default {
 
     const cpuIcon = computed(() => {
       switch (computer.value.data.architecture) {
-        case '32':
-        case '64':
+        case 32:
+        case 64:
           return `mdi-cpu-${computer.value.data.architecture}-bit`
         default:
           return 'mdi-help'
