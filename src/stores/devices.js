@@ -6,6 +6,7 @@ import { tokenApi } from 'config/app.conf'
 
 import { useAppStore } from './app'
 import { useComputerStore } from './computer'
+import { useFiltersStore } from './filters'
 import { useUiStore } from './ui'
 
 export const useDevicesStore = defineStore('devices', {
@@ -14,6 +15,7 @@ export const useDevicesStore = defineStore('devices', {
     inflicted: [],
     default: 0,
     available: [],
+    filteredDevices: [],
   }),
   getters: {
     getAvailable: (state) => state.available,
@@ -60,6 +62,7 @@ export const useDevicesStore = defineStore('devices', {
                 value.data = JSON.parse(value.data)
               })
             }
+            this.filterDevices()
           })
           .catch((error) => {
             uiStore.notifyError(error)
@@ -119,6 +122,35 @@ export const useDevicesStore = defineStore('devices', {
         .catch((error) => {
           uiStore.notifyError(error)
         })
+    },
+
+    filterDevices() {
+      const filtersStore = useFiltersStore()
+
+      let results = this.available
+
+      if (filtersStore.searchDevice) {
+        const pattern = filtersStore.searchDevice.toLowerCase()
+
+        results = results.filter(
+          (device) =>
+            device.model.name.toLowerCase().includes(pattern) ||
+            device.model.manufacturer.name.toLowerCase().includes(pattern) ||
+            ('NAME' in device.data &&
+              device.data.NAME.toLowerCase().includes(pattern))
+        )
+      }
+
+      if (filtersStore.onlyAssignedDevices)
+        results = results.filter((device) => {
+          return (
+            this.assigned.filter((x) => {
+              return x.device.id === device.id
+            }).length !== 0
+          )
+        })
+
+      this.filteredDevices = results
     },
 
     addLogicalDevices(value) {
