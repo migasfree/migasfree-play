@@ -1,9 +1,9 @@
 <template>
   <DeviceFilter />
 
-  <div v-if="devicesByFilter.length > 0" class="row">
+  <div v-if="filteredDevices.length > 0" class="row">
     <DeviceDetail
-      v-for="item in devicesByFilter"
+      v-for="item in filteredDevices"
       :id="item.name"
       :key="item.id"
       :icon="icon(item.connection.name)"
@@ -23,13 +23,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 
 import DeviceFilter from 'components/DeviceFilter.vue'
 import DeviceDetail from 'components/DeviceDetail.vue'
 
 import { useDevicesStore } from 'src/stores/devices'
-import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'Devices',
@@ -39,34 +38,7 @@ export default {
   },
   setup() {
     const devicesStore = useDevicesStore()
-    const filtersStore = useFiltersStore()
-
-    const devicesByFilter = computed(() => {
-      let results = devicesStore.getAvailable
-
-      if (filtersStore.searchDevice) {
-        const pattern = filtersStore.searchDevice.toLowerCase()
-
-        results = results.filter(
-          (device) =>
-            device.model.name.toLowerCase().includes(pattern) ||
-            device.model.manufacturer.name.toLowerCase().includes(pattern) ||
-            ('NAME' in device.data &&
-              device.data.NAME.toLowerCase().includes(pattern))
-        )
-      }
-
-      if (filtersStore.onlyAssignedDevices)
-        results = results.filter((device) => {
-          return (
-            devicesStore.assigned.filter((x) => {
-              return x.device.id === device.id
-            }).length !== 0
-          )
-        })
-
-      return results
-    })
+    const { filteredDevices } = storeToRefs(devicesStore)
 
     const name = (item) => {
       return 'NAME' in item.data && item.data.NAME
@@ -88,7 +60,7 @@ export default {
       return value.LOCATION || ''
     }
 
-    return { devicesByFilter, name, icon, ipAddress, description }
+    return { filteredDevices, name, icon, ipAddress, description }
   },
 }
 </script>
