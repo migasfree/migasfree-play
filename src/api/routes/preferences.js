@@ -3,15 +3,10 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
-const getPython = require('../utils')
+const { pythonShellOptions, debug } = require('../utils')
 
 const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
 const router = express.Router()
-
-const options = {
-  pythonPath: getPython(),
-  env: { MIGASFREE_CLIENT_DEBUG: 0 },
-}
 
 const settings = {
   language: 'es_ES',
@@ -30,6 +25,8 @@ const settings = {
 }
 
 router.get('/', (req, res) => {
+  if (debug) console.log('[express] Getting preferences...')
+
   if (fs.existsSync(filePath)) {
     const data = fs.readFileSync(filePath, 'utf8')
 
@@ -43,12 +40,16 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+  if (debug) console.log('[express] Setting preferences...')
+
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2))
   res.send()
 })
 
 router.get('/server', (req, res) => {
+  if (debug) console.log('[express] Getting server info...')
+
   const code = `
 import json
 from migasfree_client import settings
@@ -73,6 +74,8 @@ print(json.dumps(ret))`
 })
 
 router.get('/client', (req, res) => {
+  if (debug) console.log('[express] Getting client info...')
+
   const code = `
 import json
 from migasfree_client.utils import get_mfc_release
@@ -80,7 +83,7 @@ from migasfree_client.utils import get_mfc_release
 ret = {'version': get_mfc_release()}
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
     res.send(results[0])
@@ -88,6 +91,8 @@ print(json.dumps(ret))`
 })
 
 router.get('/protocol', (req, res) => {
+  if (debug) console.log('[express] Getting API protocol...')
+
   let code = `
 from migasfree_client.command import MigasFreeCommand
 
@@ -101,7 +106,7 @@ ssl_cert = MigasFreeCommand().migas_ssl_cert
 print('https' if ssl_cert else 'http')`
   }
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
     res.send(results[0])
