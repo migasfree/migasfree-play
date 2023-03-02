@@ -23,4 +23,14 @@ echo $_PYTHON`
   }
 }
 
-module.exports = getPython
+let debug = false
+if (process.argv.includes('debug')) {
+  debug = true
+}
+
+const pythonShellOptions = {
+  pythonPath: getPython(),
+  env: { MIGASFREE_CLIENT_DEBUG: 0 },
+}
+
+module.exports = { getPython, debug, pythonShellOptions }
