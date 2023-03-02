@@ -1,14 +1,12 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
-const getPython = require('../utils')
+const { pythonShellOptions, debug } = require('../utils')
 
 const router = express.Router()
 
-const options = {
-  pythonPath: getPython(),
-}
-
 router.post('/check', (req, res) => {
+  if (debug) console.log('[express] Checking user...')
+
   const code = `
 import os
 import sys
@@ -79,7 +77,7 @@ elif platform.system() == "Linux":
 print(is_privileged)
 `
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send({ is_privileged: results[0] === 'True' })
