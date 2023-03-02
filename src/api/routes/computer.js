@@ -1,21 +1,18 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
-const getPython = require('../utils')
+const { pythonShellOptions, debug } = require('../utils')
 
 const router = express.Router()
 
-const options = {
-  pythonPath: getPython(),
-  env: { MIGASFREE_CLIENT_DEBUG: 0 },
-}
-
 router.get('/id', (req, res) => {
+  if (debug) console.log('[express] Getting computer ID...')
+
   const code = `
 from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().get_computer_id())`
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
     res.send(results[0])
@@ -23,6 +20,8 @@ print(MigasFreeCommand().get_computer_id())`
 })
 
 router.get('/network', (req, res) => {
+  if (debug) console.log('[express] Getting network info...')
+
   const code = `
 import json
 from migasfree_client.network import get_iface_net, get_iface_cidr, get_iface_mask, get_iface_address, get_ifname
