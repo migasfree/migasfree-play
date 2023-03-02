@@ -1,13 +1,8 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
-const getPython = require('../utils')
+const { pythonShellOptions } = require('../utils')
 
 const router = express.Router()
-
-const options = {
-  pythonPath: getPython(),
-  env: { MIGASFREE_CLIENT_DEBUG: 0 },
-}
 
 router.get('/available', (req, res) => {
   let code = `
@@ -25,7 +20,7 @@ mft = MigasFreeTags()
 response = mft._get_tags()
 print(json.dumps(response['available'], ensure_ascii=False))`
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send(results[0])
@@ -48,7 +43,7 @@ mft = MigasFreeTags()
 response = mft._get_tags()
 print(json.dumps(response['selected'], ensure_ascii=False))`
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send(results[0])
