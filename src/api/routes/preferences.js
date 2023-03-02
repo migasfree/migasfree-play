@@ -15,6 +15,7 @@ const options = {
 
 const settings = {
   language: 'es_ES',
+  show_language: true,
   show_computer_link: true,
   show_sync_details: false,
   show_apps: true,
