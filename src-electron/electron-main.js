@@ -10,16 +10,23 @@ function launchExpress() {
 
   tcpPortUsed.check(port, '127.0.0.1').then(
     function (inUse) {
-      console.log(`Port ${port} usage: ${inUse}`) // debug
+      if (app.debug) console.log(`Port ${port} usage: ${inUse}`)
+
       if (!inUse) {
         const expressApi = isProduction
           ? path.join(process.resourcesPath, 'app', 'api.js')
           : path.join(__dirname, '..', 'src', 'api')
 
         // Instantiate Express App
-        console.log('instantiating express app...!!!', expressApi) // debug
-        expressProcess = spawn('node', [expressApi], { detached: false })
-        console.log('inside tcpPortUsed, express PID', expressProcess.pid) // debug
+        if (app.debug)
+          console.log('instantiating express app...!!!', expressApi)
+
+        expressProcess = spawn('node', [expressApi, app.debug ? 'debug' : ''], {
+          detached: false,
+        })
+
+        if (app.debug)
+          console.log('inside tcpPortUsed, express PID', expressProcess.pid)
 
         expressProcess.stdout.on('data', (data) => {
           console.log(`stdout: ${data}`)
@@ -30,6 +37,7 @@ function launchExpress() {
         })
       }
     },
+
     function (err) {
       console.error('Error on check:', err.message)
     }
@@ -43,6 +51,7 @@ const gotTheLock = app.requestSingleInstanceLock()
 
 app.canExit = true
 app.syncAfterStart = false
+app.debug = false
 
 try {
   if (
@@ -77,6 +86,10 @@ function createWindow() {
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
   })
+
+  if (process.argv.includes('debug')) {
+    app.debug = true
+  }
 
   require('@electron/remote/main').enable(mainWindow.webContents)
 
