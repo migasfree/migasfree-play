@@ -1,14 +1,12 @@
 const { PythonShell } = require('python-shell')
 const express = require('express')
-const getPython = require('../utils')
+const { pythonShellOptions, debug } = require('../utils')
 
 const router = express.Router()
 
-const options = {
-  pythonPath: getPython(),
-}
-
 router.get('/available', (req, res) => {
+  if (debug) console.log('[express] Getting available packages...')
+
   let code = `
 import json
 from migasfree_client.sync import MigasFreeSync
@@ -23,7 +21,7 @@ from migasfree_client.client import MigasFreeClient
 mfc = MigasFreeClient()
 print(json.dumps(mfc.pms.available_packages()))`
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send(results[0])
@@ -31,6 +29,8 @@ print(json.dumps(mfc.pms.available_packages()))`
 })
 
 router.post('/installed', (req, res) => {
+  if (debug) console.log('[express] Getting installed packages...')
+
   const packages = JSON.stringify(req.body)
   let code = `
 import json
@@ -64,7 +64,7 @@ for pkg in packages:
 
 print(json.dumps(installed))`
 
-  PythonShell.runString(code, options, (err, results) => {
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
     res.send(results[0])
