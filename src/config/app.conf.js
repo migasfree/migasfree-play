@@ -1,6 +1,8 @@
 export const executionsMaxLength = 5
 
-export const internalApi = 'http://localhost:3000'
+export const internalApi = `http://localhost:${
+  process.env.EXPRESS_PORT || 3000
+}`
 
 export const urlHelp =
   'https://fun-with-migasfree.readthedocs.io/es/master/chapter10.html#migasfree-play'
