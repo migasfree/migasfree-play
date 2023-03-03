@@ -238,7 +238,7 @@ module.exports = configure(function (ctx) {
         },
         deb: {
           depends: [
-            'migasfree-client (>= 5.0)',
+            'migasfree-client (>= 4.20)',
             'sudo',
             'bash',
             'cron',
