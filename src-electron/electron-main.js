@@ -6,7 +6,7 @@ let expressProcess
 
 function launchExpress() {
   const isProduction = process.env.NODE_ENV === 'production'
-  const port = 3000
+  const port = parseInt(process.env.EXPRESS_PORT || 3000)
 
   tcpPortUsed.check(port, '127.0.0.1').then(
     function (inUse) {
