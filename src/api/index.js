@@ -14,7 +14,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: 'http://localhost:9999',
+    origin: `http://localhost:${process.env.QUASAR_PORT || 9999}`,
   })
 )
 app.use(
@@ -47,8 +47,10 @@ app.use((err, req, res, next) => {
   res.render('error')
 })
 
-app.listen(3000, () => {
-  console.log('Express server listening on port 3000')
+app.listen(process.env.EXPRESS_PORT || 3000, () => {
+  console.log(
+    `Express server listening on port ${process.env.EXPRESS_PORT || 3000}`
+  )
 })
 
 module.exports = app
