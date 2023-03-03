@@ -118,7 +118,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container id="main">
       <router-view />
 
       <q-page-sticky
