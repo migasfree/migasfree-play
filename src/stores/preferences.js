@@ -89,5 +89,22 @@ export const usePreferencesStore = defineStore('preferences', () => {
     gettext.current = value
   }
 
-  return { language, readPreferences, savePreferences, setLanguage }
+  return {
+    language,
+    showLanguage,
+    showComputerLink,
+    showSyncDetails,
+    showApps,
+    showDevices,
+    showTags,
+    showDetails,
+    showPreferences,
+    showInfo,
+    showHelp,
+    darkMode,
+    showDarkMode,
+    readPreferences,
+    savePreferences,
+    setLanguage,
+  }
 })
