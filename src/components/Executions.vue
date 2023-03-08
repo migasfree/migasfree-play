@@ -1,7 +1,7 @@
 <template>
-  <q-list v-if="Object.keys(log).length > 0" class="q-ma-md">
+  <q-list v-if="Object.keys(items).length > 0" class="q-ma-md">
     <ExecutionDetail
-      v-for="(item, name, index) in log"
+      v-for="(item, name, index) in items"
       :id="name"
       :key="index"
       :command="item.command"
@@ -31,9 +31,9 @@ export default {
   },
   setup() {
     const executionsStore = useExecutionsStore()
-    const { log } = storeToRefs(executionsStore)
+    const { items } = storeToRefs(executionsStore)
 
-    return { log }
+    return { items }
   },
 }
 </script>
