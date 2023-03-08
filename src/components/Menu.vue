@@ -8,7 +8,7 @@
     </template>
     <q-list bordered separator>
       <q-item
-        v-if="preferencesStore.showApps && $route.name !== 'apps'"
+        v-if="showApps && $route.name !== 'apps'"
         clickable
         @click="$router.push({ name: 'apps' })"
       >
@@ -20,7 +20,7 @@
       </q-item>
 
       <q-item
-        v-if="preferencesStore.showDevices && $route.name !== 'devices'"
+        v-if="showDevices && $route.name !== 'devices'"
         clickable
         @click="$router.push({ name: 'devices' })"
       >
@@ -32,7 +32,7 @@
       </q-item>
 
       <q-item
-        v-if="preferencesStore.showTags && $route.name !== 'tags'"
+        v-if="showTags && $route.name !== 'tags'"
         clickable
         @click="$router.push({ name: 'tags' })"
       >
@@ -44,7 +44,7 @@
       </q-item>
 
       <q-item
-        v-if="preferencesStore.showDetails && $route.name !== 'details'"
+        v-if="showDetails && $route.name !== 'details'"
         clickable
         @click="$router.push({ name: 'details' })"
       >
@@ -56,7 +56,7 @@
       </q-item>
 
       <q-item
-        v-if="preferencesStore.showInfo && $route.name !== 'info'"
+        v-if="showInfo && $route.name !== 'info'"
         clickable
         @click="$router.push({ name: 'info' })"
       >
@@ -68,7 +68,7 @@
       </q-item>
 
       <q-item
-        v-if="preferencesStore.showPreferences && $route.name !== 'preferences'"
+        v-if="showPreferences && $route.name !== 'preferences'"
         clickable
         @click="$router.push({ name: 'preferences' })"
       >
@@ -79,13 +79,7 @@
         <q-item-section><translate>Preferences</translate></q-item-section>
       </q-item>
 
-      <q-item
-        v-if="preferencesStore.showHelp"
-        clickable
-        tag="a"
-        target="_blank"
-        :href="urlHelp"
-      >
+      <q-item v-if="showHelp" clickable tag="a" target="_blank" :href="urlHelp">
         <q-item-section avatar>
           <q-icon name="help" size="lg" />
         </q-item-section>
@@ -97,6 +91,8 @@
 </template>
 
 <script>
+import { storeToRefs } from 'pinia'
+
 import { urlHelp } from 'config/app.conf'
 
 import { usePreferencesStore } from 'src/stores/preferences'
@@ -104,8 +100,26 @@ import { usePreferencesStore } from 'src/stores/preferences'
 export default {
   setup() {
     const preferencesStore = usePreferencesStore()
+    const {
+      showApps,
+      showDevices,
+      showTags,
+      showDetails,
+      showInfo,
+      showPreferences,
+      showHelp,
+    } = storeToRefs(preferencesStore)
 
-    return { urlHelp, preferencesStore }
+    return {
+      urlHelp,
+      showApps,
+      showDevices,
+      showTags,
+      showDetails,
+      showInfo,
+      showPreferences,
+      showHelp,
+    }
   },
 }
 </script>
