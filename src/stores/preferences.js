@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { Dark, LocalStorage } from 'quasar'
 
@@ -8,89 +9,85 @@ import { useUiStore } from './ui'
 
 import { internalApi } from 'config/app.conf'
 
-export const usePreferencesStore = defineStore('preferences', {
-  state: () => ({
-    language: 'es_ES',
-    showLanguage: true,
-    showComputerLink: true,
-    showSyncDetails: false,
-    showApps: true,
-    showDevices: true,
-    showTags: true,
-    showDetails: true,
-    showPreferences: true,
-    showInfo: true,
-    showHelp: true,
-    darkMode: false,
-    showDarkMode: true,
-  }),
-  getters: {
-    getLanguage: (state) => state.language,
-  },
-  actions: {
-    async readPreferences() {
-      const uiStore = useUiStore()
+export const usePreferencesStore = defineStore('preferences', () => {
+  const language = ref('es_ES')
+  const showLanguage = ref(true)
+  const showComputerLink = ref(true)
+  const showSyncDetails = ref(false)
+  const showApps = ref(true)
+  const showDevices = ref(true)
+  const showTags = ref(true)
+  const showDetails = ref(true)
+  const showPreferences = ref(true)
+  const showInfo = ref(true)
+  const showHelp = ref(true)
+  const darkMode = ref(false)
+  const showDarkMode = ref(true)
 
-      await api
-        .get(`${internalApi}/preferences`)
-        .then((response) => {
-          this.setPreferences(response.data)
-          gettext.current = response.data.language
-          Dark.set(response.data.dark_mode)
-          LocalStorage.set('darkMode', response.data.dark_mode)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    },
+  async function readPreferences() {
+    const uiStore = useUiStore()
 
-    savePreferences() {
-      const uiStore = useUiStore()
+    await api
+      .get(`${internalApi}/preferences`)
+      .then((response) => {
+        setPreferences(response.data)
+        gettext.current = response.data.language
+        Dark.set(response.data.dark_mode)
+        LocalStorage.set('darkMode', response.data.dark_mode)
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
 
-      api
-        .post(`${internalApi}/preferences`, {
-          language: this.language,
-          show_language: this.showLanguage,
-          show_computer_link: this.showComputerLink,
-          show_sync_details: this.showSyncDetails,
-          show_apps: this.showApps,
-          show_devices: this.showDevices,
-          show_tags: this.showTags,
-          show_details: this.showDetails,
-          show_preferences: this.showPreferences,
-          show_info: this.showInfo,
-          show_help: this.showHelp,
-          dark_mode: this.darkMode,
-          show_dark_mode: this.showDarkMode,
-        })
-        .then(() => {
-          Dark.set(this.darkMode)
-          LocalStorage.set('darkMode', this.darkMode)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    },
+  function savePreferences() {
+    const uiStore = useUiStore()
 
-    setPreferences(value) {
-      this.language = value.language
-      this.showLanguage = value.show_language
-      this.showComputerLink = value.show_computer_link
-      this.showSyncDetails = value.show_sync_details
-      this.showApps = value.show_apps
-      this.showDevices = value.show_devices
-      this.showTags = value.show_tags
-      this.showDetails = value.show_details
-      this.showPreferences = value.show_preferences
-      this.showInfo = value.show_info
-      this.showHelp = value.show_help
-      this.darkMode = value.dark_mode
-      this.showDarkMode = value.show_dark_mode
-    },
+    api
+      .post(`${internalApi}/preferences`, {
+        language: language.value,
+        show_language: showLanguage.value,
+        show_computer_link: showComputerLink.value,
+        show_sync_details: showSyncDetails.value,
+        show_apps: showApps.value,
+        show_devices: showDevices.value,
+        show_tags: showTags.value,
+        show_details: showDetails.value,
+        show_preferences: showPreferences.value,
+        show_info: showInfo.value,
+        show_help: showHelp.value,
+        dark_mode: darkMode.value,
+        show_dark_mode: showDarkMode.value,
+      })
+      .then(() => {
+        Dark.set(darkMode.value)
+        LocalStorage.set('darkMode', darkMode.value)
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
 
-    setLanguage(value) {
-      this.language = value
-      gettext.current = value
-    },
-  },
+  function setPreferences(value) {
+    language.value = value.language
+    showLanguage.value = value.show_language
+    showComputerLink.value = value.show_computer_link
+    showSyncDetails.value = value.show_sync_details
+    showApps.value = value.show_apps
+    showDevices.value = value.show_devices
+    showTags.value = value.show_tags
+    showDetails.value = value.show_details
+    showPreferences.value = value.show_preferences
+    showInfo.value = value.show_info
+    showHelp.value = value.show_help
+    darkMode.value = value.dark_mode
+    showDarkMode.value = value.show_dark_mode
+  }
+
+  function setLanguage(value) {
+    language.value = value
+    gettext.current = value
+  }
+
+  return { language, readPreferences, savePreferences, setLanguage }
 })
