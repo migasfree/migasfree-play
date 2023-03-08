@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 
@@ -8,21 +9,22 @@ export const cancelSource = axios.CancelToken.source()
 const api = axios.create()
 
 export default boot(({ app, store }) => {
-  const preferencesStore = usePreferencesStore(store)
-
   api.interceptors.request.use(
     (config) => {
-      /* const authToken = appStore.token
+      /* const appStore = useAppStore(store)
+      const { token } = storeToRefs(appStore)
 
-      if (authToken) {
-        config.headers.Authorization = authToken
+      if (token.value) {
+        config.headers.Authorization = token.value
       } */ // TODO
 
-      const language = preferencesStore.getLanguage
+      const preferencesStore = usePreferencesStore(store)
+      const { language } = storeToRefs(preferencesStore)
 
-      config.headers['Accept-Language'] = `${language.replace('_', '-')},${
-        language.split('_')[0]
-      };q=0.9`
+      config.headers['Accept-Language'] = `${language.value.replace(
+        '_',
+        '-'
+      )},${language.value.split('_')[0]};q=0.9`
 
       // config.timeout = 10000
       config.cancelToken = cancelSource.token
