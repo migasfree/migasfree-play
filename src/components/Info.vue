@@ -13,13 +13,13 @@
         {{ app.description }} <br />{{ app.copyright }} <br />{{ app.author }}
       </p>
 
-      <q-card v-if="computer.user" flat bordered class="half q-ma-md">
+      <q-card v-if="user" flat bordered class="half q-ma-md">
         <q-item>
           <q-item-section avatar>
             <q-icon name="mdi-account" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{ computer.user }}</q-item-section>
+          <q-item-section class="text-h6">{{ user }}</q-item-section>
         </q-item>
 
         <q-item>
@@ -37,20 +37,13 @@
         }}</q-tooltip>
       </q-card>
 
-      <q-card
-        v-if="'product' in computer.data"
-        flat
-        bordered
-        class="half q-ma-md"
-      >
+      <q-card v-if="'product' in data" flat bordered class="half q-ma-md">
         <q-item>
           <q-item-section avatar>
             <q-icon :name="productIcon" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{
-            computer.data.product
-          }}</q-item-section>
+          <q-item-section class="text-h6">{{ data.product }}</q-item-section>
         </q-item>
 
         <q-item>
@@ -58,9 +51,7 @@
             <q-icon :name="cpuIcon" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{
-            computer.data.cpu
-          }}</q-item-section>
+          <q-item-section class="text-h6">{{ data.cpu }}</q-item-section>
         </q-item>
 
         <q-item>
@@ -82,20 +73,13 @@
         <q-tooltip>{{ $gettext('Hardware') }}</q-tooltip>
       </q-card>
 
-      <q-card
-        v-if="'mac_address' in computer.data"
-        flat
-        bordered
-        class="half q-ma-md"
-      >
+      <q-card v-if="'mac_address' in data" flat bordered class="half q-ma-md">
         <q-item>
           <q-item-section avatar>
             <q-icon name="mdi-information" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{
-            computer.data.fqdn
-          }}</q-item-section>
+          <q-item-section class="text-h6">{{ data.fqdn }}</q-item-section>
         </q-item>
 
         <q-item>
@@ -104,9 +88,7 @@
           </q-item-section>
 
           <q-item-section class="text-h6"
-            >{{ computer.data.ip_address }} / {{ computer.mask }} ({{
-              computer.network
-            }})</q-item-section
+            >{{ data.ip_address }} / {{ mask }} ({{ network }})</q-item-section
           >
         </q-item>
 
@@ -153,9 +135,7 @@
             <q-icon name="mdi-sitemap" />
           </q-item-section>
 
-          <q-item-section class="text-h6">{{
-            computer.project
-          }}</q-item-section>
+          <q-item-section class="text-h6">{{ project }}</q-item-section>
         </q-item>
 
         <q-item>
@@ -188,11 +168,11 @@
         />
 
         <q-card-section vertical class="justify-around q-px-md">
-          <p>{{ computer.name }} ({{ computerId }})</p>
+          <p class="q-mb-sm">{{ name }} ({{ computerId }})</p>
           <div class="text-caption text-blue-grey">
-            <p>{{ computer.uuid }}</p>
-            <p>{{ host }}</p>
-            <p>{{ computer.helpdesk }}</p>
+            <p class="q-mb-sm">{{ uuid }}</p>
+            <p class="q-mb-sm">{{ host }}</p>
+            <p class="q-mb-none">{{ helpdesk }}</p>
           </div>
         </q-card-section>
       </q-card-section>
@@ -215,6 +195,7 @@
 
 <script>
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
 import VueQrcode from '@chenfengyuan/vue-qrcode'
@@ -237,24 +218,21 @@ export default {
     const appStore = useAppStore()
     const computerStore = useComputerStore()
 
-    const computer = computed(() => computerStore.getComputer)
+    const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
+      storeToRefs(computerStore)
 
     const syncEndDate = computed(() =>
-      'sync_end_date' in computer.value.data
-        ? computer.value.data.sync_end_date
-        : ''
+      'sync_end_date' in data.value ? data.value.sync_end_date : ''
     )
 
     const computerRam = computed(() =>
-      'ram' in computer.value.data
-        ? `${bytesToGigas(computer.value.data.ram)} GB RAM`
-        : ''
+      'ram' in data.value ? `${bytesToGigas(data.value.ram)} GB RAM` : ''
     )
 
     const computerStorage = computed(() =>
-      'storage' in computer.value.data
-        ? `${bytesToGigas(computer.value.data.storage)} GB (${
-            computer.value.data.disks
+      'storage' in data.value
+        ? `${bytesToGigas(data.value.storage)} GB (${
+            data.value.disks
           } ${$gettext('disks')})`
         : ''
     )
@@ -262,10 +240,10 @@ export default {
     const computerMac = computed(() => {
       const ret = []
 
-      if (computer.value.data.mac_address) {
+      if (data.value.mac_address) {
         let tmp = ''
-        for (let i = 0; i < computer.value.data.mac_address.length; i += 12) {
-          tmp = computer.value.data.mac_address.substring(i, i + 12)
+        for (let i = 0; i < data.value.mac_address.length; i += 12) {
+          tmp = data.value.mac_address.substring(i, i + 12)
           ret.push(tmp.replace(/(.{2})/g, '$1:').slice(0, -1))
         }
       }
@@ -274,11 +252,11 @@ export default {
     })
 
     const computerId = computed(() =>
-      computer.value.cid ? `CID-${computer.value.cid}` : 'CID-?'
+      cid.value ? `CID-${cid.value}` : 'CID-?'
     )
 
     const productIcon = computed(() => {
-      switch (computer.value.data.product_system) {
+      switch (data.value.product_system) {
         case 'desktop':
           return 'mdi-desktop-tower-monitor'
         case 'laptop':
@@ -293,17 +271,17 @@ export default {
     })
 
     const cpuIcon = computed(() => {
-      switch (computer.value.data.architecture) {
+      switch (data.value.architecture) {
         case 32:
         case 64:
-          return `mdi-cpu-${computer.value.data.architecture}-bit`
+          return `mdi-cpu-${data.value.architecture}-bit`
         default:
           return 'mdi-help'
       }
     })
 
     const statusIcon = computed(() => {
-      switch (computer.value.data.status) {
+      switch (data.value.status) {
         case 'available':
           return 'mdi-cart'
         case 'in repair':
@@ -320,7 +298,7 @@ export default {
     })
 
     const statusText = computed(() => {
-      switch (computer.value.data.status) {
+      switch (data.value.status) {
         case 'available':
           return $gettext('Available')
         case 'in repair':
@@ -339,7 +317,7 @@ export default {
     const qrCode = computed(() => {
       let info = {
         model: 'computer',
-        id: computer.value.cid,
+        id: cid.value,
         server: appStore.host,
       }
 
@@ -356,7 +334,14 @@ export default {
 
     return {
       app,
-      computer,
+      user,
+      data,
+      mask,
+      network,
+      project,
+      name,
+      uuid,
+      helpdesk,
       syncEndDate,
       computerRam,
       computerStorage,
