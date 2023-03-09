@@ -93,7 +93,9 @@ export default {
     const executionsStore = useExecutionsStore()
     const tagsStore = useTagsStore()
     const uiStore = useUiStore()
+
     const { isRunningCommand } = storeToRefs(executionsStore)
+    const { available, assigned } = storeToRefs(tagsStore)
 
     const tags = ref([])
     const options = ref([])
@@ -157,16 +159,16 @@ export default {
     }
 
     onMounted(() => {
-      const optionsTmp = new Set(tagsStore.assigned)
+      const optionsTmp = new Set(assigned.value)
 
-      Object.entries(tagsStore.available).map(([key, val]) => {
+      Object.entries(available.value).map(([key, val]) => {
         val.forEach((element) => optionsTmp.add(element))
       })
 
       allOptions.value = Array.from(optionsTmp).sort()
       options.value = allOptions.value
 
-      tags.value = tagsStore.assigned
+      tags.value = assigned.value
     })
 
     return {
