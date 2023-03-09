@@ -95,7 +95,7 @@ module.exports = configure(function (ctx) {
       server: {
         type: 'http',
       },
-      port: process.env.QUASAR_PORT || 9999,
+      port: process.env.MFP_QUASAR_PORT || 9999,
       open: true, // opens browser window automatically
     },
 

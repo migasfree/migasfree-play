@@ -1,7 +1,7 @@
 export const executionsMaxLength = 5
 
 export const internalApi = `http://localhost:${
-  process.env.EXPRESS_PORT || 3000
+  process.env.MFP_EXPRESS_PORT || 3000
 }`
 
 export const urlHelp =

@@ -195,8 +195,8 @@ export const useAppStore = defineStore('app', {
       if (!('data' in response) || !response.data.token) {
         response = await api
           .post(`${this.protocol}://${this.host}${tokenAuth.url}`, {
-            username: process.env.MIGASFREE_USER || 'migasfree-play',
-            password: process.env.MIGASFREE_PASSWORD || 'migasfree-play',
+            username: process.env.MFP_USER || 'migasfree-play',
+            password: process.env.MFP_PASSWORD || 'migasfree-play',
           })
           .catch((error) => {
             if (error.response.status === 400) {
