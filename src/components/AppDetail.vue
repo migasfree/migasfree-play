@@ -105,6 +105,7 @@ export default {
     const uiStore = useUiStore()
 
     const { isRunningCommand } = storeToRefs(executionsStore)
+    const { available, installed } = storeToRefs(packagesStore)
 
     const rating = computed(() => props.score)
 
@@ -120,10 +121,10 @@ export default {
 
     const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
     const installedPackages = computed(() =>
-      JSON.parse(JSON.stringify(packagesStore.installed))
+      JSON.parse(JSON.stringify(installed.value))
     )
     const availablePackages = computed(() =>
-      JSON.parse(JSON.stringify(packagesStore.available))
+      JSON.parse(JSON.stringify(available.value))
     )
 
     const isInstalled = computed(
