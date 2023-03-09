@@ -34,6 +34,7 @@
     "tcp-port-used": "1.0.2",
     "typeface-lato": "1.1.13",
     "typeface-ubuntu-mono": "1.1.13",
+    "util": "0.12.5",
     "vue": "3.2.47",
     "vue-router": "4.1.6",
     "vue3-gettext": "2.4.0"
