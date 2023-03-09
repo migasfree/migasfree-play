@@ -1,3 +1,4 @@
+import { inspect } from 'util'
 import { storeToRefs } from 'pinia'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
@@ -29,7 +30,12 @@ export default boot(({ app, store }) => {
       // config.timeout = 10000
       config.cancelToken = cancelSource.token
 
-      console.log('[ REQUEST ]', config.url, config.params, config.headers)
+      console.log(
+        '[ REQUEST ]',
+        config.url,
+        inspect(config.params),
+        inspect(config.headers)
+      )
 
       return config
     },
@@ -41,7 +47,11 @@ export default boot(({ app, store }) => {
 
   api.interceptors.response.use(
     (response) => {
-      console.log('[ RESPONSE ]', response.config.url, response)
+      console.log(
+        '[ RESPONSE ]',
+        response.config.url,
+        inspect(response, { depth: Infinity })
+      )
       return response
     },
 
