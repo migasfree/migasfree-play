@@ -19,102 +19,7 @@
 
         <q-space />
 
-        <div class="gt-xs">
-          <q-btn
-            v-if="showApps"
-            flat
-            round
-            icon="apps"
-            size="lg"
-            class="q-mx-xs"
-            :disabled="$route.name === 'apps'"
-            @click="$router.push({ name: 'apps' })"
-          >
-            <q-tooltip>{{ $gettext('Apps') }}</q-tooltip>
-          </q-btn>
-
-          <q-btn
-            v-if="showDevices"
-            flat
-            round
-            icon="mdi-printer"
-            size="lg"
-            class="q-mx-xs"
-            :disabled="$route.name === 'devices'"
-            @click="$router.push({ name: 'devices' })"
-          >
-            <q-tooltip>{{ $gettext('Devices') }}</q-tooltip>
-          </q-btn>
-
-          <q-btn
-            v-if="showTags"
-            flat
-            round
-            icon="mdi-tag"
-            size="lg"
-            class="q-mx-xs"
-            :disabled="$route.name === 'tags'"
-            @click="$router.push({ name: 'tags' })"
-          >
-            <q-tooltip>{{ $gettext('Tags') }}</q-tooltip>
-          </q-btn>
-
-          <q-btn
-            v-if="showDetails"
-            flat
-            round
-            icon="mdi-list-status"
-            size="lg"
-            class="q-mx-xs"
-            :disabled="$route.name === 'details'"
-            @click="$router.push({ name: 'details' })"
-          >
-            <q-tooltip>{{ $gettext('Details') }}</q-tooltip>
-          </q-btn>
-
-          <q-btn
-            v-if="showInfo"
-            flat
-            round
-            icon="info"
-            size="lg"
-            class="q-mx-xs"
-            :disabled="$route.name === 'info'"
-            @click="$router.push({ name: 'info' })"
-          >
-            <q-tooltip>{{ $gettext('Info') }}</q-tooltip>
-          </q-btn>
-
-          <q-btn
-            flat
-            round
-            icon="mdi-cog"
-            size="lg"
-            class="q-mx-xs"
-            :disabled="$route.name === 'preferences'"
-            @click="$router.push({ name: 'preferences' })"
-          >
-            <q-tooltip>{{ $gettext('Preferences') }}</q-tooltip>
-          </q-btn>
-
-          <q-btn
-            v-if="showHelp"
-            flat
-            round
-            icon="help"
-            size="lg"
-            class="q-mx-xs"
-            type="a"
-            target="_blank"
-            :href="urlHelp"
-          >
-            <q-tooltip>{{ $gettext('Help') }}</q-tooltip>
-          </q-btn>
-        </div>
-
-        <div class="lt-sm">
-          <Menu />
-        </div>
+        <Menu />
       </q-toolbar>
     </q-header>
 
@@ -178,16 +83,7 @@ export default {
     const { clientVersion } = storeToRefs(appStore)
     const { cid, name, link } = storeToRefs(computerStore)
     const { isRunningCommand } = storeToRefs(executionsStore)
-    const {
-      showSyncDetails,
-      showComputerLink,
-      showApps,
-      showDevices,
-      showTags,
-      showDetails,
-      showInfo,
-      showHelp,
-    } = storeToRefs(preferencesStore)
+    const { showSyncDetails, showComputerLink } = storeToRefs(preferencesStore)
 
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
 
@@ -198,7 +94,7 @@ export default {
     const synchronize = () => {
       uiStore.notifyInfo($gettext('Synchronizing...'))
 
-      if (showSyncDetails && route.name !== 'details')
+      if (showSyncDetails.value && route.name !== 'details')
         router.push({ name: 'details' })
 
       let cmd = 'migasfree sync'
@@ -227,12 +123,6 @@ export default {
       urlHelp,
       isRunningCommand,
       showComputerLink,
-      showApps,
-      showDevices,
-      showTags,
-      showDetails,
-      showInfo,
-      showHelp,
     }
   },
 }
