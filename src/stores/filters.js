@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
@@ -7,51 +8,57 @@ import { useUiStore } from './ui'
 
 import { tokenApi, tokenApiv4 } from 'config/app.conf'
 
-export const useFiltersStore = defineStore('filters', {
-  state: () => ({
-    categories: [],
-    selectedCategory: null,
-    searchApp: null,
-    onlyInstalledApps: false,
-    searchDevice: null,
-    onlyAssignedDevices: false,
-  }),
-  getters: {
-    getCategories: (state) => state.categories,
-  },
-  actions: {
-    async setCategories() {
-      const appStore = useAppStore()
-      const uiStore = useUiStore()
+export const useFiltersStore = defineStore('filters', () => {
+  const categories = ref([])
+  const selectedCategory = ref(null)
+  const searchApp = ref(null)
+  const onlyInstalledApps = ref(false)
+  const searchDevice = ref(null)
+  const onlyAssignedDevices = ref(false)
 
-      let url = `${appStore.initialUrl.token}${tokenApi.categories}`
-      if (appStore.serverVersion.startsWith('4.'))
-        url = `${appStore.initialUrl.token}${tokenApiv4.categories}`
+  async function setCategories() {
+    const appStore = useAppStore()
+    const uiStore = useUiStore()
 
-      await api
-        .get(url, {
-          headers: { Authorization: appStore.token },
-        })
-        .then((response) => {
-          if (appStore.serverVersion.startsWith('4.')) {
-            Object.entries(response.data).map(([key, val]) => {
-              this.categories.push({
-                id: key,
-                name: val,
-              })
+    const { initialUrl, token, serverVersion } = storeToRefs(appStore)
+
+    let url = `${initialUrl.value.token}${tokenApi.categories}`
+    if (serverVersion.value.startsWith('4.'))
+      url = `${initialUrl.value.token}${tokenApiv4.categories}`
+
+    await api
+      .get(url, {
+        headers: { Authorization: token.value },
+      })
+      .then((response) => {
+        if (serverVersion.value.startsWith('4.')) {
+          Object.entries(response.data).map(([key, val]) => {
+            categories.value.push({
+              id: key,
+              name: val,
             })
-          } else {
-            Object.entries(response.data.results).map(([key, val]) => {
-              this.categories.push({
-                id: val.id,
-                name: val.name,
-              })
+          })
+        } else {
+          Object.entries(response.data.results).map(([key, val]) => {
+            categories.value.push({
+              id: val.id,
+              name: val.name,
             })
-          }
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    },
-  },
+          })
+        }
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
+
+  return {
+    categories,
+    selectedCategory,
+    searchApp,
+    onlyInstalledApps,
+    searchDevice,
+    onlyAssignedDevices,
+    setCategories,
+  }
 })
