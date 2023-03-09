@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
@@ -9,176 +10,194 @@ import { useComputerStore } from './computer'
 import { useFiltersStore } from './filters'
 import { useUiStore } from './ui'
 
-export const useDevicesStore = defineStore('devices', {
-  state: () => ({
-    assigned: [],
-    inflicted: [],
-    default: 0,
-    available: [],
-    filteredDevices: [],
-  }),
-  getters: {
-    getAvailable: (state) => state.available,
-  },
-  actions: {
-    async computerDevices() {
-      const appStore = useAppStore()
-      const computerStore = useComputerStore()
-      const uiStore = useUiStore()
-      const computer = computerStore.getComputer
+export const useDevicesStore = defineStore('devices', () => {
+  const assigned = ref([])
+  const inflicted = ref([])
+  const defaultDevice = ref(0)
+  const available = ref([])
+  const filteredDevices = ref([])
 
-      if (computer.cid)
-        await api
-          .get(
-            `${appStore.initialUrl.token}${tokenApi.computer}${computer.cid}/devices/`,
-            { headers: { Authorization: appStore.token } }
-          )
-          .then((response) => {
-            this.default = response.data.default_logical_device
-            this.assigned = response.data.assigned_logical_devices_to_cid
-            this.inflicted = response.data.inflicted_logical_devices
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-    },
+  async function computerDevices() {
+    const appStore = useAppStore()
+    const computerStore = useComputerStore()
+    const uiStore = useUiStore()
 
-    async getAvailableDevices() {
-      const appStore = useAppStore()
-      const computerStore = useComputerStore()
-      const uiStore = useUiStore()
-      const computer = computerStore.getComputer
+    const { initialUrl, token } = storeToRefs(appStore)
+    const { cid } = storeToRefs(computerStore)
 
-      if (computer.cid)
-        await api
-          .get(
-            `${appStore.initialUrl.token}${tokenApi.availableDevices}${computer.cid}&page_size=${Number.MAX_SAFE_INTEGER}`,
-            { headers: { Authorization: appStore.token } }
-          )
-          .then((response) => {
-            this.available = response.data.results
-            if (appStore.serverVersion.startsWith('4.')) {
-              this.available.forEach((value) => {
-                value.data = JSON.parse(value.data)
-              })
-            }
-            this.filterDevices()
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-    },
-
-    async getFeaturesDevices() {
-      this.available.forEach((item, index) => {
-        this.getLogicalDevice({ id: item.id, index })
-      })
-    },
-
-    async getLogicalDevice({ id, index }) {
-      const appStore = useAppStore()
-      const computerStore = useComputerStore()
-      const uiStore = useUiStore()
-      const computer = computerStore.getComputer
-
-      if (computer.cid)
-        await api
-          .get(
-            `${appStore.initialUrl.token}${tokenApi.availableLogicalDevices}${computer.cid}&did=${id}`,
-            { headers: { Authorization: appStore.token } }
-          )
-          .then((response) => {
-            if (response.data.results) {
-              let payload = {}
-              payload.results = response.data.results
-              payload.index = index
-              this.addLogicalDevices(payload)
-            }
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-    },
-
-    changeDeviceAttributes({ id, attributes, element = null }) {
-      const appStore = useAppStore()
-      const uiStore = useUiStore()
-
-      api
-        .patch(
-          `${appStore.initialUrl.token}${tokenApi.logicalDevice}${id}/`,
-          { attributes },
-          { headers: { Authorization: appStore.token } }
+    if (cid.value)
+      await api
+        .get(
+          `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
+          { headers: { Authorization: token.value } }
         )
         .then((response) => {
-          if (response.data.id) {
+          defaultDevice.value = response.data.default_logical_device
+          assigned.value = response.data.assigned_logical_devices_to_cid
+          inflicted.value = response.data.inflicted_logical_devices
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+  }
+
+  async function getAvailableDevices() {
+    const appStore = useAppStore()
+    const computerStore = useComputerStore()
+    const uiStore = useUiStore()
+
+    const { initialUrl, token, serverVersion } = storeToRefs(appStore)
+    const { cid } = storeToRefs(computerStore)
+
+    if (cid.value)
+      await api
+        .get(
+          `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
+          { headers: { Authorization: token.value } }
+        )
+        .then((response) => {
+          available.value = response.data.results
+          if (serverVersion.value.startsWith('4.')) {
+            available.value.forEach((value) => {
+              value.data = JSON.parse(value.data)
+            })
+          }
+          filterDevices()
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+  }
+
+  async function getFeaturesDevices() {
+    available.value.forEach((item, index) => {
+      getLogicalDevice({ id: item.id, index })
+    })
+  }
+
+  async function getLogicalDevice({ id, index }) {
+    const appStore = useAppStore()
+    const computerStore = useComputerStore()
+    const uiStore = useUiStore()
+
+    const { initialUrl, token } = storeToRefs(appStore)
+    const { cid } = storeToRefs(computerStore)
+
+    if (cid.value)
+      await api
+        .get(
+          `${initialUrl.value.token}${tokenApi.availableLogicalDevices}${cid.value}&did=${id}`,
+          { headers: { Authorization: token.value } }
+        )
+        .then((response) => {
+          if (response.data.results) {
             let payload = {}
-            payload.results = response.data.attributes
-            payload.index = id
-            this.setLogicalAttributes(payload)
-            if (element) element.disabled = false
+            payload.results = response.data.results
+            payload.index = index
+            addLogicalDevices(payload)
           }
         })
         .catch((error) => {
           uiStore.notifyError(error)
         })
-    },
+  }
 
-    filterDevices() {
-      const filtersStore = useFiltersStore()
+  function changeDeviceAttributes({ id, attributes, element = null }) {
+    const appStore = useAppStore()
+    const uiStore = useUiStore()
 
-      let results = this.available
+    const { initialUrl, token } = storeToRefs(appStore)
 
-      if (filtersStore.searchDevice) {
-        const pattern = filtersStore.searchDevice.toLowerCase()
-
-        results = results.filter(
-          (device) =>
-            device.model.name.toLowerCase().includes(pattern) ||
-            device.model.manufacturer.name.toLowerCase().includes(pattern) ||
-            ('NAME' in device.data &&
-              device.data.NAME.toLowerCase().includes(pattern))
-        )
-      }
-
-      if (filtersStore.onlyAssignedDevices)
-        results = results.filter((device) => {
-          return (
-            this.assigned.filter((x) => {
-              return x.device.id === device.id
-            }).length !== 0
-          )
-        })
-
-      this.filteredDevices = results
-    },
-
-    addLogicalDevices(value) {
-      this.available[value.index].logical = value.results
-    },
-
-    setLogicalAttributes(value) {
-      for (let i = 0; i < this.available.length; i++) {
-        for (let j = 0; j < this.available[i].logical.length; j++) {
-          if (this.available[i].logical[j].id === value.index) {
-            this.available[i].logical[j].attributes = value.results
-            return
-          }
+    api
+      .patch(
+        `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
+        { attributes },
+        { headers: { Authorization: token.value } }
+      )
+      .then((response) => {
+        if (response.data.id) {
+          let payload = {}
+          payload.results = response.data.attributes
+          payload.index = id
+          setLogicalAttributes(payload)
+          if (element) element.disabled = false
         }
-      }
-    },
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
 
-    addAssignedDevice(value) {
-      this.assigned[this.assigned.length] = value
-    },
+  function filterDevices() {
+    const filtersStore = useFiltersStore()
+    const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
 
-    removeAssignedDevice(value) {
-      for (let i = 0; i < this.assigned.length; i++) {
-        if (this.assigned[i].id === value) {
-          this.assigned.splice(i, 1)
+    let results = available.value
+
+    if (searchDevice.value) {
+      const pattern = searchDevice.value.toLowerCase()
+
+      results = results.filter(
+        (device) =>
+          device.model.name.toLowerCase().includes(pattern) ||
+          device.model.manufacturer.name.toLowerCase().includes(pattern) ||
+          ('NAME' in device.data &&
+            device.data.NAME.toLowerCase().includes(pattern))
+      )
+    }
+
+    if (onlyAssignedDevices.value)
+      results = results.filter((device) => {
+        return (
+          assigned.value.filter((x) => {
+            return x.device.id === device.id
+          }).length !== 0
+        )
+      })
+
+    filteredDevices.value = results
+  }
+
+  function addLogicalDevices(value) {
+    available.value[value.index].logical = value.results
+  }
+
+  function setLogicalAttributes(value) {
+    for (let i = 0; i < available.value.length; i++) {
+      for (let j = 0; j < available.value[i].logical.length; j++) {
+        if (available.value[i].logical[j].id === value.index) {
+          available.value[i].logical[j].attributes = value.results
           return
         }
       }
-    },
-  },
+    }
+  }
+
+  function addAssignedDevice(value) {
+    assigned.value[assigned.value.length] = value
+  }
+
+  function removeAssignedDevice(value) {
+    for (let i = 0; i < assigned.value.length; i++) {
+      if (assigned.value[i].id === value) {
+        assigned.value.splice(i, 1)
+        return
+      }
+    }
+  }
+
+  return {
+    assigned,
+    inflicted,
+    defaultDevice,
+    available,
+    filteredDevices,
+    computerDevices,
+    getAvailableDevices,
+    getFeaturesDevices,
+    changeDeviceAttributes,
+    filterDevices,
+    addAssignedDevice,
+    removeAssignedDevice,
+  }
 })
