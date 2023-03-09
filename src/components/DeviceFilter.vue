@@ -5,7 +5,7 @@
         <q-card-section>
           <p>
             <q-input
-              v-model="filtersStore.searchDevice"
+              v-model="searchDevice"
               :placeholder="$gettext('Search in name or model or manufacturer')"
               clearable
               @update:model-value="devicesStore.filterDevices"
@@ -15,9 +15,9 @@
 
           <p>
             <q-toggle
-              v-model="filtersStore.onlyAssignedDevices"
+              v-model="onlyAssignedDevices"
               :label="
-                filtersStore.onlyAssignedDevices
+                onlyAssignedDevices
                   ? $gettext('Assigned Devices')
                   : $gettext('All available')
               "
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { storeToRefs } from 'pinia'
+
 import { useDevicesStore } from 'src/stores/devices'
 import { useFiltersStore } from 'src/stores/filters'
 
@@ -42,7 +44,9 @@ export default {
     const devicesStore = useDevicesStore()
     const filtersStore = useFiltersStore()
 
-    return { devicesStore, filtersStore }
+    const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
+
+    return { devicesStore, searchDevice, onlyAssignedDevices }
   },
 }
 </script>
