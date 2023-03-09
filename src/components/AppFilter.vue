@@ -5,7 +5,7 @@
         <q-card-section>
           <p>
             <q-input
-              v-model="filtersStore.searchApp"
+              v-model="searchApp"
               :placeholder="$gettext('Search in name or description')"
               clearable
               autofocus
@@ -16,9 +16,9 @@
 
           <p>
             <q-select
-              v-model="filtersStore.selectedCategory"
+              v-model="selectedCategory"
               :label="$gettext('Category')"
-              :options="filtersStore.getCategories"
+              :options="categories"
               option-value="id"
               option-label="name"
               clearable
@@ -28,9 +28,9 @@
 
           <p>
             <q-toggle
-              v-model="filtersStore.onlyInstalledApps"
+              v-model="onlyInstalledApps"
               :label="
-                filtersStore.onlyInstalledApps
+                onlyInstalledApps
                   ? $gettext('Installed Apps')
                   : $gettext('All Apps')
               "
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { storeToRefs } from 'pinia'
+
 import { useAppStore } from 'src/stores/app'
 import { useFiltersStore } from 'src/stores/filters'
 
@@ -55,7 +57,16 @@ export default {
     const appStore = useAppStore()
     const filtersStore = useFiltersStore()
 
-    return { appStore, filtersStore }
+    const { searchApp, selectedCategory, categories, onlyInstalledApps } =
+      storeToRefs(filtersStore)
+
+    return {
+      searchApp,
+      selectedCategory,
+      categories,
+      onlyInstalledApps,
+      appStore,
+    }
   },
 }
 </script>
