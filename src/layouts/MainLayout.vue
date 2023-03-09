@@ -3,11 +3,11 @@
     <q-header unelevated class="print-hide">
       <q-toolbar>
         <q-btn
-          v-if="preferencesStore.showComputerLink"
+          v-if="showComputerLink"
           stretch
           flat
           :label="computerText"
-          :href="computerLink"
+          :href="link"
           type="a"
           target="_blank"
           no-caps
@@ -21,7 +21,7 @@
 
         <div class="gt-xs">
           <q-btn
-            v-if="preferencesStore.showApps"
+            v-if="showApps"
             flat
             round
             icon="apps"
@@ -34,7 +34,7 @@
           </q-btn>
 
           <q-btn
-            v-if="preferencesStore.showDevices"
+            v-if="showDevices"
             flat
             round
             icon="mdi-printer"
@@ -47,7 +47,7 @@
           </q-btn>
 
           <q-btn
-            v-if="preferencesStore.showTags"
+            v-if="showTags"
             flat
             round
             icon="mdi-tag"
@@ -60,7 +60,7 @@
           </q-btn>
 
           <q-btn
-            v-if="preferencesStore.showDetails"
+            v-if="showDetails"
             flat
             round
             icon="mdi-list-status"
@@ -73,7 +73,7 @@
           </q-btn>
 
           <q-btn
-            v-if="preferencesStore.showInfo"
+            v-if="showInfo"
             flat
             round
             icon="info"
@@ -98,7 +98,7 @@
           </q-btn>
 
           <q-btn
-            v-if="preferencesStore.showHelp"
+            v-if="showHelp"
             flat
             round
             icon="help"
@@ -175,30 +175,34 @@ export default {
     const preferencesStore = usePreferencesStore()
     const uiStore = useUiStore()
 
+    const { clientVersion } = storeToRefs(appStore)
+    const { cid, name, link } = storeToRefs(computerStore)
     const { isRunningCommand } = storeToRefs(executionsStore)
+    const {
+      showSyncDetails,
+      showComputerLink,
+      showApps,
+      showDevices,
+      showTags,
+      showDetails,
+      showInfo,
+      showHelp,
+    } = storeToRefs(preferencesStore)
 
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
 
     const computerText = computed(() => {
-      const computer = computerStore.getComputer
-
-      return computer.cid
-        ? `${computer.name} (CID-${computer.cid})`
-        : computer.name
-    })
-
-    const computerLink = computed(() => {
-      return computerStore.getLink
+      return cid.value ? `${name.value} (CID-${cid.value})` : name
     })
 
     const synchronize = () => {
       uiStore.notifyInfo($gettext('Synchronizing...'))
 
-      if (preferencesStore.showSyncDetails && route.name !== 'details')
+      if (showSyncDetails && route.name !== 'details')
         router.push({ name: 'details' })
 
       let cmd = 'migasfree sync'
-      if (appStore.clientVersion.startsWith('4.')) cmd = 'migasfree --update'
+      if (clientVersion.value.startsWith('4.')) cmd = 'migasfree --update'
 
       executionsStore.run({
         cmd,
@@ -218,11 +222,17 @@ export default {
 
     return {
       computerText,
-      computerLink,
+      link,
       synchronize,
       urlHelp,
       isRunningCommand,
-      preferencesStore,
+      showComputerLink,
+      showApps,
+      showDevices,
+      showTags,
+      showDetails,
+      showInfo,
+      showHelp,
     }
   },
 }
