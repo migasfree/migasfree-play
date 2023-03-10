@@ -5,9 +5,9 @@ import { api } from 'boot/axios'
 
 import { tokenApi } from 'config/app.conf'
 
-import { useAppStore } from './app'
 import { useComputerStore } from './computer'
 import { useFiltersStore } from './filters'
+import { useProgramStore } from './program'
 import { useUiStore } from './ui'
 
 export const useDevicesStore = defineStore('devices', () => {
@@ -18,12 +18,12 @@ export const useDevicesStore = defineStore('devices', () => {
   const filteredDevices = ref([])
 
   async function computerDevices() {
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token } = storeToRefs(appStore)
     const { cid } = storeToRefs(computerStore)
+    const { initialUrl, token } = storeToRefs(programStore)
 
     if (cid.value)
       await api
@@ -42,12 +42,12 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   async function getAvailableDevices() {
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token, serverVersion } = storeToRefs(appStore)
     const { cid } = storeToRefs(computerStore)
+    const { initialUrl, token, serverVersion } = storeToRefs(programStore)
 
     if (cid.value)
       await api
@@ -76,12 +76,12 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   async function getLogicalDevice({ id, index }) {
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token } = storeToRefs(appStore)
     const { cid } = storeToRefs(computerStore)
+    const { initialUrl, token } = storeToRefs(programStore)
 
     if (cid.value)
       await api
@@ -103,10 +103,10 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   function changeDeviceAttributes({ id, attributes, element = null }) {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token } = storeToRefs(appStore)
+    const { initialUrl, token } = storeToRefs(programStore)
 
     api
       .patch(
