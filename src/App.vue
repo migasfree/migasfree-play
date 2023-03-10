@@ -32,24 +32,24 @@
 import { storeToRefs } from 'pinia'
 import { useMeta, useQuasar } from 'quasar'
 
-import { useAppStore } from './stores/app'
+import { useProgramStore } from './stores/program'
 import { useUiStore } from './stores/ui'
 
 export default {
   name: 'App',
   setup() {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
     const $q = useQuasar()
 
-    const { appIsStopped, status } = storeToRefs(appStore)
+    const { appIsStopped, status } = storeToRefs(programStore)
     const { isLoading } = storeToRefs(uiStore)
 
     $q.dark.set($q.localStorage.getItem('darkMode') || false)
 
     useMeta({ title: 'Migasfree Play' })
 
-    appStore.init()
+    programStore.init()
 
     return {
       appIsStopped,
