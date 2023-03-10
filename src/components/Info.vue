@@ -201,8 +201,8 @@ import { useGettext } from 'vue3-gettext'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 import DateView from 'components/DateView'
 
-import { useAppStore } from 'src/stores/app'
 import { useComputerStore } from 'src/stores/computer'
+import { useProgramStore } from 'src/stores/program'
 
 const app = require('../../package.json')
 
@@ -215,8 +215,8 @@ export default {
   setup() {
     const { $gettext } = useGettext()
 
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
+    const programStore = useProgramStore()
 
     const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
       storeToRefs(computerStore)
@@ -318,7 +318,7 @@ export default {
       let info = {
         model: 'computer',
         id: cid.value,
-        server: appStore.host,
+        server: programStore.host,
       }
 
       return JSON.stringify(info)
@@ -352,10 +352,10 @@ export default {
       statusIcon,
       statusText,
       qrCode,
-      host: appStore.host,
-      serverVersion: appStore.serverVersion,
-      organization: appStore.organization,
-      client: appStore.clientVersion,
+      host: programStore.host,
+      serverVersion: programStore.serverVersion,
+      organization: programStore.organization,
+      client: programStore.clientVersion,
       printLabel,
     }
   },
