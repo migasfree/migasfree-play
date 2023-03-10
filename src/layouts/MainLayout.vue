@@ -56,12 +56,12 @@ import { useMeta } from 'quasar'
 import { setInterval } from 'timers'
 
 import { urlHelp } from 'config/app.conf'
-import Menu from 'components/Menu.vue'
+import Menu from 'components/Menu'
 
-import { useAppStore } from 'src/stores/app'
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePreferencesStore } from 'src/stores/preferences'
+import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 
 export default {
@@ -74,16 +74,16 @@ export default {
     const router = useRouter()
     const { $gettext } = useGettext()
 
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
     const executionsStore = useExecutionsStore()
     const preferencesStore = usePreferencesStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { clientVersion } = storeToRefs(appStore)
     const { cid, name, link } = storeToRefs(computerStore)
     const { isRunningCommand } = storeToRefs(executionsStore)
     const { showSyncDetails, showComputerLink } = storeToRefs(preferencesStore)
+    const { clientVersion } = storeToRefs(programStore)
 
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
 
