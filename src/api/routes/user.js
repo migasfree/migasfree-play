@@ -12,7 +12,7 @@ import os
 import sys
 import platform
 
-user = '${req.body.user}'
+user = '${req.body.username}'
 password = '${req.body.password}'
 is_privileged = False
 
