@@ -65,11 +65,11 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { useAppStore } from 'src/stores/app'
 import { useComputerStore } from 'src/stores/computer'
 import { useDevicesStore } from 'src/stores/devices'
 import { useExecutionsStore } from 'src/stores/executions'
 import { useFiltersStore } from 'src/stores/filters'
+import { useProgramStore } from 'src/stores/program'
 
 export default {
   name: 'DeviceDetail',
@@ -83,11 +83,11 @@ export default {
     logical: { type: Array, required: false, default: () => [] },
   },
   setup(props) {
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
     const devicesStore = useDevicesStore()
     const executionsStore = useExecutionsStore()
     const filtersStore = useFiltersStore()
+    const programStore = useProgramStore()
 
     const { isRunningCommand } = storeToRefs(executionsStore)
 
@@ -107,7 +107,7 @@ export default {
     })
 
     const capabilityName = (item) => {
-      if (appStore.serverVersion.startsWith('4.'))
+      if (programStore.serverVersion.startsWith('4.'))
         return item.alternative_feature_name || item.feature.name
       return item.alternative_capability_name || item.capability.name
     }
@@ -125,7 +125,7 @@ export default {
 
     const installDevice = (item) => {
       let attributes = item.attributes.map((value) => value.id)
-      if (appStore.serverVersion.startsWith('4.'))
+      if (programStore.serverVersion.startsWith('4.'))
         attributes = item.attributes.slice()
 
       if (!attributes.includes(computerStore.attribute)) {
@@ -144,7 +144,7 @@ export default {
 
     const removeDevice = (item) => {
       let attributes = item.attributes.map((value) => value.id)
-      if (appStore.serverVersion.startsWith('4.'))
+      if (programStore.serverVersion.startsWith('4.'))
         attributes = item.attributes.slice()
 
       attributes = attributes.filter((x) => x !== computerStore.attribute)
