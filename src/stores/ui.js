@@ -4,7 +4,7 @@ import { scroll, Notify } from 'quasar'
 
 import { gettext } from 'boot/gettext'
 
-import { useAppStore } from './app'
+import { useProgramStore } from './program'
 
 const { getScrollTarget, setVerticalScrollPosition } = scroll
 
@@ -24,7 +24,7 @@ export const useUiStore = defineStore('ui', () => {
     let message = ''
 
     // Setup Error Message
-    if (typeof error !== undefined) {
+    if (typeof error !== 'undefined') {
       if (error.hasOwnProperty('message')) {
         message = error.message
       }
@@ -32,18 +32,19 @@ export const useUiStore = defineStore('ui', () => {
 
     if (
       (error.hasOwnProperty('code') && error.code === 'ERR_NETWORK') ||
-      !error.response
+      (typeof error !== 'string' && !error.response)
     ) {
-      const appStore = useAppStore()
+      const programStore = useProgramStore()
 
-      appStore.setStatus(
+      programStore.setStatus(
         gettext.$gettext('There is no connection to the server')
       )
-      appStore.setStopApp()
+      programStore.setStopApp()
 
       return
     }
-    if (typeof error.response !== undefined) {
+
+    if (typeof error.response !== 'undefined') {
       // Setup Generic Response Messages
       if (error.response.status === 401) {
         message = 'UnAuthorized'
@@ -62,9 +63,11 @@ export const useUiStore = defineStore('ui', () => {
       if (
         error.hasOwnProperty('response') &&
         error.response.hasOwnProperty('data') &&
-        error.response.data !== undefined
+        typeof error.response.data !== 'undefined'
       ) {
-        if (Object.keys(error.response.data).length > 0) {
+        if (typeof error.response.data === 'string') {
+          message = error.response.data
+        } else if (Object.keys(error.response.data).length > 0) {
           message = error.response.data[Object.keys(error.response.data)[0]]
         }
       }
