@@ -3,8 +3,8 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useAppStore } from './app'
 import { useComputerStore } from './computer'
+import { useProgramStore } from './program'
 import { useUiStore } from './ui'
 
 import { internalApi } from 'config/app.conf'
@@ -14,11 +14,11 @@ export const useTagsStore = defineStore('tags', () => {
   const assigned = ref([])
 
   async function getAvailableTags() {
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { clientVersion } = storeToRefs(appStore)
+    const { clientVersion } = storeToRefs(programStore)
     const { cid } = storeToRefs(computerStore)
 
     if (cid.value)
@@ -33,11 +33,11 @@ export const useTagsStore = defineStore('tags', () => {
   }
 
   async function getAssignedTags() {
-    const appStore = useAppStore()
     const computerStore = useComputerStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { clientVersion } = storeToRefs(appStore)
+    const { clientVersion } = storeToRefs(programStore)
     const { cid } = storeToRefs(computerStore)
 
     if (cid.value)
