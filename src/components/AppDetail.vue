@@ -21,7 +21,7 @@
         <template v-if="moreInfo">
           <q-expansion-item :label="truncatedDescription">
             <q-card>
-              <q-markdown :src="moreInfo"></q-markdown>
+              <q-markdown :src="moreInfo" no-link no-linkify></q-markdown>
             </q-card>
           </q-expansion-item>
         </template>
