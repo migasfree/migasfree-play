@@ -3,7 +3,8 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useAppStore } from './app'
+import { useAppsStore } from './apps'
+import { useProgramStore } from './program'
 import { useUiStore } from './ui'
 
 import { internalApi } from 'config/app.conf'
@@ -13,10 +14,10 @@ export const usePackagesStore = defineStore('packages', () => {
   const installed = ref([])
 
   async function setAvailablePackages() {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { clientVersion } = storeToRefs(appStore)
+    const { clientVersion } = storeToRefs(programStore)
 
     await api
       .get(`${internalApi}/packages/available/?version=${clientVersion.value}`)
@@ -29,10 +30,12 @@ export const usePackagesStore = defineStore('packages', () => {
   }
 
   async function setInstalledPackages() {
-    const appStore = useAppStore()
+    const appsStore = useAppsStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { clientVersion, getAppsPackages } = storeToRefs(appStore)
+    const { getAppsPackages } = storeToRefs(appsStore)
+    const { clientVersion } = storeToRefs(programStore)
 
     await api
       .post(
