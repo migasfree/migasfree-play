@@ -9,7 +9,7 @@
               :placeholder="$gettext('Search in name or description')"
               clearable
               autofocus
-              @update:model-value="appStore.filterApps"
+              @update:model-value="appsStore.filterApps"
               ><template #prepend><q-icon name="mdi-magnify" /></template
             ></q-input>
           </p>
@@ -22,7 +22,7 @@
               option-value="id"
               option-label="name"
               clearable
-              @update:model-value="appStore.filterApps"
+              @update:model-value="appsStore.filterApps"
             />
           </p>
 
@@ -36,7 +36,7 @@
               "
               :false-value="false"
               :true-value="true"
-              @update:model-value="appStore.filterApps"
+              @update:model-value="appsStore.filterApps"
             />
           </p>
         </q-card-section>
@@ -48,13 +48,13 @@
 <script>
 import { storeToRefs } from 'pinia'
 
-import { useAppStore } from 'src/stores/app'
+import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'
 
 export default {
   name: 'AppFilter',
   setup() {
-    const appStore = useAppStore()
+    const appsStore = useAppsStore()
     const filtersStore = useFiltersStore()
 
     const { searchApp, selectedCategory, categories, onlyInstalledApps } =
@@ -65,7 +65,7 @@ export default {
       selectedCategory,
       categories,
       onlyInstalledApps,
-      appStore,
+      appsStore,
     }
   },
 }
