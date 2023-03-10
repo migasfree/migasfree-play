@@ -42,7 +42,7 @@ import AppDetail from 'components/AppDetail'
 import Login from 'components/Login'
 import Pagination from 'components/Pagination'
 
-import { useAppStore } from 'src/stores/app'
+import { useAppsStore } from 'src/stores/apps'
 import { useUiStore } from 'src/stores/ui'
 
 import { resultsPerPage } from 'config/app.conf'
@@ -56,10 +56,10 @@ export default {
     Pagination,
   },
   setup() {
-    const appStore = useAppStore()
+    const appsStore = useAppsStore()
     const uiStore = useUiStore()
 
-    const { filteredApps } = storeToRefs(appStore)
+    const { filteredApps } = storeToRefs(appsStore)
     const showLogin = ref(false)
     const paginatedApps = ref(filteredApps.value.slice(0, resultsPerPage))
 
