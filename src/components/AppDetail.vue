@@ -77,9 +77,9 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
-import { useAppStore } from 'src/stores/app'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePackagesStore } from 'src/stores/packages'
+import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 
 const os = require('os')
@@ -99,13 +99,14 @@ export default {
   setup(props) {
     const { $gettext, interpolate } = useGettext()
 
-    const appStore = useAppStore()
     const executionsStore = useExecutionsStore()
     const packagesStore = usePackagesStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { isRunningCommand } = storeToRefs(executionsStore)
     const { available, installed } = storeToRefs(packagesStore)
+    const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
 
     const rating = computed(() => props.score)
 
@@ -140,26 +141,24 @@ export default {
 
     const isInstallable = computed(
       () =>
-        (props.level === 'U' || appStore.userIsPrivileged) &&
+        (props.level === 'U' || userIsPrivileged.value) &&
         isAvailable.value &&
         !isInstalled.value &&
         packages.value.length > 0
     )
 
     const isRemovable = computed(
-      () =>
-        isInstalled.value && (props.level === 'U' || appStore.userIsPrivileged)
+      () => isInstalled.value && (props.level === 'U' || userIsPrivileged.value)
     )
 
     const isPrivileged = computed(
-      () =>
-        isAvailable.value && props.level === 'A' && !appStore.userIsPrivileged
+      () => isAvailable.value && props.level === 'A' && !userIsPrivileged.value
     )
 
     const installApp = (name, packages) => {
       const packagesToInstall = packages.join(' ')
       let cmd = `migasfree install ${packagesToInstall}`
-      if (appStore.clientVersion.startsWith('4.'))
+      if (clientVersion.value.startsWith('4.'))
         cmd = `migasfree --install --package=${packagesToInstall}`
 
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
@@ -182,7 +181,7 @@ export default {
     const removeApp = (name, packages) => {
       const packagesToRemove = packages.join(' ')
       let cmd = `migasfree purge ${packagesToRemove}`
-      if (appStore.clientVersion.startsWith('4.'))
+      if (clientVersion.value.startsWith('4.'))
         cmd = `migasfree --remove --package=${packagesToRemove}`
 
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
