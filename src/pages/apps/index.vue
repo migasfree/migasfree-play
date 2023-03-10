@@ -43,7 +43,7 @@ import { useMeta } from 'quasar'
 
 import Apps from 'components/Apps.vue'
 
-import { useAppStore } from 'src/stores/app'
+import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'
 import { useUiStore } from 'src/stores/ui'
 
@@ -54,18 +54,18 @@ export default {
   setup() {
     const { $gettext } = useGettext()
 
-    const appStore = useAppStore()
+    const appsStore = useAppsStore()
     const filtersStore = useFiltersStore()
     const uiStore = useUiStore()
 
-    const { filteredApps } = storeToRefs(appStore)
+    const { filteredApps } = storeToRefs(appsStore)
     const { isUpdating } = storeToRefs(uiStore)
 
     useMeta({ title: $gettext('Apps') })
 
     const updateApps = async () => {
       uiStore.updating()
-      await appStore.loadApps()
+      await appsStore.loadApps()
       await filtersStore.setCategories()
       uiStore.updatingFinished()
     }
