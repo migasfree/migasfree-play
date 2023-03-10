@@ -3,7 +3,7 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useAppStore } from './app'
+import { useProgramStore } from './program'
 import { useUiStore } from './ui'
 
 import { internalApi, tokenApi } from 'config/app.conf'
@@ -52,10 +52,10 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   async function computerId() {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { clientVersion, protocol, host } = storeToRefs(appStore)
+    const { clientVersion, protocol, host } = storeToRefs(programStore)
 
     if (clientVersion.value.startsWith('4.')) {
       await api
@@ -84,10 +84,10 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   async function computerLabel() {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token } = storeToRefs(appStore)
+    const { initialUrl, token } = storeToRefs(programStore)
 
     if (cid.value)
       await api
@@ -106,10 +106,10 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   async function computerData() {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token } = storeToRefs(appStore)
+    const { initialUrl, token } = storeToRefs(programStore)
 
     if (cid.value)
       await api
@@ -125,10 +125,10 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   async function computerAttribute() {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token } = storeToRefs(appStore)
+    const { initialUrl, token } = storeToRefs(programStore)
 
     if (cid.value)
       await api
@@ -145,8 +145,8 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   function setComputerLink() {
-    const appStore = useAppStore()
-    const { serverVersion, protocol, host } = storeToRefs(appStore)
+    const programStore = useProgramStore()
+    const { serverVersion, protocol, host } = storeToRefs(programStore)
 
     if (serverVersion.value.startsWith('4.'))
       link.value = `${protocol.value}://${host.value}/admin/server/computer/${cid.value}/change/`
