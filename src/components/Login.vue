@@ -76,7 +76,7 @@
 <script>
 import { ref, computed, watch } from 'vue'
 
-import { useAppStore } from 'src/stores/app'
+import { useProgramStore } from 'src/stores/program'
 
 export default {
   name: 'Login',
@@ -88,7 +88,7 @@ export default {
   },
   emits: ['closed'],
   setup(props, { emit }) {
-    const appStore = useAppStore()
+    const programStore = useProgramStore()
 
     const username = ref('')
     const password = ref('')
@@ -101,10 +101,12 @@ export default {
 
     const login = () => {
       if (username.value && password.value) {
-        appStore.checkUser({
-          user: username.value,
+        programStore.checkUser({
+          username: username.value,
           password: password.value,
         })
+        username.value = ''
+        password.value = ''
         emit('closed')
       }
     }
