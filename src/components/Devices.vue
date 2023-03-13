@@ -64,6 +64,8 @@ export default {
     }
 
     const icon = (connection) => {
+      // TODO when quasarframework/quasar#15553 will be resolved
+      // return connection === 'TCP' ? 'mdi-printer-pos-network' : 'mdi-printer'
       return connection === 'TCP'
         ? 'img/printer-net.png'
         : 'img/printer-local.png'
