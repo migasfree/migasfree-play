@@ -7,7 +7,6 @@
         v-for="item in filteredDevices"
         :id="item.name"
         :key="item.id"
-        :icon="icon(item.connection.name)"
         :name="name(item)"
         :connection="item.connection.name"
         :description="description(item.data)"
@@ -63,14 +62,6 @@ export default {
         : `${item.model.manufacturer.name} ${item.model.name}`
     }
 
-    const icon = (connection) => {
-      // TODO when quasarframework/quasar#15553 will be resolved
-      // return connection === 'TCP' ? 'mdi-printer-pos-network' : 'mdi-printer'
-      return connection === 'TCP'
-        ? 'img/printer-net.png'
-        : 'img/printer-local.png'
-    }
-
     const ipAddress = (value) => {
       return value.IP || ''
     }
@@ -98,7 +89,6 @@ export default {
       filteredDevices,
       paginatedDevices,
       name,
-      icon,
       ipAddress,
       description,
       pageChanged,
