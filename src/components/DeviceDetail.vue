@@ -12,7 +12,7 @@
           </div>
         </q-card-section>
 
-        <q-card-section class="col-3">
+        <q-card-section class="col-3 text-center">
           <img :src="icon" />
         </q-card-section>
       </q-card-section>
