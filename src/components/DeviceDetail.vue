@@ -6,15 +6,19 @@
           <div class="text-h5">
             {{ name }}
           </div>
-          <q-tooltip>{{ tooltip }}</q-tooltip>
           <div class="text-caption text-blue-grey">
             {{ id }}
           </div>
         </q-card-section>
 
-        <q-card-section class="col-3 text-center">
-          <img :src="icon" />
+        <q-card-section class="col-3 text-right">
+          <q-icon
+            :name="connection === 'TCP' ? mdiPrinterPosNetwork : mdiPrinter"
+            size="64px"
+          />
         </q-card-section>
+
+        <q-tooltip>{{ tooltip }}</q-tooltip>
       </q-card-section>
 
       <q-card-section>
@@ -64,6 +68,7 @@
 <script>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { mdiPrinter, mdiPrinterPosNetwork } from '@quasar/extras/mdi-v7'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useDevicesStore } from 'src/stores/devices'
@@ -74,7 +79,6 @@ import { useProgramStore } from 'src/stores/program'
 export default {
   name: 'DeviceDetail',
   props: {
-    icon: { type: String, required: true },
     name: { type: String, required: true },
     id: { type: String, required: true },
     connection: { type: String, required: true },
@@ -163,6 +167,8 @@ export default {
       isAssigned,
       installDevice,
       removeDevice,
+      mdiPrinter,
+      mdiPrinterPosNetwork,
     }
   },
 }
