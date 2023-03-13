@@ -60,6 +60,13 @@ cd packaging/rpm
 sudo migasfree-play
 ```
 
+#### Execute app in production in debug mode
+
+```bash
+sudo migasfree-play debug
+ELECTRON_ENABLE_LOGGING=1 sudo migasfree-play debug
+```
+
 ## Screenshots
 
 ![migasfree-play Apps](./screenshots/play-apps.png 'migasfree-play Apps')
