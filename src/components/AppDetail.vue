@@ -12,7 +12,7 @@
           <q-rating v-model="rating" color="primary" readonly />
         </q-card-section>
 
-        <q-card-section class="col-3 text-center">
+        <q-card-section class="col-3 text-right">
           <img :src="icon" width="64" @error="defaultIcon" />
         </q-card-section>
       </q-card-section>
