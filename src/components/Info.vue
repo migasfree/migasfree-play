@@ -186,7 +186,9 @@
           class="q-mx-lg"
           @click="printLabel"
         >
-          <q-tooltip>{{ $gettext('Print Identification') }}</q-tooltip>
+          <q-tooltip class="print-hide">{{
+            $gettext('Print Identification')
+          }}</q-tooltip>
         </q-btn>
       </q-card-actions>
     </q-card>
