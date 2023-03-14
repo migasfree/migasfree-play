@@ -13,7 +13,17 @@
         </q-card-section>
 
         <q-card-section class="col-3 text-right">
-          <img :src="icon" width="64" @error="defaultIcon" />
+          <q-img
+            :src="icon"
+            width="72px"
+            height="72px"
+            :placeholder-src="defaultIcon"
+            fit="fill"
+          >
+            <template #error>
+              <q-img :src="defaultIcon" width="72px" height="72px" fit="fill" />
+            </template>
+          </q-img>
         </q-card-section>
       </q-card-section>
 
@@ -155,6 +165,8 @@ export default {
       () => isAvailable.value && props.level === 'A' && !userIsPrivileged.value
     )
 
+    const defaultIcon = computed(() => 'img/migasfree-play.svg')
+
     const installApp = (name, packages) => {
       const packagesToInstall = packages.join(' ')
       let cmd = `migasfree install ${packagesToInstall}`
@@ -199,10 +211,6 @@ export default {
         }),
         icon: 'mdi-delete',
       })
-    }
-
-    const defaultIcon = (event) => {
-      event.target.src = 'img/migasfree-play.svg'
     }
 
     return {
