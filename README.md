@@ -60,6 +60,12 @@ cd packaging/rpm
 sudo migasfree-play
 ```
 
+#### Execute app in production and synchronize computer immediately
+
+```bash
+sudo migasfree-play sync
+```
+
 #### Execute app in production in debug mode
 
 ```bash
@@ -74,3 +80,35 @@ ELECTRON_ENABLE_LOGGING=1 sudo migasfree-play debug
 ![migasfree-play Devices](./screenshots/play-devices.png 'migasfree-play Devices')
 
 ![migasfree-play Info](./screenshots/play-info.png 'migasfree-play Info')
+
+## Settings
+
+File: /root/.migasfree-play/settings.json
+
+Default content:
+
+```
+{
+  "language": "es_ES",
+  "show_language": true,
+  "show_computer_link": true,
+  "show_sync_details": true,
+  "show_apps": true,
+  "show_devices": true,
+  "show_tags": true,
+  "show_details": true,
+  "show_preferences": true,
+  "show_info": true,
+  "show_help": true,
+  "dark_mode": true,
+  "show_dark_mode": true
+}
+```
+
+### Available languages
+
+* American English (en_US)
+* Català (ca_ES)
+* Español (es_ES)
+* Euskara (eu_ES)
+* Galego (gl_ES)
