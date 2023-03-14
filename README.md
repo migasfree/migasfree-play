@@ -112,3 +112,15 @@ Default content:
 * Español (es_ES)
 * Euskara (eu_ES)
 * Galego (gl_ES)
+
+### Environment variables
+
+You can set values ​​for the following environment variables:
+
+```
+MFP_USER=migasfree-play
+MFP_PASSWORD=migasfree-play
+
+MFP_QUASAR_PORT=9999
+MFP_EXPRESS_PORT=3000
+```
