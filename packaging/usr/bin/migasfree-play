@@ -82,5 +82,6 @@ fi
 
 if [ "$_CONNECTIVITY" = "True" ]
 then
-    /usr/share/migasfree-play/migasfree-play "$1" --no-sandbox --disable-gpu-sandbox
+    /usr/share/migasfree-play/migasfree-play "$1" \
+      --no-sandbox --disable-gpu-sandbox "$MFP_CMD_FLAGS"
 fi
