@@ -6,12 +6,11 @@ then
     exit 1
 fi
 
-_PYTHON=$(command -v python3)
+_PYTHON=$(command -v python2)
 [ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
 if [ $? -ne 0 -o -z "$_PYTHON" ]
 then
-    echo "Python 3 is not available. Impossible to continue."
-    exit 2
+  _PYTHON=$(command -v python3)
 fi
 
 _WAIT_IP="
