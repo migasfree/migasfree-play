@@ -56,10 +56,12 @@ export default boot(({ app, store }) => {
     },
 
     (error) => {
-      // TODO https://haxzie.com/architecting-http-clients-vue-js-network-layer
-      if ('response' in error)
+      // TODO https://dev.to/localeai/architecting-http-clients-in-vue-js-applications-for-effective-network-communication-1eec
+      if ('response' in error) {
         console.error(error.response.status, error.message)
-      else console.error(error)
+      } else {
+        console.error(error)
+      }
 
       return Promise.reject(error)
     }
