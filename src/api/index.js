@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const rateLimit = require('express-rate-limit')
 
 const packagesRouter = require('./routes/packages')
 const preferencesRouter = require('./routes/preferences')
@@ -12,6 +13,12 @@ const tagsRouter = require('./routes/tags')
 
 const app = express()
 
+app.use(
+  rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 20,
+  })
+)
 app.use(
   cors({
     origin: `http://localhost:${process.env.MFP_QUASAR_PORT || 9999}`,
