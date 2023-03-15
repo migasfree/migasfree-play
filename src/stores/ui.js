@@ -34,12 +34,18 @@ export const useUiStore = defineStore('ui', () => {
       (error.hasOwnProperty('code') && error.code === 'ERR_NETWORK') ||
       (typeof error !== 'string' && !error.response)
     ) {
-      const programStore = useProgramStore()
+      message = gettext.$gettext('There is no connection to the server')
 
-      programStore.setStatus(
-        gettext.$gettext('There is no connection to the server')
-      )
+      const programStore = useProgramStore()
+      programStore.setStatus(message)
       programStore.setStopApp()
+
+      Notify.create({
+        color: 'negative',
+        position: 'bottom',
+        message,
+        icon: 'mdi-alert-circle-outline',
+      })
 
       return
     }
