@@ -123,6 +123,8 @@ MFP_PASSWORD=migasfree-play
 
 MFP_QUASAR_PORT=9999
 MFP_EXPRESS_PORT=3000
+
+MFP_CMD_FLAGS=
 ```
 
 ## Requirements in production
