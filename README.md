@@ -124,3 +124,8 @@ MFP_PASSWORD=migasfree-play
 MFP_QUASAR_PORT=9999
 MFP_EXPRESS_PORT=3000
 ```
+
+## Requirements in production
+
+* NodeJS >= 12
+* migasfree-client >= 4.20
