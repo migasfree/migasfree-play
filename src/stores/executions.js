@@ -158,7 +158,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       setExecutions()
       finishedCmd()
 
-      if (cmd.includes('sync')) {
+      if (cmd.includes('sync') || cmd.includes('--update')) {
         if (win.isMinimized()) win.close()
 
         packagesStore.setAvailablePackages()
