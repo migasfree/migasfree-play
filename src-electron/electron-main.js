@@ -77,7 +77,7 @@ function createWindow() {
     useContentSize: true,
     webPreferences: {
       contextIsolation: false,
-      nodeIntegration: true, //process.env.QUASAR_NODE_INTEGRATION,
+      nodeIntegration: true, // process.env.QUASAR_NODE_INTEGRATION,
       nodeIntegrationInWorker: true, // process.env.QUASAR_NODE_INTEGRATION,
       nativeWindowOpen: true,
       sandbox: false,
