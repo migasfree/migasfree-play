@@ -11,8 +11,21 @@ const executionsRouter = require('./routes/executions')
 const userRouter = require('./routes/user')
 const tagsRouter = require('./routes/tags')
 
+const allowedOrigin = `http://localhost:${process.env.MFP_QUASAR_PORT || 9999}`
+
+const allowOnlyOrigin = (req, res, next) => {
+  if (
+    typeof req.headers.origin === 'undefined' ||
+    req.headers.origin !== allowedOrigin
+  )
+    return res.status(403).send()
+
+  next()
+}
+
 const app = express()
 
+app.use(allowOnlyOrigin)
 app.use(
   rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
@@ -21,7 +34,7 @@ app.use(
 )
 app.use(
   cors({
-    origin: `http://localhost:${process.env.MFP_QUASAR_PORT || 9999}`,
+    origin: allowedOrigin,
   })
 )
 app.use(
