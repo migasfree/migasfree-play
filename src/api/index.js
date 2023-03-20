@@ -12,13 +12,17 @@ const userRouter = require('./routes/user')
 const tagsRouter = require('./routes/tags')
 
 const allowedOrigin = `http://localhost:${process.env.MFP_QUASAR_PORT || 9999}`
+const allowedHost = 'localhost'
 
 const allowOnlyOrigin = (req, res, next) => {
   if (
-    typeof req.headers.origin === 'undefined' ||
-    req.headers.origin !== allowedOrigin
-  )
-    return res.status(403).send()
+    (typeof req.headers.origin === 'undefined' &&
+      !req.headers.host.includes(allowedHost)) ||
+    (typeof req.headers.origin === 'string' &&
+      req.headers.origin !== allowedOrigin)
+  ) {
+    return res.status(403).send('allowOnlyOrigin: false')
+  }
 
   next()
 }
