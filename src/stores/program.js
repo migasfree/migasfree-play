@@ -36,8 +36,8 @@ export const useProgramStore = defineStore('program', () => {
   })
   const token = ref('')
   const isTokenChecked = ref(false)
-  const clientVersion = ref('')
-  const serverVersion = ref('')
+  const clientVersion = ref('0')
+  const serverVersion = ref('0')
   const organization = ref('')
   const user = ref({
     isPrivileged: false,
