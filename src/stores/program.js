@@ -59,6 +59,7 @@ export const useProgramStore = defineStore('program', () => {
     const tagsStore = useTagsStore()
     const uiStore = useUiStore()
 
+    stopApp.value = false
     uiStore.loading()
 
     setStatus(gettext.$gettext('Preferences'))
