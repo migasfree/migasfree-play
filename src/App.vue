@@ -16,12 +16,23 @@
         {{ $gettext('Loading data') }}: {{ status }}
       </div>
 
-      <q-banner v-if="appIsStopped" class="text-white bg-red q-ma-md">
-        <template #avatar>
-          <q-icon name="mdi-alert-octagon" />
-        </template>
-        <div class="text-h6">{{ $gettext('Impossible to continue.') }}</div>
-      </q-banner>
+      <template v-if="appIsStopped">
+        <q-banner class="text-white bg-red q-ma-md">
+          <template #avatar>
+            <q-icon name="mdi-alert-octagon" />
+          </template>
+          <div class="text-h6">{{ $gettext('Impossible to continue.') }}</div>
+        </q-banner>
+
+        <div class="col-12 text-center q-mt-md">
+          <q-btn
+            icon="mdi-reload"
+            :label="$gettext('Retry')"
+            color="primary"
+            @click="retry"
+          />
+        </div>
+      </template>
     </div>
 
     <router-view v-else />
@@ -51,10 +62,15 @@ export default {
 
     programStore.init()
 
+    const retry = () => {
+      programStore.init()
+    }
+
     return {
       appIsStopped,
       status,
       isLoading,
+      retry,
     }
   },
 }
