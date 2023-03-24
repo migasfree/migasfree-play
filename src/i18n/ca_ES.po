@@ -16,28 +16,29 @@ msgstr ""
 msgid "* Required"
 msgstr "* Obligatori"
 
-#: src/components/AppFilter.vue:33
+#: src/components/AppFilter.vue:35
 msgid "All Apps"
 msgstr "Totes les aplicacions"
 
-#: src/components/DeviceFilter.vue:21
+#: src/components/DeviceFilter.vue:22
 msgid "All available"
 msgstr "Tot disponible"
 
-#: src/components/Menu.vue:19 src/layouts/MainLayout.vue:33
-#: src/pages/apps/index.vue:4 src/pages/apps/index.vue:52 src/stores/app.js:111
+#: src/components/Menu.vue:113 src/components/Menu.vue:13
+#: src/pages/apps/index.vue:4 src/pages/apps/index.vue:64
+#: src/stores/program.js:95
 msgid "Apps"
 msgstr "Aplicacions"
 
-#: src/components/DeviceDetail.vue:30
+#: src/components/DeviceDetail.vue:34
 msgid "Assigned"
 msgstr "Assignat"
 
-#: src/components/DeviceFilter.vue:20
+#: src/components/DeviceFilter.vue:21
 msgid "Assigned Devices"
 msgstr "Dispositius assignats"
 
-#: src/components/Info.vue:319
+#: src/components/Info.vue:305
 msgid "Available"
 msgstr "Disponible"
 
@@ -45,15 +46,15 @@ msgstr "Disponible"
 msgid "Cancel"
 msgstr "Cancel·lar"
 
-#: src/stores/app.js:114
+#: src/stores/program.js:98
 msgid "Categories"
 msgstr "Categories"
 
-#: src/components/AppFilter.vue:19
+#: src/components/AppFilter.vue:20
 msgid "Category"
 msgstr "Categoria"
 
-#: src/components/Tags.vue:122
+#: src/components/Tags.vue:124
 msgid "Communicate Tags"
 msgstr "Comunicar etiquetes"
 
@@ -61,71 +62,71 @@ msgstr "Comunicar etiquetes"
 msgid "Communicate tags to the server"
 msgstr "Comunicar etiquetes al servidor"
 
-#: src/components/Tags.vue:112
+#: src/components/Tags.vue:114
 msgid "Communicating..."
 msgstr "Comunicant-se..."
 
-#: src/stores/app.js:104
+#: src/stores/program.js:86
 msgid "Computer"
 msgstr "Ordinador"
 
-#: src/stores/app.js:201
+#: src/stores/program.js:185
 msgid "Credentials are not valid. Review app settings."
 msgstr "Les credencials no són vàlides. Revisa la configuració de l'aplicació."
 
-#: src/components/Menu.vue:55 src/layouts/MainLayout.vue:72
-#: src/pages/details/index.vue:24 src/pages/details/index.vue:4
+#: src/components/Menu.vue:149 src/components/Menu.vue:52
+#: src/pages/details/index.vue:4 src/pages/details/index.vue:40
 msgid "Details"
 msgstr "Detalls"
 
-#: src/components/Menu.vue:31 src/layouts/MainLayout.vue:46
-#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:50
-#: src/stores/app.js:123
+#: src/components/Menu.vue:125 src/components/Menu.vue:26
+#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:61
+#: src/stores/program.js:107
 msgid "Devices"
 msgstr "Dispositius"
 
-#: src/components/Info.vue:258
+#: src/components/Info.vue:238
 msgid "disks"
 msgstr "discos"
 
-#: src/components/Info.vue:82
+#: src/components/Info.vue:73
 msgid "Hardware"
 msgstr "Maquinari"
 
-#: src/components/Menu.vue:93 src/layouts/MainLayout.vue:111
+#: src/components/Menu.vue:187 src/components/Menu.vue:91
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/App.vue:23
+#: src/App.vue:24
 msgid "Impossible to continue."
 msgstr "Impossible continuar."
 
-#: src/components/Info.vue:321
+#: src/components/Info.vue:307
 msgid "In repair"
 msgstr "En reparació"
 
-#: src/components/Menu.vue:67 src/layouts/MainLayout.vue:85
+#: src/components/Menu.vue:161 src/components/Menu.vue:65
 #: src/pages/info/index.vue:4 src/pages/info/index.vue:50
 msgid "Info"
 msgstr "Informació"
 
-#: src/components/AppDetail.vue:40 src/components/DeviceDetail.vue:56
+#: src/components/AppDetail.vue:50 src/components/DeviceDetail.vue:60
 msgid "Install"
 msgstr "Instal·lar"
 
-#: src/components/AppDetail.vue:68
+#: src/components/AppDetail.vue:78
 msgid "Installed"
 msgstr "Instal·lat"
 
-#: src/components/AppFilter.vue:32
+#: src/components/AppFilter.vue:34
 msgid "Installed Apps"
 msgstr "Aplicacions instal·lades"
 
-#: src/components/AppDetail.vue:167 src/components/AppDetail.vue:174
+#: src/components/AppDetail.vue:179 src/components/AppDetail.vue:186
 msgid "Installing %{name}"
 msgstr "Instal·lació %{name}"
 
-#: src/components/Info.vue:325
+#: src/components/Info.vue:311
 msgid "Intended"
 msgstr "Assignat"
 
@@ -141,7 +142,7 @@ msgstr "Última sincronització"
 msgid "Loading data"
 msgstr "Carregant dades"
 
-#: src/components/AppDetail.vue:64
+#: src/components/AppDetail.vue:74
 msgid "Locked"
 msgstr "Tancat"
 
@@ -149,19 +150,19 @@ msgstr "Tancat"
 msgid "Login"
 msgstr "Iniciar Sessió"
 
-#: src/components/AppDetail.vue:60
+#: src/components/AppDetail.vue:70
 msgid "Manage with privileges"
 msgstr "Gestionar amb privilegis"
 
-#: src/components/Menu.vue:6
+#: src/components/Menu.vue:100
 msgid "Menu"
 msgstr "Menú"
 
-#: src/components/Info.vue:177
+#: src/components/Info.vue:157
 msgid "Migasfree Data"
 msgstr "Dades de Migasfree"
 
-#: src/components/Info.vue:121
+#: src/components/Info.vue:103
 msgid "Network Data"
 msgstr "Dades de xarxa"
 
@@ -169,7 +170,7 @@ msgstr "Dades de xarxa"
 msgid "Not show details when synchronizing"
 msgstr "No es mostren els detalls en sincronitzar"
 
-#: src/stores/app.js:117
+#: src/stores/program.js:101
 msgid "Packages"
 msgstr "Paquets"
 
@@ -177,23 +178,27 @@ msgstr "Paquets"
 msgid "Password"
 msgstr "Contrasenya"
 
-#: src/stores/executions.js:114
+#: src/stores/executions.js:109
 msgid "Please wait, other process is running!!!"
 msgstr "Espereu, un altre procés s'està executant!!!"
 
-#: src/components/Menu.vue:79 src/layouts/MainLayout.vue:97
+#: src/components/Menu.vue:173 src/components/Menu.vue:77
 #: src/pages/preferences/index.vue:24 src/pages/preferences/index.vue:4
-#: src/stores/app.js:83
+#: src/stores/program.js:65
 msgid "Preferences"
 msgstr "Preferències"
 
-#: src/components/Info.vue:209
+#: src/components/Info.vue:190
 msgid "Print Identification"
 msgstr "Impressió d'identificació"
 
-#: src/components/Info.vue:323
+#: src/components/Info.vue:309
 msgid "Reserved"
 msgstr "Reservat"
+
+#: src/App.vue:30
+msgid "Retry"
+msgstr "Reintentar"
 
 #: src/components/AppFilter.vue:9
 msgid "Search in name or description"
@@ -203,11 +208,11 @@ msgstr "Cerca en nom o descripció"
 msgid "Search in name or model or manufacturer"
 msgstr "Cerca per nom o model o fabricant"
 
-#: src/stores/app.js:94
+#: src/stores/program.js:76
 msgid "Server"
 msgstr "Servidor"
 
-#: src/components/Tags.vue:138
+#: src/components/Tags.vue:140
 msgid "Set Tags"
 msgstr "Estableix etiquetes"
 
@@ -215,7 +220,7 @@ msgstr "Estableix etiquetes"
 msgid "Set tags at the server"
 msgstr "Estableix etiquetes al servidor"
 
-#: src/components/Tags.vue:128
+#: src/components/Tags.vue:130
 msgid "Setting Tags..."
 msgstr "Configuració d'etiquetes..."
 
@@ -231,21 +236,21 @@ msgstr "Canvia al mode fosc"
 msgid "Switch to Light mode"
 msgstr "Canvia al mode de llum"
 
-#: src/layouts/MainLayout.vue:205
+#: src/layouts/MainLayout.vue:105
 msgid "Synchronization"
 msgstr "Sincronització"
 
-#: src/layouts/MainLayout.vue:138
+#: src/layouts/MainLayout.vue:43
 msgid "Synchronize Computer"
 msgstr "Sincronitza l'ordinador"
 
-#: src/layouts/MainLayout.vue:195
+#: src/layouts/MainLayout.vue:95
 msgid "Synchronizing..."
 msgstr "Sincronitzant..."
 
-#: src/components/Menu.vue:43 src/components/Tags.vue:9
-#: src/layouts/MainLayout.vue:59 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:49 src/stores/app.js:128
+#: src/components/Menu.vue:137 src/components/Menu.vue:39
+#: src/components/Tags.vue:9 src/pages/tags/index.vue:4
+#: src/pages/tags/index.vue:49 src/stores/program.js:112
 msgid "Tags"
 msgstr "Etiquetes"
 
@@ -253,36 +258,36 @@ msgstr "Etiquetes"
 msgid "Text copied to clipboard"
 msgstr "S'ha copiat el text al porta-retalls"
 
-#: src/components/Apps.vue:22 src/components/Devices.vue:21
+#: src/components/Apps.vue:30 src/components/Devices.vue:28
 #: src/components/Executions.vue:16 src/components/Tags.vue:71
 msgid "There are not items to show."
 msgstr "No hi ha elements per mostrar."
 
-#: src/stores/app.js:228 src/stores/ui.js:40
+#: src/stores/program.js:212 src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr "No hi ha connexió amb el servidor"
 
-#: src/stores/app.js:153
+#: src/stores/program.js:137
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aquesta aplicació requereix almenys Migasfree Client %{version}"
 
-#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:42
+#: src/components/AppDetail.vue:61 src/components/DeviceDetail.vue:46
 msgid "Uninstall"
 msgstr "Desinstal·la"
 
-#: src/components/AppDetail.vue:190 src/components/AppDetail.vue:197
+#: src/components/AppDetail.vue:202 src/components/AppDetail.vue:209
 msgid "Uninstalling %{name}"
 msgstr "S'està desinstal·lant %{name}"
 
-#: src/components/Info.vue:329
+#: src/components/Info.vue:315
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: src/components/Info.vue:327
+#: src/components/Info.vue:313
 msgid "Unsubscribed"
 msgstr "De baixa"
 
-#: src/pages/apps/index.vue:14 src/pages/devices/index.vue:14
+#: src/pages/apps/index.vue:25 src/pages/devices/index.vue:24
 #: src/pages/info/index.vue:14 src/pages/tags/index.vue:14
 msgid "Update"
 msgstr "Actualització"
@@ -295,7 +300,7 @@ msgstr "Usuari/a"
 msgid "User with privileges on the computer"
 msgstr "Usuari amb privilegis a l'ordinador"
 
-#: src/stores/app.js:253
+#: src/stores/program.js:237
 msgid "User without privileges"
 msgstr "Usuari sense privilegis"
 
