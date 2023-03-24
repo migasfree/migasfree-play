@@ -67,6 +67,8 @@ try {
 let mainWindow
 
 function createWindow() {
+  launchExpress()
+
   /**
    * Initial window options
    */
@@ -92,8 +94,6 @@ function createWindow() {
   }
 
   require('@electron/remote/main').enable(mainWindow.webContents)
-
-  launchExpress()
 
   mainWindow.webContents.session.setProxy({ mode: 'system' })
 
