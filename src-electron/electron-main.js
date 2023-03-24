@@ -66,7 +66,7 @@ try {
   }
 } catch (_) {}
 
-// https://dev.to/noamsauerutley/getting-sleep-with-promises-in-js-5f09
+// https://masteringjs.io/tutorials/fundamentals/sleep
 function sleep(ms) {
   // add ms millisecond timeout before promise resolution
   return new Promise((resolve) => setTimeout(resolve, ms))
