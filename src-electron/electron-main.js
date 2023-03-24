@@ -44,6 +44,8 @@ function launchExpress() {
   )
 }
 
+launchExpress()
+
 import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
 require('@electron/remote/main').initialize()
 
@@ -64,10 +66,16 @@ try {
   }
 } catch (_) {}
 
+// https://dev.to/noamsauerutley/getting-sleep-with-promises-in-js-5f09
+function sleep(ms) {
+  // add ms millisecond timeout before promise resolution
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 let mainWindow
 
-function createWindow() {
-  launchExpress()
+async function createWindow() {
+  await sleep(500) // delay waiting express app
 
   /**
    * Initial window options
