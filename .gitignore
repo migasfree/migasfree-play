@@ -52,3 +52,10 @@ yarn-error.log*
 /migasfree-play_5.0.0_amd64.buildinfo
 /migasfree-play_5.0.0_amd64.changes
 /migasfree-play_5.0.0_amd64.deb
+/migasfree-play_5.1.0.dsc
+/migasfree-play_5.1.0.tar.xz
+/migasfree-play_5.1.0_amd64.build
+/migasfree-play_5.1.0_amd64.buildinfo
+/migasfree-play_5.1.0_amd64.changes
+/migasfree-play_5.1.0_amd64.deb
+/migasfree-play-dbgsym_5.1.0_amd64.ddeb
