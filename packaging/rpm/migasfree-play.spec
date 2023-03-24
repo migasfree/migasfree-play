@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.0
+Version:       5.1
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,3 +43,11 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Mon, 20 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.0-0
+- App rewritten in Vue and Quasar frameworks.
+
+* Fri, 24 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.1-0
+- fix: stopApp value false at the begining
+- feat: added retry button if app stopped
+- fix: launch express sever before mainWindow
+- fix: await launch express app
