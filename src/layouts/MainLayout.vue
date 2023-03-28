@@ -82,7 +82,8 @@ export default {
 
     const { cid, name, link } = storeToRefs(computerStore)
     const { isRunningCommand } = storeToRefs(executionsStore)
-    const { showSyncDetails, showComputerLink } = storeToRefs(preferencesStore)
+    const { showApps, showSyncDetails, showComputerLink } =
+      storeToRefs(preferencesStore)
     const { clientVersion } = storeToRefs(programStore)
 
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
@@ -106,6 +107,8 @@ export default {
         icon: 'mdi-sync',
       })
     }
+
+    if (!showApps.value) router.push({ name: 'details' })
 
     onMounted(() => {
       const app = window.electronRemote.app
