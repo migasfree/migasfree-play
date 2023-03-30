@@ -1,4 +1,4 @@
-export const executionsMaxLength = 5
+export const executionsMaxLength = process.env.MFP_EXECUTIONS_LIMIT || 5
 
 export const internalApi = `http://localhost:${
   process.env.MFP_EXPRESS_PORT || 3000
