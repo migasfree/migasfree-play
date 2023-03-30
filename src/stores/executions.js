@@ -192,8 +192,9 @@ export const useExecutionsStore = defineStore('executions', () => {
       icon,
       text: '',
     }
+
     while (Object.keys(items.value).length > executionsMaxLength)
-      delete items.value[Object.keys(items.value)[0]]
+      delete items.value[Reflect.ownKeys(items.value)[0]]
   }
 
   function appendExecutionText(text) {
