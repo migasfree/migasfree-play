@@ -1,6 +1,6 @@
 {
   "name": "migasfree-play",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Migasfree Client front-end. Allow install/uninstall available applications and printers.",
   "productName": "migasfree-play",
   "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
@@ -31,7 +31,7 @@
     "pinia": "2.0.30",
     "python-shell": "3.0.1",
     "qrcode": "1.5.1",
-    "quasar": "2.11.8",
+    "quasar": "2.11.9",
     "tcp-port-used": "1.0.2",
     "typeface-lato": "1.1.13",
     "typeface-ubuntu-mono": "1.1.13",
