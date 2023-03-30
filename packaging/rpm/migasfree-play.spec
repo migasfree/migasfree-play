@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.1
+Version:       5.2
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -51,3 +51,8 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 - feat: added retry button if app stopped
 - fix: launch express sever before mainWindow
 - fix: await launch express app
+
+* Thu, 30 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.2-0
+- fix: redirect to details page if no show apps setting
+- feat(settings): added MFP_EXECUTIONS_LIMIT (5 by default)
+- fix: usage of Reflect.ownkeys in addExecution function

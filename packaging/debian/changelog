@@ -1,3 +1,11 @@
+migasfree-play (5.2.0) unstable; urgency=low
+
+  * fix: redirect to details page if no show apps setting
+  * feat(settings): added MFP_EXECUTIONS_LIMIT (5 by default)
+  * fix: usage of Reflect.ownkeys in addExecution function
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 30 Mar 2023 12:15:47 +0200
+
 migasfree-play (5.1.0) unstable; urgency=low
 
   * fix: stopApp value false at the begining
