@@ -2,7 +2,7 @@
   <div class="col-md-6 col-sm-6 col-xs-12 q-pa-sm">
     <q-card flat bordered>
       <q-card-section horizontal>
-        <q-card-section class="col-9">
+        <q-card-section class="col-8">
           <div class="text-h5">
             {{ name }}
           </div>
@@ -12,16 +12,16 @@
           <q-rating v-model="rating" color="primary" readonly />
         </q-card-section>
 
-        <q-card-section class="col-3 text-right">
+        <q-card-section class="col-4 text-right">
           <q-img
             :src="icon"
             width="72px"
             height="72px"
             :placeholder-src="defaultIcon"
-            fit="fill"
+            fit="contain"
           >
             <template #error>
-              <q-img :src="defaultIcon" width="72px" height="72px" fit="fill" />
+              <q-img :src="defaultIcon" fit="contain" />
             </template>
           </q-img>
         </q-card-section>
