@@ -70,7 +70,6 @@ sudo migasfree-play sync
 
 ```bash
 sudo migasfree-play debug
-ELECTRON_ENABLE_LOGGING=1 sudo migasfree-play debug
 ```
 
 ## Screenshots
@@ -107,11 +106,11 @@ Default content:
 
 ### Available languages
 
-* American English (en_US)
-* Català (ca_ES)
-* Español (es_ES)
-* Euskara (eu_ES)
-* Galego (gl_ES)
+- American English (en_US)
+- Català (ca_ES)
+- Español (es_ES)
+- Euskara (eu_ES)
+- Galego (gl_ES)
 
 ### Environment variables
 
@@ -131,5 +130,5 @@ MFP_CMD_FLAGS=
 
 ## Requirements in production
 
-* NodeJS >= 12
-* migasfree-client >= 4.20
+- NodeJS >= 12
+- migasfree-client >= 4.20
