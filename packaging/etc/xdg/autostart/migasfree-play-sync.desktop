@@ -1,9 +1,15 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Update System
+Name[ca]=Actualització del sistema
 Name[es]=Actualización del sistema
+Name[eu]=Berritu sistema
+Name[gl]=Actualización do sistema
 Comment=Update System from migasfree server
+Comment[ca]=Actualització del sistema des d'un servidor migasfree
 Comment[es]=Actualización del sistema desde un servidor migasfree
+Comment[eu]=Sistema eguneratzea migasfree zerbitzari batetik
+Comment[gl]=Actualización do sistema desde un servidor migasfree
 Icon=migasfree-play
 Exec=sudo /usr/bin/migasfree-play sync
 Terminal=false
