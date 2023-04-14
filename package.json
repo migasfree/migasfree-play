@@ -66,7 +66,7 @@
     "webpack": "5.75.0"
   },
   "browserslist": [
-    "chrome > 100"
+    "defaults and es6-module"
   ],
   "engines": {
     "node": ">= 12.22.1",
