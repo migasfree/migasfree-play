@@ -30,7 +30,10 @@ if (process.argv.includes('debug')) {
 
 const pythonShellOptions = {
   pythonPath: getPython(),
-  env: { MIGASFREE_CLIENT_DEBUG: 0 },
+  env: {
+    ...process.env,
+    MIGASFREE_CLIENT_DEBUG: 0,
+  },
 }
 
 module.exports = { getPython, debug, pythonShellOptions }
