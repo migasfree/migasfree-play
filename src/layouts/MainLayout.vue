@@ -115,8 +115,9 @@ export default {
 
       if (app.syncAfterStart) {
         synchronize()
-        setInterval(synchronize, 24 * 60 * 60 * 1000)
       }
+
+      setInterval(synchronize, 24 * 60 * 60 * 1000)
     })
 
     return {
