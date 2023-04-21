@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.2
+Version:       5.3
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,8 +43,20 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Mon, 20 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.0-0
-- App rewritten in Vue and Quasar frameworks.
+* Fri, 21 Apr 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.3-0
+- feat: added update preferences action
+- feat(design): changed project icon
+- feat: combine multiple arguments in any order (sync and debug)
+- feat: upgraded several components
+- feat(i18n): added Name and Comment entries in ca, eu and gl
+- fix: set env process too in python shell options (if not, fails in windows)
+- fix: changed browserslist (to build in windows)
+- fix: ensure synchronization execution every 24 hours
+
+* Thu, 30 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.2-0
+- fix: redirect to details page if no show apps setting
+- feat(settings): added MFP_EXECUTIONS_LIMIT (5 by default)
+- fix: usage of Reflect.ownkeys in addExecution function
 
 * Fri, 24 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.1-0
 - fix: stopApp value false at the begining
@@ -52,7 +64,5 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 - fix: launch express sever before mainWindow
 - fix: await launch express app
 
-* Thu, 30 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.2-0
-- fix: redirect to details page if no show apps setting
-- feat(settings): added MFP_EXECUTIONS_LIMIT (5 by default)
-- fix: usage of Reflect.ownkeys in addExecution function
+* Mon, 20 Mar 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.0-0
+- App rewritten in Vue and Quasar frameworks.
