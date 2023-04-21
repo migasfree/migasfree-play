@@ -1,11 +1,12 @@
-#!/usr/bin/env xdg-open
-
 [Desktop Entry]
 Encoding=UTF-8
 Type=Application
 Name=Migasfree Play
 Comment=Update System from migasfree server
+Comment[ca]=Actualització del sistema des d'un servidor migasfree
 Comment[es]=Actualización del sistema desde un servidor migasfree
+Comment[eu]=Sistema eguneratzea migasfree zerbitzari batetik
+Comment[gl]=Actualización do sistema desde un servidor migasfree
 Exec=sudo migasfree-play
 Icon=migasfree-play
 Categories=System;
