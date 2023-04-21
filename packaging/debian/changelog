@@ -1,10 +1,23 @@
+migasfree-play (5.3.0) unstable; urgency=low
+
+  * feat: added update preferences action
+  * feat(design): changed project icon
+  * feat: combine multiple arguments in any order (sync and debug)
+  * feat: upgraded several components
+  * feat(i18n): added Name and Comment entries in ca, eu and gl
+  * fix: set env process too in python shell options (if not, fails in windows)
+  * fix: changed browserslist (to build in windows)
+  * fix: ensure synchronization execution every 24 hours
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com> Fri, 21 Apr 2023 09:33:47 +0200
+
 migasfree-play (5.2.0) unstable; urgency=low
 
   * fix: redirect to details page if no show apps setting
   * feat(settings): added MFP_EXECUTIONS_LIMIT (5 by default)
   * fix: usage of Reflect.ownkeys in addExecution function
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 30 Mar 2023 12:15:47 +0200
+ -- Jose Antonio Chavarría <jachavar@gmail.com> Thu, 30 Mar 2023 12:15:47 +0200
 
 migasfree-play (5.1.0) unstable; urgency=low
 
@@ -13,10 +26,11 @@ migasfree-play (5.1.0) unstable; urgency=low
   * fix: launch express sever before mainWindow
   * fix: await launch express app
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 24 Mar 2023 11:47:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com> Fri, 24 Mar 2023 11:47:47 +0100
 
 migasfree-play (5.0.0) unstable; urgency=low
 
   * App rewritten in Vue and Quasar frameworks.
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 20 Mar 2023 13:48:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com> Mon, 20 Mar 2023 13:48:47 +0100
+
