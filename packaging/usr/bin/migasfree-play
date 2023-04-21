@@ -65,23 +65,23 @@ do
     sleep 1
 done
 
-_SYNC=0
-_DEBUG=0
+_SYNC=""
+_DEBUG=""
 while [ $# -ne 0 ]
 do
     case "$1" in
         sync)
-            _SYNC=1
+            _SYNC=sync
         ;;
 
         debug)
-            _DEBUG=1
+            _DEBUG=debug
         ;;
     esac
     shift
 done
 
-if [ "$_SYNC" -eq 1 ]
+if [ "$_SYNC" = "sync" ]
 then
     # user root enabled in X
     xhost si:localuser:root
@@ -98,7 +98,7 @@ fi
 
 if [ "$_CONNECTIVITY" = "True" ]
 then
-    [ "$_DEBUG" -eq 1 ] && export ELECTRON_ENABLE_LOGGING=1
-    /usr/share/migasfree-play/migasfree-play "$*" \
+    [ "$_DEBUG" = "debug" ] && export ELECTRON_ENABLE_LOGGING=1
+    /usr/share/migasfree-play/migasfree-play "$_SYNC" "$_DEBUG" \
       --no-sandbox --disable-gpu-sandbox "$MFP_CMD_FLAGS"
 fi
