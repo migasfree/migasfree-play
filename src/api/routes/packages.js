@@ -41,10 +41,7 @@ mfc.pms_selection()
 installed = []
 
 packages = ${packages}
-for pkg in packages:
-    if mfc.pms.is_installed(pkg):
-        if pkg not in installed:
-            installed.append(pkg)
+installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in installed]
 
 print(json.dumps(installed))`
 
@@ -57,12 +54,37 @@ mfc = MigasFreeCommand()
 installed = []
 
 packages = ${packages}
-for pkg in packages:
-    if mfc.pms.is_installed(pkg):
-        if pkg not in installed:
-            installed.append(pkg)
+installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in installed]
 
 print(json.dumps(installed))`
+
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
+    if (err) throw err
+    res.setHeader('Content-Type', 'application/json')
+    res.send(results[0])
+  })
+})
+
+router.get('/inventory', (req, res) => {
+  if (debug) console.log('[express] Getting packages inventory...')
+
+  let code = `
+import json
+from migasfree_client.command import MigasFreeCommand
+
+mfc = MigasFreeCommand()
+mfc.pms_selection()
+
+print(json.dumps(mfc.pms.query_all()))`
+
+  if (req.query.version.startsWith('4.'))
+    code = `
+import json
+from migasfree_client.command import MigasFreeCommand
+
+mfc = MigasFreeCommand()
+
+print(json.dumps(mfc.pms.query_all()))`
 
   PythonShell.runString(code, pythonShellOptions, (err, results) => {
     if (err) throw err
