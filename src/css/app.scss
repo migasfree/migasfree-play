@@ -14,3 +14,9 @@
     background-color: $blue-grey-10;
   }
 }
+
+.overflow {
+  min-height: 6em;
+  max-height: 25em;
+  overflow: auto;
+}
