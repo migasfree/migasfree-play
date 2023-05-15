@@ -12,6 +12,7 @@ import { internalApi } from 'config/app.conf'
 export const usePackagesStore = defineStore('packages', () => {
   const available = ref([])
   const installed = ref([])
+  const inventory = ref([])
 
   async function setAvailablePackages() {
     const programStore = useProgramStore()
@@ -50,5 +51,28 @@ export const usePackagesStore = defineStore('packages', () => {
       })
   }
 
-  return { available, installed, setAvailablePackages, setInstalledPackages }
+  async function setInventory() {
+    const programStore = useProgramStore()
+    const uiStore = useUiStore()
+
+    const { clientVersion } = storeToRefs(programStore)
+
+    await api
+      .get(`${internalApi}/packages/inventory/?version=${clientVersion.value}`)
+      .then((response) => {
+        inventory.value = response.data
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
+
+  return {
+    available,
+    installed,
+    inventory,
+    setAvailablePackages,
+    setInstalledPackages,
+    setInventory,
+  }
 })
