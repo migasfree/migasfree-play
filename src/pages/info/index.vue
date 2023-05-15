@@ -33,6 +33,7 @@ import { useMeta } from 'quasar'
 import Info from 'components/Info.vue'
 
 import { useComputerStore } from 'src/stores/computer'
+import { usePackagesStore } from 'src/stores/packages'
 import { useUiStore } from 'src/stores/ui'
 
 export default {
@@ -43,6 +44,7 @@ export default {
     const { $gettext } = useGettext()
 
     const computerStore = useComputerStore()
+    const packagesStore = usePackagesStore()
     const uiStore = useUiStore()
 
     const { isUpdating } = storeToRefs(uiStore)
@@ -56,6 +58,7 @@ export default {
       await computerStore.computerId()
       await computerStore.computerData()
       await computerStore.computerAttribute()
+      await packagesStore.setInventory()
       uiStore.updatingFinished()
     }
 
