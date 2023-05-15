@@ -193,18 +193,72 @@
       </q-card-actions>
     </q-card>
   </div>
+
+  <div class="row q-ma-md">
+    <div class="col">
+      <q-list bordered>
+        <q-expansion-item :content-inset-level="0.5">
+          <template #header>
+            <q-item-section avatar>
+              <q-icon name="mdi-package-variant" size="md" />
+            </q-item-section>
+
+            <q-item-section>
+              <translate>Inventory</translate>
+            </q-item-section>
+
+            <q-item-section v-if="inventory.length > 0">
+              <q-chip>
+                <q-avatar color="info" text-color="black"
+                  ><strong>{{ inventory.length }}</strong></q-avatar
+                >
+                <translate>packages</translate>
+              </q-chip>
+            </q-item-section>
+
+            <q-item-section side>
+              <q-btn
+                flat
+                icon="mdi-content-copy"
+                color="primary"
+                @click.stop="copyInventory"
+                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+              >
+            </q-item-section>
+          </template>
+
+          <q-list>
+            <q-virtual-scroll
+              class="overflow"
+              :items-size="inventory.length"
+              :items="inventory"
+            >
+              <template #default="{ item }">
+                <q-item dense>
+                  {{ item }}
+                </q-item>
+              </template>
+            </q-virtual-scroll>
+          </q-list>
+        </q-expansion-item>
+      </q-list>
+    </div>
+  </div>
 </template>
 
 <script>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
+import { copyToClipboard } from 'quasar'
 
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 import DateView from 'components/DateView'
 
 import { useComputerStore } from 'src/stores/computer'
+import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
+import { useUiStore } from 'src/stores/ui'
 
 const app = require('../../package.json')
 
@@ -218,10 +272,13 @@ export default {
     const { $gettext } = useGettext()
 
     const computerStore = useComputerStore()
+    const packagesStore = usePackagesStore()
     const programStore = useProgramStore()
+    const uiStore = useUiStore()
 
     const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
       storeToRefs(computerStore)
+    const { inventory } = storeToRefs(packagesStore)
 
     const syncEndDate = computed(() =>
       'sync_end_date' in data.value ? data.value.sync_end_date : ''
@@ -334,6 +391,17 @@ export default {
       window.print()
     }
 
+    const sortArray = (array) => {
+      const originalCopy = array.slice()
+      return originalCopy.sort()
+    }
+
+    const copyInventory = async () => {
+      copyToClipboard(sortArray(inventory.value).join('\n')).then(() => {
+        uiStore.notifySuccess($gettext('Text copied to clipboard'))
+      })
+    }
+
     return {
       app,
       user,
@@ -354,11 +422,13 @@ export default {
       statusIcon,
       statusText,
       qrCode,
+      inventory,
       host: programStore.host,
       serverVersion: programStore.serverVersion,
       organization: programStore.organization,
       client: programStore.clientVersion,
       printLabel,
+      copyInventory,
     }
   },
 }
