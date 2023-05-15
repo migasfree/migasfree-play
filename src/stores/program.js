@@ -101,6 +101,7 @@ export const useProgramStore = defineStore('program', () => {
     setStatus(gettext.$gettext('Packages'))
     await packagesStore.setAvailablePackages()
     await packagesStore.setInstalledPackages()
+    await packagesStore.setInventory()
 
     await executionsStore.getExecutions()
 
