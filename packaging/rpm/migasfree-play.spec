@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.3
+Version:       5.4
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,11 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Tue, 16 May 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.4-0
+- feat: added software inventory info
+- feat: updated translations
+- feat: upgraded several components
+
 * Fri, 21 Apr 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.3-0
 - feat: added update preferences action
 - feat(design): changed project icon
