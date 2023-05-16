@@ -16,6 +16,10 @@ msgstr ""
 msgid "* Required"
 msgstr "* Beharrezkoa"
 
+#: src/components/Info.vue:178
+msgid "%{num} packages"
+msgstr "%{num} paketeak"
+
 #: src/components/AppFilter.vue:35
 msgid "All Apps"
 msgstr "Aplikazio guztiak"
@@ -38,7 +42,7 @@ msgstr "Esleitua"
 msgid "Assigned Devices"
 msgstr "Esleitutako gailuak"
 
-#: src/components/Info.vue:305
+#: src/components/Info.vue:365
 msgid "Available"
 msgstr "Eskuragarri"
 
@@ -70,7 +74,11 @@ msgstr "Komunikatzen..."
 msgid "Computer"
 msgstr "Ordenagailua"
 
-#: src/stores/program.js:185
+#: src/components/Info.vue:190
+msgid "Copy"
+msgstr "Kopiatu"
+
+#: src/stores/program.js:186
 msgid "Credentials are not valid. Review app settings."
 msgstr "Kredentzialak ez dira baliozkoak. Berrikusi aplikazioaren ezarpenak."
 
@@ -81,11 +89,11 @@ msgstr "Xehetasunak"
 
 #: src/components/Menu.vue:125 src/components/Menu.vue:26
 #: src/pages/devices/index.vue:4 src/pages/devices/index.vue:61
-#: src/stores/program.js:107
+#: src/stores/program.js:108
 msgid "Devices"
 msgstr "Gailuak"
 
-#: src/components/Info.vue:238
+#: src/components/Info.vue:298
 msgid "disks"
 msgstr "diskoak"
 
@@ -101,12 +109,12 @@ msgstr "Laguntza"
 msgid "Impossible to continue."
 msgstr "Ezinezkoa da jarraitzea."
 
-#: src/components/Info.vue:307
+#: src/components/Info.vue:367
 msgid "In repair"
 msgstr "Konponketan"
 
 #: src/components/Menu.vue:161 src/components/Menu.vue:65
-#: src/pages/info/index.vue:4 src/pages/info/index.vue:50
+#: src/pages/info/index.vue:4 src/pages/info/index.vue:52
 msgid "Info"
 msgstr "Informazioa"
 
@@ -126,7 +134,7 @@ msgstr "Instalatutako aplikazioak"
 msgid "Installing %{name}"
 msgstr "Instalatzen %{name}"
 
-#: src/components/Info.vue:311
+#: src/components/Info.vue:371
 msgid "Intended"
 msgstr "Asmoa"
 
@@ -183,16 +191,16 @@ msgid "Please wait, other process is running!!!"
 msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 
 #: src/components/Menu.vue:173 src/components/Menu.vue:77
-#: src/pages/preferences/index.vue:24 src/pages/preferences/index.vue:4
+#: src/pages/preferences/index.vue:4 src/pages/preferences/index.vue:50
 #: src/stores/program.js:65
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/components/Info.vue:190
+#: src/components/Info.vue:244
 msgid "Print Identification"
 msgstr "Inprimatu Identifikazioa"
 
-#: src/components/Info.vue:309
+#: src/components/Info.vue:369
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
@@ -228,6 +236,10 @@ msgstr "Etiketak ezartzea..."
 msgid "Show details when synchronizing"
 msgstr "Erakutsi xehetasunak sinkronizatzean"
 
+#: src/components/Info.vue:210
+msgid "Software Inventory"
+msgstr "Software inbentarioa"
+
 #: src/components/Preferences.vue:37
 msgid "Switch to Dark mode"
 msgstr "Aldatu modu ilunera"
@@ -236,7 +248,7 @@ msgstr "Aldatu modu ilunera"
 msgid "Switch to Light mode"
 msgstr "Aldatu argi modura"
 
-#: src/layouts/MainLayout.vue:105
+#: src/layouts/MainLayout.vue:106
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
@@ -244,17 +256,17 @@ msgstr "Sinkronizazioa"
 msgid "Synchronize Computer"
 msgstr "Ordenagailua sinkronizatu"
 
-#: src/layouts/MainLayout.vue:95
+#: src/layouts/MainLayout.vue:96
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
 #: src/components/Menu.vue:137 src/components/Menu.vue:39
 #: src/components/Tags.vue:9 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:49 src/stores/program.js:112
+#: src/pages/tags/index.vue:49 src/stores/program.js:113
 msgid "Tags"
 msgstr "Etiketak"
 
-#: src/components/ExecutionDetail.vue:70
+#: src/components/ExecutionDetail.vue:70 src/components/Info.vue:404
 msgid "Text copied to clipboard"
 msgstr "Testua arbelean kopiatu da"
 
@@ -263,11 +275,11 @@ msgstr "Testua arbelean kopiatu da"
 msgid "There are not items to show."
 msgstr "Ez dago elementurik erakusteko."
 
-#: src/stores/program.js:212 src/stores/ui.js:37
+#: src/stores/program.js:213 src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
 
-#: src/stores/program.js:137
+#: src/stores/program.js:138
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
 
@@ -279,16 +291,17 @@ msgstr "Desinstalatu"
 msgid "Uninstalling %{name}"
 msgstr "Desinstalatzen %{name}"
 
-#: src/components/Info.vue:315
+#: src/components/Info.vue:375
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/components/Info.vue:313
+#: src/components/Info.vue:373
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
 #: src/pages/apps/index.vue:25 src/pages/devices/index.vue:24
-#: src/pages/info/index.vue:14 src/pages/tags/index.vue:14
+#: src/pages/info/index.vue:14 src/pages/preferences/index.vue:14
+#: src/pages/tags/index.vue:14
 msgid "Update"
 msgstr "Eguneratu"
 
@@ -300,7 +313,7 @@ msgstr "Erabiltzailea"
 msgid "User with privileges on the computer"
 msgstr "Ordenagailuan pribilegioak dituen erabiltzailea"
 
-#: src/stores/program.js:237
+#: src/stores/program.js:238
 msgid "User without privileges"
 msgstr "Pribilegiorik gabeko erabiltzailea"
 

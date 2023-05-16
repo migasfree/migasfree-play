@@ -16,6 +16,10 @@ msgstr ""
 msgid "* Required"
 msgstr "* Obligatori"
 
+#: src/components/Info.vue:178
+msgid "%{num} packages"
+msgstr "%{num} paquets"
+
 #: src/components/AppFilter.vue:35
 msgid "All Apps"
 msgstr "Totes les aplicacions"
@@ -38,7 +42,7 @@ msgstr "Assignat"
 msgid "Assigned Devices"
 msgstr "Dispositius assignats"
 
-#: src/components/Info.vue:305
+#: src/components/Info.vue:365
 msgid "Available"
 msgstr "Disponible"
 
@@ -70,7 +74,11 @@ msgstr "Comunicant-se..."
 msgid "Computer"
 msgstr "Ordinador"
 
-#: src/stores/program.js:185
+#: src/components/Info.vue:190
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/stores/program.js:186
 msgid "Credentials are not valid. Review app settings."
 msgstr "Les credencials no són vàlides. Revisa la configuració de l'aplicació."
 
@@ -81,11 +89,11 @@ msgstr "Detalls"
 
 #: src/components/Menu.vue:125 src/components/Menu.vue:26
 #: src/pages/devices/index.vue:4 src/pages/devices/index.vue:61
-#: src/stores/program.js:107
+#: src/stores/program.js:108
 msgid "Devices"
 msgstr "Dispositius"
 
-#: src/components/Info.vue:238
+#: src/components/Info.vue:298
 msgid "disks"
 msgstr "discos"
 
@@ -101,12 +109,12 @@ msgstr "Ajuda"
 msgid "Impossible to continue."
 msgstr "Impossible continuar."
 
-#: src/components/Info.vue:307
+#: src/components/Info.vue:367
 msgid "In repair"
 msgstr "En reparació"
 
 #: src/components/Menu.vue:161 src/components/Menu.vue:65
-#: src/pages/info/index.vue:4 src/pages/info/index.vue:50
+#: src/pages/info/index.vue:4 src/pages/info/index.vue:52
 msgid "Info"
 msgstr "Informació"
 
@@ -126,7 +134,7 @@ msgstr "Aplicacions instal·lades"
 msgid "Installing %{name}"
 msgstr "Instal·lació %{name}"
 
-#: src/components/Info.vue:311
+#: src/components/Info.vue:371
 msgid "Intended"
 msgstr "Assignat"
 
@@ -183,16 +191,16 @@ msgid "Please wait, other process is running!!!"
 msgstr "Espereu, un altre procés s'està executant!!!"
 
 #: src/components/Menu.vue:173 src/components/Menu.vue:77
-#: src/pages/preferences/index.vue:24 src/pages/preferences/index.vue:4
+#: src/pages/preferences/index.vue:4 src/pages/preferences/index.vue:50
 #: src/stores/program.js:65
 msgid "Preferences"
 msgstr "Preferències"
 
-#: src/components/Info.vue:190
+#: src/components/Info.vue:244
 msgid "Print Identification"
 msgstr "Impressió d'identificació"
 
-#: src/components/Info.vue:309
+#: src/components/Info.vue:369
 msgid "Reserved"
 msgstr "Reservat"
 
@@ -228,6 +236,10 @@ msgstr "Configuració d'etiquetes..."
 msgid "Show details when synchronizing"
 msgstr "Mostra els detalls en sincronitzar"
 
+#: src/components/Info.vue:210
+msgid "Software Inventory"
+msgstr "Inventari de programari"
+
 #: src/components/Preferences.vue:37
 msgid "Switch to Dark mode"
 msgstr "Canvia al mode fosc"
@@ -236,7 +248,7 @@ msgstr "Canvia al mode fosc"
 msgid "Switch to Light mode"
 msgstr "Canvia al mode de llum"
 
-#: src/layouts/MainLayout.vue:105
+#: src/layouts/MainLayout.vue:106
 msgid "Synchronization"
 msgstr "Sincronització"
 
@@ -244,17 +256,17 @@ msgstr "Sincronització"
 msgid "Synchronize Computer"
 msgstr "Sincronitza l'ordinador"
 
-#: src/layouts/MainLayout.vue:95
+#: src/layouts/MainLayout.vue:96
 msgid "Synchronizing..."
 msgstr "Sincronitzant..."
 
 #: src/components/Menu.vue:137 src/components/Menu.vue:39
 #: src/components/Tags.vue:9 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:49 src/stores/program.js:112
+#: src/pages/tags/index.vue:49 src/stores/program.js:113
 msgid "Tags"
 msgstr "Etiquetes"
 
-#: src/components/ExecutionDetail.vue:70
+#: src/components/ExecutionDetail.vue:70 src/components/Info.vue:404
 msgid "Text copied to clipboard"
 msgstr "S'ha copiat el text al porta-retalls"
 
@@ -263,11 +275,11 @@ msgstr "S'ha copiat el text al porta-retalls"
 msgid "There are not items to show."
 msgstr "No hi ha elements per mostrar."
 
-#: src/stores/program.js:212 src/stores/ui.js:37
+#: src/stores/program.js:213 src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr "No hi ha connexió amb el servidor"
 
-#: src/stores/program.js:137
+#: src/stores/program.js:138
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aquesta aplicació requereix almenys Migasfree Client %{version}"
 
@@ -279,16 +291,17 @@ msgstr "Desinstal·la"
 msgid "Uninstalling %{name}"
 msgstr "S'està desinstal·lant %{name}"
 
-#: src/components/Info.vue:315
+#: src/components/Info.vue:375
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: src/components/Info.vue:313
+#: src/components/Info.vue:373
 msgid "Unsubscribed"
 msgstr "De baixa"
 
 #: src/pages/apps/index.vue:25 src/pages/devices/index.vue:24
-#: src/pages/info/index.vue:14 src/pages/tags/index.vue:14
+#: src/pages/info/index.vue:14 src/pages/preferences/index.vue:14
+#: src/pages/tags/index.vue:14
 msgid "Update"
 msgstr "Actualització"
 
@@ -300,7 +313,7 @@ msgstr "Usuari/a"
 msgid "User with privileges on the computer"
 msgstr "Usuari amb privilegis a l'ordinador"
 
-#: src/stores/program.js:237
+#: src/stores/program.js:238
 msgid "User without privileges"
 msgstr "Usuari sense privilegis"
 

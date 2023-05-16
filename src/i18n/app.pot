@@ -7,6 +7,10 @@ msgstr ""
 msgid "* Required"
 msgstr ""
 
+#: src/components/Info.vue:178
+msgid "%{num} packages"
+msgstr ""
+
 #: src/components/AppFilter.vue:35
 msgid "All Apps"
 msgstr ""
@@ -31,7 +35,7 @@ msgstr ""
 msgid "Assigned Devices"
 msgstr ""
 
-#: src/components/Info.vue:305
+#: src/components/Info.vue:365
 msgid "Available"
 msgstr ""
 
@@ -63,7 +67,11 @@ msgstr ""
 msgid "Computer"
 msgstr ""
 
-#: src/stores/program.js:185
+#: src/components/Info.vue:190
+msgid "Copy"
+msgstr ""
+
+#: src/stores/program.js:186
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 
@@ -78,11 +86,11 @@ msgstr ""
 #: src/components/Menu.vue:26
 #: src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:61
-#: src/stores/program.js:107
+#: src/stores/program.js:108
 msgid "Devices"
 msgstr ""
 
-#: src/components/Info.vue:238
+#: src/components/Info.vue:298
 msgid "disks"
 msgstr ""
 
@@ -99,14 +107,14 @@ msgstr ""
 msgid "Impossible to continue."
 msgstr ""
 
-#: src/components/Info.vue:307
+#: src/components/Info.vue:367
 msgid "In repair"
 msgstr ""
 
 #: src/components/Menu.vue:161
 #: src/components/Menu.vue:65
 #: src/pages/info/index.vue:4
-#: src/pages/info/index.vue:50
+#: src/pages/info/index.vue:52
 msgid "Info"
 msgstr ""
 
@@ -128,7 +136,7 @@ msgstr ""
 msgid "Installing %{name}"
 msgstr ""
 
-#: src/components/Info.vue:311
+#: src/components/Info.vue:371
 msgid "Intended"
 msgstr ""
 
@@ -186,17 +194,17 @@ msgstr ""
 
 #: src/components/Menu.vue:173
 #: src/components/Menu.vue:77
-#: src/pages/preferences/index.vue:24
 #: src/pages/preferences/index.vue:4
+#: src/pages/preferences/index.vue:50
 #: src/stores/program.js:65
 msgid "Preferences"
 msgstr ""
 
-#: src/components/Info.vue:190
+#: src/components/Info.vue:244
 msgid "Print Identification"
 msgstr ""
 
-#: src/components/Info.vue:309
+#: src/components/Info.vue:369
 msgid "Reserved"
 msgstr ""
 
@@ -232,6 +240,10 @@ msgstr ""
 msgid "Show details when synchronizing"
 msgstr ""
 
+#: src/components/Info.vue:210
+msgid "Software Inventory"
+msgstr ""
+
 #: src/components/Preferences.vue:37
 msgid "Switch to Dark mode"
 msgstr ""
@@ -240,7 +252,7 @@ msgstr ""
 msgid "Switch to Light mode"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:105
+#: src/layouts/MainLayout.vue:106
 msgid "Synchronization"
 msgstr ""
 
@@ -248,7 +260,7 @@ msgstr ""
 msgid "Synchronize Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:95
+#: src/layouts/MainLayout.vue:96
 msgid "Synchronizing..."
 msgstr ""
 
@@ -257,11 +269,12 @@ msgstr ""
 #: src/components/Tags.vue:9
 #: src/pages/tags/index.vue:4
 #: src/pages/tags/index.vue:49
-#: src/stores/program.js:112
+#: src/stores/program.js:113
 msgid "Tags"
 msgstr ""
 
 #: src/components/ExecutionDetail.vue:70
+#: src/components/Info.vue:404
 msgid "Text copied to clipboard"
 msgstr ""
 
@@ -272,12 +285,12 @@ msgstr ""
 msgid "There are not items to show."
 msgstr ""
 
-#: src/stores/program.js:212
+#: src/stores/program.js:213
 #: src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr ""
 
-#: src/stores/program.js:137
+#: src/stores/program.js:138
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr ""
 
@@ -291,17 +304,18 @@ msgstr ""
 msgid "Uninstalling %{name}"
 msgstr ""
 
-#: src/components/Info.vue:315
+#: src/components/Info.vue:375
 msgid "Unknown"
 msgstr ""
 
-#: src/components/Info.vue:313
+#: src/components/Info.vue:373
 msgid "Unsubscribed"
 msgstr ""
 
 #: src/pages/apps/index.vue:25
 #: src/pages/devices/index.vue:24
 #: src/pages/info/index.vue:14
+#: src/pages/preferences/index.vue:14
 #: src/pages/tags/index.vue:14
 msgid "Update"
 msgstr ""
@@ -314,7 +328,7 @@ msgstr ""
 msgid "User with privileges on the computer"
 msgstr ""
 
-#: src/stores/program.js:237
+#: src/stores/program.js:238
 msgid "User without privileges"
 msgstr ""
 
