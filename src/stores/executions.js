@@ -162,6 +162,7 @@ export const useExecutionsStore = defineStore('executions', () => {
         if (win.isMinimized()) win.close()
 
         packagesStore.setAvailablePackages()
+        packagesStore.setInventory()
       }
     })
   }
