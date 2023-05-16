@@ -3,7 +3,7 @@
 _PATH=$(pwd)/rpmbuild
 _SPECS=$_PATH/SPECS
 _SOURCES=$_PATH/SOURCES
-_APP=migasfree-play-5.3
+_APP=migasfree-play-5.4
 
 mkdir -p "$_SPECS" || :
 mkdir -p "$_SOURCES" || :
