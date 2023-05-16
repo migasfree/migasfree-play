@@ -157,6 +157,60 @@
         <q-tooltip>{{ $gettext('Migasfree Data') }}</q-tooltip>
       </q-card>
     </div>
+
+    <div v-if="inventory.length > 0" class="row q-ma-md q-mb-lg">
+      <div class="col-10 offset-1">
+        <q-list
+          bordered
+          :class="[
+            'q-card q-card--flat no-shadow',
+            $q.dark.isActive ? 'q-card--dark q-dark' : '',
+          ]"
+        >
+          <q-expansion-item :content-inset-level="0.5">
+            <template #header>
+              <q-item-section avatar>
+                <q-icon name="mdi-package-variant" size="md" />
+              </q-item-section>
+
+              <q-item-section>
+                <strong>{{
+                  $gettext('%{num} packages', {
+                    num: inventory.length,
+                  })
+                }}</strong>
+              </q-item-section>
+
+              <q-item-section side>
+                <q-btn
+                  flat
+                  icon="mdi-content-copy"
+                  color="primary"
+                  @click.stop="copyInventory"
+                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                >
+              </q-item-section>
+            </template>
+
+            <q-list>
+              <q-virtual-scroll
+                class="overflow"
+                :items-size="inventory.length"
+                :items="inventory"
+              >
+                <template #default="{ item }">
+                  <q-item dense>
+                    {{ item }}
+                  </q-item>
+                </template>
+              </q-virtual-scroll>
+            </q-list>
+          </q-expansion-item>
+
+          <q-tooltip>{{ $gettext('Software Inventory') }}</q-tooltip>
+        </q-list>
+      </div>
+    </div>
   </div>
 
   <div class="column items-center">
@@ -192,57 +246,6 @@
         </q-btn>
       </q-card-actions>
     </q-card>
-  </div>
-
-  <div class="row q-ma-md">
-    <div class="col">
-      <q-list bordered>
-        <q-expansion-item :content-inset-level="0.5">
-          <template #header>
-            <q-item-section avatar>
-              <q-icon name="mdi-package-variant" size="md" />
-            </q-item-section>
-
-            <q-item-section>
-              <translate>Inventory</translate>
-            </q-item-section>
-
-            <q-item-section v-if="inventory.length > 0">
-              <q-chip>
-                <q-avatar color="info" text-color="black"
-                  ><strong>{{ inventory.length }}</strong></q-avatar
-                >
-                <translate>packages</translate>
-              </q-chip>
-            </q-item-section>
-
-            <q-item-section side>
-              <q-btn
-                flat
-                icon="mdi-content-copy"
-                color="primary"
-                @click.stop="copyInventory"
-                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-              >
-            </q-item-section>
-          </template>
-
-          <q-list>
-            <q-virtual-scroll
-              class="overflow"
-              :items-size="inventory.length"
-              :items="inventory"
-            >
-              <template #default="{ item }">
-                <q-item dense>
-                  {{ item }}
-                </q-item>
-              </template>
-            </q-virtual-scroll>
-          </q-list>
-        </q-expansion-item>
-      </q-list>
-    </div>
   </div>
 </template>
 
