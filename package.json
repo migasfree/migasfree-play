@@ -1,6 +1,6 @@
 {
   "name": "migasfree-play",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "description": "Migasfree Client front-end. Allow install/uninstall available applications and printers.",
   "productName": "migasfree-play",
   "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
@@ -36,7 +36,7 @@
     "typeface-lato": "1.1.13",
     "typeface-ubuntu-mono": "1.1.13",
     "util": "0.12.5",
-    "vue": "3.3.2",
+    "vue": "3.3.4",
     "vue-router": "4.2.0",
     "vue3-gettext": "2.4.0"
   },
@@ -69,7 +69,7 @@
     "defaults and supports es6-module"
   ],
   "engines": {
-    "node": ">= 12.22.1",
+    "node": ">= 14",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
