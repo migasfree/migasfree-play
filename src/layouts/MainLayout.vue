@@ -17,6 +17,16 @@
         </q-btn>
         <q-toolbar-title v-else>{{ computerText }}</q-toolbar-title>
 
+        <q-btn
+          v-if="!cid"
+          color="warning"
+          icon="mdi-server-plus"
+          @click="register"
+          ><q-tooltip>{{
+            $gettext('Register Computer on the Server')
+          }}</q-tooltip></q-btn
+        >
+
         <q-space />
 
         <Menu />
@@ -89,7 +99,7 @@ export default {
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
 
     const computerText = computed(() => {
-      return cid.value ? `${name.value} (CID-${cid.value})` : name
+      return cid.value ? `${name.value} (CID-${cid.value})` : name.value
     })
 
     const synchronize = () => {
@@ -108,6 +118,10 @@ export default {
       })
     }
 
+    const register = async () => {
+      await computerStore.registerComputer({ user: 'yo', password: 'yo' })
+    }
+
     if (!showApps.value) router.push({ name: 'details' })
 
     onMounted(() => {
@@ -121,9 +135,11 @@ export default {
     })
 
     return {
+      cid,
       computerText,
       link,
       synchronize,
+      register,
       urlHelp,
       isRunningCommand,
       showComputerLink,
