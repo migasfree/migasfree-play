@@ -154,6 +154,26 @@ export const useComputerStore = defineStore('computer', () => {
       link.value = `${protocol.value}://${host.value}/computers/results/${cid.value}/`
   }
 
+  async function registerComputer({ user, password }) {
+    const programStore = useProgramStore()
+    const uiStore = useUiStore()
+
+    const { clientVersion } = storeToRefs(programStore)
+
+    await api
+      .post(
+        `${internalApi}/computer/register/?version=${clientVersion.value}`,
+        { user, password }
+      )
+      .then((response) => {
+        console.log(response)
+        computerId()
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
+
   return {
     name,
     uuid,
@@ -172,5 +192,6 @@ export const useComputerStore = defineStore('computer', () => {
     computerLabel,
     computerData,
     computerAttribute,
+    registerComputer,
   }
 })
