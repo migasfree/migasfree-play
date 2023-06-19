@@ -13,9 +13,9 @@ from migasfree_client.command import MigasFreeCommand
 print(MigasFreeCommand().get_computer_id())`
 
   PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
-    res.send(results[0])
+    if (err) res.send('0')
+    else res.send(results[0])
   })
 })
 
@@ -36,6 +36,28 @@ print(json.dumps(ret))`
   PythonShell.runString(code, null, (err, results) => {
     if (err) throw err
     res.setHeader('Content-Type', 'application/json')
+    res.send(results[0])
+  })
+})
+
+router.post('/register', (req, res) => {
+  if (debug) console.log('[express] Registering Computer...')
+  console.log(req.query.version)
+  console.log(req.body)
+
+  const code = `
+from migasfree_client.command import MigasFreeCommand
+
+mfc = MigasFreeCommand()
+mfc._init_command()
+mfc._save_sign_keys('${req.body.user}', '${req.body.password}')
+mfc._save_computer('${req.body.user}', '${req.body.password}')`
+
+  if (req.query.version.startsWith('4.')) code = 'TODO'
+
+  PythonShell.runString(code, pythonShellOptions, (err, results) => {
+    if (err) throw err
+    res.setHeader('Content-Type', 'text/plain')
     res.send(results[0])
   })
 })
