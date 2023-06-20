@@ -1,3 +1,15 @@
+migasfree-play (5.5.0) unstable; urgency=low
+
+  * feat: minimum node version to 14
+  * feat: upgraded several components
+  * fix: id route
+  * feat: added register route
+  * feat: added register component
+  * refactor: increased max rateLimit
+  * feat: updated translations
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Tue, 20 Jun 2023 12:15:47 +0200
+
 migasfree-play (5.4.0) unstable; urgency=low
 
   * feat: added software inventory info
