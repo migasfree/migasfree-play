@@ -46,7 +46,7 @@ router.post('/register', (req, res) => {
     console.log('[express] Data', req)
   }
 
-  const code = `
+  let code = `
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
@@ -54,7 +54,12 @@ mfc._init_command()
 mfc._save_sign_keys('${req.body.user}', '${req.body.password}')
 mfc._save_computer('${req.body.user}', '${req.body.password}')`
 
-  if (req.query.version.startsWith('4.')) code = 'TODO'
+  if (req.query.version.startsWith('4.'))
+    code = `
+from migasfree_client.command import MigasFreeCommand
+
+mfc = MigasFreeCommand()
+mfc._save_sign_keys('${req.body.user}', '${req.body.password}')`
 
   PythonShell.runString(code, pythonShellOptions, (err, results) => {
     res.setHeader('Content-Type', 'text/plain')
