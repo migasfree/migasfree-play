@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="showing" persistent>
-    <q-card>
+    <q-card flat>
       <q-card-section class="row items-center">
         <div class="text-h5">
           {{ $gettext('User with privileges on the computer') }}
