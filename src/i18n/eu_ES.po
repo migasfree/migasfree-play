@@ -13,6 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #: src/components/Login.vue:16 src/components/Login.vue:33
+#: src/components/Register.vue:54 src/components/Register.vue:71
 msgid "* Required"
 msgstr "* Beharrezkoa"
 
@@ -46,7 +47,7 @@ msgstr "Esleitutako gailuak"
 msgid "Available"
 msgstr "Eskuragarri"
 
-#: src/components/Login.vue:60
+#: src/components/Login.vue:60 src/components/Register.vue:36
 msgid "Cancel"
 msgstr "Utzi"
 
@@ -182,7 +183,7 @@ msgstr "Ez erakutsi xehetasunak sinkronizatzean"
 msgid "Packages"
 msgstr "Paketeak"
 
-#: src/components/Login.vue:38
+#: src/components/Login.vue:38 src/components/Register.vue:76
 msgid "Password"
 msgstr "Pasahitza"
 
@@ -200,6 +201,18 @@ msgstr "Hobespenak"
 msgid "Print Identification"
 msgstr "Inprimatu Identifikazioa"
 
+#: src/components/Register.vue:99
+msgid "Register"
+msgstr "Izena eman"
+
+#: src/layouts/MainLayout.vue:26
+msgid "Register Computer on the Server"
+msgstr "Erregistratu ordenagailua zerbitzarian"
+
+#: src/stores/computer.js:173
+msgid "Registered Computer!"
+msgstr "¡Erregistratutako ordenagailua!"
+
 #: src/components/Info.vue:369
 msgid "Reserved"
 msgstr "Erreserbatuta"
@@ -207,6 +220,14 @@ msgstr "Erreserbatuta"
 #: src/App.vue:30
 msgid "Retry"
 msgstr "Saiatu berriro"
+
+#: src/components/Register.vue:6
+msgid ""
+"Review config data. If is not correct, cancel register and modify migasfree-"
+"client file config."
+msgstr ""
+"Berrikusi konfigurazio datuak. Zuzena ez bada, bertan behera utzi "
+"erregistroa eta aldatu migasfree-client fitxategiaren konfigurazioa."
 
 #: src/components/AppFilter.vue:9
 msgid "Search in name or description"
@@ -248,15 +269,15 @@ msgstr "Aldatu modu ilunera"
 msgid "Switch to Light mode"
 msgstr "Aldatu argi modura"
 
-#: src/layouts/MainLayout.vue:106
+#: src/layouts/MainLayout.vue:126
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
-#: src/layouts/MainLayout.vue:43
+#: src/layouts/MainLayout.vue:53
 msgid "Synchronize Computer"
 msgstr "Ordenagailua sinkronizatu"
 
-#: src/layouts/MainLayout.vue:96
+#: src/layouts/MainLayout.vue:116
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
@@ -278,6 +299,10 @@ msgstr "Ez dago elementurik erakusteko."
 #: src/stores/program.js:213 src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
+
+#: src/stores/computer.js:171
+msgid "There was a problem with registration"
+msgstr "Arazo bat izan da erregistroarekin"
 
 #: src/stores/program.js:138
 msgid "This app requires at least Migasfree Client %{version}"
@@ -305,13 +330,17 @@ msgstr "Harpidetza kendu da"
 msgid "Update"
 msgstr "Eguneratu"
 
-#: src/components/Login.vue:19
+#: src/components/Login.vue:19 src/components/Register.vue:57
 msgid "User"
 msgstr "Erabiltzailea"
 
 #: src/components/Login.vue:6
 msgid "User with privileges on the computer"
 msgstr "Ordenagailuan pribilegioak dituen erabiltzailea"
+
+#: src/components/Register.vue:44
+msgid "User with sufficient privileges on the server"
+msgstr "Zerbitzarian pribilegio nahikoak dituen erabiltzailea"
 
 #: src/stores/program.js:238
 msgid "User without privileges"

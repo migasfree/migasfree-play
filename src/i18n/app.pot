@@ -4,6 +4,8 @@ msgstr ""
 
 #: src/components/Login.vue:16
 #: src/components/Login.vue:33
+#: src/components/Register.vue:54
+#: src/components/Register.vue:71
 msgid "* Required"
 msgstr ""
 
@@ -40,6 +42,7 @@ msgid "Available"
 msgstr ""
 
 #: src/components/Login.vue:60
+#: src/components/Register.vue:36
 msgid "Cancel"
 msgstr ""
 
@@ -185,6 +188,7 @@ msgid "Packages"
 msgstr ""
 
 #: src/components/Login.vue:38
+#: src/components/Register.vue:76
 msgid "Password"
 msgstr ""
 
@@ -204,12 +208,28 @@ msgstr ""
 msgid "Print Identification"
 msgstr ""
 
+#: src/components/Register.vue:99
+msgid "Register"
+msgstr ""
+
+#: src/layouts/MainLayout.vue:26
+msgid "Register Computer on the Server"
+msgstr ""
+
+#: src/stores/computer.js:173
+msgid "Registered Computer!"
+msgstr ""
+
 #: src/components/Info.vue:369
 msgid "Reserved"
 msgstr ""
 
 #: src/App.vue:30
 msgid "Retry"
+msgstr ""
+
+#: src/components/Register.vue:6
+msgid "Review config data. If is not correct, cancel register and modify migasfree-client file config."
 msgstr ""
 
 #: src/components/AppFilter.vue:9
@@ -252,15 +272,15 @@ msgstr ""
 msgid "Switch to Light mode"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:106
+#: src/layouts/MainLayout.vue:126
 msgid "Synchronization"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:43
+#: src/layouts/MainLayout.vue:53
 msgid "Synchronize Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:96
+#: src/layouts/MainLayout.vue:116
 msgid "Synchronizing..."
 msgstr ""
 
@@ -288,6 +308,10 @@ msgstr ""
 #: src/stores/program.js:213
 #: src/stores/ui.js:37
 msgid "There is no connection to the server"
+msgstr ""
+
+#: src/stores/computer.js:171
+msgid "There was a problem with registration"
 msgstr ""
 
 #: src/stores/program.js:138
@@ -321,11 +345,16 @@ msgid "Update"
 msgstr ""
 
 #: src/components/Login.vue:19
+#: src/components/Register.vue:57
 msgid "User"
 msgstr ""
 
 #: src/components/Login.vue:6
 msgid "User with privileges on the computer"
+msgstr ""
+
+#: src/components/Register.vue:44
+msgid "User with sufficient privileges on the server"
 msgstr ""
 
 #: src/stores/program.js:238

@@ -13,6 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #: src/components/Login.vue:16 src/components/Login.vue:33
+#: src/components/Register.vue:54 src/components/Register.vue:71
 msgid "* Required"
 msgstr "* Obligatorio"
 
@@ -46,7 +47,7 @@ msgstr "Dispositivos asignados"
 msgid "Available"
 msgstr "Dispoñible"
 
-#: src/components/Login.vue:60
+#: src/components/Login.vue:60 src/components/Register.vue:36
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -182,7 +183,7 @@ msgstr "Non mostrar detalles ao sincronizar"
 msgid "Packages"
 msgstr "Paquetes"
 
-#: src/components/Login.vue:38
+#: src/components/Login.vue:38 src/components/Register.vue:76
 msgid "Password"
 msgstr "Contrasinal"
 
@@ -200,6 +201,18 @@ msgstr "Preferencias"
 msgid "Print Identification"
 msgstr "Identificación de impresión"
 
+#: src/components/Register.vue:99
+msgid "Register"
+msgstr "Rexistrar"
+
+#: src/layouts/MainLayout.vue:26
+msgid "Register Computer on the Server"
+msgstr "Rexistrar o ordenador no servidor"
+
+#: src/stores/computer.js:173
+msgid "Registered Computer!"
+msgstr "¡Ordenador rexistrado!"
+
 #: src/components/Info.vue:369
 msgid "Reserved"
 msgstr "Reservado"
@@ -207,6 +220,14 @@ msgstr "Reservado"
 #: src/App.vue:30
 msgid "Retry"
 msgstr "Tentalo de novo"
+
+#: src/components/Register.vue:6
+msgid ""
+"Review config data. If is not correct, cancel register and modify migasfree-"
+"client file config."
+msgstr ""
+"Revisar os datos de configuración. Se non é correcto, cancele o rexistro e "
+"modifique a configuración do ficheiro migasfree-client."
 
 #: src/components/AppFilter.vue:9
 msgid "Search in name or description"
@@ -248,15 +269,15 @@ msgstr "Cambia ao modo escuro"
 msgid "Switch to Light mode"
 msgstr "Cambia ao modo luz"
 
-#: src/layouts/MainLayout.vue:106
+#: src/layouts/MainLayout.vue:126
 msgid "Synchronization"
 msgstr "Sincronización"
 
-#: src/layouts/MainLayout.vue:43
+#: src/layouts/MainLayout.vue:53
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
-#: src/layouts/MainLayout.vue:96
+#: src/layouts/MainLayout.vue:116
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
@@ -278,6 +299,10 @@ msgstr "Non hai elementos para mostrar."
 #: src/stores/program.js:213 src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr "Non hai conexión co servidor"
+
+#: src/stores/computer.js:171
+msgid "There was a problem with registration"
+msgstr "Houbo un problema co rexistro"
 
 #: src/stores/program.js:138
 msgid "This app requires at least Migasfree Client %{version}"
@@ -305,13 +330,17 @@ msgstr "Baixa"
 msgid "Update"
 msgstr "Actualizar"
 
-#: src/components/Login.vue:19
+#: src/components/Login.vue:19 src/components/Register.vue:57
 msgid "User"
 msgstr "Usuario"
 
 #: src/components/Login.vue:6
 msgid "User with privileges on the computer"
 msgstr "Usuario con privilexios no ordenador"
+
+#: src/components/Register.vue:44
+msgid "User with sufficient privileges on the server"
+msgstr "Usuario con privilexios suficientes no servidor"
 
 #: src/stores/program.js:238
 msgid "User without privileges"
