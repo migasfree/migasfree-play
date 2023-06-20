@@ -41,9 +41,10 @@ print(json.dumps(ret))`
 })
 
 router.post('/register', (req, res) => {
-  if (debug) console.log('[express] Registering Computer...')
-  console.log(req.query.version)
-  console.log(req.body)
+  if (debug) {
+    console.log('[express] Registering Computer...')
+    console.log('[express] Data', req)
+  }
 
   const code = `
 from migasfree_client.command import MigasFreeCommand
@@ -56,9 +57,9 @@ mfc._save_computer('${req.body.user}', '${req.body.password}')`
   if (req.query.version.startsWith('4.')) code = 'TODO'
 
   PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
     res.setHeader('Content-Type', 'text/plain')
-    res.send(results[0])
+    if (err) res.send('0')
+    else res.send(results[0])
   })
 })
 
