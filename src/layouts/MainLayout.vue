@@ -21,7 +21,7 @@
           v-if="!cid"
           color="warning"
           icon="mdi-server-plus"
-          @click="register"
+          @click="openRegister"
           ><q-tooltip>{{
             $gettext('Register Computer on the Server')
           }}</q-tooltip></q-btn
@@ -55,10 +55,12 @@
       </q-page-sticky>
     </q-page-container>
   </q-layout>
+
+  <Register :value="showRegister" @closed="showRegister = !showRegister" />
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
@@ -67,6 +69,7 @@ import { setInterval } from 'timers'
 
 import { urlHelp } from 'config/app.conf'
 import Menu from 'components/Menu'
+import Register from 'components/Register'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
@@ -78,8 +81,11 @@ export default {
   name: 'MainLayout',
   components: {
     Menu,
+    Register,
   },
   setup() {
+    const showRegister = ref(false)
+
     const route = useRoute()
     const router = useRouter()
     const { $gettext } = useGettext()
@@ -97,6 +103,10 @@ export default {
     const { clientVersion } = storeToRefs(programStore)
 
     useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
+
+    const openRegister = () => {
+      showRegister.value = true
+    }
 
     const computerText = computed(() => {
       return cid.value ? `${name.value} (CID-${cid.value})` : name.value
@@ -118,10 +128,6 @@ export default {
       })
     }
 
-    const register = async () => {
-      await computerStore.registerComputer({ user: 'yo', password: 'yo' })
-    }
-
     if (!showApps.value) router.push({ name: 'details' })
 
     onMounted(() => {
@@ -139,10 +145,11 @@ export default {
       computerText,
       link,
       synchronize,
-      register,
       urlHelp,
       isRunningCommand,
       showComputerLink,
+      showRegister,
+      openRegister,
     }
   },
 }
