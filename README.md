@@ -130,5 +130,5 @@ MFP_CMD_FLAGS=
 
 ## Requirements in production
 
-- NodeJS >= 12
+- NodeJS >= 14
 - migasfree-client >= 4.20
