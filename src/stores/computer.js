@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
+import { gettext } from 'boot/gettext'
 
 import { useProgramStore } from './program'
 import { useUiStore } from './ui'
@@ -166,8 +167,14 @@ export const useComputerStore = defineStore('computer', () => {
         { user, password }
       )
       .then((response) => {
-        console.log(response)
-        computerId()
+        if (response.data === 0)
+          uiStore.notifyError(
+            gettext.$gettext('There was a problem with registration')
+          )
+        else {
+          uiStore.notifySuccess(gettext.$gettext('Registered Computer!'))
+          computerId()
+        }
       })
       .catch((error) => {
         uiStore.notifyError(error)
