@@ -43,6 +43,15 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Tue, 20 Jun 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.5-0
+- feat: minimum node version to 14
+- feat: upgraded several components
+- fix: id route
+- feat: added register route
+- feat: added register component
+- refactor: increased max rateLimit
+- feat: updated translations
+
 * Tue, 16 May 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.4-0
 - feat: added software inventory info
 - feat: updated translations
