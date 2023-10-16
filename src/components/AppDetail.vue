@@ -47,7 +47,9 @@
           :disabled="isRunningCommand"
           @click="installApp(name, packages)"
         >
-          <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
+          <q-tooltip
+            >{{ $gettext('Install') }} ({{ packages.join(', ') }})</q-tooltip
+          >
         </q-btn>
 
         <q-btn
@@ -58,7 +60,9 @@
           :disabled="isRunningCommand"
           @click="removeApp(name, packages)"
         >
-          <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
+          <q-tooltip
+            >{{ $gettext('Uninstall') }} ({{ packages.join(', ') }})</q-tooltip
+          >
         </q-btn>
 
         <q-btn
