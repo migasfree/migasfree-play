@@ -44,7 +44,12 @@ from migasfree_client.utils import get_config
 
 print(get_config(CONF_FILE, 'client').get('server', 'localhost'), end='')
 "
-_SERVER=$($_PYTHON -c "$_SRC")
+_SERVER=$($_PYTHON -c "$_SRC" 2> /dev/null)
+if [ -z "$_SERVER" ]
+then
+    echo "Server is not configured. Review migasfree-client settings."
+    exit 3
+fi
 
 # server with :443 port need https protocol
 if [[ $_SERVER =~ ":443" ]]
@@ -61,7 +66,7 @@ do
         break
     fi
 
-    echo "Trying to connect to the server. Unexpected status code $_STATUS."
+    echo "Trying to connect to the server $_SERVER. Unexpected status code $_STATUS."
     sleep 1
 done
 
