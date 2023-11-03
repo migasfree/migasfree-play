@@ -1,4 +1,6 @@
 <template>
+  <q-scroll-observer @scroll="onScroll" />
+
   <q-expansion-item popup :default-opened="id === lastId ? true : false">
     <template #header>
       <q-item-section v-if="icon" avatar>
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-import { watch } from 'vue'
+import { watch, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard } from 'quasar'
@@ -58,12 +60,26 @@ export default {
     const executionsStore = useExecutionsStore()
     const { lastId } = storeToRefs(executionsStore)
 
+    const scrollInfo = ref({})
+
     watch(
       () => props.text,
       () => {
-        window.scrollTo(0, document.getElementById('main').scrollHeight)
+        const elem = document.getElementById('main')
+
+        if (
+          !('position' in scrollInfo.value) ||
+          (scrollInfo.value.direction === 'down' &&
+            scrollInfo.value.position.top - elem.scrollHeight < 150)
+        ) {
+          window.scrollTo(0, elem.scrollHeight)
+        }
       }
     )
+
+    const onScroll = (info) => {
+      scrollInfo.value = info
+    }
 
     const copyDetails = () => {
       copyToClipboard(htmlToText(props.text)).then(() => {
@@ -71,7 +87,7 @@ export default {
       })
     }
 
-    return { lastId, copyDetails }
+    return { lastId, copyDetails, onScroll }
   },
 }
 </script>
