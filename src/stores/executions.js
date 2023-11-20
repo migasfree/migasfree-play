@@ -75,6 +75,10 @@ export const useExecutionsStore = defineStore('executions', () => {
     txt = replaceAll(txt, '\x1b[?25h', '')
     txt = replaceAll(txt, '\x1b[1A', '')
     txt = replaceAll(txt, '\x1b[1m', '')
+    txt = txt.replace(/\t/g, '&nbsp;'.repeat(8))
+    txt = txt.replace(/^ +/gm, function (match) {
+      return '&nbsp;'.repeat(match.length)
+    })
     txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
     return txt
