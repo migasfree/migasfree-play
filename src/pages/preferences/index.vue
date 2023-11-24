@@ -10,7 +10,7 @@
         :loading="isUpdating"
         :disabled="isUpdating"
         @click="updatePreferences"
-        >
+      >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
     </q-breadcrumbs>
