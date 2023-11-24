@@ -1,6 +1,7 @@
 .DS_Store
 .thumbs.db
 node_modules
+.github
 
 # Quasar core related directories
 .quasar
@@ -46,3 +47,4 @@ yarn-error.log*
 /migasfree-play_*_amd64.deb
 
 /packaging/rpm/rpmbuild/*
+/packaging/debian/migasfree-play
