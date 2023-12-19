@@ -146,7 +146,9 @@ export const useExecutionsStore = defineStore('executions', () => {
       const win = window.electronRemote.getCurrentWindow() // electron-preload.js
 
       if (code !== 0) {
-        uiStore.notifyError(`Error: ${code} ${cmd}`)
+        const message = `Error: ${code} ${cmd}`
+        uiStore.notifyError(message)
+        appendExecutionError(message)
         win.show()
       } else {
         if (error.value === '') {
@@ -196,6 +198,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       command,
       icon,
       text: '',
+      error: '',
     }
 
     while (Object.keys(items.value).length > executionsMaxLength)
@@ -208,6 +211,7 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   function appendExecutionError(text) {
     error.value += text
+    items.value[lastId.value]['error'] += text
   }
 
   function resetExecutionError() {
