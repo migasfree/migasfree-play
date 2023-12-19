@@ -15,12 +15,21 @@
       </q-item-section>
 
       <q-item-section side>
-        <q-btn
-          flat
-          icon="mdi-content-copy"
-          color="primary"
-          @click.stop="copyDetails"
-        />
+        <div class="row items-center">
+          <q-btn
+            v-if="error"
+            flat
+            icon="mdi-bug"
+            color="negative"
+            @click.stop="showError = true"
+          />
+          <q-btn
+            flat
+            icon="mdi-content-copy"
+            color="primary"
+            @click.stop="copyDetails"
+          />
+        </div>
       </q-item-section>
     </template>
 
@@ -30,6 +39,17 @@
       <q-card-section class="text-mono" v-html="text"> </q-card-section>
     </q-card>
   </q-expansion-item>
+
+  <q-dialog v-model="showError" full-width>
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <q-space />
+        <q-btn v-close-popup icon="close" flat round dense />
+      </q-card-section>
+
+      <q-card-section class="text-mono" v-html="error"> </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -51,6 +71,7 @@ export default {
     id: { type: String, required: true },
     command: { type: String, required: true },
     text: { type: String, required: false, default: '' },
+    error: { type: String, required: false, default: '' },
     icon: { type: String, required: false, default: '' },
   },
   setup(props) {
@@ -61,6 +82,7 @@ export default {
     const { lastId } = storeToRefs(executionsStore)
 
     const scrollInfo = ref({})
+    const showError = ref(false)
 
     watch(
       () => props.text,
@@ -87,7 +109,7 @@ export default {
       })
     }
 
-    return { lastId, copyDetails, onScroll }
+    return { showError, lastId, copyDetails, onScroll }
   },
 }
 </script>
