@@ -6,6 +6,7 @@
       :key="index"
       :command="item.command"
       :text="item.text"
+      :error="item.error || ''"
       :icon="item.icon || ''"
     />
   </q-list>
