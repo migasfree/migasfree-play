@@ -1,3 +1,5 @@
+export const appName = 'Migasfree Play'
+
 export const executionsMaxLength = process.env.MFP_EXECUTIONS_LIMIT || 5
 
 export const internalApi = `http://localhost:${
