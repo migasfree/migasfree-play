@@ -3,7 +3,8 @@
 _PATH=$(pwd)/rpmbuild
 _SPECS=$_PATH/SPECS
 _SOURCES=$_PATH/SOURCES
-_APP=migasfree-play-5.6
+_VERSION=$(grep ^Version: "$(pwd)"/migasfree-play.spec | cut -d ':' -f2 | tr -d ' ')
+_APP=migasfree-play-$_VERSION
 
 mkdir -p "$_SPECS" || :
 mkdir -p "$_SOURCES" || :
