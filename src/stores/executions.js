@@ -18,6 +18,14 @@ export const useExecutionsStore = defineStore('executions', () => {
   const isRunningCommand = ref(false)
   const error = ref('')
 
+  function trimEndSpaces(text) {
+    let lines = text.split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      lines[i] = lines[i].replace(/ +$/, '')
+    }
+    return lines.join('\n')
+  }
+
   function escapeRegExp(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
   }
@@ -131,11 +139,11 @@ export const useExecutionsStore = defineStore('executions', () => {
     addExecution({ command: text, icon })
 
     subprocess.stdout.on('data', (data) => {
-      appendExecutionText(replaceColors(data.toString()))
+      appendExecutionText(replaceColors(trimEndSpaces(data.toString())))
     })
 
     subprocess.stderr.on('data', (data) => {
-      const text = replaceColors(data.toString())
+      const text = replaceColors(trimEndSpaces(data.toString()))
 
       appendExecutionError(text)
       appendExecutionText(text)
@@ -155,7 +163,7 @@ export const useExecutionsStore = defineStore('executions', () => {
           packagesStore.setInstalledPackages()
         } else {
           uiStore.notifyError(
-            replaceColors(error.value).replace(/(<([^>]+)>)/gi, '')
+            error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, '')
           )
           resetExecutionError()
         }
