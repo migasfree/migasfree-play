@@ -67,7 +67,7 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { setInterval } from 'timers'
 
-import { urlHelp } from 'config/app.conf'
+import { appName, urlHelp } from 'config/app.conf'
 import Menu from 'components/Menu'
 import Register from 'components/Register'
 
@@ -102,7 +102,7 @@ export default {
       storeToRefs(preferencesStore)
     const { clientVersion } = storeToRefs(programStore)
 
-    useMeta({ titleTemplate: (title) => `${title} | Migasfree Play` })
+    useMeta({ titleTemplate: (title) => `${title} | ${appName}` })
 
     const openRegister = () => {
       showRegister.value = true
