@@ -43,7 +43,7 @@ yarn build
 ```bash
 yarn build
 cd packaging
-debuild --no-tgz-check -us -uc
+DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
 ```
 
 ### Build the package for RPM based distros
