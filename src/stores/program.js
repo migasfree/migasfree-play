@@ -92,8 +92,10 @@ export const useProgramStore = defineStore('program', () => {
     await computerStore.computerData()
     await computerStore.computerAttribute()
 
-    setStatus(gettext.$gettext('Apps'))
-    await appsStore.loadApps()
+    if (preferencesStore.showApps) {
+      setStatus(gettext.$gettext('Apps'))
+      await appsStore.loadApps()
+    }
 
     setStatus(gettext.$gettext('Categories'))
     await filtersStore.setCategories()
@@ -105,14 +107,18 @@ export const useProgramStore = defineStore('program', () => {
 
     await executionsStore.getExecutions()
 
-    setStatus(gettext.$gettext('Devices'))
-    await devicesStore.computerDevices()
-    await devicesStore.getAvailableDevices()
-    await devicesStore.getFeaturesDevices()
+    if (preferencesStore.showDevices) {
+      setStatus(gettext.$gettext('Devices'))
+      await devicesStore.computerDevices()
+      await devicesStore.getAvailableDevices()
+      await devicesStore.getFeaturesDevices()
+    }
 
-    setStatus(gettext.$gettext('Tags'))
-    await tagsStore.getAvailableTags()
-    await tagsStore.getAssignedTags()
+    if (preferencesStore.showTags) {
+      setStatus(gettext.$gettext('Tags'))
+      await tagsStore.getAvailableTags()
+      await tagsStore.getAssignedTags()
+    }
 
     setStatus('')
     uiStore.loadingFinished()
