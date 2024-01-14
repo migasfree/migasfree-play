@@ -33,18 +33,25 @@
           <q-spinner-clock color="primary" size="6em" />
         </div>
 
-        <div class="col-12 text-center text-h6 q-mt-md">
-          {{ $gettext('Loading data') }}:
-        </div>
-
         <div class="col-6 offset-4 q-mt-md">
-          <q-option-group
-            v-model="loadedData"
-            :options="loadingData"
-            type="checkbox"
-            dense
-            disable
-          />
+          <q-list padding dense>
+            <q-item-label header>{{ $gettext('Loading data') }}</q-item-label>
+
+            <q-item v-for="item in loadingData" :key="item.label">
+              <q-item-section avatar>
+                <q-icon
+                  v-if="loadedData.includes(item.value)"
+                  color="positive"
+                  name="mdi-check"
+                />
+                <q-spinner v-else color="primary" />
+              </q-item-section>
+
+              <q-item-section>
+                {{ item.label }}
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </template>
     </div>
