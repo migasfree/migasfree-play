@@ -1,3 +1,14 @@
+migasfree-play (5.7.0) unstable; urgency=low
+
+  * feat: improved readibility in replaceColors function (spaces and tabs at the
+    beginning of the lines)
+  * feat: show execution error if exists
+  * fix: only execute actions if has been set in preferences (init function)
+  * feat: added trimEndSpaces function
+  * feat: starts minimized with sync argument
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 15 Jan 2024 11:30:47 +0100
+
 migasfree-play (5.6.0) unstable; urgency=low
 
   * feat: added packages in install and uninstall tooltips
