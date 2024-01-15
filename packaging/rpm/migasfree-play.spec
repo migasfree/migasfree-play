@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.6
+Version:       5.7
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,13 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Fri, 12 Jan 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.7-0
+- feat: improved readibility in replaceColors function (spaces and tabs at the beginning of the lines)
+- feat: show execution error if exists
+- fix: only execute actions if has been set in preferences (init function)
+- feat: added trimEndSpaces function
+- feat: starts minimized with sync argument
+
 * Fri, 3 Nov 2023 Jose Antonio Chavarría <jachavar@gmail.com> - 5.6-0
 - feat: added packages in install and uninstall tooltips
 - fix: verify if server has been configured
