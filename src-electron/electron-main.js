@@ -84,6 +84,7 @@ async function createWindow() {
     icon: path.resolve(__dirname, 'img', 'migasfree-play.png'),
     width: 800,
     height: 800,
+    show: false,
     useContentSize: true,
     webPreferences: {
       contextIsolation: false,
@@ -125,11 +126,12 @@ async function createWindow() {
     }
   })
 
-  mainWindow.webContents.on('did-finish-load', () => {
+  mainWindow.on('ready-to-show', () => {
     if (process.argv.includes('sync')) {
       mainWindow.minimize()
+      mainWindow.minimize() // FIXME why second call is needed to minimize?
       app.syncAfterStart = true
-    }
+    } else mainWindow.show()
   })
 
   // Prevent opening external URL in app, open in default browser instead
