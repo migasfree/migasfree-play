@@ -1,11 +1,11 @@
 {
   "name": "migasfree-play",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Migasfree Client front-end. Allow install/uninstall available applications and printers.",
   "productName": "migasfree-play",
   "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
   "license": "GPLv3",
-  "copyright": "© 2017-2023 migasfree team",
+  "copyright": "© 2017-2024 migasfree team",
   "homepage": "https://github.com/jact/migasfree-play/blob/master/README.md",
   "private": true,
   "scripts": {
