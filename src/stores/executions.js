@@ -5,6 +5,7 @@ import { date } from 'quasar'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
+import { useComputerStore } from './computer'
 import { usePackagesStore } from './packages'
 import { useUiStore } from './ui'
 
@@ -114,6 +115,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   function run({ cmd, text, icon }) {
+    const computerStore = useComputerStore()
     const packagesStore = usePackagesStore()
     const uiStore = useUiStore()
 
@@ -175,6 +177,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       if (cmd.includes('sync') || cmd.includes('--update')) {
         if (win.isMinimized()) win.close()
 
+        computerStore.computerId() // update CID if sync has launched autoregister
         packagesStore.setAvailablePackages()
         packagesStore.setInventory()
       }
