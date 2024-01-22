@@ -2,9 +2,9 @@
   <div id="q-app">
     <div
       v-if="isLoading"
-      class="row window-height window-width justify-center items-center content-center"
+      class="row justify-center items-center content-center"
     >
-      <div class="col-12 text-center q-ma-md">
+      <div class="col-12 text-center q-mx-md q-my-xl q-py-xl">
         <img id="logo" src="img/migasfree-play.svg" width="200" />
       </div>
 
@@ -28,32 +28,26 @@
         </div>
       </template>
 
-      <template v-else>
-        <div class="col-12 text-center">
-          <q-spinner-clock color="primary" size="6em" />
-        </div>
+      <div v-else class="col-6 offset-4">
+        <q-list padding dense>
+          <q-item-label header>{{ $gettext('Loading data') }}</q-item-label>
 
-        <div class="col-6 offset-4 q-mt-md">
-          <q-list padding dense>
-            <q-item-label header>{{ $gettext('Loading data') }}</q-item-label>
+          <q-item v-for="item in loadingData" :key="item.label">
+            <q-item-section avatar>
+              <q-icon
+                v-if="loadedData.includes(item.value)"
+                color="positive"
+                name="mdi-check"
+              />
+              <q-spinner v-else color="primary" />
+            </q-item-section>
 
-            <q-item v-for="item in loadingData" :key="item.label">
-              <q-item-section avatar>
-                <q-icon
-                  v-if="loadedData.includes(item.value)"
-                  color="positive"
-                  name="mdi-check"
-                />
-                <q-spinner v-else color="primary" />
-              </q-item-section>
-
-              <q-item-section>
-                {{ item.label }}
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </template>
+            <q-item-section>
+              {{ item.label }}
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </div>
 
     <router-view v-else />
