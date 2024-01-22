@@ -48,7 +48,7 @@
   "devDependencies": {
     "@babel/core": "7.23.7",
     "@babel/eslint-parser": "7.23.3",
-    "@quasar/app-webpack": "3.9.2",
+    "@quasar/app-webpack": "3.11.1",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.0-beta.7",
     "autoprefixer": "10.4.17",
     "babel-loader": "9.1.3",
