@@ -12,11 +12,14 @@ from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().get_computer_id())`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    res.setHeader('Content-Type', 'text/plain')
-    if (err) res.send('0')
-    else res.send(results[0])
-  })
+  res.setHeader('Content-Type', 'text/plain')
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.send(results[0])
+    })
+    .catch((error) => {
+      res.send('0')
+    })
 })
 
 router.get('/network', (req, res) => {
@@ -33,11 +36,14 @@ ret = {
 }
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, null, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, null)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 router.post('/register', (req, res) => {
@@ -61,11 +67,14 @@ from migasfree_client.command import MigasFreeCommand
 mfc = MigasFreeCommand()
 mfc._save_sign_keys('${req.body.user}', '${req.body.password}')`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    res.setHeader('Content-Type', 'text/plain')
-    if (err) res.send('0')
-    else res.send(results[0])
-  })
+  res.setHeader('Content-Type', 'text/plain')
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.send(results[0])
+    })
+    .catch((error) => {
+      res.send('0')
+    })
 })
 
 module.exports = router

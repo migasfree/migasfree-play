@@ -20,11 +20,14 @@ mft = MigasFreeTags()
 response = mft._get_tags()
 print(json.dumps(response['available'], ensure_ascii=False))`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 router.get('/assigned', (req, res) => {
@@ -43,11 +46,14 @@ mft = MigasFreeTags()
 response = mft._get_tags()
 print(json.dumps(response['selected'], ensure_ascii=False))`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 module.exports = router

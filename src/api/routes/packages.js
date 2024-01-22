@@ -21,11 +21,14 @@ from migasfree_client.client import MigasFreeClient
 mfc = MigasFreeClient()
 print(json.dumps(mfc.pms.available_packages()))`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 router.post('/installed', (req, res) => {
@@ -58,11 +61,14 @@ installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in
 
 print(json.dumps(installed))`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 router.get('/inventory', (req, res) => {
@@ -86,11 +92,14 @@ mfc = MigasFreeCommand()
 
 print(json.dumps(mfc.pms.query_all()))`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 module.exports = router

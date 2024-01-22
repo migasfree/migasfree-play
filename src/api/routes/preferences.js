@@ -66,11 +66,14 @@ ret = {
 }
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, null, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, null)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 router.get('/client', (req, res) => {
@@ -83,11 +86,14 @@ from migasfree_client.utils import get_mfc_release
 ret = {'version': get_mfc_release()}
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'text/plain')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'text/plain')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 router.get('/protocol', (req, res) => {
@@ -106,11 +112,14 @@ ssl_cert = MigasFreeCommand().migas_ssl_cert
 print('https' if ssl_cert else 'http')`
   }
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'text/plain')
-    res.send(results[0])
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'text/plain')
+      res.send(results[0])
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 module.exports = router
