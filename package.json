@@ -9,7 +9,7 @@
   "homepage": "https://github.com/jact/migasfree-play/blob/master/README.md",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue ./",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "format:check": "prettier --check . --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
