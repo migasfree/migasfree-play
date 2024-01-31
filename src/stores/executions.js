@@ -177,6 +177,8 @@ export const useExecutionsStore = defineStore('executions', () => {
       if (cmd.includes('sync') || cmd.includes('--update')) {
         if (win.isMinimized()) win.close()
 
+        uiStore.notifyInfo(gettext.$gettext('Synchronization finished'))
+
         computerStore.computerId() // update CID if sync has launched autoregister
         packagesStore.setAvailablePackages()
         packagesStore.setInventory()
