@@ -22,7 +22,7 @@
     "@chenfengyuan/vue-qrcode": "2.0.0",
     "@electron/remote": "2.1.1",
     "@quasar/extras": "1.16.9",
-    "axios": "1.6.5",
+    "axios": "1.6.7",
     "compare-versions": "6.1.0",
     "core-js": "3.35.1",
     "cors": "2.8.5",
@@ -39,7 +39,7 @@
     "typeface-ubuntu-mono": "1.1.13",
     "util": "0.12.5",
     "vue": "3.3.4",
-    "vue-router": "4.2.5",
+    "vue-router": "4.3.0",
     "vue3-gettext": "2.4.0"
   },
   "resolutions": {
