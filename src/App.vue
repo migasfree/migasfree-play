@@ -30,7 +30,15 @@
 
       <div v-else class="col-6 offset-4">
         <q-list padding dense>
-          <q-item-label header>{{ $gettext('Loading data') }}</q-item-label>
+          <q-item>
+            <q-item-label header class="text-subtitle1">{{
+              $gettext('Loading data')
+            }}</q-item-label>
+
+            <q-item-section avatar>
+              <q-spinner-clock color="primary" size="md" />
+            </q-item-section>
+          </q-item>
 
           <q-item v-for="item in loadingData" :key="item.label">
             <q-item-section avatar>
