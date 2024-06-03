@@ -33,20 +33,20 @@ app.use(allowOnlyOrigin)
 app.use(
   rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 50,
-  })
+    max: 80,
+  }),
 )
 app.use(
   cors({
     origin: allowedOrigin,
-  })
+  }),
 )
 app.use(
   bodyParser.urlencoded({
     extended: true,
     limit: '10mb',
     parameterLimit: 100000,
-  })
+  }),
 )
 app.use(bodyParser.json({ limit: '10mb' }))
 
@@ -73,7 +73,7 @@ app.use((err, req, res, next) => {
 
 app.listen(process.env.MFP_EXPRESS_PORT || 3000, () => {
   console.log(
-    `Express server listening on port ${process.env.MFP_EXPRESS_PORT || 3000}`
+    `Express server listening on port ${process.env.MFP_EXPRESS_PORT || 3000}`,
   )
 })
 
