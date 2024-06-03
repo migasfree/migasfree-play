@@ -37,6 +37,18 @@
 
         <q-card-actions align="right">
           <q-btn
+            v-if="!userIsPrivileged"
+            class="q-ma-md q-px-sm"
+            color="orange"
+            size="lg"
+            icon="mdi-wizard-hat"
+            @click="openLogin"
+          >
+            <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
+          </q-btn>
+
+          <q-btn
+            v-if="userIsPrivileged"
             text-color="primary"
             class="q-ma-md q-px-sm"
             icon="mdi-comment-processing"
@@ -50,6 +62,7 @@
           >
 
           <q-btn
+            v-if="userIsPrivileged"
             color="primary"
             class="q-px-sm"
             icon="mdi-cog-transfer"
@@ -72,12 +85,16 @@
       </q-banner>
     </div>
   </div>
+
+  <Login :value="showLogin" @closed="showLogin = !showLogin" />
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
+
+import Login from 'components/Login'
 
 import { useExecutionsStore } from 'src/stores/executions'
 import { useProgramStore } from 'src/stores/program'
@@ -86,6 +103,7 @@ import { useUiStore } from 'src/stores/ui'
 
 export default {
   name: 'Tags',
+  components: { Login },
   setup() {
     const { $gettext } = useGettext()
 
@@ -96,10 +114,16 @@ export default {
 
     const { isRunningCommand } = storeToRefs(executionsStore)
     const { available, assigned } = storeToRefs(tagsStore)
+    const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
 
     const tags = ref([])
     const options = ref([])
     const allOptions = ref([])
+    const showLogin = ref(false)
+
+    const openLogin = () => {
+      showLogin.value = true
+    }
 
     const resetTags = () => {
       tags.value = []
@@ -114,7 +138,7 @@ export default {
       uiStore.notifyInfo($gettext('Communicating...'))
 
       let cmd = `migasfree --quiet tags --communicate ${tags.value.join(' ')}`
-      if (programStore.clientVersion.startsWith('4.')) {
+      if (clientVersion.value.startsWith('4.')) {
         if (tags.value.length === 0) cmd = 'migasfree-tags --communicate ""'
         else cmd = `migasfree-tags --communicate ${tags.value.join(' ')}`
       }
@@ -130,7 +154,7 @@ export default {
       uiStore.notifyInfo($gettext('Setting Tags...'))
 
       let cmd = `migasfree --quiet tags --set ${tags.value.join(' ')}`
-      if (programStore.clientVersion.startsWith('4.')) {
+      if (clientVersion.value.startsWith('4.')) {
         if (tags.value.length === 0) cmd = 'migasfree-tags --set ""'
         else cmd = `migasfree-tags --set ${tags.value.join(' ')}`
       }
@@ -153,7 +177,7 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         options.value = allOptions.value.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
+          (v) => v.toLowerCase().indexOf(needle) > -1,
         )
       })
     }
@@ -176,6 +200,9 @@ export default {
       tags,
       options,
       allOptions,
+      showLogin,
+      userIsPrivileged,
+      openLogin,
       resetTags,
       updateTags,
       communicate,
