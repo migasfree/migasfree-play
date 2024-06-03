@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.7
+Version:       5.8
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,11 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Mon, 3 Jun 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.8-0
+- feat: call computerId after sync if operation has launched autoregister
+- feat: added notify info after sync command
+- feat: tag actions must be executed with privileged user
+
 * Fri, 12 Jan 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.7-0
 - feat: improved readibility in replaceColors function (spaces and tabs at the beginning of the lines)
 - feat: show execution error if exists
