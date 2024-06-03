@@ -1,3 +1,11 @@
+migasfree-play (5.8.0) unstable; urgency=low
+
+  * feat: call computerId after sync if operation has launched autoregister
+  * feat: added notify info after sync command
+  * feat: tag actions must be executed with privileged user
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 3 Jun 2024 10:27:47 +0200
+
 migasfree-play (5.7.0) unstable; urgency=low
 
   * feat: improved readibility in replaceColors function (spaces and tabs at the
