@@ -41,7 +41,11 @@ elif platform.system() == "Linux":
     import re
 
     def auth(user_, password_):
-        hand = open('/etc/shadow')
+        try:
+            hand = open('/etc/shadow')
+        except PermissionError:
+            return False
+
         for line in hand:
             x = re.findall('^%s:' % user_, line)
             if len(x):
@@ -77,11 +81,14 @@ elif platform.system() == "Linux":
 print(is_privileged)
 `
 
-  PythonShell.runString(code, pythonShellOptions, (err, results) => {
-    if (err) throw err
-    res.setHeader('Content-Type', 'application/json')
-    res.send({ is_privileged: results[0] === 'True' })
-  })
+  PythonShell.runString(code, pythonShellOptions)
+    .then((results) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send({ is_privileged: results[0] === 'True' })
+    })
+    .catch((error) => {
+      throw error
+    })
 })
 
 module.exports = router
