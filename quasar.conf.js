@@ -73,7 +73,7 @@ module.exports = configure(function (ctx) {
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
         chain.resolve.alias.set(
           'config',
-          path.resolve(__dirname, './src/config')
+          path.resolve(__dirname, './src/config'),
         )
       },
 
@@ -251,6 +251,14 @@ module.exports = configure(function (ctx) {
         },
         win: {
           target: ['nsis', 'msi'],
+        },
+        nsis: {
+          perMachine: true,
+          runAfterFinish: false,
+        },
+        msi: {
+          perMachine: true,
+          runAfterFinish: false,
         },
       },
 
