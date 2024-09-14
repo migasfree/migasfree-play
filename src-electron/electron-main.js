@@ -40,7 +40,7 @@ function launchExpress() {
 
     function (err) {
       console.error('Error on check:', err.message)
-    }
+    },
   )
 }
 
@@ -48,6 +48,8 @@ launchExpress()
 
 import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
 require('@electron/remote/main').initialize()
+
+app.commandLine.appendSwitch('ignore-certificate-errors')
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -61,7 +63,7 @@ try {
     nativeTheme.shouldUseDarkColors === true
   ) {
     require('fs').unlinkSync(
-      require('path').join(app.getPath('userData'), 'DevTools Extensions')
+      require('path').join(app.getPath('userData'), 'DevTools Extensions'),
     )
   }
 } catch (_) {}
