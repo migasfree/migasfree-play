@@ -105,7 +105,7 @@ export const useUiStore = defineStore('ui', () => {
       color: 'info',
       position: 'bottom',
       message,
-      icon: 'mdi-check-bold',
+      icon: 'mdi-information',
     })
   }
 
