@@ -24,7 +24,6 @@
     "@quasar/extras": "1.16.9",
     "axios": "1.6.7",
     "compare-versions": "6.1.0",
-    "core-js": "3.35.1",
     "cors": "2.8.5",
     "dayjs": "1.11.10",
     "express": "4.18.2",
