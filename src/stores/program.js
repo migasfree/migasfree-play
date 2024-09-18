@@ -142,12 +142,12 @@ export const useProgramStore = defineStore('program', () => {
       setStatus(
         gettext.interpolate(
           gettext.$gettext(
-            'This app requires at least Migasfree Client %{version}'
+            'This app requires at least Migasfree Client %{version}',
           ),
           {
             version: minimumClientVersion,
-          }
-        )
+          },
+        ),
       )
       setStopApp()
     }
@@ -192,8 +192,8 @@ export const useProgramStore = defineStore('program', () => {
           if (error.response.status === 400) {
             setStatus(
               gettext.$gettext(
-                'Credentials are not valid. Review app settings.'
-              )
+                'Credentials are not valid. Review app settings.',
+              ),
             )
             setStopApp()
           }
@@ -258,7 +258,7 @@ export const useProgramStore = defineStore('program', () => {
 
     await api
       .get(
-        `${internalApi}/preferences/protocol/?version=${clientVersion.value}`
+        `${internalApi}/preferences/protocol/?version=${clientVersion.value}`,
       )
       .then((response) => {
         protocol.value = response.data
