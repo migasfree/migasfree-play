@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.8
+Version:       5.9
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,12 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Thu, 19 Sep 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.9-0
+- feat: added nsis and msi properties
+- fix: added 'ignore-certificate-errors' to electron app to avoid ERR_CERT_AUTHORITY_INVALID
+- fix: notifyInfo icon
+- fix: removed core-js component (build issue)
+
 * Mon, 3 Jun 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.8-0
 - feat: call computerId after sync if operation has launched autoregister
 - feat: added notify info after sync command
