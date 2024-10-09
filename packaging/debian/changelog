@@ -1,3 +1,13 @@
+migasfree-play (5.9.0) unstable; urgency=low
+
+  * feat: added nsis and msi properties
+  * fix: added 'ignore-certificate-errors' to electron app to avoid
+    ERR_CERT_AUTHORITY_INVALID
+  * fix: notifyInfo icon
+  * fix: removed core-js component (build issue)
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 19 Sep 2024 10:25:47 +0200
+
 migasfree-play (5.8.0) unstable; urgency=low
 
   * feat: call computerId after sync if operation has launched autoregister
