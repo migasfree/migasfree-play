@@ -1,5 +1,6 @@
 const os = require('os')
 const { execSync } = require('child_process')
+const { PythonShell } = require('python-shell')
 
 function getPython() {
   const platform = os.platform()
@@ -36,4 +37,17 @@ const pythonShellOptions = {
   },
 }
 
-module.exports = { getPython, debug, pythonShellOptions }
+const pythonExecute = (res, code, contentType = 'text/plain') => {
+  return new Promise((resolve, reject) => {
+    PythonShell.runString(code, pythonShellOptions)
+      .then((results) => {
+        res.setHeader('Content-Type', contentType)
+        resolve(results[0])
+      })
+      .catch((error) => {
+        throw error
+      })
+  })
+}
+
+module.exports = { debug, pythonExecute }
