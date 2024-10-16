@@ -1,6 +1,5 @@
-const { PythonShell } = require('python-shell')
 const express = require('express')
-const { pythonShellOptions, debug } = require('../utils')
+const { pythonExecute, debug } = require('../utils')
 
 const router = express.Router()
 
@@ -12,12 +11,10 @@ from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().get_computer_id())`
 
-  res.setHeader('Content-Type', 'text/plain')
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.send(results[0])
-    })
+  pythonExecute(res, code)
+    .then((results) => res.send(results))
     .catch((error) => {
+      res.setHeader('Content-Type', 'text/plain')
       res.send('0')
     })
 })
@@ -36,14 +33,9 @@ ret = {
 }
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, null)
-    .then((results) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code, 'application/json').then((results) =>
+    res.send(results),
+  )
 })
 
 router.post('/register', (req, res) => {
@@ -67,12 +59,10 @@ from migasfree_client.command import MigasFreeCommand
 mfc = MigasFreeCommand()
 mfc._save_sign_keys('${req.body.user}', '${req.body.password}')`
 
-  res.setHeader('Content-Type', 'text/plain')
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.send(results[0])
-    })
+  pythonExecute(res, code)
+    .then((results) => res.send(results))
     .catch((error) => {
+      res.setHeader('Content-Type', 'text/plain')
       res.send('0')
     })
 })
