@@ -1,9 +1,8 @@
-const { PythonShell } = require('python-shell')
 const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
-const { pythonShellOptions, debug } = require('../utils')
+const { pythonExecute, debug } = require('../utils')
 
 const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
 const router = express.Router()
@@ -66,14 +65,9 @@ ret = {
 }
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, null)
-    .then((results) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code, 'application/json').then((results) =>
+    res.send(results),
+  )
 })
 
 router.get('/client', (req, res) => {
@@ -86,14 +80,7 @@ from migasfree_client.utils import get_mfc_release
 ret = {'version': get_mfc_release()}
 print(json.dumps(ret))`
 
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.setHeader('Content-Type', 'text/plain')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code).then((results) => res.send(results))
 })
 
 router.get('/protocol', (req, res) => {
@@ -112,14 +99,7 @@ ssl_cert = MigasFreeCommand().migas_ssl_cert
 print('https' if ssl_cert else 'http')`
   }
 
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.setHeader('Content-Type', 'text/plain')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code).then((results) => res.send(results))
 })
 
 module.exports = router
