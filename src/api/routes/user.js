@@ -1,6 +1,5 @@
-const { PythonShell } = require('python-shell')
 const express = require('express')
-const { pythonShellOptions, debug } = require('../utils')
+const { pythonExecute, debug } = require('../utils')
 
 const router = express.Router()
 
@@ -81,14 +80,9 @@ elif platform.system() == "Linux":
 print(is_privileged)
 `
 
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send({ is_privileged: results[0] === 'True' })
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code, 'application/json').then((results) =>
+    res.send({ is_privileged: results === 'True' }),
+  )
 })
 
 module.exports = router
