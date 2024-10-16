@@ -1,6 +1,5 @@
-const { PythonShell } = require('python-shell')
 const express = require('express')
-const { pythonShellOptions, debug } = require('../utils')
+const { pythonExecute, debug } = require('../utils')
 
 const router = express.Router()
 
@@ -21,14 +20,9 @@ from migasfree_client.client import MigasFreeClient
 mfc = MigasFreeClient()
 print(json.dumps(mfc.pms.available_packages()))`
 
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code, 'application/json').then((results) =>
+    res.send(results),
+  )
 })
 
 router.post('/installed', (req, res) => {
@@ -61,14 +55,9 @@ installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in
 
 print(json.dumps(installed))`
 
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code, 'application/json').then((results) =>
+    res.send(results),
+  )
 })
 
 router.get('/inventory', (req, res) => {
@@ -92,14 +81,9 @@ mfc = MigasFreeCommand()
 
 print(json.dumps(mfc.pms.query_all()))`
 
-  PythonShell.runString(code, pythonShellOptions)
-    .then((results) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send(results[0])
-    })
-    .catch((error) => {
-      throw error
-    })
+  pythonExecute(res, code, 'application/json').then((results) =>
+    res.send(results),
+  )
 })
 
 module.exports = router
