@@ -3,8 +3,8 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useProgramStore } from './program'
-import { useUiStore } from './ui'
+import { useProgramStore } from './program.js'
+import { useUiStore } from './ui.js'
 
 import { tokenApi, tokenApiv4 } from 'config/app.conf'
 
@@ -39,7 +39,7 @@ export const useFiltersStore = defineStore('filters', () => {
             })
           })
         } else {
-          Object.entries(response.data.results).map(([key, val]) => {
+          Object.entries(response.data.results).map(([, val]) => {
             categories.value.push({
               id: val.id,
               name: val.name,
