@@ -3,9 +3,9 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useComputerStore } from './computer'
-import { useProgramStore } from './program'
-import { useUiStore } from './ui'
+import { useComputerStore } from './computer.js'
+import { useProgramStore } from './program.js'
+import { useUiStore } from './ui.js'
 
 import { internalApi } from 'config/app.conf'
 
