@@ -1,37 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
    viewBox="0 0 311.74435 273.99712"
    version="1.0"
    id="svg2"
    height="292.26361"
-   width="332.52731"
-   sodipodi:docname="favicon.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview4766"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     inkscape:zoom="2.3711471"
-     inkscape:cx="166.1643"
-     inkscape:cy="146.13181"
-     inkscape:window-width="1680"
-     inkscape:window-height="956"
-     inkscape:window-x="0"
-     inkscape:window-y="28"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
+   width="332.52731">
   <defs
      id="defs4" />
   <metadata
@@ -42,6 +20,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -73,23 +52,4 @@
          x="65.52446"
          y="299.39099"
          style="fill:#000000;stroke:none" /></flowRegion><flowPara
-       id="flowPara846">migasfree</flowPara></flowRoot>
-  <path
-     sodipodi:type="star"
-     style="fill:#4dda6d;fill-opacity:1;stroke-width:1.308;stroke-miterlimit:4;stroke-dasharray:none"
-     id="path4870"
-     inkscape:flatsided="true"
-     sodipodi:sides="3"
-     sodipodi:cx="216.51421"
-     sodipodi:cy="48.328865"
-     sodipodi:r1="57.447544"
-     sodipodi:r2="28.723772"
-     sodipodi:arg1="0.028674639"
-     sodipodi:arg2="1.0758722"
-     inkscape:rounded="0.16"
-     inkscape:randomized="0"
-     d="m 273.93813,49.975927 c -0.45644,15.913786 -74.00877,55.612173 -87.56229,47.259988 -13.55351,-8.352188 -11.15717,-91.8995633 2.8528,-99.4611613 14.00997,-7.5615981 85.16594,36.2873873 84.70949,52.2011733 z"
-     transform="matrix(1.1086347,0,0,0.93749996,-5.1621103,12.29197)"
-     inkscape:transform-center-x="-10.135472"
-     inkscape:transform-center-y="-0.64429549" />
-</svg>
+       id="flowPara846">migasfree</flowPara></flowRoot></svg>
