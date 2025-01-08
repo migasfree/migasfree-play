@@ -81,7 +81,7 @@ export default {
 
     onMounted(() => {
       language.value = availableLocales.value.find(
-        (x) => x.id === preferencesStore.language
+        (x) => x.id === preferencesStore.language,
       )
     })
 
