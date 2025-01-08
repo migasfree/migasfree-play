@@ -1,7 +1,13 @@
-import path from 'path'
-const tcpPortUsed = require('tcp-port-used')
-const spawn = require('child_process').spawn
+/* eslint no-undef: "off" */
 
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
+import os from 'node:os'
+import tcpPortUsed from 'tcp-port-used'
+import { spawn } from 'child_process'
+
+const platform = process.platform || os.platform()
+const currentDir = fileURLToPath(new URL('.', import.meta.url))
 let expressProcess
 
 function launchExpress() {
@@ -15,7 +21,7 @@ function launchExpress() {
       if (!inUse) {
         const expressApi = isProduction
           ? path.join(process.resourcesPath, 'app', 'api.js')
-          : path.join(__dirname, '..', 'src', 'api')
+          : path.join(currentDir, '..', 'dev-electron', 'api')
 
         // Instantiate Express App
         if (app.debug)
@@ -47,7 +53,10 @@ function launchExpress() {
 launchExpress()
 
 import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
-require('@electron/remote/main').initialize()
+import { initialize, enable } from '@electron/remote/main/index.js'
+import { unlinkSync } from 'fs'
+
+initialize()
 
 app.commandLine.appendSwitch('ignore-certificate-errors')
 
@@ -57,16 +66,9 @@ app.canExit = true
 app.syncAfterStart = false
 app.debug = false
 
-try {
-  if (
-    process.platform === 'win32' &&
-    nativeTheme.shouldUseDarkColors === true
-  ) {
-    require('fs').unlinkSync(
-      require('path').join(app.getPath('userData'), 'DevTools Extensions'),
-    )
-  }
-} catch (_) {}
+if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
+  unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
+}
 
 // https://masteringjs.io/tutorials/fundamentals/sleep
 function sleep(ms) {
@@ -83,7 +85,7 @@ async function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'img', 'migasfree-play.png'),
+    icon: path.resolve(currentDir, 'img', 'migasfree-play.png'),
     width: 800,
     height: 800,
     show: false,
@@ -96,7 +98,13 @@ async function createWindow() {
       sandbox: false,
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
-      preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
+      preload: path.resolve(
+        currentDir,
+        path.join(
+          process.env.QUASAR_ELECTRON_PRELOAD_FOLDER,
+          'electron-preload' + process.env.QUASAR_ELECTRON_PRELOAD_EXTENSION,
+        ),
+      ),
     },
   })
 
@@ -104,11 +112,15 @@ async function createWindow() {
     app.debug = true
   }
 
-  require('@electron/remote/main').enable(mainWindow.webContents)
+  enable(mainWindow.webContents)
 
   mainWindow.webContents.session.setProxy({ mode: 'system' })
 
-  mainWindow.loadURL(process.env.APP_URL)
+  if (process.env.DEV) {
+    mainWindow.loadURL(process.env.APP_URL)
+  } else {
+    mainWindow.loadFile('index.html')
+  }
 
   if (process.env.DEBUGGING) {
     // if on DEV or Production with debug enabled
@@ -138,7 +150,7 @@ async function createWindow() {
 
   // Prevent opening external URL in app, open in default browser instead
   /* mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    require('electron').shell.openExternal(url)
+    shell.openExternal(url) // import { shell } from 'electron'
   }) */
 
   mainWindow.on('close', (e) => {
@@ -151,7 +163,7 @@ async function createWindow() {
 if (!gotTheLock) {
   app.quit()
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
+  app.on('second-instance', () => {
     // Someone tried to run a second instance, we should focus our window
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore()
@@ -162,7 +174,7 @@ if (!gotTheLock) {
   app.whenReady().then(createWindow)
 
   app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    if (platform !== 'darwin') {
       app.quit()
     }
   })
