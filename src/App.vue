@@ -6,6 +6,7 @@
     >
       <div class="col-12 text-center q-mx-md q-my-xl q-py-xl">
         <img id="logo" src="img/migasfree-play.svg" width="200" />
+        <p class="text-h6">migasfree &#x1f49a; change</p>
       </div>
 
       <template v-if="appIsStopped">
@@ -28,7 +29,7 @@
         </div>
       </template>
 
-      <div v-else class="col-6 offset-4">
+      <div v-else class="col-6 offset-3">
         <q-list padding dense>
           <q-item>
             <q-item-label header class="text-subtitle1">{{
