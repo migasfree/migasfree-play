@@ -5,15 +5,15 @@ import { compareVersions } from 'compare-versions'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useAppsStore } from './apps'
-import { useComputerStore } from './computer'
-import { useDevicesStore } from './devices'
-import { useExecutionsStore } from './executions'
-import { useFiltersStore } from './filters'
-import { usePackagesStore } from './packages'
-import { usePreferencesStore } from './preferences'
-import { useTagsStore } from './tags'
-import { useUiStore } from './ui'
+import { useAppsStore } from './apps.js'
+import { useComputerStore } from './computer.js'
+import { useDevicesStore } from './devices.js'
+import { useExecutionsStore } from './executions.js'
+import { useFiltersStore } from './filters.js'
+import { usePackagesStore } from './packages.js'
+import { usePreferencesStore } from './preferences.js'
+import { useTagsStore } from './tags.js'
+import { useUiStore } from './ui.js'
 
 import {
   tokenAuth,
@@ -23,8 +23,6 @@ import {
   checkTokenApi,
   minimumClientVersion,
 } from 'config/app.conf'
-
-require('dotenv').config()
 
 export const useProgramStore = defineStore('program', () => {
   const protocol = ref('')
