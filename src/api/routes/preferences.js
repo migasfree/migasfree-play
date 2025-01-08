@@ -1,8 +1,8 @@
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
-const express = require('express')
-const { pythonExecute, debug } = require('../utils')
+import os from 'os'
+import fs from 'fs'
+import path from 'node:path'
+import express from 'express'
+import { pythonExecute, debug } from '../utils.js'
 
 const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
 const router = express.Router()
@@ -102,4 +102,4 @@ print('https' if ssl_cert else 'http')`
   pythonExecute(res, code).then((results) => res.send(results))
 })
 
-module.exports = router
+export default router
