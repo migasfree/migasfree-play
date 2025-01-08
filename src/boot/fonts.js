@@ -1,2 +1,2 @@
-require('typeface-lato')
-require('typeface-ubuntu-mono')
+import 'typeface-lato'
+import 'typeface-ubuntu-mono'
