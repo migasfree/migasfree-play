@@ -1,8 +1,8 @@
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
-const express = require('express')
-const { debug } = require('../utils')
+import os from 'os'
+import fs from 'fs'
+import path from 'node:path'
+import express from 'express'
+import { debug } from '../utils.js'
 
 const filePath = path.join(os.homedir(), '.migasfree-play', 'executions.json')
 const router = express.Router()
@@ -28,4 +28,4 @@ router.post('/', (req, res) => {
   res.send()
 })
 
-module.exports = router
+export default router
