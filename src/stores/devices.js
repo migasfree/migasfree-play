@@ -5,10 +5,10 @@ import { api } from 'boot/axios'
 
 import { tokenApi } from 'config/app.conf'
 
-import { useComputerStore } from './computer'
-import { useFiltersStore } from './filters'
-import { useProgramStore } from './program'
-import { useUiStore } from './ui'
+import { useComputerStore } from './computer.js'
+import { useFiltersStore } from './filters.js'
+import { useProgramStore } from './program.js'
+import { useUiStore } from './ui.js'
 
 export const useDevicesStore = defineStore('devices', () => {
   const assigned = ref([])
@@ -29,7 +29,7 @@ export const useDevicesStore = defineStore('devices', () => {
       await api
         .get(
           `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
-          { headers: { Authorization: token.value } }
+          { headers: { Authorization: token.value } },
         )
         .then((response) => {
           defaultDevice.value = response.data.default_logical_device
@@ -53,7 +53,7 @@ export const useDevicesStore = defineStore('devices', () => {
       await api
         .get(
           `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
-          { headers: { Authorization: token.value } }
+          { headers: { Authorization: token.value } },
         )
         .then((response) => {
           available.value = response.data.results
@@ -87,7 +87,7 @@ export const useDevicesStore = defineStore('devices', () => {
       await api
         .get(
           `${initialUrl.value.token}${tokenApi.availableLogicalDevices}${cid.value}&did=${id}`,
-          { headers: { Authorization: token.value } }
+          { headers: { Authorization: token.value } },
         )
         .then((response) => {
           if (response.data.results) {
@@ -112,7 +112,7 @@ export const useDevicesStore = defineStore('devices', () => {
       .patch(
         `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
         { attributes },
-        { headers: { Authorization: token.value } }
+        { headers: { Authorization: token.value } },
       )
       .then((response) => {
         if (response.data.id) {
@@ -142,7 +142,7 @@ export const useDevicesStore = defineStore('devices', () => {
           device.model.name.toLowerCase().includes(pattern) ||
           device.model.manufacturer.name.toLowerCase().includes(pattern) ||
           ('NAME' in device.data &&
-            device.data.NAME.toLowerCase().includes(pattern))
+            device.data.NAME.toLowerCase().includes(pattern)),
       )
     }
 
