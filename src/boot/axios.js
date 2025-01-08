@@ -24,7 +24,7 @@ export default boot(({ app, store }) => {
 
       config.headers['Accept-Language'] = `${language.value.replace(
         '_',
-        '-'
+        '-',
       )},${language.value.split('_')[0]};q=0.9`
 
       // config.timeout = 10000
@@ -34,7 +34,7 @@ export default boot(({ app, store }) => {
         '[ REQUEST ]',
         config.url,
         inspect(config.params),
-        inspect(config.headers)
+        inspect(config.headers),
       )
 
       return config
@@ -42,7 +42,7 @@ export default boot(({ app, store }) => {
 
     (error) => {
       return Promise.reject(error)
-    }
+    },
   )
 
   api.interceptors.response.use(
@@ -50,7 +50,7 @@ export default boot(({ app, store }) => {
       console.log(
         '[ RESPONSE ]',
         response.config.url,
-        inspect(response, { depth: Infinity })
+        inspect(response, { depth: Infinity }),
       )
       return response
     },
@@ -64,7 +64,7 @@ export default boot(({ app, store }) => {
       }
 
       return Promise.reject(error)
-    }
+    },
   )
 
   // for use inside Vue files (Options API) through this.$axios and this.$api
