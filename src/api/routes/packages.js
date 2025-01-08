@@ -1,5 +1,5 @@
-const express = require('express')
-const { pythonExecute, debug } = require('../utils')
+import express from 'express'
+import { pythonExecute, debug } from '../utils.js'
 
 const router = express.Router()
 
@@ -86,4 +86,4 @@ print(json.dumps(mfc.pms.query_all()))`
   )
 })
 
-module.exports = router
+export default router
