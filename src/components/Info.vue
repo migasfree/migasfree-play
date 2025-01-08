@@ -167,7 +167,7 @@
             $q.dark.isActive ? 'q-card--dark q-dark' : '',
           ]"
         >
-          <q-expansion-item :content-inset-level="0.5">
+          <q-expansion-item v-model="expanded" :content-inset-level="0.5">
             <template #header>
               <q-item-section avatar>
                 <q-icon name="mdi-package-variant" size="md" />
@@ -182,21 +182,45 @@
               </q-item-section>
 
               <q-item-section side>
-                <q-btn
-                  flat
-                  icon="mdi-content-copy"
-                  color="primary"
-                  @click.stop="copyInventory"
-                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                >
+                <div class="row q-gutter-x-sm">
+                  <q-btn
+                    v-if="!showSearch"
+                    flat
+                    icon="mdi-magnify"
+                    color="primary"
+                    @click.stop="
+                      ((showSearch = !showSearch), (expanded = showSearch))
+                    "
+                    ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
+                  >
+
+                  <q-input
+                    v-if="showSearch"
+                    v-model="search"
+                    :label="$gettext('Search')"
+                    clearable
+                    dense
+                    @clear="showSearch = false"
+                    @click.stop
+                    ><template #prepend><q-icon name="mdi-magnify" /></template
+                  ></q-input>
+
+                  <q-btn
+                    flat
+                    icon="mdi-content-copy"
+                    color="primary"
+                    @click.stop="copyInventory"
+                    ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                  >
+                </div>
               </q-item-section>
             </template>
 
             <q-list>
               <q-virtual-scroll
                 class="overflow"
-                :items-size="inventory.length"
-                :items="inventory"
+                :items-size="filteredInventory.length"
+                :items="filteredInventory"
               >
                 <template #default="{ item }">
                   <q-item dense>
@@ -209,6 +233,10 @@
 
           <q-tooltip>{{ $gettext('Software Inventory') }}</q-tooltip>
         </q-list>
+
+        <p v-if="search" class="text-caption text-right text-blue-grey q-mt-sm">
+          {{ filteredInventory.length }}
+        </p>
       </div>
     </div>
   </div>
@@ -250,7 +278,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard } from 'quasar'
@@ -279,9 +307,23 @@ export default {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
+    const search = ref('')
+    const showSearch = ref(false)
+    const expanded = ref(false)
+
     const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
       storeToRefs(computerStore)
     const { inventory } = storeToRefs(packagesStore)
+
+    const filteredInventory = computed(() => {
+      if (search.value === '' || search.value === null) {
+        return inventory.value
+      } else {
+        return inventory.value.filter((item) => {
+          return item.toLowerCase().includes(search.value.toLowerCase())
+        })
+      }
+    })
 
     const syncEndDate = computed(() =>
       'sync_end_date' in data.value ? data.value.sync_end_date : '',
@@ -386,6 +428,13 @@ export default {
       return JSON.stringify(info)
     })
 
+    watch(
+      () => search.value,
+      () => {
+        expanded.value = !!search.value
+      },
+    )
+
     const bytesToGigas = (value) => {
       return (value / 1024 / 1024 / 1024).toFixed(1)
     }
@@ -400,12 +449,18 @@ export default {
     }
 
     const copyInventory = async () => {
-      copyToClipboard(sortArray(inventory.value).join('\n')).then(() => {
-        uiStore.notifySuccess($gettext('Text copied to clipboard'))
-      })
+      copyToClipboard(sortArray(filteredInventory.value).join('\n')).then(
+        () => {
+          uiStore.notifySuccess($gettext('Text copied to clipboard'))
+        },
+      )
     }
 
     return {
+      search,
+      showSearch,
+      expanded,
+      filteredInventory,
       app,
       user,
       data,
