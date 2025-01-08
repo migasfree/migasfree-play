@@ -1,5 +1,5 @@
-const express = require('express')
-const { pythonExecute } = require('../utils')
+import express from 'express'
+import { pythonExecute } from '../utils.js'
 
 const router = express.Router()
 
@@ -45,4 +45,4 @@ print(json.dumps(response['selected'], ensure_ascii=False))`
   )
 })
 
-module.exports = router
+export default router
