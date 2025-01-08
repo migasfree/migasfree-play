@@ -4,7 +4,7 @@
       <q-banner class="bg-warning text-black">
         {{
           $gettext(
-            'Review config data. If is not correct, cancel register and modify migasfree-client file config.'
+            'Review config data. If is not correct, cancel register and modify migasfree-client file config.',
           )
         }}
         <q-card-section>
@@ -132,7 +132,7 @@ export default {
     const { project } = storeToRefs(computerStore)
 
     const isValid = computed(
-      () => username.value !== '' && password.value !== ''
+      () => username.value !== '' && password.value !== '',
     )
 
     const register = async () => {
@@ -151,7 +151,7 @@ export default {
       () => props.value,
       (newVal) => {
         showing.value = newVal
-      }
+      },
     )
 
     return {
