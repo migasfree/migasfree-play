@@ -3,9 +3,9 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useAppsStore } from './apps'
-import { useProgramStore } from './program'
-import { useUiStore } from './ui'
+import { useAppsStore } from './apps.js'
+import { useProgramStore } from './program.js'
+import { useUiStore } from './ui.js'
 
 import { internalApi } from 'config/app.conf'
 
@@ -41,7 +41,7 @@ export const usePackagesStore = defineStore('packages', () => {
     await api
       .post(
         `${internalApi}/packages/installed/?version=${clientVersion.value}`,
-        getAppsPackages.value
+        getAppsPackages.value,
       )
       .then((response) => {
         installed.value = response.data
