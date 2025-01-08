@@ -5,7 +5,7 @@ import { Dark, LocalStorage } from 'quasar'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useUiStore } from './ui'
+import { useUiStore } from './ui.js'
 
 import { internalApi } from 'config/app.conf'
 
