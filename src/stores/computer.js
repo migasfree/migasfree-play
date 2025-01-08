@@ -4,8 +4,8 @@ import { defineStore, storeToRefs } from 'pinia'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useProgramStore } from './program'
-import { useUiStore } from './ui'
+import { useProgramStore } from './program.js'
+import { useUiStore } from './ui.js'
 
 import { internalApi, tokenApi } from 'config/app.conf'
 
@@ -61,7 +61,7 @@ export const useComputerStore = defineStore('computer', () => {
     if (clientVersion.value.startsWith('4.')) {
       await api
         .get(
-          `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`
+          `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`,
         )
         .then((response) => {
           cid.value = response.data.id
@@ -96,7 +96,7 @@ export const useComputerStore = defineStore('computer', () => {
           `${initialUrl.value.token}${tokenApi.computer}${cid.value}/label/`,
           {
             headers: { Authorization: token.value },
-          }
+          },
         )
         .then((response) => {
           helpdesk.value = response.data.helpdesk
@@ -164,12 +164,12 @@ export const useComputerStore = defineStore('computer', () => {
     await api
       .post(
         `${internalApi}/computer/register/?version=${clientVersion.value}`,
-        { user, password }
+        { user, password },
       )
       .then((response) => {
         if (response.data === 0)
           uiStore.notifyError(
-            gettext.$gettext('There was a problem with registration')
+            gettext.$gettext('There was a problem with registration'),
           )
         else {
           uiStore.notifySuccess(gettext.$gettext('Registered Computer!'))
