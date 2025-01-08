@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import os from 'os'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
@@ -95,8 +96,6 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
-
-const os = require('os')
 
 export default {
   name: 'AppDetail',
@@ -125,7 +124,7 @@ export default {
     const rating = computed(() => props.score)
 
     const truncatedDescription = computed(
-      () => props.description.split('\n')[0]
+      () => props.description.split('\n')[0],
     )
 
     const moreInfo = computed(() => {
@@ -136,21 +135,21 @@ export default {
 
     const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
     const installedPackages = computed(() =>
-      JSON.parse(JSON.stringify(installed.value))
+      JSON.parse(JSON.stringify(installed.value)),
     )
     const availablePackages = computed(() =>
-      JSON.parse(JSON.stringify(available.value))
+      JSON.parse(JSON.stringify(available.value)),
     )
 
     const isInstalled = computed(
       () =>
         packages.value.length > 0 &&
         packages.value.filter((x) => !installedPackages.value.includes(x))
-          .length === 0
+          .length === 0,
     )
 
     const isAvailable = computed(() =>
-      packages.value.filter((x) => !availablePackages.value.includes(x))
+      packages.value.filter((x) => !availablePackages.value.includes(x)),
     )
 
     const isInstallable = computed(
@@ -158,15 +157,16 @@ export default {
         (props.level === 'U' || userIsPrivileged.value) &&
         isAvailable.value &&
         !isInstalled.value &&
-        packages.value.length > 0
+        packages.value.length > 0,
     )
 
     const isRemovable = computed(
-      () => isInstalled.value && (props.level === 'U' || userIsPrivileged.value)
+      () =>
+        isInstalled.value && (props.level === 'U' || userIsPrivileged.value),
     )
 
     const isPrivileged = computed(
-      () => isAvailable.value && props.level === 'A' && !userIsPrivileged.value
+      () => isAvailable.value && props.level === 'A' && !userIsPrivileged.value,
     )
 
     const defaultIcon = computed(() => 'img/migasfree-play.svg')
@@ -182,7 +182,7 @@ export default {
       uiStore.notifyInfo(
         interpolate($gettext('Installing %{name}'), {
           name,
-        })
+        }),
       )
 
       executionsStore.run({
@@ -205,7 +205,7 @@ export default {
       uiStore.notifyInfo(
         interpolate($gettext('Uninstalling %{name}'), {
           name,
-        })
+        }),
       )
 
       executionsStore.run({
