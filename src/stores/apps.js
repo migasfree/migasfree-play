@@ -3,11 +3,11 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useComputerStore } from './computer'
-import { useFiltersStore } from './filters'
-import { usePackagesStore } from './packages'
-import { useProgramStore } from './program'
-import { useUiStore } from './ui'
+import { useComputerStore } from './computer.js'
+import { useFiltersStore } from './filters.js'
+import { usePackagesStore } from './packages.js'
+import { useProgramStore } from './program.js'
+import { useUiStore } from './ui.js'
 
 import { tokenApi } from 'config/app.conf'
 
@@ -43,7 +43,7 @@ export const useAppsStore = defineStore('apps', () => {
             headers: {
               Authorization: token.value,
             },
-          }
+          },
         )
         .then((response) => {
           setApps({
@@ -68,7 +68,7 @@ export const useAppsStore = defineStore('apps', () => {
     const { installed } = storeToRefs(packagesStore)
     if (selectedCategory.value && selectedCategory.value.id > 0)
       results = results.filter(
-        (app) => app.category.id == selectedCategory.value.id
+        (app) => app.category.id == selectedCategory.value.id,
       )
     if (searchApp.value) {
       const pattern = searchApp.value.toLowerCase()
@@ -76,7 +76,7 @@ export const useAppsStore = defineStore('apps', () => {
       results = results.filter(
         (app) =>
           app.name.toLowerCase().includes(pattern) ||
-          app.description.toLowerCase().includes(pattern)
+          app.description.toLowerCase().includes(pattern),
       )
     }
 
@@ -87,7 +87,7 @@ export const useAppsStore = defineStore('apps', () => {
         (app) =>
           app.packages_to_install.length > 0 &&
           app.packages_to_install.filter((x) => !installedPackages.includes(x))
-            .length === 0
+            .length === 0,
       )
     }
 
@@ -98,7 +98,7 @@ export const useAppsStore = defineStore('apps', () => {
     apps.value = []
     value.forEach((item) => {
       let filterPackages = item.packages_by_project.filter(
-        (packages) => project === packages.project.name
+        (packages) => project === packages.project.name,
       )
       if (filterPackages.length > 0) {
         item.packages_to_install = filterPackages[0].packages_to_install
