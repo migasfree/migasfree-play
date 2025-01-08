@@ -1,13 +1,14 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { date } from 'quasar'
+import { spawn } from 'child_process'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useComputerStore } from './computer'
-import { usePackagesStore } from './packages'
-import { useUiStore } from './ui'
+import { useComputerStore } from './computer.js'
+import { usePackagesStore } from './packages.js'
+import { useUiStore } from './ui.js'
 
 import { internalApi, executionsMaxLength } from 'config/app.conf'
 
@@ -121,13 +122,12 @@ export const useExecutionsStore = defineStore('executions', () => {
 
     if (isRunningCommand.value) {
       uiStore.notifyInfo(
-        gettext.$gettext('Please wait, other process is running!!!')
+        gettext.$gettext('Please wait, other process is running!!!'),
       )
       return
     }
     startedCmd()
 
-    const spawn = require('child_process').spawn
     let subprocess
 
     const [command, ...args] = cmd.split(' ')
@@ -165,7 +165,7 @@ export const useExecutionsStore = defineStore('executions', () => {
           packagesStore.setInstalledPackages()
         } else {
           uiStore.notifyError(
-            error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, '')
+            error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, ''),
           )
           resetExecutionError()
         }
@@ -205,7 +205,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   function addExecution({ command, icon }) {
     lastId.value = date.formatDate(
       Date.parse(new Date()),
-      'YYYY-MM-DD HH:mm:ss'
+      'YYYY-MM-DD HH:mm:ss',
     )
     items.value[lastId.value] = {
       command,
