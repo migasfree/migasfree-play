@@ -41,7 +41,7 @@ export default {
 
     const customPageChange = (customCurrentPage) => {
       props.pageChanged(
-        customCurrentPage ? customCurrentPage : currentPage.value
+        customCurrentPage ? customCurrentPage : currentPage.value,
       )
     }
 
@@ -49,7 +49,7 @@ export default {
       () => props.total,
       (value) => {
         if (value <= resultsPerPage) currentPage.value = 1
-      }
+      },
     )
 
     return {
