@@ -1,5 +1,5 @@
-const express = require('express')
-const { pythonExecute, debug } = require('../utils')
+import express from 'express'
+import { pythonExecute, debug } from '../utils.js'
 
 const router = express.Router()
 
@@ -85,4 +85,4 @@ print(is_privileged)
   )
 })
 
-module.exports = router
+export default router
