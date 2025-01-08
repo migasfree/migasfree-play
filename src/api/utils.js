@@ -1,7 +1,6 @@
-const os = require('os')
-const { execSync } = require('child_process')
-const { PythonShell } = require('python-shell')
-
+import os from 'os'
+import { execSync } from 'child_process'
+import { PythonShell } from 'python-shell'
 function getPython() {
   const platform = os.platform()
 
@@ -19,7 +18,7 @@ echo $_PYTHON`
 
   try {
     return execSync(cmd, { shell }).toString().replace('\n', '')
-  } catch (error) {
+  } catch {
     return 'python3'
   }
 }
@@ -38,7 +37,7 @@ const pythonShellOptions = {
 }
 
 const pythonExecute = (res, code, contentType = 'text/plain') => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     PythonShell.runString(code, pythonShellOptions)
       .then((results) => {
         res.setHeader('Content-Type', contentType)
@@ -50,4 +49,4 @@ const pythonExecute = (res, code, contentType = 'text/plain') => {
   })
 }
 
-module.exports = { debug, pythonExecute }
+export { debug, pythonExecute }
