@@ -1,18 +1,19 @@
+/* eslint-env node */
+
 /*
  * This file runs in a Node context (it's NOT transpiled by Babel), so use only
  * the ES6 features that are supported by your Node version. https://node.green/
  */
 
 // Configuration for your app
-// https://v2.quasar.dev/quasar-cli/quasar-conf-js
+// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
-const ESLintPlugin = require('eslint-webpack-plugin')
+import ESLintPlugin from 'eslint-webpack-plugin'
+import { defineConfig } from '#q-app/wrappers'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 
-const { configure } = require('quasar/wrappers')
-
-const path = require('path')
-
-module.exports = configure(function (ctx) {
+export default defineConfig((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -44,7 +45,6 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      env: require('dotenv').config().parsed,
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       // transpile: false,
@@ -68,24 +68,27 @@ module.exports = configure(function (ctx) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 
       chainWebpack(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
         chain.resolve.alias.set(
           'config',
-          path.resolve(__dirname, './src/config'),
+          fileURLToPath(new URL('./src/config', import.meta.url)),
         )
       },
 
-      extendWebpack(cfg, { isServer, isClient }) {
+      extendWebpack(cfg) {
         cfg.externals = {
           ...cfg.externals,
-          os: 'require("os")',
-          fs: 'require("fs")',
-          path: 'require("path")',
-          child_process: 'require("child_process")',
-          timers: 'require("timers")',
-          qrcode: 'require("qrcode")',
+          // os: 'require("os")',
+          os: 'commonjs os',
+          // fs: 'require("fs")',
+          fs: 'commonjs fs',
+          // path: 'require("path")',
+          path: 'commonjs path',
+          // child_process: 'require("child_process")',
+          child_process: 'commonjs child_process',
+          // timers: 'require("timers")',
+          timers: 'commonjs timers',
+          // qrcode: 'require("qrcode")',
+          qrcode: 'commonjs qrcode',
         }
       },
     },
@@ -97,6 +100,17 @@ module.exports = configure(function (ctx) {
       },
       port: process.env.MFP_QUASAR_PORT || 9999,
       open: true, // opens browser window automatically
+    },
+
+    eslint: {
+      // fix: true,
+      // include: [],
+      // exclude: [],
+      // cache: false,
+      // rawEsbuildEslintOptions: {},
+      // rawWebpackEslintPluginOptions: {},
+      warnings: true,
+      errors: true,
     },
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -120,6 +134,12 @@ module.exports = configure(function (ctx) {
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
     animations: [],
+
+    // should you wish to change default files
+    // (notice no extension, so it resolves to both .js and .ts)
+    sourceFiles: {
+      electronMain: 'src-electron/electron-main',
+    },
 
     // https://v2.quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
@@ -150,51 +170,6 @@ module.exports = configure(function (ctx) {
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
-
-      // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
-      // if using workbox in InjectManifest mode
-      chainWebpackCustomSW(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
-      },
-
-      manifest: {
-        name: `Migasfree Play`,
-        short_name: `Migasfree Play`,
-        description: `Migasfree Client front-end. Allow install/uninstall available applications and printers.`,
-        display: 'standalone',
-        orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
-        icons: [
-          {
-            src: 'icons/icon-128x128.png',
-            sizes: '128x128',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-256x256.png',
-            sizes: '256x256',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-384x384.png',
-            sizes: '384x384',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
@@ -210,6 +185,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
       bundler: 'builder', // 'packager' or 'builder'
+      preloadScripts: ['electron-preload'],
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -244,7 +220,7 @@ module.exports = configure(function (ctx) {
             'bash',
             'cron',
             'curl',
-            'nodejs (>= 12)',
+            'nodejs (>= 18)',
           ],
           packageCategory: 'utils',
           priority: 'optional',
@@ -262,25 +238,66 @@ module.exports = configure(function (ctx) {
         },
       },
 
-      // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpackMain(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
-      },
-
-      // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpackPreload(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
-      },
-
-      extendWebpackMain(cfg) {
-        // do something with Electron main process Webpack cfg
-        // chainWebpack also available besides this extendWebpack
-        cfg.entry.api = [path.join(__dirname, 'src', 'api', 'index.js')]
-        cfg.output.filename = '[name].js'
+      /* Extend the Esbuild config that is used for the electron-main thread */
+      extendElectronMainConf(cfg) {
+        cfg.entryPoints = [
+          {
+            in: path.join(
+              fileURLToPath(new URL('.', import.meta.url)),
+              'src',
+              'api',
+              'index.js',
+            ),
+            out: ctx.prod
+              ? path.join(
+                  fileURLToPath(new URL('.', import.meta.url)),
+                  'dist',
+                  'electron',
+                  'UnPackaged',
+                  'api',
+                )
+              : path.join(
+                  fileURLToPath(new URL('.', import.meta.url)),
+                  '.quasar',
+                  'dev-electron',
+                  'api',
+                ),
+          },
+          {
+            in: path.join(
+              fileURLToPath(new URL('.', import.meta.url)),
+              'src-electron',
+              'electron-main',
+            ),
+            out: ctx.prod
+              ? path.join(
+                  fileURLToPath(new URL('.', import.meta.url)),
+                  'dist',
+                  'electron',
+                  'UnPackaged',
+                  'electron-main',
+                )
+              : path.join(
+                  fileURLToPath(new URL('.', import.meta.url)),
+                  '.quasar',
+                  'dev-electron',
+                  'electron-main',
+                ),
+          },
+        ]
+        cfg.outdir = ctx.prod
+          ? path.join(
+              fileURLToPath(new URL('.', import.meta.url)),
+              'dist',
+              'electron',
+              'UnPackaged',
+            )
+          : path.join(
+              fileURLToPath(new URL('.', import.meta.url)),
+              '.quasar',
+              'dev-electron',
+            )
+        delete cfg.outfile
       },
     },
   }
