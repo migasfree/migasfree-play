@@ -96,7 +96,7 @@ export default {
         ) {
           window.scrollTo(0, elem.scrollHeight)
         }
-      }
+      },
     )
 
     const onScroll = (info) => {
