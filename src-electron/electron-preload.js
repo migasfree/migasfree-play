@@ -16,5 +16,8 @@
  *   })
  */
 
-window.electron = require('electron')
-window.electronRemote = require('@electron/remote')
+import electron from 'electron'
+import * as remote from '@electron/remote'
+
+window.electron = electron
+window.electronRemote = remote
