@@ -1,15 +1,14 @@
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const rateLimit = require('express-rate-limit')
+import express from 'express'
+import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 
-const packagesRouter = require('./routes/packages')
-const preferencesRouter = require('./routes/preferences')
-const computerRouter = require('./routes/computer')
-const tokenRouter = require('./routes/token')
-const executionsRouter = require('./routes/executions')
-const userRouter = require('./routes/user')
-const tagsRouter = require('./routes/tags')
+import packagesRouter from './routes/packages.js'
+import preferencesRouter from './routes/preferences.js'
+import computerRouter from './routes/computer.js'
+import tokenRouter from './routes/token.js'
+import executionsRouter from './routes/executions.js'
+import userRouter from './routes/user.js'
+import tagsRouter from './routes/tags.js'
 
 const allowedOrigin = `http://localhost:${process.env.MFP_QUASAR_PORT || 9999}`
 const allowedHost = 'localhost'
@@ -42,13 +41,13 @@ app.use(
   }),
 )
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
     limit: '10mb',
     parameterLimit: 100000,
   }),
 )
-app.use(bodyParser.json({ limit: '10mb' }))
+app.use(express.json({ limit: '10mb' }))
 
 app.use('/packages', packagesRouter)
 app.use('/preferences', preferencesRouter)
@@ -59,8 +58,7 @@ app.use('/user', userRouter)
 app.use('/tags', tagsRouter)
 
 // error handler
-app.use((err, req, res, next) => {
-  // eslint-disable-line no-unused-vars
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message
   // res.locals.error = req.app.get('env') === 'development' ? err : {}
@@ -77,4 +75,4 @@ app.listen(process.env.MFP_EXPRESS_PORT || 3000, () => {
   )
 })
 
-module.exports = app
+export default app
