@@ -284,11 +284,11 @@ export default {
     const { inventory } = storeToRefs(packagesStore)
 
     const syncEndDate = computed(() =>
-      'sync_end_date' in data.value ? data.value.sync_end_date : ''
+      'sync_end_date' in data.value ? data.value.sync_end_date : '',
     )
 
     const computerRam = computed(() =>
-      'ram' in data.value ? `${bytesToGigas(data.value.ram)} GB RAM` : ''
+      'ram' in data.value ? `${bytesToGigas(data.value.ram)} GB RAM` : '',
     )
 
     const computerStorage = computed(() =>
@@ -296,7 +296,7 @@ export default {
         ? `${bytesToGigas(data.value.storage)} GB (${
             data.value.disks
           } ${$gettext('disks')})`
-        : ''
+        : '',
     )
 
     const computerMac = computed(() => {
@@ -314,7 +314,7 @@ export default {
     })
 
     const computerId = computed(() =>
-      cid.value ? `CID-${cid.value}` : 'CID-?'
+      cid.value ? `CID-${cid.value}` : 'CID-?',
     )
 
     const productIcon = computed(() => {
