@@ -96,7 +96,7 @@ export default {
     const showing = ref(props.value)
 
     const isValid = computed(
-      () => username.value !== '' && password.value !== ''
+      () => username.value !== '' && password.value !== '',
     )
 
     const login = () => {
@@ -115,7 +115,7 @@ export default {
       () => props.value,
       (newVal) => {
         showing.value = newVal
-      }
+      },
     )
 
     return {
