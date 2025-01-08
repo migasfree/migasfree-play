@@ -100,6 +100,9 @@ export default defineConfig((ctx) => {
       },
       port: process.env.MFP_QUASAR_PORT || 9999,
       open: true, // opens browser window automatically
+      client: {
+        overlay: false,
+      },
     },
 
     eslint: {
