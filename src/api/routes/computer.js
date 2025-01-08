@@ -1,5 +1,5 @@
-const express = require('express')
-const { pythonExecute, debug } = require('../utils')
+import express from 'express'
+import { pythonExecute, debug } from '../utils.js'
 
 const router = express.Router()
 
@@ -13,7 +13,7 @@ print(MigasFreeCommand().get_computer_id())`
 
   pythonExecute(res, code)
     .then((results) => res.send(results))
-    .catch((error) => {
+    .catch(() => {
       res.setHeader('Content-Type', 'text/plain')
       res.send('0')
     })
@@ -61,10 +61,10 @@ mfc._save_sign_keys('${req.body.user}', '${req.body.password}')`
 
   pythonExecute(res, code)
     .then((results) => res.send(results))
-    .catch((error) => {
+    .catch(() => {
       res.setHeader('Content-Type', 'text/plain')
       res.send('0')
     })
 })
 
-module.exports = router
+export default router
