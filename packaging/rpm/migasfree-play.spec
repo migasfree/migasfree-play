@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Wed, 8 Jan 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.9-0
+* Thu, 9 Jan 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.9-0
 - feat: added nsis and msi properties
 - fix: added 'ignore-certificate-errors' to electron app to avoid ERR_CERT_AUTHORITY_INVALID
 - fix: notifyInfo icon
@@ -51,6 +51,8 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 - feat: Quasar upgraded to 2.17 (node >= 18)
 - feat: one icon to rule them all
 - feat: added search feature in software inventory
+- feat: added icons to toggle buttons to improve UX
+- feat: upgraded vue3-gettext component
 
 * Mon, 3 Jun 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.8-0
 - feat: call computerId after sync if operation has launched autoregister
