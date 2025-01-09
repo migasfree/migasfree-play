@@ -1,6 +1,6 @@
 # Migasfree Play
 
-Migasfree Client front-end. Allow install/uninstall available applications and printers.
+Migasfree Client front-end. Allow install/uninstall available applications and devices.
 
 ## Install the dependencies
 
@@ -17,13 +17,13 @@ sudo yarn dev
 ### Extract gettext content
 
 ```bash
-yarn gettext-extract
+yarn gettext:extract
 ```
 
 ### Compile gettext content
 
 ```bash
-yarn gettext-compile
+yarn gettext:compile
 ```
 
 ### Lint the files
@@ -38,7 +38,7 @@ yarn run lint
 yarn build
 ```
 
-### Build the package for Debian/Ubuntu distros
+### Build the package for Debian based distros
 
 ```bash
 yarn build
@@ -130,5 +130,5 @@ MFP_CMD_FLAGS=
 
 ## Requirements in production
 
-- NodeJS >= 14
+- NodeJS >= 18
 - migasfree-client >= 4.20
