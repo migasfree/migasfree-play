@@ -19,9 +19,12 @@
               v-model="preferencesStore.showSyncDetails"
               :label="
                 preferencesStore.showSyncDetails
-                  ? $gettext('Show details when synchronizing')
-                  : $gettext('Not show details when synchronizing')
+                  ? $gettext('Not show details when synchronizing')
+                  : $gettext('Show details when synchronizing')
               "
+              checked-icon="mdi-eye"
+              unchecked-icon="mdi-eye-off"
+              size="xl"
               :false-value="false"
               :true-value="true"
               @update:model-value="preferencesStore.savePreferences"
@@ -36,6 +39,9 @@
                   ? $gettext('Switch to Light mode')
                   : $gettext('Switch to Dark mode')
               "
+              checked-icon="nights_stay"
+              unchecked-icon="wb_sunny"
+              size="xl"
               :false-value="false"
               :true-value="true"
               @update:model-value="preferencesStore.savePreferences"
