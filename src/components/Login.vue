@@ -16,7 +16,7 @@
             :rules="[(val) => !!val || $gettext('* Required')]"
           >
             <template #label>
-              <translate>User</translate>
+              {{ $gettext('User') }}
             </template>
 
             <template #prepend>
@@ -35,7 +35,7 @@
             @keyup.enter="login"
           >
             <template #label>
-              <translate>Password</translate>
+              {{ $gettext('Password') }}
             </template>
 
             <template #prepend>
