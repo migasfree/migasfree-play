@@ -77,17 +77,11 @@ export default defineConfig((ctx) => {
       extendWebpack(cfg) {
         cfg.externals = {
           ...cfg.externals,
-          // os: 'require("os")',
           os: 'commonjs os',
-          // fs: 'require("fs")',
           fs: 'commonjs fs',
-          // path: 'require("path")',
           path: 'commonjs path',
-          // child_process: 'require("child_process")',
           child_process: 'commonjs child_process',
-          // timers: 'require("timers")',
           timers: 'commonjs timers',
-          // qrcode: 'require("qrcode")',
           qrcode: 'commonjs qrcode',
         }
       },
