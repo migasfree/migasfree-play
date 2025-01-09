@@ -188,14 +188,13 @@
                     flat
                     icon="mdi-magnify"
                     color="primary"
-                    @click.stop="
-                      ((showSearch = !showSearch), (expanded = showSearch))
-                    "
+                    @click.stop="toggleSearch"
                     ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
                   >
 
                   <q-input
                     v-if="showSearch"
+                    ref="searchInput"
                     v-model="search"
                     :label="$gettext('Search')"
                     clearable
@@ -278,7 +277,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard } from 'quasar'
@@ -310,6 +309,7 @@ export default {
     const search = ref('')
     const showSearch = ref(false)
     const expanded = ref(false)
+    const searchInput = useTemplateRef('searchInput')
 
     const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
       storeToRefs(computerStore)
@@ -435,6 +435,17 @@ export default {
       },
     )
 
+    const toggleSearch = async () => {
+      showSearch.value = !showSearch.value
+      expanded.value = showSearch.value
+      if (showSearch.value) {
+        await nextTick()
+        if (searchInput.value) {
+          searchInput.value.focus()
+        }
+      }
+    }
+
     const bytesToGigas = (value) => {
       return (value / 1024 / 1024 / 1024).toFixed(1)
     }
@@ -460,6 +471,8 @@ export default {
       search,
       showSearch,
       expanded,
+      searchInput,
+      toggleSearch,
       filteredInventory,
       app,
       user,
