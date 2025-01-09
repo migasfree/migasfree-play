@@ -97,7 +97,7 @@
       <template #label>
         <q-icon name="mdi-menu" size="lg" />
         <q-tooltip>
-          <translate>Menu</translate>
+          {{ $gettext('Menu') }}
         </q-tooltip>
       </template>
       <q-list bordered separator>
@@ -110,7 +110,7 @@
             <q-icon name="apps" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Apps</translate></q-item-section>
+          <q-item-section>{{ $gettext('Apps') }}</q-item-section>
         </q-item>
 
         <q-item
@@ -122,7 +122,7 @@
             <q-icon name="mdi-printer" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Devices</translate></q-item-section>
+          <q-item-section>{{ $gettext('Devices') }}</q-item-section>
         </q-item>
 
         <q-item
@@ -134,7 +134,7 @@
             <q-icon name="mdi-tag" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Tags</translate></q-item-section>
+          <q-item-section>{{ $gettext('Tags') }}</q-item-section>
         </q-item>
 
         <q-item
@@ -146,7 +146,7 @@
             <q-icon name="mdi-list-status" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Details</translate></q-item-section>
+          <q-item-section>{{ $gettext('Details') }}</q-item-section>
         </q-item>
 
         <q-item
@@ -158,7 +158,7 @@
             <q-icon name="info" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Info</translate></q-item-section>
+          <q-item-section>{{ $gettext('Info') }}</q-item-section>
         </q-item>
 
         <q-item
@@ -170,7 +170,7 @@
             <q-icon name="mdi-cog" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Preferences</translate></q-item-section>
+          <q-item-section>{{ $gettext('Preferences') }}</q-item-section>
         </q-item>
 
         <q-item
@@ -184,7 +184,7 @@
             <q-icon name="help" size="lg" />
           </q-item-section>
 
-          <q-item-section><translate>Help</translate></q-item-section>
+          <q-item-section>{{ $gettext('Help') }}</q-item-section>
         </q-item>
       </q-list>
     </q-btn-dropdown>
