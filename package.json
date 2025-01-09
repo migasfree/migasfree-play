@@ -2,7 +2,7 @@
   "name": "migasfree-play",
   "version": "5.9.0",
   "type": "module",
-  "description": "Migasfree Client front-end. Allow install/uninstall available applications and printers.",
+  "description": "Migasfree Client front-end. Allow install/uninstall available applications and devices.",
   "productName": "migasfree-play",
   "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
   "license": "GPLv3",
@@ -14,8 +14,8 @@
     "format": "prettier --write \"**/*.{js,vue,css,ts,cjs,mjs,html,md,json}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{js,vue,css,ts,cjs,mjs,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "gettext-extract": "vue-gettext-extract",
-    "gettext-compile": "vue-gettext-compile",
+    "gettext:extract": "vue-gettext-extract",
+    "gettext:compile": "vue-gettext-compile",
     "dev": "quasar dev -m electron -- --no-sandbox --disable-gpu-sandbox",
     "build": "quasar build -m electron -- --no-sandbox --disable-gpu-sandbox"
   },
@@ -40,7 +40,7 @@
     "util": "0.12.5",
     "vue": "3.5.13",
     "vue-router": "4.5.0",
-    "vue3-gettext": "2.4.0"
+    "vue3-gettext": "4.0.0-alpha.8"
   },
   "devDependencies": {
     "@babel/core": "7.26.0",
