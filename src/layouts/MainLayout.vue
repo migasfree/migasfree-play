@@ -53,6 +53,14 @@
           <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
         </q-btn>
       </q-page-sticky>
+
+      <q-page-scroller
+        position="bottom-right"
+        :offset="[18, 100]"
+        :scroll-offset="300"
+      >
+        <q-btn fab icon="mdi-chevron-up" color="primary" />
+      </q-page-scroller>
     </q-page-container>
   </q-layout>
 
