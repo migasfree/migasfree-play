@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Thu, 9 Jan 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.9-0
+* Fri, 10 Jan 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.9-0
 - feat: added nsis and msi properties
 - fix: added 'ignore-certificate-errors' to electron app to avoid ERR_CERT_AUTHORITY_INVALID
 - fix: notifyInfo icon
@@ -53,6 +53,7 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 - feat: added search feature in software inventory
 - feat: added icons to toggle buttons to improve UX
 - feat: upgraded vue3-gettext component
+- feat: added page scroller
 
 * Mon, 3 Jun 2024 Jose Antonio Chavarría <jachavar@gmail.com> - 5.8-0
 - feat: call computerId after sync if operation has launched autoregister

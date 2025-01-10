@@ -10,8 +10,9 @@ migasfree-play (5.9.0) unstable; urgency=low
   * feat: added search feature in software inventory
   * feat: added icons to toggle buttons to improve UX
   * feat: upgraded vue3-gettext component
+  * feat: added page scroller
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 9 Jan 2025 09:25:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 10 Jan 2025 08:44:47 +0100
 
 migasfree-play (5.8.0) unstable; urgency=low
 
