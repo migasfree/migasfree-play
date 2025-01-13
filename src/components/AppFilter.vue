@@ -31,9 +31,12 @@
               v-model="onlyInstalledApps"
               :label="
                 onlyInstalledApps
-                  ? $gettext('Installed Apps')
-                  : $gettext('All Apps')
+                  ? $gettext('View All Apps')
+                  : $gettext('View Installed Apps')
               "
+              checked-icon="mdi-download"
+              unchecked-icon="mdi-select-all"
+              size="xl"
               :false-value="false"
               :true-value="true"
               @update:model-value="appsStore.filterApps"
