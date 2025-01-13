@@ -18,9 +18,12 @@
               v-model="onlyAssignedDevices"
               :label="
                 onlyAssignedDevices
-                  ? $gettext('Assigned Devices')
-                  : $gettext('All available')
+                  ? $gettext('View All available')
+                  : $gettext('View Assigned Devices')
               "
+              checked-icon="mdi-select-all"
+              unchecked-icon="mdi-select"
+              size="xl"
               :false-value="false"
               :true-value="true"
               @update:model-value="devicesStore.filterDevices"
