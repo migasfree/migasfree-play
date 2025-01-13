@@ -56,11 +56,11 @@ msgid "Category"
 msgstr ""
 
 #: src/components/AppFilter.vue:34
-msgid "Installed Apps"
+msgid "View All Apps"
 msgstr ""
 
 #: src/components/AppFilter.vue:35
-msgid "All Apps"
+msgid "View Installed Apps"
 msgstr ""
 
 #: src/components/Apps.vue:30
@@ -79,15 +79,15 @@ msgid "Search in name or model or manufacturer"
 msgstr ""
 
 #: src/components/DeviceFilter.vue:21
-msgid "Assigned Devices"
+msgid "View All available"
 msgstr ""
 
 #: src/components/DeviceFilter.vue:22
-msgid "All available"
+msgid "View Assigned Devices"
 msgstr ""
 
 #: src/components/ExecutionDetail.vue:108
-#: src/components/Info.vue:454
+#: src/components/Info.vue:465
 msgid "Text copied to clipboard"
 msgstr ""
 
@@ -111,20 +111,20 @@ msgstr ""
 msgid "%{num} packages"
 msgstr ""
 
-#: src/components/Info.vue:194
-#: src/components/Info.vue:200
+#: src/components/Info.vue:192
+#: src/components/Info.vue:199
 msgid "Search"
 msgstr ""
 
-#: src/components/Info.vue:213
+#: src/components/Info.vue:212
 msgid "Copy"
 msgstr ""
 
-#: src/components/Info.vue:234
+#: src/components/Info.vue:233
 msgid "Software Inventory"
 msgstr ""
 
-#: src/components/Info.vue:272
+#: src/components/Info.vue:271
 msgid "Print Identification"
 msgstr ""
 
@@ -310,11 +310,11 @@ msgstr ""
 msgid "Synchronize Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:116
+#: src/layouts/MainLayout.vue:124
 msgid "Synchronizing..."
 msgstr ""
 
-#: src/layouts/MainLayout.vue:126
+#: src/layouts/MainLayout.vue:134
 msgid "Synchronization"
 msgstr ""
 

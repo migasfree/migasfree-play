@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: src/App.vue:18
 msgid "Impossible to continue."
@@ -61,12 +61,12 @@ msgid "Category"
 msgstr "Categoría"
 
 #: src/components/AppFilter.vue:34
-msgid "Installed Apps"
-msgstr "Aplicacións instaladas"
+msgid "View All Apps"
+msgstr "Ver todas as aplicacións"
 
 #: src/components/AppFilter.vue:35
-msgid "All Apps"
-msgstr "Todas as aplicacións"
+msgid "View Installed Apps"
+msgstr "Ver aplicacións instaladas"
 
 #: src/components/Apps.vue:30 src/components/Devices.vue:28
 #: src/components/Executions.vue:17 src/components/Tags.vue:84
@@ -82,14 +82,14 @@ msgid "Search in name or model or manufacturer"
 msgstr "Busca por nome ou modelo ou fabricante"
 
 #: src/components/DeviceFilter.vue:21
-msgid "Assigned Devices"
-msgstr "Dispositivos asignados"
+msgid "View All available"
+msgstr "Ver todo dispoñible"
 
 #: src/components/DeviceFilter.vue:22
-msgid "All available"
-msgstr "Todo dispoñible"
+msgid "View Assigned Devices"
+msgstr "Ver dispositivos asignados"
 
-#: src/components/ExecutionDetail.vue:108 src/components/Info.vue:454
+#: src/components/ExecutionDetail.vue:108 src/components/Info.vue:465
 msgid "Text copied to clipboard"
 msgstr "Copiouse o texto no portapapeis"
 
@@ -113,19 +113,19 @@ msgstr "Datos sen migas"
 msgid "%{num} packages"
 msgstr "%{num} paquetes"
 
-#: src/components/Info.vue:194 src/components/Info.vue:200
+#: src/components/Info.vue:192 src/components/Info.vue:199
 msgid "Search"
 msgstr "Busca"
 
-#: src/components/Info.vue:213
+#: src/components/Info.vue:212
 msgid "Copy"
 msgstr "Copiar"
 
-#: src/components/Info.vue:234
+#: src/components/Info.vue:233
 msgid "Software Inventory"
 msgstr "Inventario de software"
 
-#: src/components/Info.vue:272
+#: src/components/Info.vue:271
 msgid "Print Identification"
 msgstr "Identificación de impresión"
 
@@ -296,11 +296,11 @@ msgstr "Rexistrar o ordenador no servidor"
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
-#: src/layouts/MainLayout.vue:116
+#: src/layouts/MainLayout.vue:124
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
-#: src/layouts/MainLayout.vue:126
+#: src/layouts/MainLayout.vue:134
 msgid "Synchronization"
 msgstr "Sincronización"
 
