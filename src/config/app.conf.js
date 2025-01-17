@@ -28,7 +28,7 @@ export const tokenApi = {
   categories: '/catalog/categories/',
   computer: '/computers/',
   availableDevices: '/devices/devices/available/?cid=',
-  availableLogicalDevices: '/devices/logical/available/?cid=',
+  deviceData: '/devices/devices/',
   logicalDevice: '/devices/logical/',
   cidAttribute: '/attributes/?property_att__prefix=CID&value=',
 }
