@@ -7,13 +7,15 @@
             {{ name }}
           </div>
           <div class="text-caption text-blue-grey">
-            {{ id }}
+            {{ id }} {{ alternativeName ? `(${alternativeName})` : '' }}
           </div>
         </q-card-section>
 
         <q-card-section class="col-3 text-right">
           <q-icon
-            :name="connection === 'TCP' ? mdiPrinterPosNetwork : mdiPrinter"
+            :name="
+              connection === 'TCP' ? 'mdi-printer-pos-network' : 'mdi-printer'
+            "
             size="64px"
           />
         </q-card-section>
@@ -21,15 +23,30 @@
         <q-tooltip>{{ tooltip }}</q-tooltip>
       </q-card-section>
 
-      <q-card-section>
-        {{ description }}
+      <q-card-section v-if="description">
+        <q-icon name="mdi-map-marker" size="md" /> {{ description }}
       </q-card-section>
 
       <template v-if="logical">
         <q-separator inset />
         <q-card-section v-for="item in visibleLogicalDevices" :key="item.id">
+          <template v-if="isPredetermined(item)">
+            <q-icon name="mdi-star" size="md" color="info">
+              <q-tooltip>
+                {{ $gettext('Predetermined') }}
+              </q-tooltip>
+            </q-icon>
+          </template>
+
           <span class="feature">{{ capabilityName(item) }}</span>
-          <template v-if="isAssigned(item.id)">
+
+          <template v-if="isInflicted(item)">
+            <q-chip outline color="info" text-color="white">
+              {{ $gettext('Inflicted') }}
+            </q-chip>
+          </template>
+
+          <template v-if="isAssigned(item)">
             <q-chip outline color="primary" text-color="white">
               {{ $gettext('Assigned') }}
             </q-chip>
@@ -45,6 +62,19 @@
             >
               <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
             </q-btn>
+
+            <!-- q-btn
+              v-if="!isPredetermined(item)"
+              color="primary"
+              class="float-right q-mx-md"
+              icon="mdi-star"
+              size="md"
+              :loading="isRunningCommand"
+              :disabled="isRunningCommand"
+              @click="predetermine(item.id)"
+            >
+              <q-tooltip>{{ $gettext('Predetermine') }}</q-tooltip>
+            </q-btn -->
           </template>
 
           <q-btn
@@ -68,7 +98,6 @@
 <script>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { mdiPrinter, mdiPrinterPosNetwork } from '@quasar/extras/mdi-v7'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useDevicesStore } from 'src/stores/devices'
@@ -80,6 +109,7 @@ export default {
   name: 'DeviceDetail',
   props: {
     name: { type: String, required: true },
+    alternativeName: { type: String, required: true },
     id: { type: String, required: true },
     connection: { type: String, required: true },
     description: { type: String, required: false, default: '' },
@@ -106,7 +136,7 @@ export default {
       if (!filtersStore.onlyAssignedDevices) return logical.value
       else
         return logical.value.filter((item) => {
-          return isAssigned(item.id)
+          return isAssigned(item)
         })
     })
 
@@ -116,15 +146,16 @@ export default {
       return item.alternative_capability_name || item.capability.name
     }
 
-    const isAssigned = (id) => {
-      return (
-        devicesStore.assigned.find((item) => {
-          return item.id === id
-        }) ||
-        devicesStore.inflicted.find((item) => {
-          return item.id === id
-        })
-      )
+    const isAssigned = (item) => {
+      return item['x-type'] === 'assigned'
+    }
+
+    const isInflicted = (item) => {
+      return item['x-type'] === 'inflicted'
+    }
+
+    const isPredetermined = (item) => {
+      return item['x-is-default'] === true
     }
 
     const installDevice = (item) => {
@@ -141,8 +172,7 @@ export default {
       })
       devicesStore.addAssignedDevice({
         id: item.id,
-        device: item.device,
-        capability: item.capability,
+        device: item.device.id,
       })
     }
 
@@ -156,7 +186,14 @@ export default {
         id: item.id,
         attributes,
       })
-      devicesStore.removeAssignedDevice(item.id)
+      devicesStore.removeAssignedDevice({
+        id: item.id,
+        device: item.device.id,
+      })
+    }
+
+    const predetermine = (id) => {
+      devicesStore.setDefaultLogicalDevice(id)
     }
 
     return {
@@ -165,10 +202,11 @@ export default {
       visibleLogicalDevices,
       capabilityName,
       isAssigned,
+      isInflicted,
+      isPredetermined,
       installDevice,
       removeDevice,
-      mdiPrinter,
-      mdiPrinterPosNetwork,
+      predetermine,
     }
   },
 }
