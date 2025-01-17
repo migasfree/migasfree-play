@@ -8,6 +8,7 @@
         :id="item.name"
         :key="item.id"
         :name="name(item)"
+        :alternative-name="alternativeName(item)"
         :connection="item.connection.name"
         :description="description(item.data)"
         :ip="ipAddress(item.data)"
@@ -62,6 +63,12 @@ export default {
         : `${item.model.manufacturer.name} ${item.model.name}`
     }
 
+    const alternativeName = (item) => {
+      return !('NAME' in item.data)
+        ? ''
+        : `${item.model.manufacturer.name} ${item.model.name}`
+    }
+
     const ipAddress = (value) => {
       return value.IP || ''
     }
@@ -89,6 +96,7 @@ export default {
       filteredDevices,
       paginatedDevices,
       name,
+      alternativeName,
       ipAddress,
       description,
       pageChanged,
