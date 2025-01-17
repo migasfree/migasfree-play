@@ -11,8 +11,9 @@ migasfree-play (5.9.0) unstable; urgency=low
   * feat: added icons to toggle buttons to improve UX
   * feat: upgraded vue3-gettext component
   * feat: added page scroller
+  * refactor: device info
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 10 Jan 2025 08:44:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 17 Jan 2025 13:42:47 +0100
 
 migasfree-play (5.8.0) unstable; urgency=low
 
