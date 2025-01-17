@@ -24,11 +24,11 @@ msgstr "Saiatu berriro"
 msgid "Loading data"
 msgstr "Datuak kargatzen"
 
-#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:60
+#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:90
 msgid "Install"
 msgstr "Instalatu"
 
-#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:46
+#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:63
 msgid "Uninstall"
 msgstr "Desinstalatu"
 
@@ -68,14 +68,26 @@ msgstr "Ikusi aplikazio guztiak"
 msgid "View Installed Apps"
 msgstr "Ikusi instalatutako aplikazioak"
 
-#: src/components/Apps.vue:30 src/components/Devices.vue:28
+#: src/components/Apps.vue:30 src/components/Devices.vue:29
 #: src/components/Executions.vue:17 src/components/Tags.vue:84
 msgid "There are not items to show."
 msgstr "Ez dago elementurik erakusteko."
 
-#: src/components/DeviceDetail.vue:34
+#: src/components/DeviceDetail.vue:36
+msgid "Predetermined"
+msgstr "Aurrez zehaztuta"
+
+#: src/components/DeviceDetail.vue:45
+msgid "Inflicted"
+msgstr "Heredatu"
+
+#: src/components/DeviceDetail.vue:51
 msgid "Assigned"
 msgstr "Esleitua"
+
+#: src/components/DeviceDetail.vue:76
+msgid "Predetermine"
+msgstr "Aurrez zehaztu"
 
 #: src/components/DeviceFilter.vue:9
 msgid "Search in name or model or manufacturer"
@@ -296,11 +308,11 @@ msgstr "Erregistratu ordenagailua zerbitzarian"
 msgid "Synchronize Computer"
 msgstr "Ordenagailua sinkronizatu"
 
-#: src/layouts/MainLayout.vue:124
+#: src/layouts/MainLayout.vue:133
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
-#: src/layouts/MainLayout.vue:134
+#: src/layouts/MainLayout.vue:143
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
