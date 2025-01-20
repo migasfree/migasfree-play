@@ -40,23 +40,25 @@ export const useDevicesStore = defineStore('devices', () => {
         inflictedLogicalDevices.value = response.data.inflicted_logical_devices
 
         for (const item of assignedLogicalDevices.value) {
-          try {
-            const deviceData = await getDeviceData(item.device.id)
-            deviceData['x-type'] = 'assigned'
-            devices.value.push(deviceData)
-          } catch (error) {
-            uiStore.notifyError(error)
-          }
+          if (!devices.value.some((device) => device.id === item.device.id))
+            try {
+              const deviceData = await getDeviceData(item.device.id)
+              deviceData['x-type'] = 'assigned'
+              devices.value.push(deviceData)
+            } catch (error) {
+              uiStore.notifyError(error)
+            }
         }
 
         for (const item of inflictedLogicalDevices.value) {
-          try {
-            let deviceData = await getDeviceData(item.device.id)
-            deviceData['x-type'] = 'inflicted'
-            devices.value.push(deviceData)
-          } catch (error) {
-            uiStore.notifyError(error)
-          }
+          if (!devices.value.some((device) => device.id === item.device.id))
+            try {
+              const deviceData = await getDeviceData(item.device.id)
+              deviceData['x-type'] = 'inflicted'
+              devices.value.push(deviceData)
+            } catch (error) {
+              uiStore.notifyError(error)
+            }
         }
       } catch (error) {
         uiStore.notifyError(error)
