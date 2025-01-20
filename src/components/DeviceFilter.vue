@@ -21,7 +21,7 @@
                   ? $gettext('View All available')
                   : $gettext('View Assigned Devices')
               "
-              checked-icon="mdi-select-all"
+              checked-icon="mdi-checkbox-marked"
               unchecked-icon="mdi-select"
               size="xl"
               :false-value="false"
