@@ -41,15 +41,19 @@
           <span class="feature">{{ capabilityName(item) }}</span>
 
           <template v-if="isInflicted(item)">
-            <q-chip outline color="info" text-color="white">
-              {{ $gettext('Inflicted') }}
-            </q-chip>
+            <q-icon name="mdi-link-variant" size="md" color="info">
+              <q-tooltip>
+                {{ $gettext('Inflicted') }}
+              </q-tooltip>
+            </q-icon>
           </template>
 
           <template v-if="isAssigned(item)">
-            <q-chip outline color="primary" text-color="white">
-              {{ $gettext('Assigned') }}
-            </q-chip>
+            <q-icon name="mdi-checkbox-marked" size="md" color="info">
+              <q-tooltip>
+                {{ $gettext('Assigned') }}
+              </q-tooltip>
+            </q-icon>
 
             <q-btn
               color="negative"
