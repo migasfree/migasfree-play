@@ -102,4 +102,15 @@ print('https' if ssl_cert else 'http')`
   pythonExecute(res, code).then((results) => res.send(results))
 })
 
+router.get('/manage-devices', (req, res) => {
+  if (debug) console.log('[express] Getting manage devices setting...')
+
+  let code = `
+from migasfree_client.command import MigasFreeCommand
+
+print(MigasFreeCommand().migas_manage_devices)`
+
+  pythonExecute(res, code).then((results) => res.send(results === 'True'))
+})
+
 export default router
