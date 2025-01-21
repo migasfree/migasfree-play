@@ -15,12 +15,12 @@ msgid "Loading data"
 msgstr ""
 
 #: src/components/AppDetail.vue:51
-#: src/components/DeviceDetail.vue:90
+#: src/components/DeviceDetail.vue:94
 msgid "Install"
 msgstr ""
 
 #: src/components/AppDetail.vue:64
-#: src/components/DeviceDetail.vue:63
+#: src/components/DeviceDetail.vue:67
 msgid "Uninstall"
 msgstr ""
 
@@ -74,15 +74,15 @@ msgstr ""
 msgid "Predetermined"
 msgstr ""
 
-#: src/components/DeviceDetail.vue:45
+#: src/components/DeviceDetail.vue:46
 msgid "Inflicted"
 msgstr ""
 
-#: src/components/DeviceDetail.vue:51
+#: src/components/DeviceDetail.vue:54
 msgid "Assigned"
 msgstr ""
 
-#: src/components/DeviceDetail.vue:76
+#: src/components/DeviceDetail.vue:80
 msgid "Predetermine"
 msgstr ""
 
@@ -202,15 +202,15 @@ msgstr ""
 #: src/components/Menu.vue:113
 #: src/pages/apps/index.vue:4
 #: src/pages/apps/index.vue:64
-#: src/stores/program.js:94
+#: src/stores/program.js:96
 msgid "Apps"
 msgstr ""
 
 #: src/components/Menu.vue:26
 #: src/components/Menu.vue:125
 #: src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:61
-#: src/stores/program.js:109
+#: src/pages/devices/index.vue:73
+#: src/stores/program.js:111
 msgid "Devices"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr ""
 #: src/components/Tags.vue:9
 #: src/pages/tags/index.vue:4
 #: src/pages/tags/index.vue:49
-#: src/stores/program.js:116
+#: src/stores/program.js:118
 msgid "Tags"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr ""
 #: src/components/Menu.vue:173
 #: src/pages/preferences/index.vue:4
 #: src/pages/preferences/index.vue:50
-#: src/stores/program.js:63
+#: src/stores/program.js:64
 msgid "Preferences"
 msgstr ""
 
@@ -331,11 +331,15 @@ msgid "Synchronization"
 msgstr ""
 
 #: src/pages/apps/index.vue:25
-#: src/pages/devices/index.vue:24
+#: src/pages/devices/index.vue:25
 #: src/pages/info/index.vue:14
 #: src/pages/preferences/index.vue:14
 #: src/pages/tags/index.vue:14
 msgid "Update"
+msgstr ""
+
+#: src/pages/devices/index.vue:43
+msgid "Client does not manage devices"
 msgstr ""
 
 #: src/stores/computer.js:172
@@ -354,35 +358,35 @@ msgstr ""
 msgid "Synchronization finished"
 msgstr ""
 
-#: src/stores/program.js:74
+#: src/stores/program.js:76
 msgid "Server"
 msgstr ""
 
-#: src/stores/program.js:84
+#: src/stores/program.js:86
 msgid "Computer"
 msgstr ""
 
-#: src/stores/program.js:98
+#: src/stores/program.js:100
 msgid "Categories"
 msgstr ""
 
-#: src/stores/program.js:101
+#: src/stores/program.js:103
 msgid "Packages"
 msgstr ""
 
-#: src/stores/program.js:142
+#: src/stores/program.js:144
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr ""
 
-#: src/stores/program.js:192
+#: src/stores/program.js:194
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 
-#: src/stores/program.js:221
+#: src/stores/program.js:223
 #: src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr ""
 
-#: src/stores/program.js:246
+#: src/stores/program.js:248
 msgid "User without privileges"
 msgstr ""

@@ -24,11 +24,11 @@ msgstr "Saiatu berriro"
 msgid "Loading data"
 msgstr "Datuak kargatzen"
 
-#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:90
+#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
 msgid "Install"
 msgstr "Instalatu"
 
-#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:63
+#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:67
 msgid "Uninstall"
 msgstr "Desinstalatu"
 
@@ -77,15 +77,15 @@ msgstr "Ez dago elementurik erakusteko."
 msgid "Predetermined"
 msgstr "Aurrez zehaztuta"
 
-#: src/components/DeviceDetail.vue:45
+#: src/components/DeviceDetail.vue:46
 msgid "Inflicted"
 msgstr "Heredatu"
 
-#: src/components/DeviceDetail.vue:51
+#: src/components/DeviceDetail.vue:54
 msgid "Assigned"
 msgstr "Esleitua"
 
-#: src/components/DeviceDetail.vue:76
+#: src/components/DeviceDetail.vue:80
 msgid "Predetermine"
 msgstr "Aurrez zehaztu"
 
@@ -196,19 +196,19 @@ msgstr "Saioa hasi"
 
 #: src/components/Menu.vue:13 src/components/Menu.vue:113
 #: src/pages/apps/index.vue:4 src/pages/apps/index.vue:64
-#: src/stores/program.js:94
+#: src/stores/program.js:96
 msgid "Apps"
 msgstr "Aplikazioak"
 
 #: src/components/Menu.vue:26 src/components/Menu.vue:125
-#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:61
-#: src/stores/program.js:109
+#: src/pages/devices/index.vue:4 src/pages/devices/index.vue:73
+#: src/stores/program.js:111
 msgid "Devices"
 msgstr "Gailuak"
 
 #: src/components/Menu.vue:39 src/components/Menu.vue:137
 #: src/components/Tags.vue:9 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:49 src/stores/program.js:116
+#: src/pages/tags/index.vue:49 src/stores/program.js:118
 msgid "Tags"
 msgstr "Etiketak"
 
@@ -224,7 +224,7 @@ msgstr "Informazioa"
 
 #: src/components/Menu.vue:77 src/components/Menu.vue:173
 #: src/pages/preferences/index.vue:4 src/pages/preferences/index.vue:50
-#: src/stores/program.js:63
+#: src/stores/program.js:64
 msgid "Preferences"
 msgstr "Hobespenak"
 
@@ -316,11 +316,15 @@ msgstr "Sinkronizatzen..."
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
-#: src/pages/apps/index.vue:25 src/pages/devices/index.vue:24
+#: src/pages/apps/index.vue:25 src/pages/devices/index.vue:25
 #: src/pages/info/index.vue:14 src/pages/preferences/index.vue:14
 #: src/pages/tags/index.vue:14
 msgid "Update"
 msgstr "Eguneratu"
+
+#: src/pages/devices/index.vue:43
+msgid "Client does not manage devices"
+msgstr "Bezeroak ez ditu gailuak kudeatzen"
 
 #: src/stores/computer.js:172
 msgid "There was a problem with registration"
@@ -338,34 +342,34 @@ msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 msgid "Synchronization finished"
 msgstr "Sinkronizazioa amaitu da"
 
-#: src/stores/program.js:74
+#: src/stores/program.js:76
 msgid "Server"
 msgstr "Zerbitzaria"
 
-#: src/stores/program.js:84
+#: src/stores/program.js:86
 msgid "Computer"
 msgstr "Ordenagailua"
 
-#: src/stores/program.js:98
+#: src/stores/program.js:100
 msgid "Categories"
 msgstr "Kategoriak"
 
-#: src/stores/program.js:101
+#: src/stores/program.js:103
 msgid "Packages"
 msgstr "Paketeak"
 
-#: src/stores/program.js:142
+#: src/stores/program.js:144
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
 
-#: src/stores/program.js:192
+#: src/stores/program.js:194
 msgid "Credentials are not valid. Review app settings."
 msgstr "Kredentzialak ez dira baliozkoak. Berrikusi aplikazioaren ezarpenak."
 
-#: src/stores/program.js:221 src/stores/ui.js:37
+#: src/stores/program.js:223 src/stores/ui.js:37
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
 
-#: src/stores/program.js:246
+#: src/stores/program.js:248
 msgid "User without privileges"
 msgstr "Pribilegiorik gabeko erabiltzailea"
