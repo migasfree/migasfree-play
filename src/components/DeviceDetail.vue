@@ -82,7 +82,7 @@
           </template>
 
           <q-btn
-            v-else
+            v-if="isAvailable(item)"
             color="positive"
             icon="mdi-download"
             class="float-right"
@@ -140,7 +140,7 @@ export default {
       if (!filtersStore.onlyAssignedDevices) return logical.value
       else
         return logical.value.filter((item) => {
-          return isAssigned(item)
+          return isAssigned(item) || isInflicted(item)
         })
     })
 
@@ -156,6 +156,10 @@ export default {
 
     const isInflicted = (item) => {
       return item['x-type'] === 'inflicted'
+    }
+
+    const isAvailable = (item) => {
+      return item['x-type'] === 'available'
     }
 
     const isPredetermined = (item) => {
@@ -207,6 +211,7 @@ export default {
       capabilityName,
       isAssigned,
       isInflicted,
+      isAvailable,
       isPredetermined,
       installDevice,
       removeDevice,
