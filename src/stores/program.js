@@ -37,6 +37,7 @@ export const useProgramStore = defineStore('program', () => {
   const clientVersion = ref('0')
   const serverVersion = ref('0')
   const organization = ref('')
+  const manageDevices = ref(true)
   const user = ref({
     isPrivileged: false,
   })
@@ -67,6 +68,7 @@ export const useProgramStore = defineStore('program', () => {
     checkClientVersion()
     if (appIsStopped.value) return
     await apiProtocol()
+    await clientManageDevices()
     await serverHost()
 
     setInitialUrl()
@@ -266,6 +268,19 @@ export const useProgramStore = defineStore('program', () => {
       })
   }
 
+  async function clientManageDevices() {
+    const uiStore = useUiStore()
+
+    await api
+      .get(`${internalApi}/preferences/manage-devices/`)
+      .then((response) => {
+        manageDevices.value = response.data
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
+
   async function serverHost() {
     const uiStore = useUiStore()
 
@@ -309,6 +324,7 @@ export const useProgramStore = defineStore('program', () => {
     clientVersion,
     serverVersion,
     organization,
+    manageDevices,
     status,
     userIsPrivileged,
     appIsStopped,
