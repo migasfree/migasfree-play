@@ -3,7 +3,7 @@
     <q-breadcrumbs>
       <q-breadcrumbs-el :label="$gettext('Devices')" icon="mdi-printer" />
       <q-chip
-        v-if="filteredDevices.length > 0"
+        v-if="manageDevices && filteredDevices.length > 0"
         outline
         color="primary"
         text-color="white"
@@ -13,6 +13,7 @@
         {{ filteredDevices.length }}
       </q-chip>
       <q-btn
+        v-if="manageDevices"
         icon="mdi-sync"
         size="sm"
         flat
@@ -25,13 +26,22 @@
       >
     </q-breadcrumbs>
 
-    <div v-if="isUpdating" class="row q-ma-xl">
-      <div class="col-12 text-center">
-        <q-spinner color="primary" size="6em" />
+    <template v-if="manageDevices">
+      <div v-if="isUpdating" class="row q-ma-xl">
+        <div class="col-12 text-center">
+          <q-spinner color="primary" size="6em" />
+        </div>
       </div>
-    </div>
 
-    <Devices v-else />
+      <Devices v-else />
+    </template>
+
+    <q-banner v-else class="bg-info text-black q-ma-md">
+      <template #avatar>
+        <q-icon name="mdi-information-outline" color="white" />
+      </template>
+      {{ $gettext('Client does not manage devices') }}
+    </q-banner>
   </q-page>
 </template>
 
@@ -43,6 +53,7 @@ import { useMeta } from 'quasar'
 import Devices from 'components/Devices.vue'
 
 import { useDevicesStore } from 'src/stores/devices'
+import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 
 export default {
@@ -53,6 +64,7 @@ export default {
     const { $gettext } = useGettext()
 
     const devicesStore = useDevicesStore()
+    const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { filteredDevices } = storeToRefs(devicesStore)
@@ -68,7 +80,12 @@ export default {
       uiStore.updatingFinished()
     }
 
-    return { filteredDevices, isUpdating, updateDevices }
+    return {
+      filteredDevices,
+      isUpdating,
+      updateDevices,
+      manageDevices: programStore.manageDevices,
+    }
   },
 }
 </script>
