@@ -23,12 +23,8 @@
       :page-changed="pageChanged"
     />
   </template>
-  <q-banner v-else class="bg-info text-black q-ma-md">
-    <template #avatar>
-      <q-icon name="mdi-information-outline" color="white" />
-    </template>
-    {{ $gettext('There are not items to show.') }}
-  </q-banner>
+
+  <BannerInfo v-else :message="$gettext('There are not items to show.')" />
 
   <Login :value="showLogin" @closed="showLogin = !showLogin" />
 </template>
@@ -39,6 +35,7 @@ import { storeToRefs } from 'pinia'
 
 import AppFilter from 'components/AppFilter'
 import AppDetail from 'components/AppDetail'
+import BannerInfo from 'components/BannerInfo'
 import Login from 'components/Login'
 import Pagination from 'components/Pagination'
 
@@ -52,6 +49,7 @@ export default {
   components: {
     AppFilter,
     AppDetail,
+    BannerInfo,
     Login,
     Pagination,
   },
