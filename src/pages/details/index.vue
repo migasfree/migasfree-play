@@ -24,7 +24,7 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { storeToRefs } from 'pinia'
 
-import Executions from 'components/Executions.vue'
+import Executions from 'components/Executions'
 
 import { useExecutionsStore } from 'src/stores/executions'
 
