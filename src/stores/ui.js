@@ -86,8 +86,8 @@ export const useUiStore = defineStore('ui', () => {
     Notify.create({
       color: 'negative',
       position: 'bottom',
-      message,
       icon: 'mdi-alert-circle-outline',
+      message,
     })
   }
 
@@ -95,17 +95,18 @@ export const useUiStore = defineStore('ui', () => {
     Notify.create({
       color: 'positive',
       position: 'bottom',
-      message,
       icon: 'mdi-check-bold',
+      message,
     })
   }
 
   function notifyInfo(message) {
     Notify.create({
-      color: 'info',
+      color: 'light-blue-3',
       position: 'bottom',
+      textColor: 'black',
+      icon: 'mdi-information-outline',
       message,
-      icon: 'mdi-information',
     })
   }
 
