@@ -30,7 +30,7 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import Info from 'components/Info.vue'
+import Info from 'components/Info'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
