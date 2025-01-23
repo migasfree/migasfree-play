@@ -30,7 +30,7 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import Preferences from 'components/Preferences.vue'
+import Preferences from 'components/Preferences'
 
 import { usePreferencesStore } from 'src/stores/preferences'
 import { useUiStore } from 'src/stores/ui'
