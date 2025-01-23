@@ -36,12 +36,7 @@
       <Devices v-else />
     </template>
 
-    <q-banner v-else class="bg-info text-black q-ma-md">
-      <template #avatar>
-        <q-icon name="mdi-information-outline" color="white" />
-      </template>
-      {{ $gettext('Client does not manage devices') }}
-    </q-banner>
+    <BannerInfo v-else :message="$gettext('Client does not manage devices')" />
   </q-page>
 </template>
 
@@ -50,7 +45,8 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import Devices from 'components/Devices.vue'
+import BannerInfo from 'components/BannerInfo'
+import Devices from 'components/Devices'
 
 import { useDevicesStore } from 'src/stores/devices'
 import { useProgramStore } from 'src/stores/program'
@@ -58,6 +54,7 @@ import { useUiStore } from 'src/stores/ui'
 
 export default {
   components: {
+    BannerInfo,
     Devices,
   },
   setup() {
