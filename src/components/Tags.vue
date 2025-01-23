@@ -77,12 +77,7 @@
         </q-card-actions>
       </q-card>
 
-      <q-banner v-else class="bg-info text-black q-ma-md">
-        <template #avatar>
-          <q-icon name="mdi-information-outline" color="white" />
-        </template>
-        {{ $gettext('There are not items to show.') }}
-      </q-banner>
+      <BannerInfo v-else :message="$gettext('There are not items to show.')" />
     </div>
   </div>
 
@@ -94,6 +89,7 @@ import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
+import BannerInfo from 'components/BannerInfo'
 import Login from 'components/Login'
 
 import { useExecutionsStore } from 'src/stores/executions'
@@ -103,7 +99,7 @@ import { useUiStore } from 'src/stores/ui'
 
 export default {
   name: 'Tags',
-  components: { Login },
+  components: { BannerInfo, Login },
   setup() {
     const { $gettext } = useGettext()
 
