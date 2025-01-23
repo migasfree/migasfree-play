@@ -41,7 +41,7 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import Apps from 'components/Apps.vue'
+import Apps from 'components/Apps'
 
 import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'
