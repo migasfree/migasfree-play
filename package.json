@@ -45,6 +45,7 @@
   "devDependencies": {
     "@babel/core": "7.26.0",
     "@babel/eslint-parser": "7.25.9",
+    "@electron/packager": "18.3.6",
     "@quasar/app-webpack": "4.0.8",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.4",
     "@vue/eslint-config-prettier": "10.2.0",
@@ -55,7 +56,6 @@
     "electron-builder": "25.1.8",
     "electron-debug": "4.1.0",
     "electron-devtools-installer": "4.0.0",
-    "electron-packager": "17.1.2",
     "eslint": "9.18.0",
     "eslint-config-prettier": "10.0.1",
     "eslint-plugin-prettier": "5.2.3",
