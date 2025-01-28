@@ -66,6 +66,10 @@
     "prettier": "3.4.2",
     "webpack": "5.97.1"
   },
+  "resolutions": {
+    "call-bind": "1.0.7",
+    "get-intrinsic": "1.2.4"
+  },
   "browserslist": [
     "defaults and supports es6-module"
   ],
