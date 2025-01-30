@@ -12,8 +12,13 @@ migasfree-play (5.9.0) unstable; urgency=low
   * feat: upgraded vue3-gettext component
   * feat: added page scroller
   * refactor: device info
+  * feat: added /manage-devices endpoint
+  * refactor: changed notifyInfo properties
+  * feat: added BannerInfo component
+  * fix: changed electron-packager by @electron/packager
+  * fix: added resolutions key to avoid express errors after build project
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 17 Jan 2025 13:42:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 30 Jan 2025 09:14:47 +0100
 
 migasfree-play (5.8.0) unstable; urgency=low
 
