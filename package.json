@@ -23,7 +23,7 @@
     "@chenfengyuan/vue-qrcode": "2.0.0",
     "@electron/remote": "2.1.2",
     "@quasar/extras": "1.16.15",
-    "axios": "1.7.9",
+    "axios": "1.8.2",
     "compare-versions": "6.1.1",
     "cors": "2.8.5",
     "dayjs": "1.11.13",
