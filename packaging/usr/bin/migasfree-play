@@ -8,9 +8,9 @@ fi
 
 _PYTHON=$(command -v python2)
 [ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
-if [ $? -ne 0 -o -z "$_PYTHON" ]
+if [ $? -ne 0 ] || [ -z "$_PYTHON" ]
 then
-  _PYTHON=$(command -v python3)
+    _PYTHON=$(command -v python3)
 fi
 
 _WAIT_IP="
@@ -60,7 +60,7 @@ fi
 while true
 do
     _STATUS=$(curl --write-out %{http_code} --silent --output /dev/null "$_SERVER") || :
-    if [ "$_STATUS" = "200" -o "$_STATUS" = "302" ]
+    if [ "$_STATUS" = "200" ] || [ "$_STATUS" = "302" ]
     then
         echo "Connection established with the server."
         break
