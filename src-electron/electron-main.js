@@ -5,6 +5,9 @@ import path from 'node:path'
 import os from 'node:os'
 import tcpPortUsed from 'tcp-port-used'
 import { spawn } from 'child_process'
+import { app, BrowserWindow, nativeTheme, Menu, screen } from 'electron'
+import { initialize, enable } from '@electron/remote/main/index.js'
+import { unlinkSync } from 'fs'
 
 const platform = process.platform || os.platform()
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
@@ -50,21 +53,17 @@ function launchExpress() {
   )
 }
 
-launchExpress()
+app.canExit = true
+app.syncAfterStart = process.argv.includes('sync')
+app.debug = process.argv.includes('debug')
 
-import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
-import { initialize, enable } from '@electron/remote/main/index.js'
-import { unlinkSync } from 'fs'
+launchExpress()
 
 initialize()
 
 app.commandLine.appendSwitch('ignore-certificate-errors')
 
 const gotTheLock = app.requestSingleInstanceLock()
-
-app.canExit = true
-app.syncAfterStart = false
-app.debug = false
 
 if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
   unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
@@ -79,6 +78,9 @@ function sleep(ms) {
 let mainWindow
 
 async function createWindow() {
+  const primaryDisplay = screen.getPrimaryDisplay()
+  const { height } = primaryDisplay.workAreaSize
+
   await sleep(500) // delay waiting express app
 
   /**
@@ -87,7 +89,7 @@ async function createWindow() {
   mainWindow = new BrowserWindow({
     icon: path.resolve(currentDir, 'img', 'migasfree-play.png'),
     width: 800,
-    height: 800,
+    height: height >= 800 ? 800 : height,
     show: false,
     useContentSize: true,
     webPreferences: {
@@ -107,10 +109,6 @@ async function createWindow() {
       ),
     },
   })
-
-  if (process.argv.includes('debug')) {
-    app.debug = true
-  }
 
   enable(mainWindow.webContents)
 
@@ -141,10 +139,9 @@ async function createWindow() {
   })
 
   mainWindow.on('ready-to-show', () => {
-    if (process.argv.includes('sync')) {
+    if (app.syncAfterStart) {
       mainWindow.minimize()
       mainWindow.minimize() // FIXME why second call is needed to minimize?
-      app.syncAfterStart = true
     } else mainWindow.show()
   })
 
@@ -161,6 +158,7 @@ async function createWindow() {
 }
 
 if (!gotTheLock) {
+  console.log('Another instance is running. Exiting...')
   app.quit()
 } else {
   app.on('second-instance', () => {
