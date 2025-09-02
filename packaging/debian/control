@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Jose Antonio Chavarría <jachavar@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), devscripts
 Standards-Version: 4.1.4
-Homepage: http://github.com/migasfree/migasfree-play
+Homepage: https://github.com/migasfree/migasfree-play
 
 Package: migasfree-play
 Architecture: any
