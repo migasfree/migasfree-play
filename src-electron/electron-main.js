@@ -1,6 +1,7 @@
 /* eslint no-undef: "off" */
 
 import { fileURLToPath } from 'node:url'
+import net from 'node:net'
 import path from 'node:path'
 import os from 'node:os'
 import tcpPortUsed from 'tcp-port-used'
@@ -13,42 +14,41 @@ const platform = process.platform || os.platform()
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 let expressProcess
 
+const EXPRESS_PORT = parseInt(process.env.MFP_EXPRESS_PORT || 3000)
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 function launchExpress() {
-  const isProduction = process.env.NODE_ENV === 'production'
-  const port = parseInt(process.env.MFP_EXPRESS_PORT || 3000)
-
-  tcpPortUsed.check(port, '127.0.0.1').then(
-    function (inUse) {
-      if (app.debug) console.log(`Port ${port} usage: ${inUse}`)
+  tcpPortUsed.check(EXPRESS_PORT, '127.0.0.1').then(
+    (inUse) => {
+      if (app.debug) console.log(`Port ${EXPRESS_PORT} usage: ${inUse}`)
 
       if (!inUse) {
-        const expressApi = isProduction
+        const expressApi = IS_PRODUCTION
           ? path.join(process.resourcesPath, 'app', 'api.js')
           : path.join(currentDir, '..', 'dev-electron', 'api')
 
         // Instantiate Express App
         if (app.debug)
-          console.log('instantiating express app...!!!', expressApi)
+          console.log('Instantiating express app...!!!', expressApi)
 
         expressProcess = spawn('node', [expressApi, app.debug ? 'debug' : ''], {
           detached: false,
         })
 
         if (app.debug)
-          console.log('inside tcpPortUsed, express PID', expressProcess.pid)
+          console.log('Inside tcpPortUsed, express PID', expressProcess.pid)
 
         expressProcess.stdout.on('data', (data) => {
-          console.log(`stdout: ${data}`)
+          console.log(`[Express stdout] ${data}`)
         })
 
         expressProcess.stderr.on('data', (data) => {
-          console.error(`stderr: ${data}`)
+          console.error(`[Express stderr] ${data}`)
         })
       }
     },
 
-    function (err) {
-      console.error('Error on check:', err.message)
+    (err) => {
+      console.error(`[Port Check Error] ${err.message}`)
     },
   )
 }
@@ -69,10 +69,21 @@ if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
   unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
 }
 
-// https://masteringjs.io/tutorials/fundamentals/sleep
-function sleep(ms) {
-  // add ms millisecond timeout before promise resolution
-  return new Promise((resolve) => setTimeout(resolve, ms))
+async function waitForServer() {
+  return new Promise((resolve) => {
+    const checkPort = () => {
+      const client = net.createConnection(EXPRESS_PORT, '127.0.0.1', () => {
+        client.destroy() // close connection after success
+        resolve()
+      })
+      client.on('error', () => {
+        client.destroy()
+        if (app.debug) console.log('Retrying check express port')
+        setTimeout(checkPort, 100) // retry after 100ms
+      })
+    }
+    checkPort()
+  })
 }
 
 let mainWindow
@@ -81,7 +92,11 @@ async function createWindow() {
   const primaryDisplay = screen.getPrimaryDisplay()
   const { height } = primaryDisplay.workAreaSize
 
-  await sleep(500) // delay waiting express app
+  try {
+    await waitForServer() // waiting express app to be ready
+  } catch (error) {
+    console.error('[Express server connection error]', error)
+  }
 
   /**
    * Initial window options
@@ -89,7 +104,7 @@ async function createWindow() {
   mainWindow = new BrowserWindow({
     icon: path.resolve(currentDir, 'img', 'migasfree-play.png'),
     width: 800,
-    height: height >= 800 ? 800 : height,
+    height: Math.min(height, 800),
     show: false,
     useContentSize: true,
     webPreferences: {
@@ -134,7 +149,7 @@ async function createWindow() {
     mainWindow = null
     if (expressProcess) {
       expressProcess.stdin.pause()
-      expressProcess.kill('SIGINT')
+      expressProcess.kill('SIGTERM')
     }
   })
 
@@ -144,11 +159,6 @@ async function createWindow() {
       mainWindow.minimize() // FIXME why second call is needed to minimize?
     } else mainWindow.show()
   })
-
-  // Prevent opening external URL in app, open in default browser instead
-  /* mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url) // import { shell } from 'electron'
-  }) */
 
   mainWindow.on('close', (e) => {
     if (!app.canExit) e.preventDefault() // Prevents the window from closing
@@ -180,6 +190,13 @@ if (!gotTheLock) {
   app.on('activate', () => {
     if (mainWindow === null) {
       createWindow()
+    }
+  })
+
+  app.on('before-quit', () => {
+    if (expressProcess) {
+      expressProcess.stdin.pause()
+      expressProcess.kill('SIGTERM')
     }
   })
 }
