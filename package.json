@@ -52,7 +52,7 @@
     "autoprefixer": "10.4.21",
     "babel-loader": "10.0.0",
     "devtron": "1.4.0",
-    "electron": "35.0.3",
+    "electron": "35.7.5",
     "electron-builder": "26.0.12",
     "electron-debug": "4.1.0",
     "electron-devtools-installer": "4.0.0",
