@@ -206,7 +206,7 @@ export default defineConfig((ctx) => {
           category: 'System',
           // executableName: "migasfree-play",
           desktop: {
-            Name: 'Migasfree Play',
+            // Name: 'Migasfree Play',
             // Exec: "migasfree-play --no-sandbox"
           },
         },
