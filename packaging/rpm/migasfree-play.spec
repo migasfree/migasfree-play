@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.9
+Version:       5.10
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,12 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Fri, 5 Sep 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.10-0
+- fix: app initial values
+- fix: window height (when < 800)
+- fix: replaced sleep function by waitForServer (loop)
+- feat: upgraded several components (node >= 20.19)
+
 * Thu, 30 Jan 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.9-0
 - feat: added nsis and msi properties
 - fix: added 'ignore-certificate-errors' to electron app to avoid ERR_CERT_AUTHORITY_INVALID
