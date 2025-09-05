@@ -1,3 +1,12 @@
+migasfree-play (5.10.0) unstable; urgency=low
+
+  * fix: app initial values
+  * fix: window height (when < 800)
+  * fix: replaced sleep function by waitForServer (loop)
+  * feat: upgraded several components (node >= 20.19)
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 5 Sep 2025 08:46:47 +0200
+
 migasfree-play (5.9.0) unstable; urgency=low
 
   * feat: added nsis and msi properties
