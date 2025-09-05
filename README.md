@@ -41,6 +41,7 @@ yarn build
 ### Build the package for Debian based distros
 
 ```bash
+sudo apt install devscripts  # if not installed
 yarn build
 cd packaging
 DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
@@ -49,6 +50,7 @@ DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
 ### Build the package for RPM based distros
 
 ```bash
+# sudo apt install rpm  # for Debian based distros
 yarn build
 cd packaging/rpm
 ./create-package
