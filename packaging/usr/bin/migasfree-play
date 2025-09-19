@@ -91,14 +91,33 @@ then
     # user root enabled in X
     xhost si:localuser:root
 
+    _LOCK_FILE="/tmp/migasfree-sync.lock"
+    exec 200>"$_LOCK_FILE"
+
+    if ! flock -n 200
+    then
+        echo "Another process is updating crontab"
+        exit 0
+    fi
+
     # Cron every 24 hours
     _FILE="/tmp/migasfree-sync.txt"
     _TASK="sudo /usr/bin/migasfree-play sync"
-    crontab -l | grep --invert-match "$_TASK" > "$_FILE"
     _TIME=$(date "+%M %H")
-    echo "$_TIME * * * export DISPLAY=$DISPLAY; $_TASK" >> "$_FILE"
+    _CRON_ENTRY="$_TIME * * * export DISPLAY=$DISPLAY; $_TASK"
+
+    crontab -l | grep --invert-match "$_TASK" > "$_FILE"
+
+    if ! grep -Fxq "$_CRON_ENTRY" "$_FILE"
+    then
+        echo "$_CRON_ENTRY" >> "$_FILE"
+    fi
+
     crontab "$_FILE"
     rm "$_FILE"
+
+    flock -u 200
+    exec 200>&-
 fi
 
 if [ "$_CONNECTIVITY" = "True" ]
