@@ -128,15 +128,17 @@ export default {
     )
 
     const moreInfo = computed(() => {
-      let items = props.description.split('\n')
-      items.shift()
-      return items.join('\n')
+      const lines = props.description.split('\n')
+      const trimmed = lines.slice(1)
+      return trimmed.join('\n')
     })
 
     const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
+
     const installedPackages = computed(() =>
       JSON.parse(JSON.stringify(installed.value)),
     )
+
     const availablePackages = computed(() =>
       JSON.parse(JSON.stringify(available.value)),
     )
@@ -172,47 +174,42 @@ export default {
     const defaultIcon = computed(() => 'img/migasfree-play.svg')
 
     const installApp = (name, packages) => {
+      if (!packages?.length) return
+
       const packagesToInstall = packages.join(' ')
-      let cmd = `migasfree install ${packagesToInstall}`
-      if (clientVersion.value.startsWith('4.'))
-        cmd = `migasfree --install --package=${packagesToInstall}`
+      let cmd = clientVersion.value.startsWith('4.')
+        ? `migasfree --install --package=${packagesToInstall}`
+        : `migasfree install ${packagesToInstall}`
 
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      uiStore.notifyInfo(
-        interpolate($gettext('Installing %{name}'), {
-          name,
-        }),
-      )
+      const message = interpolate($gettext('Installing %{name}'), { name })
+
+      uiStore.notifyInfo(message)
 
       executionsStore.run({
         cmd,
-        text: interpolate($gettext('Installing %{name}'), {
-          name,
-        }),
+        text: message,
         icon: 'mdi-download',
       })
     }
 
     const removeApp = (name, packages) => {
       const packagesToRemove = packages.join(' ')
-      let cmd = `migasfree purge ${packagesToRemove}`
-      if (clientVersion.value.startsWith('4.'))
-        cmd = `migasfree --remove --package=${packagesToRemove}`
+
+      let cmd = clientVersion.value.startsWith('4.')
+        ? `migasfree --remove --package=${packagesToRemove}`
+        : `migasfree purge ${packagesToRemove}`
 
       if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      uiStore.notifyInfo(
-        interpolate($gettext('Uninstalling %{name}'), {
-          name,
-        }),
-      )
+      const message = interpolate($gettext('Uninstalling %{name}'), { name })
+
+      uiStore.notifyInfo(message)
 
       executionsStore.run({
         cmd,
-        text: interpolate($gettext('Uninstalling %{name}'), {
-          name,
-        }),
+        text: message,
         icon: 'mdi-delete',
       })
     }
