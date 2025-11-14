@@ -14,23 +14,23 @@ export const usePackagesStore = defineStore('packages', () => {
   const installed = ref([])
   const inventory = ref([])
 
-  async function setAvailablePackages() {
+  const setAvailablePackages = async () => {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { clientVersion } = storeToRefs(programStore)
 
-    await api
-      .get(`${internalApi}/packages/available/?version=${clientVersion.value}`)
-      .then((response) => {
-        available.value = response.data
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.get(
+        `${internalApi}/packages/available/?version=${clientVersion.value}`,
+      )
+      available.value = data
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function setInstalledPackages() {
+  const setInstalledPackages = async () => {
     const appsStore = useAppsStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -38,33 +38,31 @@ export const usePackagesStore = defineStore('packages', () => {
     const { getAppsPackages } = storeToRefs(appsStore)
     const { clientVersion } = storeToRefs(programStore)
 
-    await api
-      .post(
+    try {
+      const { data } = await api.post(
         `${internalApi}/packages/installed/?version=${clientVersion.value}`,
         getAppsPackages.value,
       )
-      .then((response) => {
-        installed.value = response.data
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+      installed.value = data
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function setInventory() {
+  const setInventory = async () => {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { clientVersion } = storeToRefs(programStore)
 
-    await api
-      .get(`${internalApi}/packages/inventory/?version=${clientVersion.value}`)
-      .then((response) => {
-        inventory.value = response.data
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.get(
+        `${internalApi}/packages/inventory/?version=${clientVersion.value}`,
+      )
+      inventory.value = data
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   return {
