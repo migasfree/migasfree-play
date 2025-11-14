@@ -71,10 +71,15 @@ export default {
 
     const updateDevices = async () => {
       uiStore.updating()
-      await devicesStore.computerDevices()
-      await devicesStore.getAvailableDevices()
-      await devicesStore.getFeaturesDevices()
-      uiStore.updatingFinished()
+      try {
+        await Promise.all([
+          devicesStore.computerDevices(),
+          devicesStore.getAvailableDevices(),
+          devicesStore.getFeaturesDevices(),
+        ])
+      } finally {
+        uiStore.updatingFinished()
+      }
     }
 
     return {
