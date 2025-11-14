@@ -65,9 +65,11 @@ export default {
 
     const updateApps = async () => {
       uiStore.updating()
-      await appsStore.loadApps()
-      await filtersStore.setCategories()
-      uiStore.updatingFinished()
+      try {
+        await Promise.all([appsStore.loadApps(), filtersStore.setCategories()])
+      } finally {
+        uiStore.updatingFinished()
+      }
     }
 
     return { isUpdating, updateApps, filteredApps }
