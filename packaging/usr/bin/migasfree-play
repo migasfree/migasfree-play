@@ -6,6 +6,68 @@ then
     exit 1
 fi
 
+# Get original user and session type
+if [ -n "$SUDO_USER" ]
+then
+    ORIGINAL_UID=$(id -u "$SUDO_USER")
+
+    XDG_SESSION_TYPE=$(loginctl show-user "$SUDO_USER" -p Type --value 2>/dev/null)
+    if [ -z "$XDG_SESSION_TYPE" ]
+    then
+      WAYLAND_COMPOSERS=(
+          "gnome-shell"     # GNOME
+          "kwin_wayland"    # KDE Plasma
+          "sway"            # Sway (i3‑like)
+          "weston"          # Weston
+          "cage"            # Cage
+          "cage-break"      # Cage‑break
+          "river"           # River
+          "labwc"           # Labwc
+          "swaybg"          # Swaybg
+          "mutter"          # Mutter (used by GNOME classic and others)
+          "cosmic-session"  # COSMIC (Pop!_OS)
+          "hyprland"        # Hyprland
+          "swayidle"        # Swayidle
+          "wlroots"         # wlroots
+      )
+
+      for _COMPOSITOR in "${WAYLAND_COMPOSERS[@]}"
+      do
+          if pgrep -u "$SUDO_USER" -x "$_COMPOSITOR" > /dev/null
+          then
+              XDG_SESSION_TYPE="wayland"
+              break
+          fi
+      done
+
+      if [ -z "$XDG_SESSION_TYPE" ]
+      then
+          XDG_SESSION_TYPE="x11"
+      fi
+    fi
+
+    export XDG_RUNTIME_DIR="/run/user/$ORIGINAL_UID"
+
+    if [ -z "$DISPLAY" ]
+    then
+        DISPLAY=$(ps -u "$SUDO_USER" e | grep -Eo 'DISPLAY=[^ ]+' | head -n1 | cut -d= -f2)
+        export DISPLAY="${DISPLAY:-:0}"
+    fi
+
+    if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -z "$WAYLAND_DISPLAY" ]
+    then
+        WAYLAND_DISPLAY=$(ps -u "$SUDO_USER" e | grep -Eo 'WAYLAND_DISPLAY=[^ ]+' | head -n1 | cut -d= -f2)
+        export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
+    fi
+
+    # echo "Detected session type: $XDG_SESSION_TYPE"
+    # echo "DISPLAY: $DISPLAY"
+    # [ "$XDG_SESSION_TYPE" = "wayland" ] && echo "WAYLAND_DISPLAY: $WAYLAND_DISPLAY"
+else
+    # if not SUDO_USER, X11 by default
+    XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-x11}"
+fi
+
 _PYTHON=$(command -v python2)
 [ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
 if [ $? -ne 0 ] || [ -z "$_PYTHON" ]
@@ -89,7 +151,16 @@ done
 if [ "$_SYNC" = "sync" ]
 then
     # user root enabled in X
-    xhost si:localuser:root
+    if [ "$XDG_SESSION_TYPE" = "x11" ]
+    then
+        if [ -n "$SUDO_USER" ]
+        then
+            su "$SUDO_USER" -c "xhost si:localuser:root" 2>/dev/null || \
+            su "$SUDO_USER" -c "xhost +local:root" 2>/dev/null || true
+        else
+            xhost si:localuser:root 2>/dev/null || xhost +local:root 2>/dev/null || true
+        fi
+    fi
 
     _LOCK_FILE="/tmp/migasfree-sync.lock"
     exec 200>"$_LOCK_FILE"
@@ -104,10 +175,15 @@ then
     _FILE="/tmp/migasfree-sync.txt"
     _TASK="sudo /usr/bin/migasfree-play sync"
     _TIME=$(date "+%M %H")
-    _CRON_ENTRY="$_TIME * * * export DISPLAY=$DISPLAY; $_TASK"
+
+    if [ "$XDG_SESSION_TYPE" = "wayland" ]
+    then
+        _CRON_ENTRY="$_TIME * * * export WAYLAND_DISPLAY=$WAYLAND_DISPLAY; export XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR; export DISPLAY=$DISPLAY; $_TASK"
+    else
+        _CRON_ENTRY="$_TIME * * * export DISPLAY=$DISPLAY; $_TASK"
+    fi
 
     crontab -l | grep --invert-match "$_TASK" > "$_FILE"
-
     if ! grep -Fxq "$_CRON_ENTRY" "$_FILE"
     then
         echo "$_CRON_ENTRY" >> "$_FILE"
@@ -123,6 +199,13 @@ fi
 if [ "$_CONNECTIVITY" = "True" ]
 then
     [ "$_DEBUG" = "debug" ] && export ELECTRON_ENABLE_LOGGING=1
+
+    _WAYLAND_FLAGS=""
+    if [ "$XDG_SESSION_TYPE" = "wayland" ]
+    then
+        _WAYLAND_FLAGS="--enable-features=UseOzonePlatform --ozone-platform=wayland"
+    fi
+
     /usr/share/migasfree-play/migasfree-play "$_SYNC" "$_DEBUG" \
-      --no-sandbox --disable-gpu-sandbox "$MFP_CMD_FLAGS"
+      --no-sandbox --disable-gpu-sandbox $_WAYLAND_FLAGS $MFP_CMD_FLAGS
 fi
