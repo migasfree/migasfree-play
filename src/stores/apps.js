@@ -27,7 +27,7 @@ export const useAppsStore = defineStore('apps', () => {
     return packages
   })
 
-  async function loadApps() {
+  const loadApps = async () => {
     const computerStore = useComputerStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -35,73 +35,78 @@ export const useAppsStore = defineStore('apps', () => {
     const { cid, project } = storeToRefs(computerStore)
     const { initialUrl, token } = storeToRefs(programStore)
 
-    if (cid.value)
-      await api
-        .get(
-          `${initialUrl.value.token}${tokenApi.apps}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
-          {
-            headers: {
-              Authorization: token.value,
-            },
-          },
-        )
-        .then((response) => {
-          setApps({
-            value: response.data.results,
-            project: project.value,
-          })
-          filterApps()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    if (!cid.value) return
+
+    try {
+      const url = `${initialUrl.value.token}${tokenApi.apps}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`
+      const { data } = await api.get(url, {
+        headers: { Authorization: token.value },
+      })
+
+      setApps({
+        value: data.results,
+        project: project.value,
+      })
+      filterApps()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function filterApps() {
+  const filterApps = () => {
     const filtersStore = useFiltersStore()
     const packagesStore = usePackagesStore()
-
-    let results = apps.value
 
     const { searchApp, selectedCategory, onlyInstalledApps } =
       storeToRefs(filtersStore)
     const { installed } = storeToRefs(packagesStore)
-    if (selectedCategory.value && selectedCategory.value.id > 0)
-      results = results.filter(
-        (app) => app.category.id == selectedCategory.value.id,
-      )
-    if (searchApp.value) {
-      const pattern = searchApp.value.toLowerCase()
 
-      results = results.filter(
-        (app) =>
-          app.name.toLowerCase().includes(pattern) ||
-          app.description.toLowerCase().includes(pattern),
-      )
-    }
+    const installedSet = onlyInstalledApps.value
+      ? new Set(installed.value)
+      : null
 
-    if (onlyInstalledApps.value) {
-      const installedPackages = JSON.parse(JSON.stringify(installed.value))
+    const pattern = searchApp.value?.toLowerCase()
+    const categoryId = selectedCategory.value?.id
 
-      results = results.filter(
-        (app) =>
-          app.packages_to_install.length > 0 &&
-          app.packages_to_install.filter((x) => !installedPackages.includes(x))
-            .length === 0,
-      )
-    }
+    const results = apps.value.filter((app) => {
+      // Category filter (if active)
+      if (categoryId && categoryId > 0 && app.category.id !== categoryId) {
+        return false
+      }
+
+      // Search filter (if active)
+      if (pattern) {
+        const nameMatch = app.name.toLowerCase().includes(pattern)
+        const descMatch = app.description.toLowerCase().includes(pattern)
+        if (!nameMatch && !descMatch) return false
+      }
+
+      // Installed‑apps filter (if active)
+      if (onlyInstalledApps.value) {
+        // Must have at least one package to install
+        if (app.packages_to_install.length === 0) return false
+
+        // All required packages must be in the installed set
+        const allInstalled = app.packages_to_install.every((pkg) =>
+          installedSet.has(pkg),
+        )
+        if (!allInstalled) return false
+      }
+
+      return true
+    })
 
     filteredApps.value = results
   }
 
-  function setApps({ value, project }) {
+  const setApps = ({ value, project }) => {
     apps.value = []
     value.forEach((item) => {
-      let filterPackages = item.packages_by_project.filter(
-        (packages) => project === packages.project.name,
+      const pkg = item.packages_by_project.find(
+        (p) => p.project.name === project,
       )
-      if (filterPackages.length > 0) {
-        item.packages_to_install = filterPackages[0].packages_to_install
+      if (pkg) {
+        item.packages_to_install = pkg.packages_to_install
         apps.value.push(item)
       }
     })
