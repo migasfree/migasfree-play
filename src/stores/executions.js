@@ -20,7 +20,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   const isRunningCommand = ref(false)
   const error = ref('')
 
-  function trimEndSpaces(text) {
+  const trimEndSpaces = (text) => {
     let lines = text.split('\n')
     for (let i = 0; i < lines.length; i++) {
       lines[i] = lines[i].replace(/ +$/, '')
@@ -28,94 +28,93 @@ export const useExecutionsStore = defineStore('executions', () => {
     return lines.join('\n')
   }
 
-  function escapeRegExp(text) {
+  const escapeRegExp = (text) => {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
   }
 
-  function replaceAll(str, find, replace) {
+  const replaceAll = (str, find, replace) => {
     var exp = escapeRegExp(find)
     var re = new RegExp(exp, 'g')
 
     return str.replace(re, replace)
   }
 
-  function replaceColors(txt) {
+  const replaceColors = (txt) => {
     txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
 
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠋\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠙\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠹\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠸\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠼\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠴\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠦\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠧\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠇\x1b[0m', '')
-    txt = replaceAll(txt, '\r\x1b[2K\x1b[32m⠏\x1b[0m', '')
-
-    txt = replaceAll(txt, '\x1b[32m⠋\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠙\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠹\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠸\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠼\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠴\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠦\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠧\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠇\x1b[0m', '')
-    txt = replaceAll(txt, '\x1b[32m⠏\x1b[0m', '')
-
-    txt = replaceAll(txt, '\x1b[95m', "<span class='text-purple'>") // accent
-    txt = replaceAll(txt, '\x1b[35m', "<span class='text-purple'>") // accent
-    txt = replaceAll(txt, '\x1b[92m', "<span class='text-green'>") // ok
-    txt = replaceAll(txt, '\x1b[1;32m', "<span class='text-green'>") // ok
-    txt = replaceAll(txt, '\x1b[1;92m', "<span class='text-light-green'>") // ok
-    txt = replaceAll(txt, '\x1b[93m', "<span class='text-amber'>") // warning
-    txt = replaceAll(txt, '\x1b[91m', "<span class='text-negative'>") // error
-    txt = replaceAll(txt, '\x1b[1;91m', "<span class='text-negative'>") // error
-    txt = replaceAll(txt, '\x1b[33m', "<span class='text-amber'>") // warning
-    txt = replaceAll(txt, '\x1b[32m', "<span class='text-blue'>") // info
-    txt = replaceAll(txt, '\x1b[1;34m', "<span class='text-blue'>") // info
-    txt = replaceAll(txt, '\x1b[1;36m', "<span class='text-indigo'>") // info
-    txt = replaceAll(txt, '\x1b[2;36m', "<span class='text-teal'>") // time
-    txt = replaceAll(txt, '\x1b[4;94m', "<span class='text-blue'>") // info
-    txt = replaceAll(txt, '\x1b[0m', '</span>')
-    txt = replaceAll(txt, '\r\x1b[2K', '')
-    txt = replaceAll(txt, '\x1b[2K', '')
-    txt = replaceAll(txt, '\x1b[?25l', '')
-    txt = replaceAll(txt, '\x1b[?25h', '')
-    txt = replaceAll(txt, '\x1b[1A', '')
-    txt = replaceAll(txt, '\x1b[1m', '')
-    txt = txt.replace(/\t/g, '&nbsp;'.repeat(8))
-    txt = txt.replace(/^ +/gm, function (match) {
-      return '&nbsp;'.repeat(match.length)
+    // Patterns that should be stripped completely
+    const stripPatterns = [
+      '/\r\x1b[2K\x1b[32m[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]\x1b[0m/g',
+      '/\x1b[32m[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]\x1b[0m/g',
+      '/\x1b[?25[lh]/g',
+      '/\x1b[1A/g',
+      '/\x1b[1m/g',
+      '/\x1b[2K/g',
+      '/\r\x1b[2K/g',
+    ]
+    stripPatterns.forEach((p) => {
+      txt = txt.replace(p, '')
     })
+
+    // Mapping of ANSI codes -> HTML spans
+    const ansiMap = [
+      ['\x1b[95m', "<span class='text-purple'>"],
+      ['\x1b[35m', "<span class='text-purple'>"],
+      ['\x1b[92m', "<span class='text-green'>"],
+      ['\x1b[1;32m', "<span class='text-green'>"],
+      ['\x1b[1;92m', "<span class='text-light-green'>"],
+      ['\x1b[93m', "<span class='text-amber'>"],
+      ['\x1b[91m', "<span class='text-negative'>"],
+      ['\x1b[1;91m', "<span class='text-negative'>"],
+      ['\x1b[33m', "<span class='text-amber'>"],
+      ['\x1b[32m', "<span class='text-blue'>"],
+      ['\x1b[1;34m', "<span class='text-blue'>"],
+      ['\x1b[1;36m', "<span class='text-indigo'>"],
+      ['\x1b[2;36m', "<span class='text-teal'>"],
+      ['\x1b[4;94m', "<span class='text-blue'>"],
+      ['\x1b[0m', '</span>'],
+    ]
+    ansiMap.forEach(([code, repl]) => {
+      txt = replaceAll(txt, code, repl)
+    })
+
+    txt = txt.replace(/\t/g, '&nbsp;'.repeat(8))
+    txt = txt.replace(/^ +/gm, (m) => '&nbsp;'.repeat(m.length))
     txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
     return txt
   }
 
-  async function getExecutions() {
+  const getExecutions = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get(`${internalApi}/executions`)
-      .then((response) => {
-        setExecutionsLog(response.data)
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
-  }
-
-  async function setExecutions() {
-    const uiStore = useUiStore()
-
-    await api.post(`${internalApi}/executions`, items.value).catch((error) => {
+    try {
+      const response = await api.get(`${internalApi}/executions`)
+      setExecutionsLog(response.data)
+    } catch (error) {
       uiStore.notifyError(error)
-    })
+    }
   }
 
-  function run({ cmd, text, icon }) {
+  const setExecutions = async () => {
+    const uiStore = useUiStore()
+
+    try {
+      await api.post(`${internalApi}/executions`, items.value)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  }
+
+  const spawnProcess = (command, args) => {
+    if (process.platform === 'linux') {
+      return spawn(command, args, { shell: '/bin/bash' })
+    }
+    // win32 (and any other platform) falls back to default shell
+    return spawn(command, args, { shell: true })
+  }
+
+  const run = ({ cmd, text, icon }) => {
     const computerStore = useComputerStore()
     const packagesStore = usePackagesStore()
     const uiStore = useUiStore()
@@ -128,15 +127,8 @@ export const useExecutionsStore = defineStore('executions', () => {
     }
     startedCmd()
 
-    let subprocess
-
     const [command, ...args] = cmd.split(' ')
-
-    if (process.platform === 'linux') {
-      subprocess = spawn(command, args, { shell: '/bin/bash' })
-    } else if (process.platform === 'win32') {
-      subprocess = spawn(command, args, { shell: true })
-    }
+    const subprocess = spawnProcess(command, args)
 
     addExecution({ command: text, icon })
 
@@ -160,15 +152,16 @@ export const useExecutionsStore = defineStore('executions', () => {
         uiStore.notifyError(message)
         appendExecutionError(message)
         win.show()
+        return
+      }
+
+      if (error.value === '') {
+        packagesStore.setInstalledPackages()
       } else {
-        if (error.value === '') {
-          packagesStore.setInstalledPackages()
-        } else {
-          uiStore.notifyError(
-            error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, ''),
-          )
-          resetExecutionError()
-        }
+        uiStore.notifyError(
+          error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, ''),
+        )
+        resetExecutionError()
       }
 
       setExecutions()
@@ -186,23 +179,23 @@ export const useExecutionsStore = defineStore('executions', () => {
     })
   }
 
-  function setExecutionsLog(value) {
+  const setExecutionsLog = (value) => {
     items.value = value
     if (Object.keys(value).length)
       lastId.value = Object.keys(value)[Object.keys(value).length - 1]
   }
 
-  async function startedCmd() {
+  const startedCmd = async () => {
     isRunningCommand.value = true
     app.canExit = false
   }
 
-  async function finishedCmd() {
+  const finishedCmd = async () => {
     isRunningCommand.value = false
     app.canExit = true
   }
 
-  function addExecution({ command, icon }) {
+  const addExecution = ({ command, icon }) => {
     lastId.value = date.formatDate(
       Date.parse(new Date()),
       'YYYY-MM-DD HH:mm:ss',
@@ -218,16 +211,16 @@ export const useExecutionsStore = defineStore('executions', () => {
       delete items.value[Reflect.ownKeys(items.value)[0]]
   }
 
-  function appendExecutionText(text) {
+  const appendExecutionText = (text) => {
     items.value[lastId.value]['text'] += text
   }
 
-  function appendExecutionError(text) {
+  const appendExecutionError = (text) => {
     error.value += text
     items.value[lastId.value]['error'] += text
   }
 
-  function resetExecutionError() {
+  const resetExecutionError = () => {
     error.value = ''
   }
 
