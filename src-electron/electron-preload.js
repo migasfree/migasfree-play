@@ -19,5 +19,5 @@
 import electron from 'electron'
 import * as remote from '@electron/remote'
 
-window.electron = electron
-window.electronRemote = remote
+window.electron = electron // eslint-disable-line no-undef
+window.electronRemote = remote // eslint-disable-line no-undef
