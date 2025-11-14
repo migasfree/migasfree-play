@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMeta, useQuasar } from 'quasar'
 
@@ -90,17 +90,19 @@ export default {
 
     useMeta({ title: appName })
 
-    programStore.init()
-
-    const retry = () => {
+    const retry = async () => {
       loadedData.value.length = 0
       loadingData.value.length = 0
-      programStore.init()
+      await programStore.init()
     }
 
     watch(status, (value, old) => {
       if (old) loadedData.value.push(old)
       loadingData.value.push({ label: value, value: value })
+    })
+
+    onMounted(async () => {
+      await programStore.init()
     })
 
     return {
