@@ -47,7 +47,7 @@ export const useProgramStore = defineStore('program', () => {
   const userIsPrivileged = computed(() => user.value.isPrivileged)
   const appIsStopped = computed(() => stopApp.value)
 
-  async function init() {
+  const init = async () => {
     const appsStore = useAppsStore()
     const computerStore = useComputerStore()
     const devicesStore = useDevicesStore()
@@ -74,70 +74,104 @@ export const useProgramStore = defineStore('program', () => {
     setInitialUrl()
 
     setStatus(gettext.$gettext('Server'))
-    await serverInfo()
+    await Promise.all([
+      serverInfo(),
+      (async () => {
+        await getToken()
+        await checkToken()
+        if (!isTokenChecked.value) await getToken()
+      })(),
+    ])
     if (appIsStopped.value) return
-    await getToken()
-    await checkToken()
-    if (appIsStopped.value) return
-    if (!isTokenChecked.value) {
-      await getToken()
-    }
 
     setStatus(gettext.$gettext('Computer'))
-    await computerStore.computerInfo()
-    await computerStore.computerNetwork()
-    await computerStore.computerId()
-    if (!serverVersion.value.startsWith('4.'))
-      await computerStore.computerLabel()
-    await computerStore.computerData()
-    await computerStore.computerAttribute()
+    await Promise.all([
+      computerStore.computerInfo(),
+      computerStore.computerNetwork(),
+      computerStore.computerId(),
+      (async () => {
+        if (!serverVersion.value.startsWith('4.')) {
+          await computerStore.computerLabel()
+        }
+      })(),
+      computerStore.computerData(),
+      computerStore.computerAttribute(),
+    ])
+
+    const optionalPromises = []
 
     if (preferencesStore.showApps) {
-      setStatus(gettext.$gettext('Apps'))
-      await appsStore.loadApps()
+      optionalPromises.push(
+        (async () => {
+          setStatus(gettext.$gettext('Apps'))
+          await appsStore.loadApps()
+        })(),
+      )
     }
 
-    setStatus(gettext.$gettext('Categories'))
-    await filtersStore.setCategories()
+    optionalPromises.push(
+      (async () => {
+        setStatus(gettext.$gettext('Categories'))
+        await filtersStore.setCategories()
+      })(),
+    )
 
-    setStatus(gettext.$gettext('Packages'))
-    await packagesStore.setAvailablePackages()
-    await packagesStore.setInstalledPackages()
-    await packagesStore.setInventory()
+    optionalPromises.push(
+      (async () => {
+        setStatus(gettext.$gettext('Packages'))
+        await Promise.all([
+          packagesStore.setAvailablePackages(),
+          packagesStore.setInstalledPackages(),
+          packagesStore.setInventory(),
+        ])
+      })(),
+    )
 
-    await executionsStore.getExecutions()
+    optionalPromises.push(executionsStore.getExecutions())
 
     if (preferencesStore.showDevices) {
-      setStatus(gettext.$gettext('Devices'))
-      await devicesStore.computerDevices()
-      await devicesStore.getAvailableDevices()
-      await devicesStore.getFeaturesDevices()
+      optionalPromises.push(
+        (async () => {
+          setStatus(gettext.$gettext('Devices'))
+          await Promise.all([
+            devicesStore.computerDevices(),
+            devicesStore.getAvailableDevices(),
+            devicesStore.getFeaturesDevices(),
+          ])
+        })(),
+      )
     }
 
     if (preferencesStore.showTags) {
-      setStatus(gettext.$gettext('Tags'))
-      await tagsStore.getAvailableTags()
-      await tagsStore.getAssignedTags()
+      optionalPromises.push(
+        (async () => {
+          setStatus(gettext.$gettext('Tags'))
+          await Promise.all([
+            tagsStore.getAvailableTags(),
+            tagsStore.getAssignedTags(),
+          ])
+        })(),
+      )
     }
+
+    await Promise.all(optionalPromises)
 
     setStatus('')
     uiStore.loadingFinished()
   }
 
-  async function clientInfo() {
+  const clientInfo = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get(`${internalApi}/preferences/client`)
-      .then((response) => {
-        clientVersion.value = response.data.version
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.get(`${internalApi}/preferences/client`)
+      clientVersion.value = data.version
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function checkClientVersion() {
+  const checkClientVersion = () => {
     if (compareVersions(clientVersion.value, minimumClientVersion) < 0) {
       setStatus(
         gettext.interpolate(
@@ -153,166 +187,161 @@ export const useProgramStore = defineStore('program', () => {
     }
   }
 
-  async function serverInfo() {
+  const serverInfo = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get(`${initialUrl.value.public}${publicApi.serverInfo}`)
-      .then((response) => {
-        serverVersion.value = response.data.version
-        organization.value = response.data.organization
-      })
-      .catch((error) => {
-        if (
-          'response' in error &&
-          'status' in error.response &&
-          error.response.status === 405
-        ) {
-          api
-            .post(`${initialUrl.value.public}${publicApi.serverInfo}`)
-            .then((response) => {
-              serverVersion.value = response.data.version
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        } else uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.get(
+        `${initialUrl.value.public}${publicApi.serverInfo}`,
+      )
+      serverVersion.value = data.version
+      organization.value = data.organization
+    } catch (error) {
+      if (error.response?.status === 405) {
+        try {
+          const { data } = await api.post(
+            `${initialUrl.value.public}${publicApi.serverInfo}`,
+          )
+          serverVersion.value = data.version
+        } catch (postError) {
+          uiStore.notifyError(postError)
+        }
+      } else {
+        uiStore.notifyError(error)
+      }
+    }
   }
 
-  async function getToken() {
-    let response = await api.get(`${internalApi}/token`)
-    if (!('data' in response) || !response.data.token) {
-      response = await api
-        .post(`${protocol.value}://${host.value}${tokenAuth.url}`, {
-          username: process.env.MFP_USER || 'migasfree-play',
-          password: process.env.MFP_PASSWORD || 'migasfree-play',
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            setStatus(
-              gettext.$gettext(
-                'Credentials are not valid. Review app settings.',
-              ),
-            )
-            setStopApp()
-          }
-        })
-      if (response && response.data.token) {
-        await api.post(`${internalApi}/token`, {
-          token: response.data.token,
-        })
+  const getToken = async () => {
+    const { data } = await api.get(`${internalApi}/token`)
+    if (data?.token) {
+      setToken(data.token)
+      return
+    }
+
+    try {
+      const { data } = await api.post(
+        `${protocol.value}://${host.value}${tokenAuth.url}`,
+        {
+          username: process.env.MFP_USER ?? 'migasfree‑play',
+          password: process.env.MFP_PASSWORD ?? 'migasfree‑play',
+        },
+      )
+
+      if (data?.token) {
+        await api.post(`${internalApi}/token`, { token: data.token })
+        setToken(data.token)
+        return
+      }
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        setStatus(
+          gettext.$gettext('Credentials are not valid. Review app settings.'),
+        )
+        setStopApp()
       }
     }
 
-    setToken(response ? response.data.token : '')
+    setToken('')
   }
 
-  async function checkToken() {
-    await api
-      .get(`${protocol.value}://${host.value}${checkTokenApi.url}`, {
-        headers: {
-          Authorization: token.value,
-        },
+  const checkToken = async () => {
+    try {
+      await api.get(`${protocol.value}://${host.value}${checkTokenApi.url}`, {
+        headers: { Authorization: token.value },
       })
-      .then(() => {
-        setTokenChecked(true)
-      })
-      .catch((error) => {
-        if (!error.response) {
-          setStatus(gettext.$gettext('There is no connection to the server'))
-          setStopApp()
-        } else {
-          if (error.response.status === 403) {
-            api.post(`${internalApi}/token`, {
-              token: '',
-            })
-            setTokenChecked(false)
-          }
-        }
-      })
+
+      setTokenChecked(true)
+    } catch (error) {
+      if (!error.response) {
+        setStatus(gettext.$gettext('There is no connection to the server'))
+        setStopApp()
+        return
+      }
+
+      if (error.response.status === 403) {
+        // Invalidate the token on the backend
+        await api.post(`${internalApi}/token`, { token: '' })
+        setTokenChecked(false)
+      }
+    }
   }
 
-  async function checkUser({ username, password }) {
+  const checkUser = async ({ username, password }) => {
     const uiStore = useUiStore()
 
-    await api
-      .post(`${internalApi}/user/check`, {
+    try {
+      const { data } = await api.post(`${internalApi}/user/check`, {
         username,
         password,
       })
-      .then((response) => {
-        if (response.data.is_privileged) {
-          user.value.isPrivileged = true
-        } else {
-          uiStore.notifyError(gettext.$gettext('User without privileges'))
-        }
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+
+      if (data.is_privileged) {
+        user.value.isPrivileged = true
+      } else {
+        uiStore.notifyError(gettext.$gettext('User without privileges'))
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function apiProtocol() {
+  const apiProtocol = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get(
+    try {
+      const { data } = await api.get(
         `${internalApi}/preferences/protocol/?version=${clientVersion.value}`,
       )
-      .then((response) => {
-        protocol.value = response.data
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+      protocol.value = data
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function clientManageDevices() {
+  const clientManageDevices = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get(`${internalApi}/preferences/manage-devices/`)
-      .then((response) => {
-        manageDevices.value = response.data
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.get(
+        `${internalApi}/preferences/manage-devices/`,
+      )
+      manageDevices.value = data
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function serverHost() {
+  const serverHost = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get(`${internalApi}/preferences/server`)
-      .then((response) => {
-        host.value = response.data.server
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.get(`${internalApi}/preferences/server`)
+      host.value = data.server
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function setInitialUrl() {
+  const setInitialUrl = () => {
     initialUrl.value.baseDomain = `${protocol.value}://${host.value}`
     initialUrl.value.public = `${initialUrl.value.baseDomain}${publicApi.prefix}`
     initialUrl.value.token = `${initialUrl.value.baseDomain}${tokenApi.prefix}`
   }
 
-  function setToken(value) {
+  const setToken = (value) => {
     token.value = `Token ${value}`
   }
 
-  function setTokenChecked(value) {
+  const setTokenChecked = (value) => {
     isTokenChecked.value = value
   }
 
-  function setStatus(value) {
+  const setStatus = (value) => {
     status.value = value
   }
 
-  function setStopApp() {
+  const setStopApp = () => {
     stopApp.value = true
   }
 
