@@ -135,8 +135,9 @@ export default {
       if (showSyncDetails.value && route.name !== 'details')
         router.push({ name: 'details' })
 
-      let cmd = 'migasfree sync'
-      if (clientVersion.value.startsWith('4.')) cmd = 'migasfree --update'
+      const cmd = clientVersion.value.startsWith('4.')
+        ? 'migasfree --update'
+        : 'migasfree sync'
 
       executionsStore.run({
         cmd,
