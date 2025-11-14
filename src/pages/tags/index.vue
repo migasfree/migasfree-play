@@ -50,9 +50,14 @@ export default {
 
     const updateTags = async () => {
       uiStore.updating()
-      await tagsStore.getAvailableTags()
-      await tagsStore.getAssignedTags()
-      uiStore.updatingFinished()
+      try {
+        await Promise.all([
+          tagsStore.getAvailableTags(),
+          tagsStore.getAssignedTags(),
+        ])
+      } finally {
+        uiStore.updatingFinished()
+      }
     }
 
     return { isUpdating, updateTags }
