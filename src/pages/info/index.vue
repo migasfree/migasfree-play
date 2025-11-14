@@ -53,13 +53,18 @@ export default {
 
     const updateInfo = async () => {
       uiStore.updating()
-      await computerStore.computerInfo()
-      await computerStore.computerNetwork()
-      await computerStore.computerId()
-      await computerStore.computerData()
-      await computerStore.computerAttribute()
-      await packagesStore.setInventory()
-      uiStore.updatingFinished()
+      try {
+        await Promise.all([
+          computerStore.computerInfo(),
+          computerStore.computerNetwork(),
+          computerStore.computerId(),
+          computerStore.computerData(),
+          computerStore.computerAttribute(),
+          packagesStore.setInventory(),
+        ])
+      } finally {
+        uiStore.updatingFinished()
+      }
     }
 
     return { isUpdating, updateInfo }
