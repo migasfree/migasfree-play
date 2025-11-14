@@ -17,7 +17,21 @@ export const useDevicesStore = defineStore('devices', () => {
   const assignedLogicalDevices = ref([])
   const filteredDevices = ref([])
 
-  async function computerDevices() {
+  const addDeviceIfMissing = async (item, type) => {
+    const uiStore = useUiStore()
+
+    if (!devices.value.some((d) => d.id === item.device.id)) {
+      try {
+        const data = await getDeviceData(item.device.id)
+        data['x-type'] = type
+        devices.value.push(data)
+      } catch (err) {
+        uiStore.notifyError(err)
+      }
+    }
+  }
+
+  const computerDevices = async () => {
     const computerStore = useComputerStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -27,46 +41,37 @@ export const useDevicesStore = defineStore('devices', () => {
 
     devices.value = []
 
-    if (cid.value)
-      try {
-        const response = await api.get(
-          `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
-          { headers: { Authorization: token.value } },
-        )
+    if (!cid.value) return
 
-        defaultLogicalDevice.value = response.data.default_logical_device
-        assignedLogicalDevices.value =
-          response.data.assigned_logical_devices_to_cid
-        inflictedLogicalDevices.value = response.data.inflicted_logical_devices
+    try {
+      const { data } = await api.get(
+        `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
+        { headers: { Authorization: token.value } },
+      )
 
-        for (const item of assignedLogicalDevices.value) {
-          if (!devices.value.some((device) => device.id === item.device.id))
-            try {
-              const deviceData = await getDeviceData(item.device.id)
-              deviceData['x-type'] = 'assigned'
-              devices.value.push(deviceData)
-            } catch (error) {
-              uiStore.notifyError(error)
-            }
-        }
+      defaultLogicalDevice.value = data.default_logical_device
+      assignedLogicalDevices.value = data.assigned_logical_devices_to_cid
+      inflictedLogicalDevices.value = data.inflicted_logical_devices
 
-        for (const item of inflictedLogicalDevices.value) {
-          if (!devices.value.some((device) => device.id === item.device.id))
-            try {
-              const deviceData = await getDeviceData(item.device.id)
-              deviceData['x-type'] = 'inflicted'
-              devices.value.push(deviceData)
-            } catch (error) {
-              uiStore.notifyError(error)
-            }
-        }
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
+      await Promise.all([
+        (async () => {
+          for (const item of assignedLogicalDevices.value) {
+            await addDeviceIfMissing(item, 'assigned')
+          }
+        })(),
+        (async () => {
+          for (const item of inflictedLogicalDevices.value) {
+            await addDeviceIfMissing(item, 'inflicted')
+          }
+        })(),
+      ])
+    } catch (err) {
+      uiStore.notifyError(err)
+    }
   }
 
   // today is forbidden use this method
-  async function setDefaultLogicalDevice(logicalId) {
+  const setDefaultLogicalDevice = async (logicalId) => {
     const computerStore = useComputerStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -74,23 +79,21 @@ export const useDevicesStore = defineStore('devices', () => {
     const { cid } = storeToRefs(computerStore)
     const { initialUrl, token } = storeToRefs(programStore)
 
-    if (cid.value) {
-      await api
-        .patch(
-          `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
-          { default_logical_device: logicalId },
-          { headers: { Authorization: token.value } },
-        )
-        .then(() => {
-          /* TODO */
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    if (!cid.value) return
+
+    try {
+      await api.patch(
+        `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
+        { default_logical_device: logicalId },
+        { headers: { Authorization: token.value } },
+      )
+      // TODO: handle successful update
+    } catch (error) {
+      uiStore.notifyError(error)
     }
   }
 
-  async function getAvailableDevices() {
+  const getAvailableDevices = async () => {
     const computerStore = useComputerStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -98,33 +101,37 @@ export const useDevicesStore = defineStore('devices', () => {
     const { cid } = storeToRefs(computerStore)
     const { initialUrl, token, serverVersion } = storeToRefs(programStore)
 
-    if (cid.value)
-      await api
-        .get(
-          `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
-          { headers: { Authorization: token.value } },
-        )
-        .then((response) => {
-          const result = response.data.results
-          if (serverVersion.value.startsWith('4.')) {
-            result.forEach((value) => {
-              value.data = JSON.parse(value.data)
-            })
-          }
+    if (!cid.value) return
 
-          result.forEach((item) => {
-            item['x-type'] = 'available'
-            if (!devices.value.some((element) => element.id === item.id))
-              devices.value.push(item)
-          })
-          filterDevices()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    try {
+      const response = await api.get(
+        `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
+        { headers: { Authorization: token.value } },
+      )
+
+      let results = response.data.results
+
+      if (serverVersion.value.startsWith('4.')) {
+        results = results.map((item) => ({
+          ...item,
+          data: JSON.parse(item.data),
+        }))
+      }
+
+      results.forEach((item) => {
+        item['x-type'] = 'available'
+        if (!devices.value.some((d) => d.id === item.id)) {
+          devices.value.push(item)
+        }
+      })
+
+      filterDevices()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function getDeviceData(id) {
+  const getDeviceData = async (id) => {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
@@ -133,144 +140,149 @@ export const useDevicesStore = defineStore('devices', () => {
     try {
       const response = await api.get(
         `${initialUrl.value.token}${tokenApi.deviceData}${id}/`,
-        {
-          headers: { Authorization: token.value },
-        },
+        { headers: { Authorization: token.value } },
       )
-      if (serverVersion.value.startsWith('4.')) {
-        response.data.forEach((value) => {
-          value.data = JSON.parse(value.data)
-        })
-      }
-      return response.data
+
+      const data = serverVersion.value.startsWith('4.')
+        ? response.data.map((v) => ({ ...v, data: JSON.parse(v.data) }))
+        : response.data
+
+      return data
     } catch (error) {
       uiStore.notifyError(error)
       throw error
     }
   }
 
-  async function getFeaturesDevices() {
-    devices.value.forEach((item, index) => {
-      getLogicalDevice({ id: item.id, index })
-    })
+  const getFeaturesDevices = async () => {
+    await Promise.all(
+      devices.value.map((item, index) =>
+        getLogicalDevice({ id: item.id, index }),
+      ),
+    )
   }
 
-  async function getLogicalDevice({ id, index }) {
+  const getLogicalDevice = async ({ id, index }) => {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { initialUrl, token } = storeToRefs(programStore)
 
-    await api
-      .get(
+    try {
+      const { data } = await api.get(
         `${initialUrl.value.token}${tokenApi.logicalDevice}?device__id=${id}`,
-        {
-          headers: { Authorization: token.value },
-        },
+        { headers: { Authorization: token.value } },
       )
-      .then((response) => {
-        if (response.data.results) {
-          let payload = {}
-          payload.results = response.data.results
-          payload.index = index
-          addLogicalDevices(payload)
-        }
+
+      if (!data?.results?.length) return
+
+      addLogicalDevices({
+        results: data.results,
+        index,
       })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function changeDeviceAttributes({ id, attributes, element = null }) {
+  const changeDeviceAttributes = async ({ id, attributes, element = null }) => {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { initialUrl, token } = storeToRefs(programStore)
 
-    api
-      .patch(
+    try {
+      const { data } = await api.patch(
         `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
         { attributes },
         { headers: { Authorization: token.value } },
       )
-      .then((response) => {
-        if (response.data.id) {
-          updateLogicalDeviceProperty(
-            response.data.device.id,
-            id,
-            'attributes',
-            response.data.attributes,
-          )
-          if (element) element.disabled = false
-        }
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+
+      if (data.id) {
+        updateLogicalDeviceProperty(
+          data.device.id,
+          id,
+          'attributes',
+          data.attributes,
+        )
+        if (element) element.disabled = false
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function filterDevices() {
+  const filterDevices = () => {
     const filtersStore = useFiltersStore()
     const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
 
-    let results = devices.value
+    const pattern = searchDevice.value?.toLowerCase()
+    const needSearch = !!pattern
+    const needAssigned = onlyAssignedDevices.value
 
-    if (searchDevice.value) {
-      const pattern = searchDevice.value.toLowerCase()
+    filteredDevices.value = devices.value.filter((device) => {
+      if (needAssigned && device['x-type'] !== 'assigned') return false
 
-      results = results.filter(
-        (device) =>
-          device.model.name.toLowerCase().includes(pattern) ||
-          device.model.manufacturer.name.toLowerCase().includes(pattern) ||
-          ('NAME' in device.data &&
-            device.data.NAME.toLowerCase().includes(pattern)),
-      )
-    }
+      if (needSearch) {
+        const modelName = device.model?.name?.toLowerCase()
+        const manufacturerName = device.model?.manufacturer?.name?.toLowerCase()
+        const dataName = device.data?.NAME?.toLowerCase()
 
-    if (onlyAssignedDevices.value)
-      results = results.filter((item) => {
-        return item['x-type'] === 'assigned'
-      })
+        return (
+          (modelName && modelName.includes(pattern)) ||
+          (manufacturerName && manufacturerName.includes(pattern)) ||
+          (dataName && dataName.includes(pattern))
+        )
+      }
 
-    filteredDevices.value = results
+      return true
+    })
   }
 
-  function addLogicalDevices(value) {
+  const addLogicalDevices = (value) => {
+    const inflictedIds = new Set(inflictedLogicalDevices.value.map((d) => d.id))
+    const assignedIds = new Set(assignedLogicalDevices.value.map((d) => d.id))
+    const defaultId = defaultLogicalDevice.value
+
     value.results.forEach((item) => {
-      if (
-        inflictedLogicalDevices.value.find((element) => element.id === item.id)
-      ) {
+      if (inflictedIds.has(item.id)) {
         item['x-type'] = 'inflicted'
-      } else if (
-        assignedLogicalDevices.value.find((element) => element.id === item.id)
-      ) {
+      } else if (assignedIds.has(item.id)) {
         item['x-type'] = 'assigned'
       } else {
         item['x-type'] = 'available'
       }
 
-      item['x-is-default'] = defaultLogicalDevice.value === item.id
+      item['x-is-default'] = defaultId === item.id
     })
+
     value.results.sort((a, b) =>
       a.capability.name.localeCompare(b.capability.name),
     )
+
     devices.value[value.index].logical = value.results
   }
 
-  function updateLogicalDeviceProperty(deviceId, logicalId, property, value) {
-    const indexDevice = devices.value.findIndex((item) => item.id === deviceId)
-    const indexLogical = devices.value[indexDevice].logical.findIndex(
-      (item) => item.id === logicalId,
-    )
+  const updateLogicalDeviceProperty = (
+    deviceId,
+    logicalId,
+    property,
+    value,
+  ) => {
+    const device = devices.value.find((d) => d.id === deviceId)
+    if (!device) return
 
-    devices.value[indexDevice].logical[indexLogical][property] = value
+    const logical = device.logical.find((l) => l.id === logicalId)
+    if (!logical) return
+
+    logical[property] = value
   }
 
-  function addAssignedDevice(value) {
+  const addAssignedDevice = (value) => {
     updateLogicalDeviceProperty(value.device, value.id, 'x-type', 'assigned')
   }
 
-  function removeAssignedDevice(value) {
+  const removeAssignedDevice = (value) => {
     updateLogicalDeviceProperty(value.device, value.id, 'x-type', 'available')
   }
 
