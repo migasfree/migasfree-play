@@ -16,40 +16,37 @@ export const useFiltersStore = defineStore('filters', () => {
   const searchDevice = ref(null)
   const onlyAssignedDevices = ref(false)
 
-  async function setCategories() {
+  const setCategories = async () => {
     const programStore = useProgramStore()
     const uiStore = useUiStore()
 
     const { initialUrl, token, serverVersion } = storeToRefs(programStore)
 
-    let url = `${initialUrl.value.token}${tokenApi.categories}`
-    if (serverVersion.value.startsWith('4.'))
-      url = `${initialUrl.value.token}${tokenApiv4.categories}`
+    const base = `${initialUrl.value.token}`
+    const url = serverVersion.value.startsWith('4.')
+      ? `${base}${tokenApiv4.categories}`
+      : `${base}${tokenApi.categories}`
 
-    await api
-      .get(url, {
+    try {
+      const { data } = await api.get(url, {
         headers: { Authorization: token.value },
       })
-      .then((response) => {
-        if (serverVersion.value.startsWith('4.')) {
-          Object.entries(response.data).map(([key, val]) => {
-            categories.value.push({
-              id: key,
-              name: val,
-            })
-          })
-        } else {
-          Object.entries(response.data.results).map(([, val]) => {
-            categories.value.push({
-              id: val.id,
-              name: val.name,
-            })
-          })
-        }
+
+      categories.value = []
+
+      const entries = serverVersion.value.startsWith('4.')
+        ? Object.entries(data)
+        : Object.entries(data.results)
+
+      entries.forEach(([, val]) => {
+        const id = serverVersion.value.startsWith('4.') ? val : val.id
+        const name = serverVersion.value.startsWith('4.') ? val : val.name
+
+        categories.value.push({ id, name })
       })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   return {
