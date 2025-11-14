@@ -51,8 +51,11 @@ export default {
 
     const updatePreferences = async () => {
       uiStore.updating()
-      await preferencesStore.readPreferences()
-      uiStore.updatingFinished()
+      try {
+        await preferencesStore.readPreferences()
+      } finally {
+        uiStore.updatingFinished()
+      }
     }
 
     return { isUpdating, updatePreferences }
