@@ -13,7 +13,7 @@ export const useTagsStore = defineStore('tags', () => {
   const available = ref([])
   const assigned = ref([])
 
-  async function getAvailableTags() {
+  const getAvailableTags = async () => {
     const computerStore = useComputerStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -21,18 +21,19 @@ export const useTagsStore = defineStore('tags', () => {
     const { clientVersion } = storeToRefs(programStore)
     const { cid } = storeToRefs(computerStore)
 
-    if (cid.value)
-      await api
-        .get(`${internalApi}/tags/available/?version=${clientVersion.value}`)
-        .then((response) => {
-          setAvailableTags(response.data)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    if (!cid.value) return
+
+    try {
+      const { data } = await api.get(
+        `${internalApi}/tags/available/?version=${clientVersion.value}`,
+      )
+      setAvailableTags(data)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  async function getAssignedTags() {
+  const getAssignedTags = async () => {
     const computerStore = useComputerStore()
     const programStore = useProgramStore()
     const uiStore = useUiStore()
@@ -40,22 +41,23 @@ export const useTagsStore = defineStore('tags', () => {
     const { clientVersion } = storeToRefs(programStore)
     const { cid } = storeToRefs(computerStore)
 
-    if (cid.value)
-      await api
-        .get(`${internalApi}/tags/assigned/?version=${clientVersion.value}`)
-        .then((response) => {
-          setAssignedTags(response.data)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    if (!cid.value) return
+
+    try {
+      const { data } = await api.get(
+        `${internalApi}/tags/assigned/?version=${clientVersion.value}`,
+      )
+      setAssignedTags(data)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function setAvailableTags(value) {
+  const setAvailableTags = (value) => {
     available.value = value
   }
 
-  function setAssignedTags(value) {
+  const setAssignedTags = (value) => {
     assigned.value = value
   }
 
