@@ -12,7 +12,7 @@ export const useUiStore = defineStore('ui', () => {
   const isLoading = ref(false)
   const isUpdating = ref(false)
 
-  function scrollToElement(element) {
+  const scrollToElement = (element) => {
     const target = getScrollTarget(element)
     const offset = element.offsetTop
     const duration = 1000
@@ -20,67 +20,56 @@ export const useUiStore = defineStore('ui', () => {
     setVerticalScrollPosition(target, offset, duration)
   }
 
-  function notifyError(error) {
-    let message = ''
-
-    // Setup Error Message
-    if (typeof error !== 'undefined') {
-      if (Object.hasOwn(error, 'message')) {
-        message = error.message
-      }
-    }
+  const getMessageFromError = (error) => {
+    if (typeof error === 'string') return error
 
     if (
-      (Object.hasOwn(error, 'code') && error.code === 'ERR_NETWORK') ||
-      (typeof error !== 'string' && !error.response)
+      error?.code === 'ERR_NETWORK' ||
+      (!error?.response && typeof error !== 'string')
     ) {
-      message = gettext.$gettext('There is no connection to the server')
+      return gettext.$gettext('There is no connection to the server')
+    }
 
+    if (error?.response) {
+      const { status, data } = error.response
+      let msg
+
+      switch (status) {
+        case 401:
+          msg = 'UnAuthorized'
+          break
+        case 404:
+          msg = 'API Route is Missing or Undefined'
+          break
+        case 405:
+          msg = 'API Route Method Not Allowed'
+          break
+        case 422:
+          msg = 'Validation Error'
+          break
+        default:
+          if (status >= 500) msg = 'Server Error'
+      }
+
+      if (typeof data === 'string') {
+        return data
+      }
+      if (data && typeof data === 'object' && Object.keys(data).length) {
+        return data[Object.keys(data)[0]]
+      }
+      return msg ?? ''
+    }
+
+    return error?.message ?? ''
+  }
+
+  const notifyError = (error) => {
+    const message = getMessageFromError(error)
+
+    if (message === gettext.$gettext('There is no connection to the server')) {
       const programStore = useProgramStore()
       programStore.setStatus(message)
       programStore.setStopApp()
-
-      Notify.create({
-        color: 'negative',
-        position: 'bottom',
-        message,
-        icon: 'mdi-alert-circle-outline',
-      })
-
-      return
-    }
-
-    if (typeof error.response !== 'undefined') {
-      // Setup Generic Response Messages
-      if (error.response.status === 401) {
-        message = 'UnAuthorized'
-        // vm.$emit('logout') // Emit Logout Event
-      } else if (error.response.status === 404) {
-        message = 'API Route is Missing or Undefined'
-      } else if (error.response.status === 405) {
-        message = 'API Route Method Not Allowed'
-      } else if (error.response.status === 422) {
-        // Validation Message
-      } else if (error.response.status >= 500) {
-        message = 'Server Error'
-      }
-
-      // Try to Use the Response Message
-      if (
-        Object.hasOwn(error, 'response') &&
-        Object.hasOwn(error.response, 'data') &&
-        typeof error.response.data !== 'undefined'
-      ) {
-        if (typeof error.response.data === 'string') {
-          message = error.response.data
-        } else if (Object.keys(error.response.data).length > 0) {
-          message = error.response.data[Object.keys(error.response.data)[0]]
-        }
-      }
-    }
-
-    if (typeof error === 'string') {
-      message = error
     }
 
     Notify.create({
@@ -91,7 +80,7 @@ export const useUiStore = defineStore('ui', () => {
     })
   }
 
-  function notifySuccess(message) {
+  const notifySuccess = (message) => {
     Notify.create({
       color: 'positive',
       position: 'bottom',
@@ -100,7 +89,7 @@ export const useUiStore = defineStore('ui', () => {
     })
   }
 
-  function notifyInfo(message) {
+  const notifyInfo = (message) => {
     Notify.create({
       color: 'light-blue-3',
       position: 'bottom',
@@ -110,19 +99,19 @@ export const useUiStore = defineStore('ui', () => {
     })
   }
 
-  function loading() {
+  const loading = () => {
     isLoading.value = true
   }
 
-  function loadingFinished() {
+  const loadingFinished = () => {
     isLoading.value = false
   }
 
-  function updating() {
+  const updating = () => {
     isUpdating.value = true
   }
 
-  function updatingFinished() {
+  const updatingFinished = () => {
     isUpdating.value = false
   }
 
