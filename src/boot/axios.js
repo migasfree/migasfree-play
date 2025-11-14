@@ -30,7 +30,7 @@ export default boot(({ app, store }) => {
       // config.timeout = 10000
       config.cancelToken = cancelSource.token
 
-      console.log(
+      console.debug(
         '[ REQUEST ]',
         config.url,
         inspect(config.params),
@@ -47,7 +47,7 @@ export default boot(({ app, store }) => {
 
   api.interceptors.response.use(
     (response) => {
-      console.log(
+      console.debug(
         '[ RESPONSE ]',
         response.config.url,
         inspect(response, { depth: Infinity }),
