@@ -22,9 +22,16 @@ export const useComputerStore = defineStore('computer', () => {
   const data = ref({})
   const attribute = ref(0)
 
-  const computerInfo = async () => {
-    const uiStore = useUiStore()
+  const uiStore = useUiStore()
+  const programStore = useProgramStore()
+  const { clientVersion, protocol, host, initialUrl, token, serverVersion } =
+    storeToRefs(programStore)
 
+  const tokenGet = async (url) => {
+    return await api.get(url, { headers: { Authorization: token.value } })
+  }
+
+  const computerInfo = async () => {
     try {
       const { data } = await api.get(`${internalApi}/preferences/server`)
 
@@ -38,8 +45,6 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerNetwork = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(`${internalApi}/computer/network`)
       mask.value = data.mask
@@ -50,11 +55,6 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerId = async () => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { clientVersion, protocol, host } = storeToRefs(programStore)
-
     const url = clientVersion.value.startsWith('4.')
       ? `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`
       : `${internalApi}/computer/id`
@@ -76,17 +76,11 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerLabel = async () => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { initialUrl, token } = storeToRefs(programStore)
-
     if (!cid.value) return
 
     try {
-      const { data } = await api.get(
+      const { data } = await tokenGet(
         `${initialUrl.value.token}${tokenApi.computer}${cid.value}/label/`,
-        { headers: { Authorization: token.value } },
       )
       helpdesk.value = data.helpdesk
     } catch (error) {
@@ -95,17 +89,11 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerData = async () => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { initialUrl, token } = storeToRefs(programStore)
-
     if (!cid.value) return
 
     try {
-      const response = await api.get(
+      const response = await tokenGet(
         `${initialUrl.value.token}${tokenApi.computer}${cid.value}/`,
-        { headers: { Authorization: token.value } },
       )
       data.value = response.data
     } catch (error) {
@@ -114,18 +102,12 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerAttribute = async () => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { initialUrl, token } = storeToRefs(programStore)
-
     if (!cid.value) return
 
     try {
-      const url = `${initialUrl.value.token}${tokenApi.cidAttribute}${cid.value}`
-      const { data } = await api.get(url, {
-        headers: { Authorization: token.value },
-      })
+      const { data } = await tokenGet(
+        `${initialUrl.value.token}${tokenApi.cidAttribute}${cid.value}`,
+      )
 
       if (data.count === 1) attribute.value = data.results[0].id
     } catch (error) {
@@ -134,21 +116,12 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const setComputerLink = () => {
-    const programStore = useProgramStore()
-    const { serverVersion, protocol, host } = storeToRefs(programStore)
-
-    if (serverVersion.value.startsWith('4.'))
-      link.value = `${protocol.value}://${host.value}/admin/server/computer/${cid.value}/change/`
-    else
-      link.value = `${protocol.value}://${host.value}/computers/results/${cid.value}/`
+    link.value = serverVersion.value.startsWith('4.')
+      ? `${protocol.value}://${host.value}/admin/server/computer/${cid.value}/change/`
+      : `${protocol.value}://${host.value}/computers/results/${cid.value}/`
   }
 
   const registerComputer = async ({ user, password }) => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { clientVersion } = storeToRefs(programStore)
-
     try {
       const { data } = await api.post(
         `${internalApi}/computer/register/?version=${clientVersion.value}`,
