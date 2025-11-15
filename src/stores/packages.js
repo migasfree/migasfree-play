@@ -14,55 +14,42 @@ export const usePackagesStore = defineStore('packages', () => {
   const installed = ref([])
   const inventory = ref([])
 
-  const setAvailablePackages = async () => {
-    const programStore = useProgramStore()
+  const fetchPackages = async (endpoint, method = 'get', payload = null) => {
     const uiStore = useUiStore()
-
+    const programStore = useProgramStore()
     const { clientVersion } = storeToRefs(programStore)
 
     try {
-      const { data } = await api.get(
-        `${internalApi}/packages/available/?version=${clientVersion.value}`,
-      )
-      available.value = data
+      const { data } = await (method === 'post'
+        ? api.post(
+            `${internalApi}${endpoint}?version=${clientVersion.value}`,
+            payload,
+          )
+        : api.get(`${internalApi}${endpoint}?version=${clientVersion.value}`))
+      return data
     } catch (error) {
       uiStore.notifyError(error)
     }
+  }
+
+  const setAvailablePackages = async () => {
+    available.value = await fetchPackages('/packages/available/')
   }
 
   const setInstalledPackages = async () => {
     const appsStore = useAppsStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
 
     const { getAppsPackages } = storeToRefs(appsStore)
-    const { clientVersion } = storeToRefs(programStore)
 
-    try {
-      const { data } = await api.post(
-        `${internalApi}/packages/installed/?version=${clientVersion.value}`,
-        getAppsPackages.value,
-      )
-      installed.value = data
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
+    installed.value = await fetchPackages(
+      '/packages/installed/',
+      'post',
+      getAppsPackages.value,
+    )
   }
 
   const setInventory = async () => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { clientVersion } = storeToRefs(programStore)
-
-    try {
-      const { data } = await api.get(
-        `${internalApi}/packages/inventory/?version=${clientVersion.value}`,
-      )
-      inventory.value = data
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
+    inventory.value = await fetchPackages('/packages/inventory/')
   }
 
   return {
