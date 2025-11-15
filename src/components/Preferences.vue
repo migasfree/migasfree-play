@@ -68,16 +68,10 @@ export default {
     const language = ref(null)
 
     const availableLocales = computed(() => {
-      let items = []
-
-      Object.entries(i18n.available).map(([key, val]) => {
-        items.push({
-          id: key,
-          name: val,
-        })
-      })
-
-      return items
+      return Object.entries(i18n.available).map(([key, val]) => ({
+        id: key,
+        name: val,
+      }))
     })
 
     const setLanguage = () => {
