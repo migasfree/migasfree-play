@@ -15,6 +15,8 @@ import { internalApi, executionsMaxLength } from 'config/app.conf'
 const app = window.electronRemote.app // electron-preload.js
 
 export const useExecutionsStore = defineStore('executions', () => {
+  const uiStore = useUiStore()
+
   const items = ref({})
   const lastId = ref('')
   const isRunningCommand = ref(false)
@@ -86,8 +88,6 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const getExecutions = async () => {
-    const uiStore = useUiStore()
-
     try {
       const response = await api.get(`${internalApi}/executions`)
       setExecutionsLog(response.data)
@@ -97,8 +97,6 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const setExecutions = async () => {
-    const uiStore = useUiStore()
-
     try {
       await api.post(`${internalApi}/executions`, items.value)
     } catch (error) {
@@ -117,7 +115,6 @@ export const useExecutionsStore = defineStore('executions', () => {
   const run = ({ cmd, text, icon }) => {
     const computerStore = useComputerStore()
     const packagesStore = usePackagesStore()
-    const uiStore = useUiStore()
 
     if (isRunningCommand.value) {
       uiStore.notifyInfo(
