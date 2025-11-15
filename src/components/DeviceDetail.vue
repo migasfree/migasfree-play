@@ -138,16 +138,16 @@ export default {
 
     const visibleLogicalDevices = computed(() => {
       if (!filtersStore.onlyAssignedDevices) return logical.value
-      else
-        return logical.value.filter((item) => {
-          return isAssigned(item) || isInflicted(item)
-        })
+
+      return logical.value.filter(
+        (item) => isAssigned(item) || isInflicted(item),
+      )
     })
 
     const capabilityName = (item) => {
-      if (programStore.serverVersion.startsWith('4.'))
-        return item.alternative_feature_name || item.feature.name
-      return item.alternative_capability_name || item.capability.name
+      return programStore.serverVersion.startsWith('4.')
+        ? item.alternative_feature_name || item.feature.name
+        : item.alternative_capability_name || item.capability.name
     }
 
     const isAssigned = (item) => {
@@ -167,9 +167,9 @@ export default {
     }
 
     const installDevice = (item) => {
-      let attributes = item.attributes.map((value) => value.id)
-      if (programStore.serverVersion.startsWith('4.'))
-        attributes = item.attributes.slice()
+      const attributes = programStore.serverVersion.startsWith('4.')
+        ? [...item.attributes]
+        : item.attributes.map((attr) => attr.id)
 
       if (!attributes.includes(computerStore.attribute)) {
         attributes.push(computerStore.attribute)
@@ -185,9 +185,9 @@ export default {
     }
 
     const removeDevice = (item) => {
-      let attributes = item.attributes.map((value) => value.id)
-      if (programStore.serverVersion.startsWith('4.'))
-        attributes = item.attributes.slice()
+      let attributes = programStore.serverVersion.startsWith('4.')
+        ? [...item.attributes]
+        : item.attributes.map((attr) => attr.id)
 
       attributes = attributes.filter((x) => x !== computerStore.attribute)
       devicesStore.changeDeviceAttributes({
