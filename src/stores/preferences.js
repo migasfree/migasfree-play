@@ -10,6 +10,8 @@ import { useUiStore } from './ui.js'
 import { internalApi } from 'config/app.conf'
 
 export const usePreferencesStore = defineStore('preferences', () => {
+  const uiStore = useUiStore()
+
   const language = ref('es_ES')
   const showLanguage = ref(true)
   const showComputerLink = ref(true)
@@ -25,8 +27,6 @@ export const usePreferencesStore = defineStore('preferences', () => {
   const showDarkMode = ref(true)
 
   const readPreferences = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(`${internalApi}/preferences`)
 
@@ -40,8 +40,6 @@ export const usePreferencesStore = defineStore('preferences', () => {
   }
 
   const savePreferences = async () => {
-    const uiStore = useUiStore()
-
     const payload = {
       language: language.value,
       show_language: showLanguage.value,
