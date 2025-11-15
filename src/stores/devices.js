@@ -11,15 +11,29 @@ import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
 
 export const useDevicesStore = defineStore('devices', () => {
+  const uiStore = useUiStore()
+  const computerStore = useComputerStore()
+  const programStore = useProgramStore()
+  const filtersStore = useFiltersStore()
+
+  const { cid } = storeToRefs(computerStore)
+  const { initialUrl, token, serverVersion } = storeToRefs(programStore)
+  const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
+
   const devices = ref([])
   const defaultLogicalDevice = ref(0)
   const inflictedLogicalDevices = ref([])
   const assignedLogicalDevices = ref([])
   const filteredDevices = ref([])
 
-  const addDeviceIfMissing = async (item, type) => {
-    const uiStore = useUiStore()
+  const tokenRequest = async (method, url, payload = null) => {
+    const config = { headers: { Authorization: token.value } }
+    const request = api[method]
 
+    return payload ? request(url, payload, config) : request(url, config)
+  }
+
+  const addDeviceIfMissing = async (item, type) => {
     if (!devices.value.some((d) => d.id === item.device.id)) {
       try {
         const data = await getDeviceData(item.device.id)
@@ -32,21 +46,14 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const computerDevices = async () => {
-    const computerStore = useComputerStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { cid } = storeToRefs(computerStore)
-    const { initialUrl, token } = storeToRefs(programStore)
-
     devices.value = []
 
     if (!cid.value) return
 
     try {
-      const { data } = await api.get(
+      const { data } = await tokenRequest(
+        'get',
         `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
-        { headers: { Authorization: token.value } },
       )
 
       defaultLogicalDevice.value = data.default_logical_device
@@ -54,16 +61,12 @@ export const useDevicesStore = defineStore('devices', () => {
       inflictedLogicalDevices.value = data.inflicted_logical_devices
 
       await Promise.all([
-        (async () => {
-          for (const item of assignedLogicalDevices.value) {
-            await addDeviceIfMissing(item, 'assigned')
-          }
-        })(),
-        (async () => {
-          for (const item of inflictedLogicalDevices.value) {
-            await addDeviceIfMissing(item, 'inflicted')
-          }
-        })(),
+        ...assignedLogicalDevices.value.map((item) =>
+          addDeviceIfMissing(item, 'assigned'),
+        ),
+        ...inflictedLogicalDevices.value.map((item) =>
+          addDeviceIfMissing(item, 'inflicted'),
+        ),
       ])
     } catch (err) {
       uiStore.notifyError(err)
@@ -72,20 +75,13 @@ export const useDevicesStore = defineStore('devices', () => {
 
   // today is forbidden use this method
   const setDefaultLogicalDevice = async (logicalId) => {
-    const computerStore = useComputerStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { cid } = storeToRefs(computerStore)
-    const { initialUrl, token } = storeToRefs(programStore)
-
     if (!cid.value) return
 
     try {
-      await api.patch(
+      await tokenRequest(
+        'patch',
         `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
         { default_logical_device: logicalId },
-        { headers: { Authorization: token.value } },
       )
       // TODO: handle successful update
     } catch (error) {
@@ -94,19 +90,12 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const getAvailableDevices = async () => {
-    const computerStore = useComputerStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { cid } = storeToRefs(computerStore)
-    const { initialUrl, token, serverVersion } = storeToRefs(programStore)
-
     if (!cid.value) return
 
     try {
-      const response = await api.get(
+      const response = await tokenRequest(
+        'get',
         `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
-        { headers: { Authorization: token.value } },
       )
 
       let results = response.data.results
@@ -132,15 +121,10 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const getDeviceData = async (id) => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { initialUrl, token, serverVersion } = storeToRefs(programStore)
-
     try {
-      const response = await api.get(
+      const response = await tokenRequest(
+        'get',
         `${initialUrl.value.token}${tokenApi.deviceData}${id}/`,
-        { headers: { Authorization: token.value } },
       )
 
       const data = serverVersion.value.startsWith('4.')
@@ -163,15 +147,10 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const getLogicalDevice = async ({ id, index }) => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { initialUrl, token } = storeToRefs(programStore)
-
     try {
-      const { data } = await api.get(
+      const { data } = await tokenRequest(
+        'get',
         `${initialUrl.value.token}${tokenApi.logicalDevice}?device__id=${id}`,
-        { headers: { Authorization: token.value } },
       )
 
       if (!data?.results?.length) return
@@ -186,16 +165,11 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const changeDeviceAttributes = async ({ id, attributes, element = null }) => {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { initialUrl, token } = storeToRefs(programStore)
-
     try {
-      const { data } = await api.patch(
+      const { data } = await tokenRequest(
+        'patch',
         `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
         { attributes },
-        { headers: { Authorization: token.value } },
       )
 
       if (data.id) {
@@ -213,9 +187,6 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const filterDevices = () => {
-    const filtersStore = useFiltersStore()
-    const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
-
     const pattern = searchDevice.value?.toLowerCase()
     const needSearch = !!pattern
     const needAssigned = onlyAssignedDevices.value
