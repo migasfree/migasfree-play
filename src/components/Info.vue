@@ -316,13 +316,13 @@ export default {
     const { inventory } = storeToRefs(packagesStore)
 
     const filteredInventory = computed(() => {
-      if (search.value === '' || search.value === null) {
-        return inventory.value
-      } else {
-        return inventory.value.filter((item) => {
-          return item.toLowerCase().includes(search.value.toLowerCase())
-        })
-      }
+      const query = (search.value ?? '').toLowerCase()
+
+      if (!query) return inventory.value
+
+      return inventory.value.filter((item) =>
+        item.toLowerCase().includes(query),
+      )
     })
 
     const syncEndDate = computed(() =>
@@ -333,100 +333,73 @@ export default {
       'ram' in data.value ? `${bytesToGigas(data.value.ram)} GB RAM` : '',
     )
 
-    const computerStorage = computed(() =>
-      'storage' in data.value
-        ? `${bytesToGigas(data.value.storage)} GB (${
-            data.value.disks
-          } ${$gettext('disks')})`
-        : '',
-    )
+    const computerStorage = computed(() => {
+      const { storage, disks } = data.value
 
-    const computerMac = computed(() => {
-      const ret = []
-
-      if (data.value.mac_address) {
-        let tmp = ''
-        for (let i = 0; i < data.value.mac_address.length; i += 12) {
-          tmp = data.value.mac_address.substring(i, i + 12)
-          ret.push(tmp.replace(/(.{2})/g, '$1:').slice(0, -1))
-        }
-      }
-
-      return ret.join(', ')
+      return storage
+        ? `${bytesToGigas(storage)} GB (${disks} ${$gettext('disks')})`
+        : ''
     })
 
-    const computerId = computed(() =>
-      cid.value ? `CID-${cid.value}` : 'CID-?',
-    )
+    const computerMac = computed(() => {
+      if (!data.value.mac_address) return ''
+
+      return data.value.mac_address
+        .match(/.{1,12}/g)
+        .map((chunk) => chunk.replace(/(.{2})/g, '$1:').slice(0, -1))
+        .join(', ')
+    })
+
+    const computerId = computed(() => `CID-${cid.value ?? '?'}`)
 
     const productIcon = computed(() => {
-      switch (data.value.product_system) {
-        case 'desktop':
-          return 'mdi-desktop-tower-monitor'
-        case 'laptop':
-          return 'mdi-laptop'
-        case 'virtual':
-          return 'mdi-cube-outline'
-        case 'docker':
-          return 'mdi-docker'
-        default:
-          return 'mdi-help'
+      const icons = {
+        desktop: 'mdi-desktop-tower-monitor',
+        laptop: 'mdi-laptop',
+        virtual: 'mdi-cube-outline',
+        docker: 'mdi-docker',
       }
+
+      return icons[data.value.product_system] ?? 'mdi-help'
     })
 
     const cpuIcon = computed(() => {
-      switch (data.value.architecture) {
-        case 32:
-        case 64:
-          return `mdi-cpu-${data.value.architecture}-bit`
-        default:
-          return 'mdi-help'
-      }
+      const arch = data.value.architecture
+
+      return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-help'
     })
 
     const statusIcon = computed(() => {
-      switch (data.value.status) {
-        case 'available':
-          return 'mdi-cart'
-        case 'in repair':
-          return 'mdi-wrench'
-        case 'reserved':
-          return 'mdi-lock-alert'
-        case 'intended':
-          return 'mdi-heart-pulse'
-        case 'unsubscribed':
-          return 'mdi-recycle-variant'
-        default:
-          return 'mdi-crosshairs-question'
+      const iconMap = {
+        available: 'mdi-cart',
+        'in repair': 'mdi-wrench',
+        reserved: 'mdi-lock-alert',
+        intended: 'mdi-heart-pulse',
+        unsubscribed: 'mdi-recycle-variant',
       }
+
+      return iconMap[data.value.status] ?? 'mdi-crosshairs-question'
     })
 
     const statusText = computed(() => {
-      switch (data.value.status) {
-        case 'available':
-          return $gettext('Available')
-        case 'in repair':
-          return $gettext('In repair')
-        case 'reserved':
-          return $gettext('Reserved')
-        case 'intended':
-          return $gettext('Intended')
-        case 'unsubscribed':
-          return $gettext('Unsubscribed')
-        default:
-          return $gettext('Unknown')
+      const map = {
+        available: $gettext('Available'),
+        'in repair': $gettext('In repair'),
+        reserved: $gettext('Reserved'),
+        intended: $gettext('Intended'),
+        unsubscribed: $gettext('Unsubscribed'),
       }
+
+      return map[data.value.status] ?? $gettext('Unknown')
     })
 
-    const qrCode = computed(() => {
-      let info = {
+    const qrCode = computed(() =>
+      JSON.stringify({
         model: 'computer',
         id: cid.value,
         server: programStore.host,
-      }
-
-      return JSON.stringify(info)
-    })
+      }),
+    )
 
     watch(
       () => search.value,
@@ -455,8 +428,7 @@ export default {
     }
 
     const sortArray = (array) => {
-      const originalCopy = array.slice()
-      return originalCopy.sort()
+      return [...array].sort((a, b) => a - b)
     }
 
     const copyInventory = async () => {
