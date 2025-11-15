@@ -56,15 +56,15 @@ export default {
     const paginatedDevices = ref(filteredDevices.value.slice(0, resultsPerPage))
 
     const name = (item) => {
-      return 'NAME' in item.data && item.data.NAME
-        ? item.data.NAME
-        : `${item.model.manufacturer.name} ${item.model.name}`
+      return (
+        item.data?.NAME ?? `${item.model.manufacturer.name} ${item.model.name}`
+      )
     }
 
     const alternativeName = (item) => {
-      return !('NAME' in item.data)
-        ? ''
-        : `${item.model.manufacturer.name} ${item.model.name}`
+      return 'NAME' in item.data
+        ? `${item.model.manufacturer.name} ${item.model.name}`
+        : ''
     }
 
     const ipAddress = (value) => {
