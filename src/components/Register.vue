@@ -131,20 +131,23 @@ export default {
 
     const { project } = storeToRefs(computerStore)
 
-    const isValid = computed(
-      () => username.value !== '' && password.value !== '',
-    )
+    const isValid = computed(() => {
+      const user = username.value?.trim() ?? ''
+      const pass = password.value?.trim() ?? ''
+
+      return user.length > 0 && pass.length > 0
+    })
 
     const register = async () => {
-      if (username.value && password.value) {
-        await computerStore.registerComputer({
-          user: username.value,
-          password: password.value,
-        })
-        username.value = ''
-        password.value = ''
-        emit('closed')
-      }
+      if (!username.value || !password.value) return
+
+      await computerStore.registerComputer({
+        user: username.value,
+        password: password.value,
+      })
+      username.value = ''
+      password.value = ''
+      emit('closed')
     }
 
     watch(
