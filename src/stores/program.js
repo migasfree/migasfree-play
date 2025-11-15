@@ -25,6 +25,8 @@ import {
 } from 'config/app.conf'
 
 export const useProgramStore = defineStore('program', () => {
+  const uiStore = useUiStore()
+
   const protocol = ref('')
   const host = ref('')
   const initialUrl = ref({
@@ -56,7 +58,6 @@ export const useProgramStore = defineStore('program', () => {
     const packagesStore = usePackagesStore()
     const preferencesStore = usePreferencesStore()
     const tagsStore = useTagsStore()
-    const uiStore = useUiStore()
 
     stopApp.value = false
     uiStore.loading()
@@ -161,8 +162,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const clientInfo = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(`${internalApi}/preferences/client`)
       clientVersion.value = data.version
@@ -188,8 +187,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const serverInfo = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(
         `${initialUrl.value.public}${publicApi.serverInfo}`,
@@ -268,8 +265,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const checkUser = async ({ username, password }) => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.post(`${internalApi}/user/check`, {
         username,
@@ -287,8 +282,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const apiProtocol = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(
         `${internalApi}/preferences/protocol/?version=${clientVersion.value}`,
@@ -300,8 +293,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const clientManageDevices = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(
         `${internalApi}/preferences/manage-devices/`,
@@ -313,8 +304,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const serverHost = async () => {
-    const uiStore = useUiStore()
-
     try {
       const { data } = await api.get(`${internalApi}/preferences/server`)
       host.value = data.server
