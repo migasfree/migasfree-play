@@ -220,8 +220,8 @@ export const useProgramStore = defineStore('program', () => {
       const { data } = await api.post(
         `${protocol.value}://${host.value}${tokenAuth.url}`,
         {
-          username: process.env.MFP_USER ?? 'migasfree‑play',
-          password: process.env.MFP_PASSWORD ?? 'migasfree‑play',
+          username: process.env.MFP_USER ?? 'migasfree-play',
+          password: process.env.MFP_PASSWORD ?? 'migasfree-play',
         },
       )
 
