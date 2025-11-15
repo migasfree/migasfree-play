@@ -10,47 +10,35 @@ import { useUiStore } from './ui.js'
 import { internalApi } from 'config/app.conf'
 
 export const useTagsStore = defineStore('tags', () => {
+  const computerStore = useComputerStore()
+  const programStore = useProgramStore()
+  const uiStore = useUiStore()
+
+  const { cid } = storeToRefs(computerStore)
+  const { clientVersion } = storeToRefs(programStore)
+
   const available = ref([])
   const assigned = ref([])
 
-  const getAvailableTags = async () => {
-    const computerStore = useComputerStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { clientVersion } = storeToRefs(programStore)
-    const { cid } = storeToRefs(computerStore)
-
+  const fetchTags = async (endpoint, setter) => {
     if (!cid.value) return
 
     try {
       const { data } = await api.get(
-        `${internalApi}/tags/available/?version=${clientVersion.value}`,
+        `${internalApi}/tags/${endpoint}/?version=${clientVersion.value}`,
       )
-      setAvailableTags(data)
+      setter(data)
     } catch (error) {
       uiStore.notifyError(error)
     }
   }
 
+  const getAvailableTags = async () => {
+    await fetchTags('available', setAvailableTags)
+  }
+
   const getAssignedTags = async () => {
-    const computerStore = useComputerStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const { clientVersion } = storeToRefs(programStore)
-    const { cid } = storeToRefs(computerStore)
-
-    if (!cid.value) return
-
-    try {
-      const { data } = await api.get(
-        `${internalApi}/tags/assigned/?version=${clientVersion.value}`,
-      )
-      setAssignedTags(data)
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
+    await fetchTags('assigned', setAssignedTags)
   }
 
   const setAvailableTags = (value) => {
