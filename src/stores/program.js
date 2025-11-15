@@ -86,10 +86,10 @@ export const useProgramStore = defineStore('program', () => {
     if (appIsStopped.value) return
 
     setStatus(gettext.$gettext('Computer'))
+    await computerStore.computerId()
     await Promise.all([
       computerStore.computerInfo(),
       computerStore.computerNetwork(),
-      computerStore.computerId(),
       (async () => {
         if (!serverVersion.value.startsWith('4.')) {
           await computerStore.computerLabel()
