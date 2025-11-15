@@ -32,12 +32,7 @@ export default {
   setup(props) {
     const currentPage = ref(1)
 
-    const pagesCount = computed(() => {
-      const quotient = Math.floor(props.total / resultsPerPage)
-      const remainder = props.total % resultsPerPage
-
-      return remainder === 0 ? quotient : quotient + 1
-    })
+    const pagesCount = computed(() => Math.ceil(props.total / resultsPerPage))
 
     const customPageChange = (customCurrentPage) => {
       props.pageChanged(
