@@ -181,11 +181,11 @@ export default {
     onMounted(() => {
       const optionsTmp = new Set(assigned.value)
 
-      Object.entries(available.value).map(([, val]) => {
-        val.forEach((element) => optionsTmp.add(element))
+      Object.values(available.value).forEach((arr) => {
+        arr.forEach((el) => optionsTmp.add(el))
       })
 
-      allOptions.value = Array.from(optionsTmp).sort()
+      allOptions.value = [...optionsTmp].sort()
       options.value = allOptions.value
 
       tags.value = assigned.value
