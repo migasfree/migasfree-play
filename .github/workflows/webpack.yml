@@ -43,6 +43,13 @@ jobs:
           cd packaging
           DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
 
+      - name: Upload Debian artifact
+        if: matrix.node-version == '22.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: debian-package
+          path: packaging/*.deb
+
       - name: Build RPM package
         if: matrix.node-version == '22.x'
         run: |
@@ -50,3 +57,10 @@ jobs:
           yarn build
           cd packaging/rpm
           ./create-package
+
+      - name: Upload RPM artifact
+        if: matrix.node-version == '22.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-package
+          path: packaging/rpm/*.rpm
