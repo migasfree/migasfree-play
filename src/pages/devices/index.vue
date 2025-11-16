@@ -2,16 +2,22 @@
   <q-page padding>
     <q-breadcrumbs>
       <q-breadcrumbs-el :label="$gettext('Devices')" icon="mdi-printer" />
-      <q-chip
+
+      <div
         v-if="manageDevices && filteredDevices.length > 0"
-        outline
-        color="primary"
-        text-color="white"
-        class="text-right"
-        size="sm"
+        class="row items-center q-ml-xs"
       >
-        {{ filteredDevices.length }}
-      </q-chip>
+        <q-chip
+          outline
+          color="primary"
+          text-color="white"
+          class="text-right"
+          size="sm"
+        >
+          {{ filteredDevices.length }}
+        </q-chip>
+      </div>
+
       <q-btn
         v-if="manageDevices"
         icon="mdi-sync"
