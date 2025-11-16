@@ -30,3 +30,18 @@ jobs:
         run: |
           yarn lint
           yarn format:check
+
+      - name: Build Debian package
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y devscripts
+          yarn build
+          cd packaging
+          DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
+
+      - name: Build RPM package
+        run: |
+          # sudo apt-get install -y rpm
+          yarn build
+          cd packaging/rpm
+          ./create-package
