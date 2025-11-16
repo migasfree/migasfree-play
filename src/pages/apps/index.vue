@@ -1,20 +1,10 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el :label="$gettext('Apps')" icon="apps" />
-
-      <div v-if="filteredApps.length > 0" class="row items-center q-ml-xs">
-        <q-chip
-          outline
-          color="primary"
-          text-color="white"
-          class="text-right"
-          size="sm"
-        >
-          {{ filteredApps.length }}
-        </q-chip>
-      </div>
-
+    <PageHeader
+      :title="$gettext('Apps')"
+      icon="apps"
+      :count="filteredApps.length"
+    >
       <q-btn
         icon="mdi-sync"
         size="sm"
@@ -26,7 +16,7 @@
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
-    </q-breadcrumbs>
+    </PageHeader>
 
     <div v-if="isUpdating" class="row q-ma-xl">
       <div class="col-12 text-center">
@@ -44,6 +34,7 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import Apps from 'components/Apps'
+import PageHeader from 'components/PageHeader'
 
 import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'
@@ -52,6 +43,7 @@ import { useUiStore } from 'src/stores/ui'
 export default {
   components: {
     Apps,
+    PageHeader,
   },
   setup() {
     const { $gettext } = useGettext()
