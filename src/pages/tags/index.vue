@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el :label="$gettext('Tags')" icon="mdi-tag" />
+    <PageHeader :title="$gettext('Tags')" icon="mdi-tag">
       <q-btn
         icon="mdi-sync"
         size="sm"
@@ -13,7 +12,7 @@
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
-    </q-breadcrumbs>
+    </PageHeader>
 
     <div v-if="isUpdating" class="row q-ma-xl">
       <div class="col-12 text-center">
@@ -30,6 +29,7 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
+import PageHeader from 'components/PageHeader'
 import Tags from 'components/Tags'
 
 import { useTagsStore } from 'src/stores/tags'
@@ -37,6 +37,7 @@ import { useUiStore } from 'src/stores/ui'
 
 export default {
   components: {
+    PageHeader,
     Tags,
   },
   setup() {
