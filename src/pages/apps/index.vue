@@ -2,16 +2,18 @@
   <q-page padding>
     <q-breadcrumbs>
       <q-breadcrumbs-el :label="$gettext('Apps')" icon="apps" />
-      <q-chip
-        v-if="filteredApps.length > 0"
-        outline
-        color="primary"
-        text-color="white"
-        class="text-right"
-        size="sm"
-      >
-        {{ filteredApps.length }}
-      </q-chip>
+
+      <div v-if="filteredApps.length > 0" class="row items-center q-ml-xs">
+        <q-chip
+          outline
+          color="primary"
+          text-color="white"
+          class="text-right"
+          size="sm"
+        >
+          {{ filteredApps.length }}
+        </q-chip>
+      </div>
 
       <q-btn
         icon="mdi-sync"
