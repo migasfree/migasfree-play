@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs class="print-hide">
-      <q-breadcrumbs-el :label="$gettext('Info')" icon="info" />
+    <PageHeader :title="$gettext('Info')" icon="info" class="print-hide">
       <q-btn
         icon="mdi-sync"
         size="sm"
@@ -13,7 +12,7 @@
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
-    </q-breadcrumbs>
+    </PageHeader>
 
     <div v-if="isUpdating" class="row q-ma-xl">
       <div class="col-12 text-center">
@@ -31,6 +30,7 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import Info from 'components/Info'
+import PageHeader from 'components/PageHeader'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
@@ -39,6 +39,7 @@ import { useUiStore } from 'src/stores/ui'
 export default {
   components: {
     Info,
+    PageHeader,
   },
   setup() {
     const { $gettext } = useGettext()
