@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.10
+Version:       5.11
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,17 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Sun, 16 Nov 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
+- feat: upgraded several components (node >= 22.12)
+- fix: avoid multiple crontab writing
+- feat: added util-linux dependency (flock usage)
+- refactor: api operations
+- feat: added wayland support
+- feat: get computerData after sync
+- fix: only get categories if showApps
+- fix: chip vertical align
+- feat: added PageHeader component
+
 * Fri, 5 Sep 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.10-0
 - fix: app initial values
 - fix: window height (when < 800)
