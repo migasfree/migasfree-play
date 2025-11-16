@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el :label="$gettext('Preferences')" icon="mdi-cog" />
+    <PageHeader :title="$gettext('Preferences')" icon="mdi-cog">
       <q-btn
         icon="mdi-sync"
         size="sm"
@@ -13,7 +12,7 @@
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
-    </q-breadcrumbs>
+    </PageHeader>
 
     <div v-if="isUpdating" class="row q-ma-xl">
       <div class="col-12 text-center">
@@ -30,6 +29,7 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
+import PageHeader from 'components/PageHeader'
 import Preferences from 'components/Preferences'
 
 import { usePreferencesStore } from 'src/stores/preferences'
@@ -37,6 +37,7 @@ import { useUiStore } from 'src/stores/ui'
 
 export default {
   components: {
+    PageHeader,
     Preferences,
   },
   setup() {
