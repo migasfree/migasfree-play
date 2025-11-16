@@ -15,6 +15,8 @@ import { internalApi, executionsMaxLength } from 'config/app.conf'
 const app = window.electronRemote.app // electron-preload.js
 
 export const useExecutionsStore = defineStore('executions', () => {
+  const computerStore = useComputerStore()
+  const packagesStore = usePackagesStore()
   const uiStore = useUiStore()
 
   const items = ref({})
@@ -89,8 +91,8 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   const getExecutions = async () => {
     try {
-      const response = await api.get(`${internalApi}/executions`)
-      setExecutionsLog(response.data)
+      const { data } = await api.get(`${internalApi}/executions`)
+      setExecutionsLog(data)
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -112,10 +114,18 @@ export const useExecutionsStore = defineStore('executions', () => {
     return spawn(command, args, { shell: true })
   }
 
-  const run = ({ cmd, text, icon }) => {
-    const computerStore = useComputerStore()
-    const packagesStore = usePackagesStore()
+  const doAfterSync = async () => {
+    uiStore.notifyInfo(gettext.$gettext('Synchronization finished'))
 
+    await computerStore.computerId() // update CID if sync has launched autoregister
+    await Promise.all([
+      computerStore.computerData(), // update sync data (sync_end_date, ...)
+      packagesStore.setAvailablePackages(),
+      packagesStore.setInventory(),
+    ])
+  }
+
+  const run = ({ cmd, text, icon }) => {
     if (isRunningCommand.value) {
       uiStore.notifyInfo(
         gettext.$gettext('Please wait, other process is running!!!'),
@@ -167,11 +177,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       if (cmd.includes('sync') || cmd.includes('--update')) {
         if (win.isMinimized()) win.close()
 
-        uiStore.notifyInfo(gettext.$gettext('Synchronization finished'))
-
-        computerStore.computerId() // update CID if sync has launched autoregister
-        packagesStore.setAvailablePackages()
-        packagesStore.setInventory()
+        doAfterSync()
       }
     })
   }
