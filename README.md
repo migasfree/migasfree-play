@@ -41,7 +41,7 @@ yarn build
 ### Build the package for Debian based distros
 
 ```bash
-sudo apt install devscripts  # if not installed
+sudo apt install devscripts build-essential debhelper # if not installed
 yarn build
 cd packaging
 DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
