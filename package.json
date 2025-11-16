@@ -1,6 +1,6 @@
 {
   "name": "migasfree-play",
-  "version": "5.10.0",
+  "version": "5.11.0",
   "type": "module",
   "description": "Migasfree Client front-end. Allow install/uninstall available applications and devices.",
   "productName": "migasfree-play",
@@ -76,7 +76,7 @@
     "defaults and supports es6-module"
   ],
   "engines": {
-    "node": ">= 20.19",
+    "node": ">= 22.12.0",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
