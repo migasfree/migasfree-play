@@ -1,20 +1,10 @@
 <template>
   <q-page id="main" padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el :label="$gettext('Details')" icon="mdi-list-status" />
-
-      <div v-if="count > 0" class="row items-center q-ml-xs">
-        <q-chip
-          outline
-          color="primary"
-          text-color="white"
-          class="text-right"
-          size="sm"
-        >
-          {{ count }}
-        </q-chip>
-      </div>
-    </q-breadcrumbs>
+    <PageHeader
+      :title="$gettext('Details')"
+      icon="mdi-list-status"
+      :count="count"
+    />
 
     <Executions />
   </q-page>
@@ -26,12 +16,14 @@ import { useMeta } from 'quasar'
 import { storeToRefs } from 'pinia'
 
 import Executions from 'components/Executions'
+import PageHeader from 'components/PageHeader'
 
 import { useExecutionsStore } from 'src/stores/executions'
 
 export default {
   components: {
     Executions,
+    PageHeader,
   },
   setup() {
     const { $gettext } = useGettext()
