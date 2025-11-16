@@ -3,16 +3,17 @@
     <q-breadcrumbs>
       <q-breadcrumbs-el :label="$gettext('Details')" icon="mdi-list-status" />
 
-      <q-chip
-        v-if="count > 0"
-        outline
-        color="primary"
-        text-color="white"
-        class="text-right"
-        size="sm"
-      >
-        {{ count }}
-      </q-chip>
+      <div v-if="count > 0" class="row items-center q-ml-xs">
+        <q-chip
+          outline
+          color="primary"
+          text-color="white"
+          class="text-right"
+          size="sm"
+        >
+          {{ count }}
+        </q-chip>
+      </div>
     </q-breadcrumbs>
 
     <Executions />
