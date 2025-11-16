@@ -101,6 +101,8 @@ export const useProgramStore = defineStore('program', () => {
 
     const optionalPromises = []
 
+    optionalPromises.push(executionsStore.getExecutions())
+
     if (preferencesStore.showApps) {
       optionalPromises.push(
         (async () => {
@@ -108,14 +110,14 @@ export const useProgramStore = defineStore('program', () => {
           await appsStore.loadApps()
         })(),
       )
-    }
 
-    optionalPromises.push(
-      (async () => {
-        setStatus(gettext.$gettext('Categories'))
-        await filtersStore.setCategories()
-      })(),
-    )
+      optionalPromises.push(
+        (async () => {
+          setStatus(gettext.$gettext('Categories'))
+          await filtersStore.setCategories()
+        })(),
+      )
+    }
 
     optionalPromises.push(
       (async () => {
@@ -127,8 +129,6 @@ export const useProgramStore = defineStore('program', () => {
         ])
       })(),
     )
-
-    optionalPromises.push(executionsStore.getExecutions())
 
     if (preferencesStore.showDevices) {
       optionalPromises.push(
