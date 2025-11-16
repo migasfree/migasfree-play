@@ -35,6 +35,7 @@ jobs:
           yarn format:check
 
       - name: Build Debian package
+        if: matrix.node-version == '22.x'
         run: |
           sudo apt-get update
           sudo apt-get install -y devscripts build-essential debhelper
@@ -43,6 +44,7 @@ jobs:
           DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
 
       - name: Build RPM package
+        if: matrix.node-version == '22.x'
         run: |
           sudo apt-get install -y rpm
           yarn build
