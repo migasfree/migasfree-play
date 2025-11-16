@@ -1,23 +1,11 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el :label="$gettext('Devices')" icon="mdi-printer" />
-
-      <div
-        v-if="manageDevices && filteredDevices.length > 0"
-        class="row items-center q-ml-xs"
-      >
-        <q-chip
-          outline
-          color="primary"
-          text-color="white"
-          class="text-right"
-          size="sm"
-        >
-          {{ filteredDevices.length }}
-        </q-chip>
-      </div>
-
+    <PageHeader
+      :title="$gettext('Devices')"
+      icon="mdi-printer"
+      :count="filteredDevices.length"
+      :show-count="manageDevices"
+    >
       <q-btn
         v-if="manageDevices"
         icon="mdi-sync"
@@ -30,7 +18,7 @@
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
       >
-    </q-breadcrumbs>
+    </PageHeader>
 
     <template v-if="manageDevices">
       <div v-if="isUpdating" class="row q-ma-xl">
@@ -53,6 +41,7 @@ import { useMeta } from 'quasar'
 
 import BannerInfo from 'components/BannerInfo'
 import Devices from 'components/Devices'
+import PageHeader from 'components/PageHeader'
 
 import { useDevicesStore } from 'src/stores/devices'
 import { useProgramStore } from 'src/stores/program'
@@ -62,6 +51,7 @@ export default {
   components: {
     BannerInfo,
     Devices,
+    PageHeader,
   },
   setup() {
     const { $gettext } = useGettext()
