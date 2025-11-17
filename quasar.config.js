@@ -202,25 +202,8 @@ export default defineConfig((ctx) => {
         compression: 'maximum',
         asar: false,
         linux: {
-          target: 'deb',
+          target: ['dir'],
           category: 'System',
-          // executableName: "migasfree-play",
-          desktop: {
-            // Name: 'Migasfree Play',
-            // Exec: "migasfree-play --no-sandbox"
-          },
-        },
-        deb: {
-          depends: [
-            'migasfree-client (>= 4.20)',
-            'sudo',
-            'bash',
-            'cron',
-            'curl',
-            'nodejs (>= 18)',
-          ],
-          packageCategory: 'utils',
-          priority: 'optional',
         },
         win: {
           target: ['nsis', 'msi'],
