@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debian-package
-          path: $HOME/*.deb
+          path: ${{ github.workspace }}/*.deb
 
       - name: Build RPM package
         if: matrix.node-version == '22.x'
@@ -63,4 +63,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rpm-package
-          path: $HOME/packaging/rpm/rpmbuild/RPMS/x86_64/*.rpm
+          path: ${{ github.workspace }}/packaging/rpm/rpmbuild/RPMS/x86_64/*.rpm
