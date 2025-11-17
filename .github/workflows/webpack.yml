@@ -67,7 +67,7 @@ jobs:
 
       - name: Build Arch package
         if: matrix.node-version == '22.x'
-        uses: edlanglois/pkgbuild-action@v1
+        uses: edlanglois/pkgbuild-action@v1.1.9
         with:
           pkgdir: 'packaging'
 
