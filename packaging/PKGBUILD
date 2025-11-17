@@ -1,0 +1,42 @@
+# Maintainer: Jose Antonio Chavarría <jachavar@gmail.com>
+
+pkgname=migasfree-play
+pkgver=5.11
+pkgrel=0
+pkgdesc='GUI for migasfree client'
+arch=('x86_64')
+url='https://github.com/migasfree/migasfree-play'
+license=('GPL3')
+depends=('migasfree-client>=4.20' 'sudo' 'bash' 'cronie' 'curl' 'util-linux' 'nodejs>=18')
+makedepends=('yarn' 'git')
+source=("${pkgname}-${pkgver}.${pkgrel}.tar.gz::https://github.com/migasfree/migasfree-play/archive/refs/tags/${pkgver}.${pkgrel}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}.${pkgrel}"
+  yarn install --frozen-lockfile
+  yarn build
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}.${pkgrel}"
+
+  install -Dm755 -t "${pkgdir}/usr/bin" packaging/usr/bin/*
+  cp -a packaging/usr/share "${pkgdir}/usr/"
+  install -Dm444 -t "${pkgdir}/etc/sudoers.d" packaging/etc/sudoers.d/*
+  install -Dm644 -t "${pkgdir}/etc/xdg/autostart" packaging/etc/xdg/autostart/*
+
+  # Preserve config files
+  chmod 440 "${pkgdir}/etc/sudoers.d/"*
+  chmod 755 "${pkgdir}/etc/xdg/autostart/"*
+
+  # Copy app files
+  install -d "${pkgdir}/usr/share/${pkgname}"
+  cp -r dist/electron/Packaged/linux-unpacked/* "${pkgdir}/usr/share/${pkgname}/"
+
+  # Post‑install fix: set SUID on chrome‑sandbox
+  chmod 4755 "${pkgdir}/usr/share/migasfree-play/chrome-sandbox" || true
+
+  # install -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  # install -m 644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
