@@ -56,6 +56,13 @@ cd packaging/rpm
 ./create-package
 ```
 
+### Build the package for Arch based distros
+
+```bash
+cd packaging
+makepkg
+```
+
 ### Execute app in production
 
 ```bash
