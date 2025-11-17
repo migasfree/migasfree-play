@@ -7,7 +7,8 @@ pkgdesc='GUI for migasfree client'
 arch=('x86_64')
 url='https://github.com/migasfree/migasfree-play'
 license=('GPL3')
-depends=('migasfree-client>=4.20' 'sudo' 'bash' 'cronie' 'curl' 'util-linux' 'nodejs>=18')
+# depends=('migasfree-client>=4.20' 'sudo' 'bash' 'cronie' 'curl' 'util-linux' 'nodejs>=18')
+depends=('sudo' 'bash' 'cron' 'curl' 'util-linux')
 makedepends=('yarn' 'git')
 source=("${pkgname}-${pkgver}.${pkgrel}.tar.gz::https://github.com/migasfree/migasfree-play/archive/refs/tags/${pkgver}.${pkgrel}.tar.gz")
 sha256sums=('SKIP')
