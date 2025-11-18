@@ -7,26 +7,39 @@ import { debug } from '../utils.js'
 const tokenFile = path.join(os.homedir(), '.migasfree-play', 'token')
 const router = express.Router()
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   if (debug) console.log('[express] Reading token file...')
 
-  let token = ''
-
-  if (fs.existsSync(tokenFile)) {
-    token = fs.readFileSync(tokenFile, 'utf8')
+  try {
+    const token = fs.existsSync(tokenFile)
+      ? await fs.promises.readFile(tokenFile, 'utf8')
+      : ''
+    res.json({ token })
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Failed to read token' })
   }
-  res.json({ token })
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   if (debug) {
     console.log('[express] Writing token file...')
     console.log(req.body)
   }
 
-  fs.mkdirSync(path.dirname(tokenFile), { recursive: true })
-  fs.writeFileSync(tokenFile, req.body.token)
-  res.send()
+  const { token } = req.body ?? {}
+  if (typeof token !== 'string' || token.trim() === '') {
+    return res.status(400).json({ error: 'Invalid token' })
+  }
+
+  try {
+    await fs.promises.mkdir(path.dirname(tokenFile), { recursive: true })
+    await fs.promises.writeFile(tokenFile, token)
+    res.sendStatus(201)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Failed to write token' })
+  }
 })
 
 export default router
