@@ -4,10 +4,14 @@ import path from 'node:path'
 import express from 'express'
 import { pythonExecute, debug } from '../utils.js'
 
-const filePath = path.join(os.homedir(), '.migasfree-play', 'settings.json')
+const SETTINGS_FILE = path.resolve(
+  os.homedir(),
+  '.migasfree-play',
+  'settings.json',
+)
 const router = express.Router()
 
-const settings = {
+const DEFAULT_SETTINGS = {
   language: 'es_ES',
   show_language: true,
   show_computer_link: true,
@@ -23,37 +27,59 @@ const settings = {
   show_dark_mode: true,
 }
 
+const ensureSettingsFile = () => {
+  if (!fs.existsSync(SETTINGS_FILE)) {
+    fs.mkdirSync(path.dirname(SETTINGS_FILE), { recursive: true })
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(DEFAULT_SETTINGS, null, 2))
+  }
+}
+
+const readSettings = () => {
+  ensureSettingsFile()
+  const data = fs.readFileSync(SETTINGS_FILE, 'utf8')
+  return data ? JSON.parse(data) : DEFAULT_SETTINGS
+}
+
+const writeSettings = (content) => {
+  fs.mkdirSync(path.dirname(SETTINGS_FILE), { recursive: true })
+  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(content, null, 2))
+}
+
 router.get('/', (req, res) => {
   if (debug) console.log('[express] Getting preferences...')
 
-  if (fs.existsSync(filePath)) {
-    const data = fs.readFileSync(filePath, 'utf8')
-
-    if (data) res.json(JSON.parse(data))
-    else res.json(settings)
-  } else {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true })
-    fs.writeFileSync(filePath, JSON.stringify(settings, null, 2))
-    res.json(settings)
+  try {
+    const settings = readSettings()
+    res.status(200).json(settings)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Unable to read preferences' })
   }
 })
 
 router.post('/', (req, res) => {
   if (debug) console.log('[express] Setting preferences...')
 
-  fs.mkdirSync(path.dirname(filePath), { recursive: true })
-  fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2))
-  res.send()
+  try {
+    writeSettings(req.body)
+    res.sendStatus(201)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Unable to save preferences' })
+  }
 })
 
-router.get('/server', (req, res) => {
+router.get('/server', async (req, res) => {
   if (debug) console.log('[express] Getting server info...')
 
   const code = `
 import json
 from migasfree_client import settings
-from migasfree_client.utils import get_config, get_hardware_uuid, \
-get_mfc_project, get_mfc_computer_name, get_graphic_pid, get_graphic_user
+from migasfree_client.utils import (
+    get_config, get_hardware_uuid,
+    get_mfc_project, get_mfc_computer_name,
+    get_graphic_pid, get_graphic_user
+)
 
 graphic_pid, graphic_process = get_graphic_pid()
 ret = {
@@ -65,12 +91,16 @@ ret = {
 }
 print(json.dumps(ret))`
 
-  pythonExecute(res, code, 'application/json').then((results) =>
-    res.send(results),
-  )
+  try {
+    const results = await pythonExecute(res, code, 'application/json')
+    res.type('application/json').send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Failed to fetch server info' })
+  }
 })
 
-router.get('/client', (req, res) => {
+router.get('/client', async (req, res) => {
   if (debug) console.log('[express] Getting client info...')
 
   const code = `
@@ -80,37 +110,51 @@ from migasfree_client.utils import get_mfc_release
 ret = {'version': get_mfc_release()}
 print(json.dumps(ret))`
 
-  pythonExecute(res, code).then((results) => res.send(results))
+  try {
+    const results = await pythonExecute(res, code)
+    res.type('application/json').send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Failed to fetch client info' })
+  }
 })
 
-router.get('/protocol', (req, res) => {
+router.get('/protocol', async (req, res) => {
   if (debug) console.log('[express] Getting API protocol...')
 
   let code = `
 from migasfree_client.command import MigasFreeCommand
-
 print(MigasFreeCommand().api_protocol())`
-
-  if (req.query.version.startsWith('4.')) {
+  if (req.query.version?.startsWith('4.')) {
     code = `
 from migasfree_client.command import MigasFreeCommand
-
 ssl_cert = MigasFreeCommand().migas_ssl_cert
 print('https' if ssl_cert else 'http')`
   }
 
-  pythonExecute(res, code).then((results) => res.send(results))
+  try {
+    const results = await pythonExecute(res, code)
+    res.send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Failed to fetch protocol' })
+  }
 })
 
-router.get('/manage-devices', (req, res) => {
+router.get('/manage-devices', async (req, res) => {
   if (debug) console.log('[express] Getting manage devices setting...')
 
-  let code = `
+  const code = `
 from migasfree_client.command import MigasFreeCommand
-
 print(MigasFreeCommand().migas_manage_devices)`
 
-  pythonExecute(res, code).then((results) => res.send(results === 'True'))
+  try {
+    const results = await pythonExecute(res, code)
+    res.json(results.trim() === 'True')
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json({ error: 'Failed to fetch device management flag' })
+  }
 })
 
 export default router
