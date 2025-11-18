@@ -3,7 +3,7 @@ import { pythonExecute, debug } from '../utils.js'
 
 const router = express.Router()
 
-router.get('/id', (req, res) => {
+router.get('/id', async (req, res) => {
   if (debug) console.log('[express] Getting computer ID...')
 
   const code = `
@@ -11,15 +11,16 @@ from migasfree_client.command import MigasFreeCommand
 
 print(MigasFreeCommand().get_computer_id())`
 
-  pythonExecute(res, code)
-    .then((results) => res.send(results))
-    .catch(() => {
-      res.setHeader('Content-Type', 'text/plain')
-      res.send('0')
-    })
+  try {
+    const results = await pythonExecute(res, code)
+    res.send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.type('text/plain').send('0')
+  }
 })
 
-router.get('/network', (req, res) => {
+router.get('/network', async (req, res) => {
   if (debug) console.log('[express] Getting network info...')
 
   const code = `
@@ -33,38 +34,46 @@ ret = {
 }
 print(json.dumps(ret))`
 
-  pythonExecute(res, code, 'application/json').then((results) =>
-    res.send(results),
-  )
+  try {
+    const results = await pythonExecute(res, code, 'application/json')
+    res.type('application/json').send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).send('Network info unavailable')
+  }
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   if (debug) {
     console.log('[express] Registering Computer...')
     console.log('[express] Data', req)
   }
+
+  const { user, password } = req.body
+  const version = req.query.version || ''
 
   let code = `
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 mfc._init_command()
-mfc._save_sign_keys('${req.body.user}', '${req.body.password}')
-mfc._save_computer('${req.body.user}', '${req.body.password}')`
+mfc._save_sign_keys('${user}', '${password}')
+mfc._save_computer('${user}', '${password}')`
 
-  if (req.query.version.startsWith('4.'))
+  if (version.startsWith('4.'))
     code = `
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 mfc._save_sign_keys('${req.body.user}', '${req.body.password}')`
 
-  pythonExecute(res, code)
-    .then((results) => res.send(results))
-    .catch(() => {
-      res.setHeader('Content-Type', 'text/plain')
-      res.send('0')
-    })
+  try {
+    const results = await pythonExecute(res, code)
+    res.send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.type('text/plain').send('0')
+  }
 })
 
 export default router
