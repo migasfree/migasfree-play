@@ -7,25 +7,33 @@ import { debug } from '../utils.js'
 const filePath = path.join(os.homedir(), '.migasfree-play', 'executions.json')
 const router = express.Router()
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   if (debug) console.log('[express] Reading executions file...')
 
-  if (fs.existsSync(filePath)) {
-    const data = fs.readFileSync(filePath, 'utf8')
-
-    if (data) res.json(JSON.parse(data))
-    else res.json({})
-  } else {
-    res.json({})
+  try {
+    if (fs.existsSync(filePath)) {
+      const data = await fs.promises.readFile(filePath, 'utf8')
+      res.status(200).json(data ? JSON.parse(data) : {})
+    } else {
+      res.status(200).json({})
+    }
+  } catch (error) {
+    if (debug) console.error('[express] Error reading executions file:', error)
+    res.status(500).json({ error: 'Failed to read executions file' })
   }
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   if (debug) console.log('[express] Writing executions file...')
 
-  fs.mkdirSync(path.dirname(filePath), { recursive: true })
-  fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2))
-  res.send()
+  try {
+    await fs.promises.mkdir(path.dirname(filePath), { recursive: true })
+    await fs.promises.writeFile(filePath, JSON.stringify(req.body, null, 2))
+    res.sendStatus(200)
+  } catch (error) {
+    if (debug) console.error('[express] Error writing executions file:', error)
+    res.status(500).json({ error: 'Failed to write executions file' })
+  }
 })
 
 export default router
