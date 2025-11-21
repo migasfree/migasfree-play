@@ -3,7 +3,7 @@ import { pythonExecute, debug } from '../utils.js'
 
 const router = express.Router()
 
-router.get('/available', (req, res) => {
+router.get('/available', async (req, res) => {
   if (debug) console.log('[express] Getting available packages...')
 
   let code = `
@@ -20,12 +20,16 @@ from migasfree_client.client import MigasFreeClient
 mfc = MigasFreeClient()
 print(json.dumps(mfc.pms.available_packages()))`
 
-  pythonExecute(res, code, 'application/json').then((results) =>
-    res.send(results),
-  )
+  try {
+    const results = await pythonExecute(res, code, 'application/json')
+    res.send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json([])
+  }
 })
 
-router.post('/installed', (req, res) => {
+router.post('/installed', async (req, res) => {
   if (debug) console.log('[express] Getting installed packages...')
 
   const packages = JSON.stringify(req.body)
@@ -55,12 +59,16 @@ installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in
 
 print(json.dumps(installed))`
 
-  pythonExecute(res, code, 'application/json').then((results) =>
-    res.send(results),
-  )
+  try {
+    const results = await pythonExecute(res, code, 'application/json')
+    res.send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json([])
+  }
 })
 
-router.get('/inventory', (req, res) => {
+router.get('/inventory', async (req, res) => {
   if (debug) console.log('[express] Getting packages inventory...')
 
   let code = `
@@ -81,9 +89,13 @@ mfc = MigasFreeCommand()
 
 print(json.dumps(mfc.pms.query_all()))`
 
-  pythonExecute(res, code, 'application/json').then((results) =>
-    res.send(results),
-  )
+  try {
+    const results = await pythonExecute(res, code, 'application/json')
+    res.send(results)
+  } catch (error) {
+    if (debug) console.error(error)
+    res.status(500).json([])
+  }
 })
 
 export default router
