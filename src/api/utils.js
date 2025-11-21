@@ -1,32 +1,32 @@
 import os from 'os'
+import fs from 'fs'
+import path from 'path'
 import { execSync } from 'child_process'
 import { PythonShell } from 'python-shell'
-function getPython() {
+
+const getPython = () => {
   const platform = os.platform()
 
   if (platform === 'win32') return 'python'
 
   const cmd = `
-_PYTHON=$(which python2)
-[ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
-if [ $? -ne 0 -o -z "$_PYTHON" ]
+_PYTHON=$(which python2 2>/dev/null)
+if [ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" &>/dev/null
 then
-  _PYTHON=$(which python3)
-fi
-echo $_PYTHON`
-  const shell = '/bin/bash'
+  echo $_PYTHON
+else
+  _PYTHON=$(which python3 2>/dev/null || echo "python3")
+  echo $_PYTHON
+fi`
 
   try {
-    return execSync(cmd, { shell }).toString().replace('\n', '')
+    return execSync(cmd, { shell: '/bin/bash' }).toString().trim()
   } catch {
     return 'python3'
   }
 }
 
-let debug = false
-if (process.argv.includes('debug')) {
-  debug = true
-}
+const debug = process.argv.includes('debug')
 
 const pythonShellOptions = {
   pythonPath: getPython(),
@@ -34,19 +34,32 @@ const pythonShellOptions = {
     ...process.env,
     MIGASFREE_CLIENT_DEBUG: 0,
   },
+  mode: 'text',
+  encoding: 'utf8',
 }
 
-const pythonExecute = (res, code, contentType = 'text/plain') => {
-  return new Promise((resolve) => {
-    PythonShell.runString(code, pythonShellOptions)
-      .then((results) => {
-        res.setHeader('Content-Type', contentType)
-        resolve(results[0])
-      })
-      .catch((error) => {
-        throw error
-      })
-  })
+const pythonExecute = async (res, code, contentType = 'text/plain') => {
+  const uniqueId = `${Date.now()}-${process.pid}-${Math.random().toString(36).slice(2, 11)}`
+  const tmpFile = path.join(os.tmpdir(), `script-${uniqueId}.py`)
+  fs.writeFileSync(tmpFile, code, 'utf8')
+
+  if (debug) {
+    console.log(tmpFile)
+    console.log(code)
+  }
+
+  try {
+    const results = await PythonShell.run(tmpFile, pythonShellOptions)
+
+    res.setHeader('Content-Type', contentType)
+
+    if (debug) console.log(results[0])
+    return results[0]
+  } catch (error) {
+    if (debug) console.error(error)
+  } finally {
+    if (!debug) fs.unlinkSync(tmpFile)
+  }
 }
 
 export { debug, pythonExecute }
