@@ -20,25 +20,18 @@ export const useTagsStore = defineStore('tags', () => {
   const available = ref([])
   const assigned = ref([])
 
-  const fetchTags = async (endpoint, setter) => {
+  const getTags = async () => {
     if (!cid.value) return
 
     try {
       const { data } = await api.get(
-        `${internalApi}/tags/${endpoint}/?version=${clientVersion.value}`,
+        `${internalApi}/tags/?version=${clientVersion.value}`,
       )
-      setter(data)
+      setAvailableTags(data.available)
+      setAssignedTags(data.assigned)
     } catch (error) {
       uiStore.notifyError(error)
     }
-  }
-
-  const getAvailableTags = async () => {
-    await fetchTags('available', setAvailableTags)
-  }
-
-  const getAssignedTags = async () => {
-    await fetchTags('assigned', setAssignedTags)
   }
 
   const setAvailableTags = (value) => {
@@ -52,8 +45,7 @@ export const useTagsStore = defineStore('tags', () => {
   return {
     available,
     assigned,
-    getAvailableTags,
-    getAssignedTags,
+    getTags,
     setAssignedTags,
   }
 })
