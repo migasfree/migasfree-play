@@ -104,12 +104,8 @@ export const useProgramStore = defineStore('program', () => {
     optionalPromises.push(executionsStore.getExecutions())
 
     if (preferencesStore.showApps) {
-      optionalPromises.push(
-        (async () => {
-          setStatus(gettext.$gettext('Apps'))
-          await appsStore.loadApps()
-        })(),
-      )
+      setStatus(gettext.$gettext('Apps'))
+      await appsStore.loadApps()
 
       optionalPromises.push(
         (async () => {
