@@ -147,10 +147,7 @@ export const useProgramStore = defineStore('program', () => {
       optionalPromises.push(
         (async () => {
           setStatus(gettext.$gettext('Tags'))
-          await Promise.all([
-            tagsStore.getAvailableTags(),
-            tagsStore.getAssignedTags(),
-          ])
+          await tagsStore.getTags()
         })(),
       )
     }
@@ -187,18 +184,16 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   const serverInfo = async () => {
+    const url = `${initialUrl.value.public}${publicApi.serverInfo}`
+
     try {
-      const { data } = await api.get(
-        `${initialUrl.value.public}${publicApi.serverInfo}`,
-      )
+      const { data } = await api.get(url)
       serverVersion.value = data.version
       organization.value = data.organization
     } catch (error) {
       if (error.response?.status === 405) {
         try {
-          const { data } = await api.post(
-            `${initialUrl.value.public}${publicApi.serverInfo}`,
-          )
+          const { data } = await api.post(url)
           serverVersion.value = data.version
         } catch (postError) {
           uiStore.notifyError(postError)
