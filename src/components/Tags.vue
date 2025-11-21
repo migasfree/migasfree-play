@@ -135,8 +135,8 @@ export default {
 
       let cmd = `migasfree --quiet tags --communicate ${tags.value.join(' ')}`
       if (clientVersion.value.startsWith('4.')) {
-        if (tags.value.length === 0) cmd = 'migasfree-tags --communicate ""'
-        else cmd = `migasfree-tags --communicate ${tags.value.join(' ')}`
+        const tagArg = tags.value.length ? tags.value.join(' ') : '""'
+        cmd = `migasfree-tags --communicate ${tagArg}`
       }
 
       executionsStore.run({
@@ -151,8 +151,8 @@ export default {
 
       let cmd = `migasfree --quiet tags --set ${tags.value.join(' ')}`
       if (clientVersion.value.startsWith('4.')) {
-        if (tags.value.length === 0) cmd = 'migasfree-tags --set ""'
-        else cmd = `migasfree-tags --set ${tags.value.join(' ')}`
+        const tagArg = tags.value.length ? tags.value.join(' ') : '""'
+        cmd = `migasfree-tags --set ${tagArg}`
       }
 
       executionsStore.run({
@@ -179,11 +179,10 @@ export default {
     }
 
     onMounted(() => {
-      const optionsTmp = new Set(assigned.value)
-
-      Object.values(available.value).forEach((arr) => {
-        arr.forEach((el) => optionsTmp.add(el))
-      })
+      const optionsTmp = new Set([
+        ...assigned.value,
+        ...Object.values(available.value).flat(),
+      ])
 
       allOptions.value = [...optionsTmp].sort()
       options.value = allOptions.value
