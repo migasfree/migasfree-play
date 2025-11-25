@@ -69,8 +69,8 @@
     "webpack": "5.102.1"
   },
   "resolutions": {
-    "call-bind": "1.0.7",
-    "get-intrinsic": "1.2.4"
+    "call-bind": "1.0.8",
+    "get-intrinsic": "1.2.5"
   },
   "browserslist": [
     "defaults and supports es6-module"
