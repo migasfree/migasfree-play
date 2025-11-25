@@ -65,15 +65,48 @@ jobs:
           name: rpm-package
           path: ${{ github.workspace }}/packaging/rpm/rpmbuild/RPMS/x86_64/*.rpm
 
-      - name: Build Arch package
-        if: matrix.node-version == '22.x'
-        uses: edlanglois/pkgbuild-action@v1.1.9
-        with:
-          pkgdir: 'packaging'
+      #- name: Build Arch package
+      #  if: matrix.node-version == '22.x'
+      #  uses: edlanglois/pkgbuild-action@v1.1.9
+      #  with:
+      #    pkgdir: 'packaging'
 
-      - name: Upload Arch artifact
-        if: matrix.node-version == '22.x'
+      #- name: Upload Arch artifact
+      #  if: matrix.node-version == '22.x'
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: arch-package
+      #    path: ${{ steps.makepkg.outputs.pkgfile0 }}
+
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Validate code
+        run: |
+          yarn lint
+          yarn format:check
+
+      - name: Build
+        run: yarn build
+
+      - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
         with:
-          name: arch-package
-          path: ${{ steps.makepkg.outputs.pkgfile0 }}
+          name: msi-package
+          path: ${{ github.workspace }}/dist/*.msi
+
+      - name: Upload NSIS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nsis-package
+          path: ${{ github.workspace }}/dist/*.exe
