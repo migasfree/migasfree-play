@@ -80,6 +80,10 @@ jobs:
 
   windows-build:
     runs-on: windows-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -103,10 +107,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: msi-package
-          path: ${{ github.workspace }}/dist/*.msi
+          path: ${{ github.workspace }}/dist/electron/Packaged/*.msi
 
       - name: Upload NSIS artifact
         uses: actions/upload-artifact@v4
         with:
           name: nsis-package
-          path: ${{ github.workspace }}/dist/*.exe
+          path: ${{ github.workspace }}/dist/electron/Packaged/*.exe
