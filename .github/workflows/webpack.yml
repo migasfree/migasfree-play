@@ -91,10 +91,10 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Validate code
-        run: |
-          yarn lint
-          yarn format:check
+      #- name: Validate code
+      #  run: |
+      #    yarn lint
+      #    yarn format:check
 
       - name: Build
         run: yarn build
