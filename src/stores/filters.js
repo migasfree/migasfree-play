@@ -38,8 +38,8 @@ export const useFiltersStore = defineStore('filters', () => {
         ? Object.entries(data)
         : Object.entries(data.results)
 
-      entries.forEach(([, val]) => {
-        const id = serverVersion.value.startsWith('4.') ? val : val.id
+      entries.forEach(([key, val]) => {
+        const id = serverVersion.value.startsWith('4.') ? Number(key) : val.id
         const name = serverVersion.value.startsWith('4.') ? val : val.name
 
         categories.value.push({ id, name })
