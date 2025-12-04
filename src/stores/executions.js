@@ -159,10 +159,7 @@ export const useExecutionsStore = defineStore('executions', () => {
         uiStore.notifyError(message)
         appendExecutionError(message)
         win.show()
-        return
-      }
-
-      if (error.value === '') {
+      } else if (error.value === '') {
         packagesStore.setInstalledPackages()
       } else {
         uiStore.notifyError(
