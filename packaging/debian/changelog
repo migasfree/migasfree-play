@@ -9,8 +9,9 @@ migasfree-play (5.11.0) unstable; urgency=low
   * fix: only get categories if showApps
   * fix: chip vertical align
   * feat: added PageHeader component
+  * fix: run on exit with code !== 0
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Sun, 16 Nov 2025 14:09:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 5 Dec 2025 07:32:47 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
