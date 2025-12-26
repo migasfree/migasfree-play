@@ -1,64 +1,34 @@
 <template>
   <q-page padding>
-    <PageHeader :title="$gettext('Tags')" icon="mdi-tag">
-      <q-btn
-        icon="mdi-sync"
-        size="sm"
-        flat
-        color="primary"
-        :loading="isUpdating"
-        :disabled="isUpdating"
-        @click="updateTags"
-      >
-        <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
-      >
-    </PageHeader>
-
-    <div v-if="isUpdating" class="row q-ma-xl">
-      <div class="col-12 text-center">
-        <q-spinner color="primary" size="6em" />
-      </div>
-    </div>
-
-    <Tags v-else />
+    <PageLayout
+      :title="$gettext('Tags')"
+      icon="mdi-tag"
+      :show-count="false"
+      :loading="isUpdating"
+      @sync="sync"
+    >
+      <template #content>
+        <Tags />
+      </template>
+    </PageLayout>
   </q-page>
 </template>
 
-<script>
-import { storeToRefs } from 'pinia'
+<script setup>
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import PageHeader from 'components/PageHeader'
+import PageLayout from 'components/PageLayout'
 import Tags from 'components/Tags'
 
 import { useTagsStore } from 'src/stores/tags'
-import { useUiStore } from 'src/stores/ui'
+import { usePageSync } from 'src/composables/usePageSync'
 
-export default {
-  components: {
-    PageHeader,
-    Tags,
-  },
-  setup() {
-    const { $gettext } = useGettext()
+const { $gettext } = useGettext()
 
-    const tagsStore = useTagsStore()
-    const uiStore = useUiStore()
-    const { isUpdating } = storeToRefs(uiStore)
+const tagsStore = useTagsStore()
 
-    useMeta({ title: $gettext('Tags') })
+useMeta({ title: $gettext('Tags') })
 
-    const updateTags = async () => {
-      uiStore.updating()
-      try {
-        await tagsStore.getTags()
-      } finally {
-        uiStore.updatingFinished()
-      }
-    }
-
-    return { isUpdating, updateTags }
-  },
-}
+const { isUpdating, sync } = usePageSync(() => tagsStore.getTags())
 </script>
