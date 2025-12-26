@@ -23,6 +23,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   const lastId = ref('')
   const isRunningCommand = ref(false)
   const error = ref('')
+  let currentSubprocess = null
 
   const trimEndSpaces = (text) => {
     let lines = text.split('\n')
@@ -136,6 +137,7 @@ export const useExecutionsStore = defineStore('executions', () => {
 
     const [command, ...args] = cmd.split(' ')
     const subprocess = spawnProcess(command, args)
+    currentSubprocess = subprocess
 
     addExecution({ command: text, icon })
 
@@ -224,5 +226,23 @@ export const useExecutionsStore = defineStore('executions', () => {
     error.value = ''
   }
 
-  return { items, lastId, isRunningCommand, error, getExecutions, run }
+  const cancelCurrentCommand = () => {
+    if (currentSubprocess && isRunningCommand.value) {
+      currentSubprocess.kill('SIGTERM')
+      appendExecutionText(
+        '\n<span class="text-negative">[Command cancelled by user]</span>\n',
+      )
+      uiStore.notifyInfo(gettext.$gettext('Command cancelled'))
+    }
+  }
+
+  return {
+    items,
+    lastId,
+    isRunningCommand,
+    error,
+    getExecutions,
+    run,
+    cancelCurrentCommand,
+  }
 })
