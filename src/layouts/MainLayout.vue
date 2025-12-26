@@ -76,7 +76,7 @@
   <Register :value="showRegister" @closed="showRegister = !showRegister" />
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -84,7 +84,7 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { setInterval } from 'timers'
 
-import { appName, urlHelp } from 'config/app.conf'
+import { appName } from 'config/app.conf'
 import Menu from 'components/Menu'
 import Register from 'components/Register'
 
@@ -94,81 +94,60 @@ import { usePreferencesStore } from 'src/stores/preferences'
 import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 
-export default {
-  name: 'MainLayout',
-  components: {
-    Menu,
-    Register,
-  },
-  setup() {
-    const showRegister = ref(false)
+const showRegister = ref(false)
 
-    const route = useRoute()
-    const router = useRouter()
-    const { $gettext } = useGettext()
+const route = useRoute()
+const router = useRouter()
+const { $gettext } = useGettext()
 
-    const computerStore = useComputerStore()
-    const executionsStore = useExecutionsStore()
-    const preferencesStore = usePreferencesStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
+const computerStore = useComputerStore()
+const executionsStore = useExecutionsStore()
+const preferencesStore = usePreferencesStore()
+const programStore = useProgramStore()
+const uiStore = useUiStore()
 
-    const { cid, name, link } = storeToRefs(computerStore)
-    const { isRunningCommand } = storeToRefs(executionsStore)
-    const { showApps, showSyncDetails, showComputerLink } =
-      storeToRefs(preferencesStore)
-    const { clientVersion } = storeToRefs(programStore)
+const { cid, name, link } = storeToRefs(computerStore)
+const { isRunningCommand } = storeToRefs(executionsStore)
+const { showApps, showSyncDetails, showComputerLink } =
+  storeToRefs(preferencesStore)
+const { clientVersion } = storeToRefs(programStore)
 
-    useMeta({ titleTemplate: (title) => `${title} | ${appName}` })
+useMeta({ titleTemplate: (title) => `${title} | ${appName}` })
 
-    const openRegister = () => {
-      showRegister.value = true
-    }
-
-    const computerText = computed(() => {
-      return cid.value ? `${name.value} (CID-${cid.value})` : name.value
-    })
-
-    const synchronize = () => {
-      uiStore.notifyInfo($gettext('Synchronizing...'))
-
-      if (showSyncDetails.value && route.name !== 'details')
-        router.push({ name: 'details' })
-
-      const cmd = clientVersion.value.startsWith('4.')
-        ? 'migasfree --update'
-        : 'migasfree sync'
-
-      executionsStore.run({
-        cmd,
-        text: $gettext('Synchronization'),
-        icon: 'mdi-sync',
-      })
-    }
-
-    if (!showApps.value) router.push({ name: 'details' })
-
-    onMounted(() => {
-      const app = window.electronRemote.app
-
-      if (app.syncAfterStart) {
-        synchronize()
-      }
-
-      setInterval(synchronize, 24 * 60 * 60 * 1000)
-    })
-
-    return {
-      cid,
-      computerText,
-      link,
-      synchronize,
-      urlHelp,
-      isRunningCommand,
-      showComputerLink,
-      showRegister,
-      openRegister,
-    }
-  },
+const openRegister = () => {
+  showRegister.value = true
 }
+
+const computerText = computed(() => {
+  return cid.value ? `${name.value} (CID-${cid.value})` : name.value
+})
+
+const synchronize = () => {
+  uiStore.notifyInfo($gettext('Synchronizing...'))
+
+  if (showSyncDetails.value && route.name !== 'details')
+    router.push({ name: 'details' })
+
+  const cmd = clientVersion.value.startsWith('4.')
+    ? 'migasfree --update'
+    : 'migasfree sync'
+
+  executionsStore.run({
+    cmd,
+    text: $gettext('Synchronization'),
+    icon: 'mdi-sync',
+  })
+}
+
+if (!showApps.value) router.push({ name: 'details' })
+
+onMounted(() => {
+  const app = window.electronRemote.app
+
+  if (app.syncAfterStart) {
+    synchronize()
+  }
+
+  setInterval(synchronize, 24 * 60 * 60 * 1000)
+})
 </script>
