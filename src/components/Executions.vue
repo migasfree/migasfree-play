@@ -1,5 +1,5 @@
 <template>
-  <q-list v-if="Object.keys(items).length > 0" class="q-ma-md">
+  <q-list v-if="Object.keys(items).length > 0" class="q-mx-sm q-my-lg">
     <ExecutionDetail
       v-for="(item, name, index) in items"
       :id="name"
