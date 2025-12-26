@@ -1,5 +1,5 @@
 <template>
-  <div class="print-hide">
+  <div class="print-hide q-my-lg">
     <div class="column items-center">
       <p>
         <img width="120" src="img/migasfree-play.svg" />
