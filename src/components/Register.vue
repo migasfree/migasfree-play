@@ -9,23 +9,8 @@
         }}
         <q-card-section>
           <q-card flat bordered class="half q-ma-md">
-            <q-item>
-              <q-item-section avatar>
-                <q-icon name="mdi-server" />
-              </q-item-section>
-
-              <q-item-section class="text-h6"
-                >{{ host }} ({{ serverVersion }})</q-item-section
-              >
-            </q-item>
-
-            <q-item>
-              <q-item-section avatar>
-                <q-icon name="mdi-sitemap" />
-              </q-item-section>
-
-              <q-item-section class="text-h6">{{ project }}</q-item-section>
-            </q-item>
+            <InfoItem icon="mdi-server" :label="`${host} (${serverVersion})`" />
+            <InfoItem icon="mdi-sitemap" :label="project" />
           </q-card>
         </q-card-section>
         <template #action>
@@ -34,7 +19,7 @@
             flat
             color="black"
             :label="$gettext('Cancel')"
-            @click="$emit('closed')"
+            @click="emit('closed')"
           />
         </template>
       </q-banner>
@@ -46,48 +31,11 @@
       </q-card-section>
 
       <q-card-section>
-        <p>
-          <q-input
-            v-model="username"
-            autofocus
-            lazy-rules
-            :rules="[(val) => !!val || $gettext('* Required')]"
-          >
-            <template #label>
-              {{ $gettext('User') }}
-            </template>
-
-            <template #prepend>
-              <q-icon name="mdi-account" />
-            </template>
-          </q-input>
-        </p>
-
-        <p>
-          <q-input
-            id="password"
-            v-model="password"
-            lazy-rules
-            :rules="[(val) => !!val || $gettext('* Required')]"
-            :type="showPassword ? 'text' : 'password'"
-            @keyup.enter="register"
-          >
-            <template #label>
-              {{ $gettext('Password') }}
-            </template>
-
-            <template #prepend>
-              <q-icon name="mdi-lock" />
-            </template>
-
-            <template #append>
-              <q-icon
-                :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                @click="showPassword = !showPassword"
-              />
-            </template>
-          </q-input>
-        </p>
+        <CredentialsForm
+          v-model:username="username"
+          v-model:password="password"
+          @submit="register"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -104,70 +52,60 @@
   </q-dialog>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+
+import CredentialsForm from 'components/CredentialsForm'
+import InfoItem from 'components/InfoItem'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useProgramStore } from 'src/stores/program'
 
-export default {
-  name: 'Register',
-  props: {
-    value: {
-      type: Boolean,
-      required: true,
-    },
+const props = defineProps({
+  value: {
+    type: Boolean,
+    required: true,
   },
-  emits: ['closed'],
-  setup(props, { emit }) {
-    const computerStore = useComputerStore()
-    const programStore = useProgramStore()
+})
 
-    const username = ref('')
-    const password = ref('')
-    const showPassword = ref(false)
-    const showing = ref(props.value)
+const emit = defineEmits(['closed'])
 
-    const { project } = storeToRefs(computerStore)
+const computerStore = useComputerStore()
+const programStore = useProgramStore()
 
-    const isValid = computed(() => {
-      const user = username.value?.trim() ?? ''
-      const pass = password.value?.trim() ?? ''
+const username = ref('')
+const password = ref('')
+const showing = ref(props.value)
 
-      return user.length > 0 && pass.length > 0
-    })
+const { project } = storeToRefs(computerStore)
 
-    const register = async () => {
-      if (!username.value || !password.value) return
+const host = programStore.host
+const serverVersion = programStore.serverVersion
 
-      await computerStore.registerComputer({
-        user: username.value,
-        password: password.value,
-      })
-      username.value = ''
-      password.value = ''
-      emit('closed')
-    }
+const isValid = computed(() => {
+  const user = username.value?.trim() ?? ''
+  const pass = password.value?.trim() ?? ''
 
-    watch(
-      () => props.value,
-      (newVal) => {
-        showing.value = newVal
-      },
-    )
+  return user.length > 0 && pass.length > 0
+})
 
-    return {
-      username,
-      password,
-      showPassword,
-      showing,
-      isValid,
-      project,
-      host: programStore.host,
-      serverVersion: programStore.serverVersion,
-      register,
-    }
-  },
+const register = async () => {
+  if (!username.value || !password.value) return
+
+  await computerStore.registerComputer({
+    user: username.value,
+    password: password.value,
+  })
+  username.value = ''
+  password.value = ''
+  emit('closed')
 }
+
+watch(
+  () => props.value,
+  (newVal) => {
+    showing.value = newVal
+  },
+)
 </script>
