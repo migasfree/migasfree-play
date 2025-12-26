@@ -86,7 +86,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import os from 'os'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -97,137 +97,116 @@ import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 
-export default {
-  name: 'AppDetail',
-  props: {
-    icon: { type: String, required: true },
-    name: { type: String, required: true },
-    category: { type: String, required: true },
-    score: { type: Number, required: false, default: 0 },
-    description: { type: String, required: false, default: '' },
-    level: { type: String, required: false, default: 'U' },
-    packages: { type: Array, required: false, default: () => [] },
-  },
-  emits: ['openlogin'],
-  setup(props) {
-    const { $gettext, interpolate } = useGettext()
+const props = defineProps({
+  icon: { type: String, required: true },
+  name: { type: String, required: true },
+  category: { type: String, required: true },
+  score: { type: Number, required: false, default: 0 },
+  description: { type: String, required: false, default: '' },
+  level: { type: String, required: false, default: 'U' },
+  packages: { type: Array, required: false, default: () => [] },
+})
 
-    const executionsStore = useExecutionsStore()
-    const packagesStore = usePackagesStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
+defineEmits(['openlogin'])
 
-    const { isRunningCommand } = storeToRefs(executionsStore)
-    const { available, installed } = storeToRefs(packagesStore)
-    const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
+const { $gettext, interpolate } = useGettext()
 
-    const rating = computed(() => props.score)
+const executionsStore = useExecutionsStore()
+const packagesStore = usePackagesStore()
+const programStore = useProgramStore()
+const uiStore = useUiStore()
 
-    const truncatedDescription = computed(
-      () => props.description.split('\n')[0],
-    )
+const { isRunningCommand } = storeToRefs(executionsStore)
+const { available, installed } = storeToRefs(packagesStore)
+const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
 
-    const moreInfo = computed(() => {
-      const lines = props.description.split('\n')
-      const trimmed = lines.slice(1)
-      return trimmed.join('\n')
-    })
+const rating = computed(() => props.score)
 
-    const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
+const truncatedDescription = computed(() => props.description.split('\n')[0])
 
-    const installedPackages = computed(() =>
-      JSON.parse(JSON.stringify(installed.value)),
-    )
+const moreInfo = computed(() => {
+  const lines = props.description.split('\n')
+  const trimmed = lines.slice(1)
+  return trimmed.join('\n')
+})
 
-    const availablePackages = computed(() =>
-      JSON.parse(JSON.stringify(available.value)),
-    )
+const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
 
-    const isInstalled = computed(
-      () =>
-        packages.value.length > 0 &&
-        packages.value.filter((x) => !installedPackages.value.includes(x))
-          .length === 0,
-    )
+const installedPackages = computed(() =>
+  JSON.parse(JSON.stringify(installed.value)),
+)
 
-    const isAvailable = computed(() =>
-      packages.value.filter((x) => !availablePackages.value.includes(x)),
-    )
+const availablePackages = computed(() =>
+  JSON.parse(JSON.stringify(available.value)),
+)
 
-    const isInstallable = computed(
-      () =>
-        (props.level === 'U' || userIsPrivileged.value) &&
-        isAvailable.value &&
-        !isInstalled.value &&
-        packages.value.length > 0,
-    )
+const isInstalled = computed(
+  () =>
+    packages.value.length > 0 &&
+    packages.value.filter((x) => !installedPackages.value.includes(x))
+      .length === 0,
+)
 
-    const isRemovable = computed(
-      () =>
-        isInstalled.value && (props.level === 'U' || userIsPrivileged.value),
-    )
+const isAvailable = computed(() =>
+  packages.value.filter((x) => !availablePackages.value.includes(x)),
+)
 
-    const isPrivileged = computed(
-      () => isAvailable.value && props.level === 'A' && !userIsPrivileged.value,
-    )
+const isInstallable = computed(
+  () =>
+    (props.level === 'U' || userIsPrivileged.value) &&
+    isAvailable.value &&
+    !isInstalled.value &&
+    packages.value.length > 0,
+)
 
-    const defaultIcon = computed(() => 'img/migasfree-play.svg')
+const isRemovable = computed(
+  () => isInstalled.value && (props.level === 'U' || userIsPrivileged.value),
+)
 
-    const installApp = (name, packages) => {
-      if (!packages?.length) return
+const isPrivileged = computed(
+  () => isAvailable.value && props.level === 'A' && !userIsPrivileged.value,
+)
 
-      const packagesToInstall = packages.join(' ')
-      let cmd = clientVersion.value.startsWith('4.')
-        ? `migasfree --install --package=${packagesToInstall}`
-        : `migasfree install ${packagesToInstall}`
+const defaultIcon = computed(() => 'img/migasfree-play.svg')
 
-      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+const installApp = (name, packages) => {
+  if (!packages?.length) return
 
-      const message = interpolate($gettext('Installing %{name}'), { name })
+  const packagesToInstall = packages.join(' ')
+  let cmd = clientVersion.value.startsWith('4.')
+    ? `migasfree --install --package=${packagesToInstall}`
+    : `migasfree install ${packagesToInstall}`
 
-      uiStore.notifyInfo(message)
+  if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      executionsStore.run({
-        cmd,
-        text: message,
-        icon: 'mdi-download',
-      })
-    }
+  const message = interpolate($gettext('Installing %{name}'), { name })
 
-    const removeApp = (name, packages) => {
-      const packagesToRemove = packages.join(' ')
+  uiStore.notifyInfo(message)
 
-      let cmd = clientVersion.value.startsWith('4.')
-        ? `migasfree --remove --package=${packagesToRemove}`
-        : `migasfree purge ${packagesToRemove}`
+  executionsStore.run({
+    cmd,
+    text: message,
+    icon: 'mdi-download',
+  })
+}
 
-      if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+const removeApp = (name, packages) => {
+  const packagesToRemove = packages.join(' ')
 
-      const message = interpolate($gettext('Uninstalling %{name}'), { name })
+  let cmd = clientVersion.value.startsWith('4.')
+    ? `migasfree --remove --package=${packagesToRemove}`
+    : `migasfree purge ${packagesToRemove}`
 
-      uiStore.notifyInfo(message)
+  if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
-      executionsStore.run({
-        cmd,
-        text: message,
-        icon: 'mdi-delete',
-      })
-    }
+  const message = interpolate($gettext('Uninstalling %{name}'), { name })
 
-    return {
-      rating,
-      truncatedDescription,
-      moreInfo,
-      isInstalled,
-      isAvailable,
-      isInstallable,
-      isRemovable,
-      isPrivileged,
-      isRunningCommand,
-      installApp,
-      removeApp,
-      defaultIcon,
-    }
-  },
+  uiStore.notifyInfo(message)
+
+  executionsStore.run({
+    cmd,
+    text: message,
+    icon: 'mdi-delete',
+  })
 }
 </script>
