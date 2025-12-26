@@ -14,23 +14,10 @@
       </p>
 
       <q-card v-if="user" flat bordered class="half q-ma-md">
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-account" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ user }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-calendar-check" />
-          </q-item-section>
-
-          <q-item-section class="text-h6"
-            ><DateView :value="syncEndDate"
-          /></q-item-section>
-        </q-item>
+        <InfoItem icon="mdi-account" :label="user" />
+        <InfoItem icon="mdi-calendar-check">
+          <DateView :value="syncEndDate" />
+        </InfoItem>
 
         <q-tooltip anchor="top middle">{{
           $gettext('Last synchronization')
@@ -38,121 +25,36 @@
       </q-card>
 
       <q-card v-if="'product' in data" flat bordered class="half q-ma-md">
-        <q-item>
-          <q-item-section avatar>
-            <q-icon :name="productIcon" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ data.product }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon :name="cpuIcon" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ data.cpu }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-memory" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ computerRam }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-harddisk" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ computerStorage }}</q-item-section>
-        </q-item>
+        <InfoItem :icon="productIcon" :label="data.product" />
+        <InfoItem :icon="cpuIcon" :label="data.cpu" />
+        <InfoItem icon="mdi-memory" :label="computerRam" />
+        <InfoItem icon="mdi-harddisk" :label="computerStorage" />
 
         <q-tooltip>{{ $gettext('Hardware') }}</q-tooltip>
       </q-card>
 
       <q-card v-if="'mac_address' in data" flat bordered class="half q-ma-md">
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-information" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ data.fqdn }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-ip-network" />
-          </q-item-section>
-
-          <q-item-section class="text-h6"
-            >{{ data.ip_address }} / {{ mask }} ({{ network }})</q-item-section
-          >
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-swap-vertical" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ computerMac }}</q-item-section>
-        </q-item>
+        <InfoItem icon="mdi-information" :label="data.fqdn" />
+        <InfoItem
+          icon="mdi-ip-network"
+          :label="`${data.ip_address} / ${mask} (${network})`"
+        />
+        <InfoItem icon="mdi-swap-vertical" :label="computerMac" />
 
         <q-tooltip>{{ $gettext('Network Data') }}</q-tooltip>
       </q-card>
 
       <q-card flat bordered class="half q-ma-md">
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-server" />
-          </q-item-section>
-
-          <q-item-section class="text-h6"
-            >{{ host }} ({{ serverVersion }})</q-item-section
-          >
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-desktop-classic" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ client }}</q-item-section>
-        </q-item>
-
-        <q-item v-if="organization">
-          <q-item-section avatar>
-            <q-icon name="mdi-bank" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ organization }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-sitemap" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ project }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon name="mdi-pound" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ computerId }}</q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section avatar>
-            <q-icon :name="statusIcon" />
-          </q-item-section>
-
-          <q-item-section class="text-h6">{{ statusText }}</q-item-section>
-        </q-item>
+        <InfoItem icon="mdi-server" :label="`${host} (${serverVersion})`" />
+        <InfoItem icon="mdi-desktop-classic" :label="client" />
+        <InfoItem
+          icon="mdi-bank"
+          :label="organization"
+          :show="!!organization"
+        />
+        <InfoItem icon="mdi-sitemap" :label="project" />
+        <InfoItem icon="mdi-pound" :label="computerId" />
+        <InfoItem :icon="statusIcon" :label="statusText" />
 
         <q-tooltip>{{ $gettext('Migasfree Data') }}</q-tooltip>
       </q-card>
@@ -276,7 +178,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch, nextTick, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
@@ -284,6 +186,7 @@ import { copyToClipboard } from 'quasar'
 
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 import DateView from 'components/DateView'
+import InfoItem from 'components/InfoItem'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
@@ -292,188 +195,145 @@ import { useUiStore } from 'src/stores/ui'
 
 const app = require('../../package.json')
 
-export default {
-  name: 'Info',
-  components: {
-    DateView,
-    VueQrcode,
+const { $gettext } = useGettext()
+
+const computerStore = useComputerStore()
+const packagesStore = usePackagesStore()
+const programStore = useProgramStore()
+const uiStore = useUiStore()
+
+const search = ref('')
+const showSearch = ref(false)
+const expanded = ref(false)
+const searchInput = useTemplateRef('searchInput')
+
+const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
+  storeToRefs(computerStore)
+const { inventory } = storeToRefs(packagesStore)
+
+const host = programStore.host
+const serverVersion = programStore.serverVersion
+const organization = programStore.organization
+const client = programStore.clientVersion
+
+const bytesToGigas = (value) => {
+  return (value / 1024 / 1024 / 1024).toFixed(1)
+}
+
+const filteredInventory = computed(() => {
+  const query = (search.value ?? '').toLowerCase()
+
+  if (!query) return inventory.value
+
+  return inventory.value.filter((item) => item.toLowerCase().includes(query))
+})
+
+const syncEndDate = computed(() =>
+  'sync_end_date' in data.value ? data.value.sync_end_date : '',
+)
+
+const computerRam = computed(() =>
+  'ram' in data.value ? `${bytesToGigas(data.value.ram)} GB RAM` : '',
+)
+
+const computerStorage = computed(() => {
+  const { storage, disks } = data.value
+
+  return storage
+    ? `${bytesToGigas(storage)} GB (${disks} ${$gettext('disks')})`
+    : ''
+})
+
+const computerMac = computed(() => {
+  if (!data.value.mac_address) return ''
+
+  return data.value.mac_address
+    .match(/.{1,12}/g)
+    .map((chunk) => chunk.replace(/(.{2})/g, '$1:').slice(0, -1))
+    .join(', ')
+})
+
+const computerId = computed(() => `CID-${cid.value ?? '?'}`)
+
+const productIcon = computed(() => {
+  const icons = {
+    desktop: 'mdi-desktop-tower-monitor',
+    laptop: 'mdi-laptop',
+    virtual: 'mdi-cube-outline',
+    docker: 'mdi-docker',
+  }
+
+  return icons[data.value.product_system] ?? 'mdi-help'
+})
+
+const cpuIcon = computed(() => {
+  const arch = data.value.architecture
+
+  return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-help'
+})
+
+const statusIcon = computed(() => {
+  const iconMap = {
+    available: 'mdi-cart',
+    'in repair': 'mdi-wrench',
+    reserved: 'mdi-lock-alert',
+    intended: 'mdi-heart-pulse',
+    unsubscribed: 'mdi-recycle-variant',
+  }
+
+  return iconMap[data.value.status] ?? 'mdi-crosshairs-question'
+})
+
+const statusText = computed(() => {
+  const map = {
+    available: $gettext('Available'),
+    'in repair': $gettext('In repair'),
+    reserved: $gettext('Reserved'),
+    intended: $gettext('Intended'),
+    unsubscribed: $gettext('Unsubscribed'),
+  }
+
+  return map[data.value.status] ?? $gettext('Unknown')
+})
+
+const qrCode = computed(() =>
+  JSON.stringify({
+    model: 'computer',
+    id: cid.value,
+    server: programStore.host,
+  }),
+)
+
+watch(
+  () => search.value,
+  () => {
+    expanded.value = !!search.value
   },
-  setup() {
-    const { $gettext } = useGettext()
+)
 
-    const computerStore = useComputerStore()
-    const packagesStore = usePackagesStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-
-    const search = ref('')
-    const showSearch = ref(false)
-    const expanded = ref(false)
-    const searchInput = useTemplateRef('searchInput')
-
-    const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
-      storeToRefs(computerStore)
-    const { inventory } = storeToRefs(packagesStore)
-
-    const filteredInventory = computed(() => {
-      const query = (search.value ?? '').toLowerCase()
-
-      if (!query) return inventory.value
-
-      return inventory.value.filter((item) =>
-        item.toLowerCase().includes(query),
-      )
-    })
-
-    const syncEndDate = computed(() =>
-      'sync_end_date' in data.value ? data.value.sync_end_date : '',
-    )
-
-    const computerRam = computed(() =>
-      'ram' in data.value ? `${bytesToGigas(data.value.ram)} GB RAM` : '',
-    )
-
-    const computerStorage = computed(() => {
-      const { storage, disks } = data.value
-
-      return storage
-        ? `${bytesToGigas(storage)} GB (${disks} ${$gettext('disks')})`
-        : ''
-    })
-
-    const computerMac = computed(() => {
-      if (!data.value.mac_address) return ''
-
-      return data.value.mac_address
-        .match(/.{1,12}/g)
-        .map((chunk) => chunk.replace(/(.{2})/g, '$1:').slice(0, -1))
-        .join(', ')
-    })
-
-    const computerId = computed(() => `CID-${cid.value ?? '?'}`)
-
-    const productIcon = computed(() => {
-      const icons = {
-        desktop: 'mdi-desktop-tower-monitor',
-        laptop: 'mdi-laptop',
-        virtual: 'mdi-cube-outline',
-        docker: 'mdi-docker',
-      }
-
-      return icons[data.value.product_system] ?? 'mdi-help'
-    })
-
-    const cpuIcon = computed(() => {
-      const arch = data.value.architecture
-
-      return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-help'
-    })
-
-    const statusIcon = computed(() => {
-      const iconMap = {
-        available: 'mdi-cart',
-        'in repair': 'mdi-wrench',
-        reserved: 'mdi-lock-alert',
-        intended: 'mdi-heart-pulse',
-        unsubscribed: 'mdi-recycle-variant',
-      }
-
-      return iconMap[data.value.status] ?? 'mdi-crosshairs-question'
-    })
-
-    const statusText = computed(() => {
-      const map = {
-        available: $gettext('Available'),
-        'in repair': $gettext('In repair'),
-        reserved: $gettext('Reserved'),
-        intended: $gettext('Intended'),
-        unsubscribed: $gettext('Unsubscribed'),
-      }
-
-      return map[data.value.status] ?? $gettext('Unknown')
-    })
-
-    const qrCode = computed(() =>
-      JSON.stringify({
-        model: 'computer',
-        id: cid.value,
-        server: programStore.host,
-      }),
-    )
-
-    watch(
-      () => search.value,
-      () => {
-        expanded.value = !!search.value
-      },
-    )
-
-    const toggleSearch = async () => {
-      showSearch.value = !showSearch.value
-      expanded.value = showSearch.value
-      if (showSearch.value) {
-        await nextTick()
-        if (searchInput.value) {
-          searchInput.value.focus()
-        }
-      }
+const toggleSearch = async () => {
+  showSearch.value = !showSearch.value
+  expanded.value = showSearch.value
+  if (showSearch.value) {
+    await nextTick()
+    if (searchInput.value) {
+      searchInput.value.focus()
     }
+  }
+}
 
-    const bytesToGigas = (value) => {
-      return (value / 1024 / 1024 / 1024).toFixed(1)
-    }
+const printLabel = () => {
+  window.print()
+}
 
-    const printLabel = () => {
-      window.print()
-    }
+const sortArray = (array) => {
+  return [...array].sort((a, b) => a - b)
+}
 
-    const sortArray = (array) => {
-      return [...array].sort((a, b) => a - b)
-    }
-
-    const copyInventory = async () => {
-      copyToClipboard(sortArray(filteredInventory.value).join('\n')).then(
-        () => {
-          uiStore.notifySuccess($gettext('Text copied to clipboard'))
-        },
-      )
-    }
-
-    return {
-      search,
-      showSearch,
-      expanded,
-      searchInput,
-      toggleSearch,
-      filteredInventory,
-      app,
-      user,
-      data,
-      mask,
-      network,
-      project,
-      name,
-      uuid,
-      helpdesk,
-      syncEndDate,
-      computerRam,
-      computerStorage,
-      computerMac,
-      computerId,
-      productIcon,
-      cpuIcon,
-      statusIcon,
-      statusText,
-      qrCode,
-      inventory,
-      host: programStore.host,
-      serverVersion: programStore.serverVersion,
-      organization: programStore.organization,
-      client: programStore.clientVersion,
-      printLabel,
-      copyInventory,
-    }
-  },
+const copyInventory = async () => {
+  copyToClipboard(sortArray(filteredInventory.value).join('\n')).then(() => {
+    uiStore.notifySuccess($gettext('Text copied to clipboard'))
+  })
 }
 </script>
 
