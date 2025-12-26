@@ -1,89 +1,56 @@
 <template>
   <q-page padding>
-    <PageHeader
+    <PageLayout
       :title="$gettext('Devices')"
       icon="mdi-printer"
       :count="filteredDevices.length"
       :show-count="manageDevices"
+      :show-sync="manageDevices"
+      :loading="isUpdating"
+      @sync="sync"
     >
-      <q-btn
-        v-if="manageDevices"
-        icon="mdi-sync"
-        size="sm"
-        flat
-        color="primary"
-        :loading="isUpdating"
-        :disabled="isUpdating"
-        @click="updateDevices"
-      >
-        <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
-      >
-    </PageHeader>
-
-    <template v-if="manageDevices">
-      <div v-if="isUpdating" class="row q-ma-xl">
-        <div class="col-12 text-center">
-          <q-spinner color="primary" size="6em" />
-        </div>
-      </div>
-
-      <Devices v-else />
-    </template>
-
-    <BannerInfo v-else :message="$gettext('Client does not manage devices')" />
+      <template #content>
+        <template v-if="manageDevices">
+          <Devices />
+        </template>
+        <BannerInfo
+          v-else
+          :message="$gettext('Client does not manage devices')"
+        />
+      </template>
+    </PageLayout>
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import BannerInfo from 'components/BannerInfo'
 import Devices from 'components/Devices'
-import PageHeader from 'components/PageHeader'
+import PageLayout from 'components/PageLayout'
 
 import { useDevicesStore } from 'src/stores/devices'
 import { useProgramStore } from 'src/stores/program'
-import { useUiStore } from 'src/stores/ui'
+import { usePageSync } from 'src/composables/usePageSync'
 
-export default {
-  components: {
-    BannerInfo,
-    Devices,
-    PageHeader,
-  },
-  setup() {
-    const { $gettext } = useGettext()
+const { $gettext } = useGettext()
 
-    const devicesStore = useDevicesStore()
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
+const devicesStore = useDevicesStore()
+const programStore = useProgramStore()
 
-    const { filteredDevices } = storeToRefs(devicesStore)
-    const { isUpdating } = storeToRefs(uiStore)
+const { filteredDevices } = storeToRefs(devicesStore)
 
-    useMeta({ title: $gettext('Devices') })
+const manageDevices = programStore.manageDevices
 
-    const updateDevices = async () => {
-      uiStore.updating()
-      try {
-        await Promise.all([
-          devicesStore.computerDevices(),
-          devicesStore.getAvailableDevices(),
-          devicesStore.getFeaturesDevices(),
-        ])
-      } finally {
-        uiStore.updatingFinished()
-      }
-    }
+useMeta({ title: $gettext('Devices') })
 
-    return {
-      filteredDevices,
-      isUpdating,
-      updateDevices,
-      manageDevices: programStore.manageDevices,
-    }
-  },
-}
+const { isUpdating, sync } = usePageSync(async () => {
+  await Promise.all([
+    devicesStore.computerDevices(),
+    devicesStore.getAvailableDevices(),
+    devicesStore.getFeaturesDevices(),
+  ])
+})
 </script>
