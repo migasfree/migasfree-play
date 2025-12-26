@@ -1,65 +1,36 @@
 <template>
   <q-page padding>
-    <PageHeader :title="$gettext('Preferences')" icon="mdi-cog">
-      <q-btn
-        icon="mdi-sync"
-        size="sm"
-        flat
-        color="primary"
-        :loading="isUpdating"
-        :disabled="isUpdating"
-        @click="updatePreferences"
-      >
-        <q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
-      >
-    </PageHeader>
-
-    <div v-if="isUpdating" class="row q-ma-xl">
-      <div class="col-12 text-center">
-        <q-spinner color="primary" size="6em" />
-      </div>
-    </div>
-
-    <Preferences v-else />
+    <PageLayout
+      :title="$gettext('Preferences')"
+      icon="mdi-cog"
+      :show-count="false"
+      :loading="isUpdating"
+      @sync="sync"
+    >
+      <template #content>
+        <Preferences />
+      </template>
+    </PageLayout>
   </q-page>
 </template>
 
-<script>
-import { storeToRefs } from 'pinia'
+<script setup>
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import PageHeader from 'components/PageHeader'
+import PageLayout from 'components/PageLayout'
 import Preferences from 'components/Preferences'
 
 import { usePreferencesStore } from 'src/stores/preferences'
-import { useUiStore } from 'src/stores/ui'
+import { usePageSync } from 'src/composables/usePageSync'
 
-export default {
-  components: {
-    PageHeader,
-    Preferences,
-  },
-  setup() {
-    const { $gettext } = useGettext()
+const { $gettext } = useGettext()
 
-    const preferencesStore = usePreferencesStore()
-    const uiStore = useUiStore()
+const preferencesStore = usePreferencesStore()
 
-    const { isUpdating } = storeToRefs(uiStore)
+useMeta({ title: $gettext('Preferences') })
 
-    useMeta({ title: $gettext('Preferences') })
-
-    const updatePreferences = async () => {
-      uiStore.updating()
-      try {
-        await preferencesStore.readPreferences()
-      } finally {
-        uiStore.updatingFinished()
-      }
-    }
-
-    return { isUpdating, updatePreferences }
-  },
-}
+const { isUpdating, sync } = usePageSync(() =>
+  preferencesStore.readPreferences(),
+)
 </script>
