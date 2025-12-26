@@ -1,38 +1,35 @@
 <template>
   <q-page id="main" padding>
-    <PageHeader
+    <PageLayout
       :title="$gettext('Details')"
       icon="mdi-list-status"
       :count="count"
-    />
-
-    <Executions />
+      :show-sync="false"
+    >
+      <template #content>
+        <Executions />
+      </template>
+    </PageLayout>
   </q-page>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { storeToRefs } from 'pinia'
 
 import Executions from 'components/Executions'
-import PageHeader from 'components/PageHeader'
+import PageLayout from 'components/PageLayout'
 
 import { useExecutionsStore } from 'src/stores/executions'
 
-export default {
-  components: {
-    Executions,
-    PageHeader,
-  },
-  setup() {
-    const { $gettext } = useGettext()
-    const executionsStore = useExecutionsStore()
-    const { items } = storeToRefs(executionsStore)
+const { $gettext } = useGettext()
 
-    useMeta({ title: $gettext('Details') })
+const executionsStore = useExecutionsStore()
+const { items } = storeToRefs(executionsStore)
 
-    return { count: Object.keys(items.value).length }
-  },
-}
+useMeta({ title: $gettext('Details') })
+
+const count = computed(() => Object.keys(items.value).length)
 </script>
