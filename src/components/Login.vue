@@ -8,48 +8,11 @@
       </q-card-section>
 
       <q-card-section>
-        <p>
-          <q-input
-            v-model="username"
-            autofocus
-            lazy-rules
-            :rules="[(val) => !!val || $gettext('* Required')]"
-          >
-            <template #label>
-              {{ $gettext('User') }}
-            </template>
-
-            <template #prepend>
-              <q-icon name="mdi-account" />
-            </template>
-          </q-input>
-        </p>
-
-        <p>
-          <q-input
-            id="password"
-            v-model="password"
-            lazy-rules
-            :rules="[(val) => !!val || $gettext('* Required')]"
-            :type="showPassword ? 'text' : 'password'"
-            @keyup.enter="login"
-          >
-            <template #label>
-              {{ $gettext('Password') }}
-            </template>
-
-            <template #prepend>
-              <q-icon name="mdi-lock" />
-            </template>
-
-            <template #append>
-              <q-icon
-                :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                @click="showPassword = !showPassword"
-              />
-            </template>
-          </q-input>
-        </p>
+        <CredentialsForm
+          v-model:username="username"
+          v-model:password="password"
+          @submit="login"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -58,7 +21,7 @@
           flat
           color="primary"
           :label="$gettext('Cancel')"
-          @click="$emit('closed')"
+          @click="emit('closed')"
         />
         <q-btn
           v-close-popup
@@ -73,59 +36,46 @@
   </q-dialog>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from 'vue'
+
+import CredentialsForm from 'components/CredentialsForm'
 
 import { useProgramStore } from 'src/stores/program'
 
-export default {
-  name: 'Login',
-  props: {
-    value: {
-      type: Boolean,
-      required: true,
-    },
+const props = defineProps({
+  value: {
+    type: Boolean,
+    required: true,
   },
-  emits: ['closed'],
-  setup(props, { emit }) {
-    const programStore = useProgramStore()
+})
 
-    const username = ref('')
-    const password = ref('')
-    const showPassword = ref(false)
-    const showing = ref(props.value)
+const emit = defineEmits(['closed'])
 
-    const isValid = computed(
-      () => username.value !== '' && password.value !== '',
-    )
+const programStore = useProgramStore()
 
-    const login = () => {
-      if (username.value && password.value) {
-        programStore.checkUser({
-          username: username.value,
-          password: password.value,
-        })
-        username.value = ''
-        password.value = ''
-        emit('closed')
-      }
-    }
+const username = ref('')
+const password = ref('')
+const showing = ref(props.value)
 
-    watch(
-      () => props.value,
-      (newVal) => {
-        showing.value = newVal
-      },
-    )
+const isValid = computed(() => username.value !== '' && password.value !== '')
 
-    return {
-      username,
-      password,
-      showPassword,
-      showing,
-      isValid,
-      login,
-    }
-  },
+const login = () => {
+  if (username.value && password.value) {
+    programStore.checkUser({
+      username: username.value,
+      password: password.value,
+    })
+    username.value = ''
+    password.value = ''
+    emit('closed')
+  }
 }
+
+watch(
+  () => props.value,
+  (newVal) => {
+    showing.value = newVal
+  },
+)
 </script>
