@@ -1,226 +1,122 @@
 <template>
+  <!-- Desktop menu -->
   <div class="gt-xs">
-    <q-btn
-      v-if="showApps"
-      flat
-      round
-      icon="apps"
-      size="lg"
-      class="q-mx-xs"
-      :disabled="$route.name === 'apps'"
-      @click="$router.push({ name: 'apps' })"
-    >
-      <q-tooltip>{{ $gettext('Apps') }}</q-tooltip>
-    </q-btn>
-
-    <q-btn
-      v-if="showDevices"
-      flat
-      round
-      icon="mdi-printer"
-      size="lg"
-      class="q-mx-xs"
-      :disabled="$route.name === 'devices'"
-      @click="$router.push({ name: 'devices' })"
-    >
-      <q-tooltip>{{ $gettext('Devices') }}</q-tooltip>
-    </q-btn>
-
-    <q-btn
-      v-if="showTags"
-      flat
-      round
-      icon="mdi-tag"
-      size="lg"
-      class="q-mx-xs"
-      :disabled="$route.name === 'tags'"
-      @click="$router.push({ name: 'tags' })"
-    >
-      <q-tooltip>{{ $gettext('Tags') }}</q-tooltip>
-    </q-btn>
-
-    <q-btn
-      v-if="showDetails"
-      flat
-      round
-      icon="mdi-list-status"
-      size="lg"
-      class="q-mx-xs"
-      :disabled="$route.name === 'details'"
-      @click="$router.push({ name: 'details' })"
-    >
-      <q-tooltip>{{ $gettext('Details') }}</q-tooltip>
-    </q-btn>
-
-    <q-btn
-      v-if="showInfo"
-      flat
-      round
-      icon="info"
-      size="lg"
-      class="q-mx-xs"
-      :disabled="$route.name === 'info'"
-      @click="$router.push({ name: 'info' })"
-    >
-      <q-tooltip>{{ $gettext('Info') }}</q-tooltip>
-    </q-btn>
-
-    <q-btn
-      flat
-      round
-      icon="mdi-cog"
-      size="lg"
-      class="q-mx-xs"
-      :disabled="$route.name === 'preferences'"
-      @click="$router.push({ name: 'preferences' })"
-    >
-      <q-tooltip>{{ $gettext('Preferences') }}</q-tooltip>
-    </q-btn>
-
-    <q-btn
-      v-if="showHelp"
-      flat
-      round
-      icon="help"
-      size="lg"
-      class="q-mx-xs"
-      type="a"
-      target="_blank"
-      :href="urlHelp"
-    >
-      <q-tooltip>{{ $gettext('Help') }}</q-tooltip>
-    </q-btn>
+    <template v-for="item in menuItems" :key="item.route">
+      <q-btn
+        v-if="item.show"
+        flat
+        round
+        :icon="item.icon"
+        size="lg"
+        class="q-mx-xs"
+        :disabled="$route.name === item.route"
+        v-bind="
+          item.external ? { type: 'a', target: '_blank', href: item.href } : {}
+        "
+        @click="!item.external && $router.push({ name: item.route })"
+      >
+        <q-tooltip>{{ item.label }}</q-tooltip>
+      </q-btn>
+    </template>
   </div>
 
+  <!-- Mobile dropdown menu -->
   <div class="lt-sm">
     <q-btn-dropdown flat stretch>
       <template #label>
         <q-icon name="mdi-menu" size="lg" />
-        <q-tooltip>
-          {{ $gettext('Menu') }}
-        </q-tooltip>
+        <q-tooltip>{{ $gettext('Menu') }}</q-tooltip>
       </template>
       <q-list bordered separator>
-        <q-item
-          v-if="showApps && $route.name !== 'apps'"
-          clickable
-          @click="$router.push({ name: 'apps' })"
-        >
-          <q-item-section avatar>
-            <q-icon name="apps" size="lg" />
-          </q-item-section>
+        <template v-for="item in menuItems" :key="item.route">
+          <q-item
+            v-if="item.show && (item.external || $route.name !== item.route)"
+            clickable
+            v-bind="
+              item.external
+                ? { tag: 'a', target: '_blank', href: item.href }
+                : {}
+            "
+            @click="!item.external && $router.push({ name: item.route })"
+          >
+            <q-item-section avatar>
+              <q-icon :name="item.icon" size="lg" />
+            </q-item-section>
 
-          <q-item-section>{{ $gettext('Apps') }}</q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="showDevices && $route.name !== 'devices'"
-          clickable
-          @click="$router.push({ name: 'devices' })"
-        >
-          <q-item-section avatar>
-            <q-icon name="mdi-printer" size="lg" />
-          </q-item-section>
-
-          <q-item-section>{{ $gettext('Devices') }}</q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="showTags && $route.name !== 'tags'"
-          clickable
-          @click="$router.push({ name: 'tags' })"
-        >
-          <q-item-section avatar>
-            <q-icon name="mdi-tag" size="lg" />
-          </q-item-section>
-
-          <q-item-section>{{ $gettext('Tags') }}</q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="showDetails && $route.name !== 'details'"
-          clickable
-          @click="$router.push({ name: 'details' })"
-        >
-          <q-item-section avatar>
-            <q-icon name="mdi-list-status" size="lg" />
-          </q-item-section>
-
-          <q-item-section>{{ $gettext('Details') }}</q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="showInfo && $route.name !== 'info'"
-          clickable
-          @click="$router.push({ name: 'info' })"
-        >
-          <q-item-section avatar>
-            <q-icon name="info" size="lg" />
-          </q-item-section>
-
-          <q-item-section>{{ $gettext('Info') }}</q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="showPreferences && $route.name !== 'preferences'"
-          clickable
-          @click="$router.push({ name: 'preferences' })"
-        >
-          <q-item-section avatar>
-            <q-icon name="mdi-cog" size="lg" />
-          </q-item-section>
-
-          <q-item-section>{{ $gettext('Preferences') }}</q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="showHelp"
-          clickable
-          tag="a"
-          target="_blank"
-          :href="urlHelp"
-        >
-          <q-item-section avatar>
-            <q-icon name="help" size="lg" />
-          </q-item-section>
-
-          <q-item-section>{{ $gettext('Help') }}</q-item-section>
-        </q-item>
+            <q-item-section>{{ item.label }}</q-item-section>
+          </q-item>
+        </template>
       </q-list>
     </q-btn-dropdown>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useGettext } from 'vue3-gettext'
 
 import { urlHelp } from 'config/app.conf'
 
 import { usePreferencesStore } from 'src/stores/preferences'
 
-export default {
-  setup() {
-    const preferencesStore = usePreferencesStore()
-    const {
-      showApps,
-      showDevices,
-      showTags,
-      showDetails,
-      showInfo,
-      showPreferences,
-      showHelp,
-    } = storeToRefs(preferencesStore)
+const { $gettext } = useGettext()
 
-    return {
-      urlHelp,
-      showApps,
-      showDevices,
-      showTags,
-      showDetails,
-      showInfo,
-      showPreferences,
-      showHelp,
-    }
+const preferencesStore = usePreferencesStore()
+const {
+  showApps,
+  showDevices,
+  showTags,
+  showDetails,
+  showInfo,
+  showPreferences,
+  showHelp,
+} = storeToRefs(preferencesStore)
+
+const menuItems = computed(() => [
+  {
+    route: 'apps',
+    icon: 'apps',
+    label: $gettext('Apps'),
+    show: showApps.value,
   },
-}
+  {
+    route: 'devices',
+    icon: 'mdi-printer',
+    label: $gettext('Devices'),
+    show: showDevices.value,
+  },
+  {
+    route: 'tags',
+    icon: 'mdi-tag',
+    label: $gettext('Tags'),
+    show: showTags.value,
+  },
+  {
+    route: 'details',
+    icon: 'mdi-list-status',
+    label: $gettext('Details'),
+    show: showDetails.value,
+  },
+  {
+    route: 'info',
+    icon: 'info',
+    label: $gettext('Info'),
+    show: showInfo.value,
+  },
+  {
+    route: 'preferences',
+    icon: 'mdi-cog',
+    label: $gettext('Preferences'),
+    show: showPreferences.value,
+  },
+  {
+    route: 'help',
+    icon: 'help',
+    label: $gettext('Help'),
+    show: showHelp.value,
+    external: true,
+    href: urlHelp,
+  },
+])
 </script>
