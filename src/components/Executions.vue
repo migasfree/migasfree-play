@@ -14,7 +14,7 @@
   <BannerInfo v-else :message="$gettext('There are not items to show.')" />
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from 'pinia'
 
 import BannerInfo from 'components/BannerInfo'
@@ -22,17 +22,6 @@ import ExecutionDetail from 'components/ExecutionDetail'
 
 import { useExecutionsStore } from 'src/stores/executions'
 
-export default {
-  name: 'Executions',
-  components: {
-    BannerInfo,
-    ExecutionDetail,
-  },
-  setup() {
-    const executionsStore = useExecutionsStore()
-    const { items } = storeToRefs(executionsStore)
-
-    return { items }
-  },
-}
+const executionsStore = useExecutionsStore()
+const { items } = storeToRefs(executionsStore)
 </script>
