@@ -1,7 +1,7 @@
 <template>
   <q-scroll-observer @scroll="onScroll" />
 
-  <q-expansion-item popup :default-opened="id === lastId ? true : false">
+  <q-expansion-item popup :default-opened="id === lastId">
     <template #header>
       <q-item-section v-if="icon" avatar>
         <q-avatar>
@@ -10,12 +10,30 @@
       </q-item-section>
 
       <q-item-section>
-        {{ command }}
+        <div class="row items-center">
+          {{ command }}
+          <q-spinner-dots
+            v-if="isCurrentlyRunning"
+            color="primary"
+            size="20px"
+            class="q-ml-sm"
+          />
+        </div>
         <div class="text-caption text-blue-grey"><DateView :value="id" /></div>
       </q-item-section>
 
       <q-item-section side>
         <div class="row items-center">
+          <q-btn
+            v-if="isCurrentlyRunning"
+            flat
+            icon="mdi-stop"
+            color="negative"
+            @click.stop="cancelCommand"
+          >
+            <q-tooltip>{{ $gettext('Cancel') }}</q-tooltip>
+          </q-btn>
+
           <q-btn
             v-if="error"
             flat
@@ -23,6 +41,7 @@
             color="negative"
             @click.stop="showError = true"
           />
+
           <q-btn
             flat
             icon="mdi-content-copy"
@@ -52,8 +71,8 @@
   </q-dialog>
 </template>
 
-<script>
-import { watch, ref } from 'vue'
+<script setup>
+import { watch, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard } from 'quasar'
@@ -64,52 +83,53 @@ import DateView from 'components/DateView'
 import { useExecutionsStore } from 'src/stores/executions'
 import { useUiStore } from 'src/stores/ui'
 
-export default {
-  name: 'ExecutionDetail',
-  components: { DateView },
-  props: {
-    id: { type: String, required: true },
-    command: { type: String, required: true },
-    text: { type: String, required: false, default: '' },
-    error: { type: String, required: false, default: '' },
-    icon: { type: String, required: false, default: '' },
-  },
-  setup(props) {
-    const { $gettext } = useGettext()
+const props = defineProps({
+  id: { type: String, required: true },
+  command: { type: String, required: true },
+  text: { type: String, required: false, default: '' },
+  error: { type: String, required: false, default: '' },
+  icon: { type: String, required: false, default: '' },
+})
 
-    const uiStore = useUiStore()
-    const executionsStore = useExecutionsStore()
-    const { lastId } = storeToRefs(executionsStore)
+const { $gettext } = useGettext()
 
-    const scrollInfo = ref({})
-    const showError = ref(false)
+const uiStore = useUiStore()
+const executionsStore = useExecutionsStore()
+const { lastId, isRunningCommand } = storeToRefs(executionsStore)
 
-    watch(
-      () => props.text,
-      () => {
-        const elem = document.getElementById('main')
+const scrollInfo = ref({})
+const showError = ref(false)
 
-        if (
-          !('position' in scrollInfo.value) ||
-          (scrollInfo.value.direction === 'down' &&
-            scrollInfo.value.position.top - elem.scrollHeight < 150)
-        ) {
-          window.scrollTo(0, elem.scrollHeight)
-        }
-      },
-    )
+const isCurrentlyRunning = computed(
+  () => props.id === lastId.value && isRunningCommand.value,
+)
 
-    const onScroll = (info) => {
-      scrollInfo.value = info
+watch(
+  () => props.text,
+  () => {
+    const elem = document.getElementById('main')
+
+    if (
+      !('position' in scrollInfo.value) ||
+      (scrollInfo.value.direction === 'down' &&
+        scrollInfo.value.position.top - elem.scrollHeight < 150)
+    ) {
+      window.scrollTo(0, elem.scrollHeight)
     }
-
-    const copyDetails = () => {
-      copyToClipboard(htmlToText(props.text)).then(() => {
-        uiStore.notifySuccess($gettext('Text copied to clipboard'))
-      })
-    }
-
-    return { showError, lastId, copyDetails, onScroll }
   },
+)
+
+const onScroll = (info) => {
+  scrollInfo.value = info
+}
+
+const copyDetails = () => {
+  copyToClipboard(htmlToText(props.text)).then(() => {
+    uiStore.notifySuccess($gettext('Text copied to clipboard'))
+  })
+}
+
+const cancelCommand = () => {
+  executionsStore.cancelCurrentCommand()
 }
 </script>
