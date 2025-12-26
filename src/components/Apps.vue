@@ -4,7 +4,7 @@
   <template v-if="filteredApps.length > 0">
     <div class="row">
       <AppDetail
-        v-for="item in paginatedApps"
+        v-for="item in paginatedItems"
         :key="item.id"
         :icon="item.icon || ''"
         :name="item.name"
@@ -29,8 +29,8 @@
   <Login :value="showLogin" @closed="showLogin = !showLogin" />
 </template>
 
-<script>
-import { ref, watch } from 'vue'
+<script setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import AppFilter from 'components/AppFilter'
@@ -40,47 +40,16 @@ import Login from 'components/Login'
 import Pagination from 'components/Pagination'
 
 import { useAppsStore } from 'src/stores/apps'
-import { useUiStore } from 'src/stores/ui'
+import { usePagination } from 'src/composables/usePagination'
 
-import { resultsPerPage } from 'config/app.conf'
+const appsStore = useAppsStore()
 
-export default {
-  name: 'Apps',
-  components: {
-    AppFilter,
-    AppDetail,
-    BannerInfo,
-    Login,
-    Pagination,
-  },
-  setup() {
-    const appsStore = useAppsStore()
-    const uiStore = useUiStore()
+const { filteredApps } = storeToRefs(appsStore)
+const showLogin = ref(false)
 
-    const { filteredApps } = storeToRefs(appsStore)
-    const showLogin = ref(false)
-    const paginatedApps = ref(filteredApps.value.slice(0, resultsPerPage))
+const { paginatedItems, pageChanged } = usePagination(filteredApps)
 
-    const openLogin = () => {
-      showLogin.value = true
-    }
-
-    const pageChanged = (currentPage = 1) => {
-      const start = (currentPage - 1) * resultsPerPage
-      const end = start + resultsPerPage
-
-      paginatedApps.value = filteredApps.value.slice(start, end)
-
-      setTimeout(() => {
-        uiStore.scrollToElement(document.getElementById('main'))
-      }, 250)
-    }
-
-    watch(filteredApps, () => {
-      pageChanged()
-    })
-
-    return { filteredApps, paginatedApps, showLogin, openLogin, pageChanged }
-  },
+const openLogin = () => {
+  showLogin.value = true
 }
 </script>
