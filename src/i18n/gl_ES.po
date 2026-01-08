@@ -124,7 +124,7 @@ msgstr "Ver dispositivos asignados"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:335
+#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:389
 msgid "Text copied to clipboard"
 msgstr "Copiouse o texto no portapapeis"
 
@@ -132,63 +132,67 @@ msgstr "Copiouse o texto no portapapeis"
 msgid "Last synchronization"
 msgstr "Última sincronización"
 
-#: src/components/Info.vue:33
+#: src/components/Info.vue:40
 msgid "Hardware"
 msgstr "Hardware"
 
-#: src/components/Info.vue:44
+#: src/components/Info.vue:62
 msgid "Network Data"
 msgstr "Datos da rede"
 
-#: src/components/Info.vue:59
+#: src/components/Info.vue:81
 msgid "Migasfree Data"
 msgstr "Datos sen migas"
 
-#: src/components/Info.vue:80
-msgid "%{num} packages"
-msgstr "%{num} paquetes"
-
-#: src/components/Info.vue:94 src/components/Info.vue:101
-msgid "Search"
-msgstr "Busca"
-
-#: src/components/Info.vue:114
-msgid "Copy"
-msgstr "Copiar"
-
-#: src/components/Info.vue:135
+#: src/components/Info.vue:110
 msgid "Software Inventory"
 msgstr "Inventario de software"
 
-#: src/components/Info.vue:173
+#: src/components/Info.vue:125 src/components/Info.vue:146
+msgid "Search"
+msgstr "Busca"
+
+#: src/components/Info.vue:155
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/components/Info.vue:180
+msgid "results"
+msgstr "resultados"
+
+#: src/components/Info.vue:191
+msgid "Identification"
+msgstr "Identificación"
+
+#: src/components/Info.vue:222
 msgid "Print Identification"
 msgstr "Identificación de impresión"
 
-#: src/components/Info.vue:243
+#: src/components/Info.vue:297
 msgid "disks"
 msgstr "discos"
 
-#: src/components/Info.vue:289
+#: src/components/Info.vue:343
 msgid "Available"
 msgstr "Dispoñible"
 
-#: src/components/Info.vue:290
+#: src/components/Info.vue:344
 msgid "In repair"
 msgstr "En reparación"
 
-#: src/components/Info.vue:291
+#: src/components/Info.vue:345
 msgid "Reserved"
 msgstr "Reservado"
 
-#: src/components/Info.vue:292
+#: src/components/Info.vue:346
 msgid "Intended"
 msgstr "Asignado"
 
-#: src/components/Info.vue:293
+#: src/components/Info.vue:347
 msgid "Unsubscribed"
 msgstr "Baixa"
 
-#: src/components/Info.vue:296
+#: src/components/Info.vue:350
 msgid "Unknown"
 msgstr "Descoñecido"
 
@@ -345,7 +349,7 @@ msgstr "Agarde, outro proceso está en execución!!!"
 
 #: src/stores/executions.js:235
 msgid "Command cancelled"
-msgstr ""
+msgstr "Comando cancelado"
 
 #: src/stores/program.js:77
 msgid "Server"
@@ -378,3 +382,6 @@ msgstr "Non hai conexión co servidor"
 #: src/stores/program.js:268
 msgid "User without privileges"
 msgstr "Usuario sen privilexios"
+
+#~ msgid "%{num} packages"
+#~ msgstr "%{num} paquetes"
