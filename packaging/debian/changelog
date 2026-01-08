@@ -10,8 +10,12 @@ migasfree-play (5.11.0) unstable; urgency=low
   * fix: chip vertical align
   * feat: added PageHeader component
   * fix: run on exit with code !== 0
+  * feat: added automated retry connection
+  * feat: added cancel button and spinner during execution
+  * feat: added fr_FR to translations
+  * feat: added new composables (usePagination, usePageSync)
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 5 Dec 2025 07:32:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 8 Jan 2026 15:32:47 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
