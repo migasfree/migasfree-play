@@ -1,90 +1,137 @@
 <template>
   <div class="print-hide q-my-lg">
     <div class="column items-center">
-      <p>
-        <img width="120" src="img/migasfree-play.svg" />
-      </p>
+      <!-- App Header -->
+      <div class="app-header q-mb-lg text-center">
+        <img width="100" src="img/migasfree-play.svg" class="q-mb-md" />
+        <h4 class="q-ma-none text-weight-bold">{{ app.name }}</h4>
+        <p class="text-subtitle1 text-blue-grey q-mb-xs">{{ app.version }}</p>
+        <p class="text-caption text-blue-grey-6">
+          {{ app.description }}
+        </p>
+        <p class="text-caption text-blue-grey-8 q-mb-none">
+          {{ app.copyright }} <br />
+          {{ app.author }}
+        </p>
+      </div>
 
-      <p class="text-h5">
-        <strong>{{ app.name }} {{ app.version }}</strong>
-      </p>
-
-      <p class="text-caption text-center">
-        {{ app.description }} <br />{{ app.copyright }} <br />{{ app.author }}
-      </p>
-
+      <!-- User & Sync Card -->
       <q-card v-if="user" flat bordered class="info-card q-ma-md">
-        <InfoItem icon="mdi-account" :label="user" />
-        <InfoItem icon="mdi-calendar-check">
-          <DateView :value="syncEndDate" />
-        </InfoItem>
+        <q-card-section :class="['card-header text-white', headerBgClass]">
+          <q-icon name="mdi-sync" size="sm" class="q-mr-sm" />
+          <span class="text-subtitle1 text-weight-medium">{{
+            $gettext('Last synchronization')
+          }}</span>
+        </q-card-section>
 
-        <q-tooltip anchor="top middle">{{
-          $gettext('Last synchronization')
-        }}</q-tooltip>
+        <q-list>
+          <InfoItem icon="mdi-account" :label="user" />
+          <InfoItem icon="mdi-calendar-check">
+            <DateView :value="syncEndDate" />
+          </InfoItem>
+        </q-list>
       </q-card>
 
+      <!-- Hardware Card -->
       <q-card v-if="'product' in data" flat bordered class="info-card q-ma-md">
-        <InfoItem :icon="productIcon" :label="data.product" />
-        <InfoItem :icon="cpuIcon" :label="data.cpu" />
-        <InfoItem icon="mdi-memory" :label="computerRam" />
-        <InfoItem icon="mdi-harddisk" :label="computerStorage" />
+        <q-card-section :class="['card-header text-white', headerBgClass]">
+          <q-icon name="mdi-chip" size="sm" class="q-mr-sm" />
+          <span class="text-subtitle1 text-weight-medium">{{
+            $gettext('Hardware')
+          }}</span>
+        </q-card-section>
 
-        <q-tooltip>{{ $gettext('Hardware') }}</q-tooltip>
+        <q-list>
+          <InfoItem :icon="productIcon" :label="data.product" />
+          <InfoItem :icon="cpuIcon" :label="data.cpu" />
+          <InfoItem icon="mdi-memory" :label="computerRam" />
+          <InfoItem icon="mdi-harddisk" :label="computerStorage" />
+        </q-list>
       </q-card>
 
+      <!-- Network Card -->
       <q-card
         v-if="'mac_address' in data"
         flat
         bordered
         class="info-card q-ma-md"
       >
-        <InfoItem icon="mdi-information" :label="data.fqdn" />
-        <InfoItem
-          icon="mdi-ip-network"
-          :label="`${data.ip_address} / ${mask} (${network})`"
-        />
-        <InfoItem icon="mdi-swap-vertical" :label="computerMac" />
+        <q-card-section :class="['card-header text-white', headerBgClass]">
+          <q-icon name="mdi-ethernet" size="sm" class="q-mr-sm" />
+          <span class="text-subtitle1 text-weight-medium">{{
+            $gettext('Network Data')
+          }}</span>
+        </q-card-section>
 
-        <q-tooltip>{{ $gettext('Network Data') }}</q-tooltip>
+        <q-list>
+          <InfoItem icon="mdi-domain" :label="data.fqdn" />
+          <InfoItem
+            icon="mdi-ip-network"
+            :label="`${data.ip_address} / ${mask} (${network})`"
+          />
+          <InfoItem icon="mdi-swap-vertical" :label="computerMac" />
+        </q-list>
       </q-card>
 
+      <!-- Migasfree Data Card -->
       <q-card flat bordered class="info-card q-ma-md">
-        <InfoItem icon="mdi-server" :label="`${host} (${serverVersion})`" />
-        <InfoItem icon="mdi-desktop-classic" :label="client" />
-        <InfoItem
-          icon="mdi-bank"
-          :label="organization"
-          :show="!!organization"
-        />
-        <InfoItem icon="mdi-sitemap" :label="project" />
-        <InfoItem icon="mdi-pound" :label="computerId" />
-        <InfoItem :icon="statusIcon" :label="statusText" />
+        <q-card-section :class="['card-header text-white', headerBgClass]">
+          <q-icon name="mdi-server" size="sm" class="q-mr-sm" />
+          <span class="text-subtitle1 text-weight-medium">{{
+            $gettext('Migasfree Data')
+          }}</span>
+        </q-card-section>
 
-        <q-tooltip>{{ $gettext('Migasfree Data') }}</q-tooltip>
+        <q-list>
+          <InfoItem icon="mdi-server" :label="`${host} (${serverVersion})`" />
+          <InfoItem icon="mdi-desktop-classic" :label="client" />
+          <InfoItem
+            icon="mdi-bank"
+            :label="organization"
+            :show="!!organization"
+          />
+          <InfoItem icon="mdi-sitemap" :label="project" />
+          <InfoItem icon="mdi-pound" :label="computerId" />
+          <InfoItem :icon="statusIcon" :label="statusText" />
+        </q-list>
       </q-card>
     </div>
 
-    <q-list
+    <!-- Software Inventory -->
+    <q-card
       v-if="inventory.length > 0"
+      flat
       bordered
-      :class="[
-        'info-card q-card q-card--flat no-shadow q-ma-md q-mb-lg',
-        $q.dark.isActive ? 'q-card--dark q-dark' : '',
-      ]"
+      class="info-card q-ma-md q-mb-lg"
     >
+      <q-card-section :class="['card-header text-white', headerBgClass]">
+        <q-icon name="mdi-package-variant" size="sm" class="q-mr-sm" />
+        <span class="text-subtitle1 text-weight-medium">{{
+          $gettext('Software Inventory')
+        }}</span>
+        <q-space />
+        <q-badge color="white" text-color="grey-8" class="text-weight-bold">
+          {{ inventory.length }}
+        </q-badge>
+      </q-card-section>
+
       <q-expansion-item v-model="expanded" :content-inset-level="0.5">
         <template #header>
-          <q-item-section avatar>
-            <q-icon name="mdi-package-variant" size="md" />
-          </q-item-section>
-
           <q-item-section>
-            <strong>{{
-              $gettext('%{num} packages', {
-                num: inventory.length,
-              })
-            }}</strong>
+            <q-input
+              v-if="showSearch"
+              ref="searchInput"
+              v-model="search"
+              :placeholder="$gettext('Search')"
+              clearable
+              dense
+              @clear="showSearch = false"
+              @click.stop
+            >
+              <template #prepend>
+                <q-icon name="mdi-magnify" />
+              </template>
+            </q-input>
           </q-item-section>
 
           <q-item-section side>
@@ -95,35 +142,25 @@
                 icon="mdi-magnify"
                 color="primary"
                 @click.stop="toggleSearch"
-                ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
               >
-
-              <q-input
-                v-if="showSearch"
-                ref="searchInput"
-                v-model="search"
-                :label="$gettext('Search')"
-                clearable
-                dense
-                @clear="showSearch = false"
-                @click.stop
-                ><template #prepend><q-icon name="mdi-magnify" /></template
-              ></q-input>
+                <q-tooltip>{{ $gettext('Search') }}</q-tooltip>
+              </q-btn>
 
               <q-btn
                 flat
                 icon="mdi-content-copy"
                 color="primary"
                 @click.stop="copyInventory"
-                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
               >
+                <q-tooltip>{{ $gettext('Copy') }}</q-tooltip>
+              </q-btn>
             </div>
           </q-item-section>
         </template>
 
         <q-list>
           <q-virtual-scroll
-            class="overflow"
+            class="inventory-list"
             :items-size="filteredInventory.length"
             :items="filteredInventory"
           >
@@ -136,20 +173,30 @@
         </q-list>
       </q-expansion-item>
 
-      <q-tooltip>{{ $gettext('Software Inventory') }}</q-tooltip>
-
-      <p v-if="search" class="text-caption text-right text-blue-grey q-mt-sm">
-        {{ filteredInventory.length }}
+      <p
+        v-if="search && expanded"
+        class="text-caption text-right text-blue-grey q-mt-sm q-mb-none q-px-md"
+      >
+        {{ filteredInventory.length }} {{ $gettext('results') }}
       </p>
-    </q-list>
+    </q-card>
   </div>
 
+  <!-- Identification Card -->
   <div class="column items-center">
-    <q-card flat bordered class="info-card">
+    <q-card flat bordered class="info-card identification-card">
+      <q-card-section :class="['card-header text-white', headerBgClass]">
+        <q-icon name="mdi-qrcode" size="sm" class="q-mr-sm" />
+        <span class="text-subtitle1 text-weight-medium">{{
+          $gettext('Identification')
+        }}</span>
+      </q-card-section>
+
       <q-card-section horizontal>
         <vue-qrcode
           :value="qrCode"
           :options="{ width: 140, errorCorrectionLevel: 'low' }"
+          class="qr-code"
         />
 
         <q-card-section vertical class="justify-around q-px-md">
@@ -184,7 +231,7 @@
 import { ref, computed, watch, nextTick, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { copyToClipboard } from 'quasar'
+import { copyToClipboard, useQuasar } from 'quasar'
 
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 import DateView from 'components/DateView'
@@ -198,11 +245,16 @@ import { useUiStore } from 'src/stores/ui'
 const app = require('../../package.json')
 
 const { $gettext } = useGettext()
+const $q = useQuasar()
 
 const computerStore = useComputerStore()
 const packagesStore = usePackagesStore()
 const programStore = useProgramStore()
 const uiStore = useUiStore()
+
+const headerBgClass = computed(() =>
+  $q.dark.isActive ? 'bg-indigo' : 'bg-secondary',
+)
 
 const search = ref('')
 const showSearch = ref(false)
@@ -345,5 +397,62 @@ const copyInventory = async () => {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.info-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.app-header h4 {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.status-chip {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.inventory-list {
+  max-height: 300px;
+  border-radius: 8px;
+}
+
+.inventory-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.inventory-item:last-child {
+  border-bottom: none;
+}
+
+.qr-code {
+  border-radius: 8px;
+  padding: 8px;
+  background: white;
+}
+
+.identification-card {
+  margin-bottom: 24px;
+}
+
+.body--dark .info-card:hover {
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .inventory-item {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.body--dark .qr-code {
+  background: white;
 }
 </style>
