@@ -1,10 +1,10 @@
 <template>
   <q-item v-if="show">
     <q-item-section avatar>
-      <q-icon :name="icon" />
+      <q-icon :name="icon" color="blue-grey-7" />
     </q-item-section>
 
-    <q-item-section class="text-h6">
+    <q-item-section class="text-body1">
       <slot>{{ label }}</slot>
     </q-item-section>
   </q-item>
