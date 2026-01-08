@@ -2,12 +2,12 @@
   "name": "migasfree-play",
   "version": "5.11.0",
   "type": "module",
-  "description": "Migasfree Client front-end. Allow install/uninstall available applications and devices.",
+  "description": "Migasfree Client desktop front-end. Allows install/uninstall available applications and devices.",
   "productName": "migasfree-play",
   "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
   "license": "GPLv3",
-  "copyright": "© 2017-2025 migasfree team",
-  "homepage": "https://github.com/jact/migasfree-play/blob/master/README.md",
+  "copyright": "© 2017-2026 migasfree team",
+  "homepage": "https://github.com/migasfree/migasfree-play",
   "private": true,
   "scripts": {
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,ts,vue}\"",
@@ -38,8 +38,8 @@
     "typeface-lato": "1.1.13",
     "typeface-ubuntu-mono": "1.1.13",
     "util": "0.12.5",
-    "vue": "3.5.24",
-    "vue-router": "4.6.3",
+    "vue": "3.5.26",
+    "vue-router": "4.6.4",
     "vue3-gettext": "4.0.0-beta.1"
   },
   "devDependencies": {
@@ -48,25 +48,25 @@
     "@electron/packager": "19.0.1",
     "@quasar/app-webpack": "4.3.1",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.5",
-    "@vue/compiler-sfc": "3.5.24",
+    "@vue/compiler-sfc": "3.5.26",
     "@vue/eslint-config-prettier": "10.2.0",
-    "autoprefixer": "10.4.22",
+    "autoprefixer": "10.4.23",
     "babel-loader": "10.0.0",
     "devtron": "1.4.0",
-    "electron": "39.2.0",
-    "electron-builder": "26.0.12",
+    "electron": "39.2.7",
+    "electron-builder": "26.4.0",
     "electron-debug": "4.1.0",
     "electron-devtools-installer": "4.0.0",
-    "eslint": "9.39.1",
+    "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
-    "eslint-plugin-vue": "10.5.1",
+    "eslint-plugin-vue": "10.6.2",
     "eslint-webpack-plugin": "5.0.2",
-    "globals": "16.5.0",
+    "globals": "17.0.0",
     "postcss": "8.5.6",
-    "prettier": "3.6.2",
+    "prettier": "3.7.4",
     "vue-eslint-parser": "10.2.0",
-    "webpack": "5.102.1"
+    "webpack": "5.104.1"
   },
   "resolutions": {
     "call-bind": "1.0.8",
@@ -79,5 +79,6 @@
     "node": ">= 22.12.0",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
