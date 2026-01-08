@@ -17,12 +17,22 @@
           <div class="text-h6">
             {{ status }}.<br />{{ $gettext('Impossible to continue.') }}
           </div>
+          <div class="text-subtitle2 q-mt-sm">
+            {{
+              $ngettext(
+                'Automatic retry in %{ count } second...',
+                'Automatic retry in %{ count } seconds...',
+                retryCountdown,
+                { count: retryCountdown },
+              )
+            }}
+          </div>
         </q-banner>
 
         <div class="col-12 text-center q-mt-md">
           <q-btn
             icon="mdi-reload"
-            :label="$gettext('Retry')"
+            :label="$gettext('Retry now')"
             color="primary"
             @click="retry"
           />
@@ -64,11 +74,11 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMeta, useQuasar } from 'quasar'
 
-import { appName } from 'config/app.conf'
+import { appName, retryIntervalSeconds } from 'config/app.conf'
 
 import { useProgramStore } from './stores/program'
 import { useUiStore } from './stores/ui'
@@ -82,6 +92,10 @@ export default {
 
     const loadedData = ref([])
     const loadingData = ref([])
+    const retryCountdown = ref(retryIntervalSeconds)
+
+    let retryIntervalId = null
+    let countdownIntervalId = null
 
     const { appIsStopped, status } = storeToRefs(programStore)
     const { isLoading } = storeToRefs(uiStore)
@@ -90,10 +104,41 @@ export default {
 
     useMeta({ title: appName })
 
+    const clearRetryTimers = () => {
+      if (retryIntervalId) {
+        clearInterval(retryIntervalId)
+        retryIntervalId = null
+      }
+      if (countdownIntervalId) {
+        clearInterval(countdownIntervalId)
+        countdownIntervalId = null
+      }
+    }
+
+    const startRetryTimers = () => {
+      clearRetryTimers()
+      retryCountdown.value = retryIntervalSeconds
+
+      countdownIntervalId = setInterval(() => {
+        if (retryCountdown.value > 0) {
+          retryCountdown.value--
+        }
+      }, 1000)
+
+      retryIntervalId = setInterval(() => {
+        retryCountdown.value = retryIntervalSeconds
+        retry()
+      }, retryIntervalSeconds * 1000)
+    }
+
     const retry = async () => {
+      clearRetryTimers()
       loadedData.value.length = 0
       loadingData.value.length = 0
       await programStore.init()
+      if (appIsStopped.value) {
+        startRetryTimers()
+      }
     }
 
     watch(status, (value, old) => {
@@ -101,8 +146,20 @@ export default {
       loadingData.value.push({ label: value, value: value })
     })
 
+    watch(appIsStopped, (stopped) => {
+      if (stopped) {
+        startRetryTimers()
+      } else {
+        clearRetryTimers()
+      }
+    })
+
     onMounted(async () => {
       await programStore.init()
+    })
+
+    onUnmounted(() => {
+      clearRetryTimers()
     })
 
     return {
@@ -112,6 +169,7 @@ export default {
       loadingData,
       isLoading,
       retry,
+      retryCountdown,
     }
   },
 }
