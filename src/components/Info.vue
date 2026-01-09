@@ -242,7 +242,7 @@ import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 
-const app = require('../../package.json')
+import app from '../../package.json'
 
 const { $gettext } = useGettext()
 const $q = useQuasar()
