@@ -87,7 +87,6 @@
 </template>
 
 <script setup>
-import os from 'os'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
@@ -177,7 +176,7 @@ const installApp = (name, packages) => {
     ? `migasfree --install --package=${packagesToInstall}`
     : `migasfree install ${packagesToInstall}`
 
-  if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+  if (process.platform === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
   const message = interpolate($gettext('Installing %{name}'), { name })
 
@@ -197,7 +196,7 @@ const removeApp = (name, packages) => {
     ? `migasfree --remove --package=${packagesToRemove}`
     : `migasfree purge ${packagesToRemove}`
 
-  if (os.type() === 'Linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+  if (process.platform === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
   const message = interpolate($gettext('Uninstalling %{name}'), { name })
 
