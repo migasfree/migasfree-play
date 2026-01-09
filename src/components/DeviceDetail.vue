@@ -99,7 +99,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -109,114 +109,94 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { useFiltersStore } from 'src/stores/filters'
 import { useProgramStore } from 'src/stores/program'
 
-export default {
-  name: 'DeviceDetail',
-  props: {
-    name: { type: String, required: true },
-    alternativeName: { type: String, required: true },
-    id: { type: String, required: true },
-    connection: { type: String, required: true },
-    description: { type: String, required: false, default: '' },
-    ip: { type: String, required: false, default: '' },
-    logical: { type: Array, required: false, default: () => [] },
-  },
-  setup(props) {
-    const computerStore = useComputerStore()
-    const devicesStore = useDevicesStore()
-    const executionsStore = useExecutionsStore()
-    const filtersStore = useFiltersStore()
-    const programStore = useProgramStore()
+const props = defineProps({
+  name: { type: String, required: true },
+  alternativeName: { type: String, required: true },
+  id: { type: String, required: true },
+  connection: { type: String, required: true },
+  description: { type: String, required: false, default: '' },
+  ip: { type: String, required: false, default: '' },
+  logical: { type: Array, required: false, default: () => [] },
+})
 
-    const { isRunningCommand } = storeToRefs(executionsStore)
+const computerStore = useComputerStore()
+const devicesStore = useDevicesStore()
+const executionsStore = useExecutionsStore()
+const filtersStore = useFiltersStore()
+const programStore = useProgramStore()
 
-    const tooltip = computed(() => {
-      if (props.ip) return `${props.connection} (${props.ip})`
-      else return props.connection
-    })
+const { isRunningCommand } = storeToRefs(executionsStore)
 
-    const logical = computed(() => JSON.parse(JSON.stringify(props.logical)))
+const tooltip = computed(() => {
+  if (props.ip) return `${props.connection} (${props.ip})`
+  else return props.connection
+})
 
-    const visibleLogicalDevices = computed(() => {
-      if (!filtersStore.onlyAssignedDevices) return logical.value
+const logical = computed(() => JSON.parse(JSON.stringify(props.logical)))
 
-      return logical.value.filter(
-        (item) => isAssigned(item) || isInflicted(item),
-      )
-    })
+const visibleLogicalDevices = computed(() => {
+  if (!filtersStore.onlyAssignedDevices) return logical.value
 
-    const capabilityName = (item) => {
-      return programStore.serverVersion.startsWith('4.')
-        ? item.alternative_feature_name || item.feature.name
-        : item.alternative_capability_name || item.capability.name
-    }
+  return logical.value.filter((item) => isAssigned(item) || isInflicted(item))
+})
 
-    const isAssigned = (item) => {
-      return item['x-type'] === 'assigned'
-    }
-
-    const isInflicted = (item) => {
-      return item['x-type'] === 'inflicted'
-    }
-
-    const isAvailable = (item) => {
-      return item['x-type'] === 'available'
-    }
-
-    const isPredetermined = (item) => {
-      return item['x-is-default'] === true
-    }
-
-    const installDevice = (item) => {
-      const attributes = programStore.serverVersion.startsWith('4.')
-        ? [...item.attributes]
-        : item.attributes.map((attr) => attr.id)
-
-      if (!attributes.includes(computerStore.attribute)) {
-        attributes.push(computerStore.attribute)
-      }
-      devicesStore.changeDeviceAttributes({
-        id: item.id,
-        attributes,
-      })
-      devicesStore.addAssignedDevice({
-        id: item.id,
-        device: item.device.id,
-      })
-    }
-
-    const removeDevice = (item) => {
-      let attributes = programStore.serverVersion.startsWith('4.')
-        ? [...item.attributes]
-        : item.attributes.map((attr) => attr.id)
-
-      attributes = attributes.filter((x) => x !== computerStore.attribute)
-      devicesStore.changeDeviceAttributes({
-        id: item.id,
-        attributes,
-      })
-      devicesStore.removeAssignedDevice({
-        id: item.id,
-        device: item.device.id,
-      })
-    }
-
-    const predetermine = (id) => {
-      devicesStore.setDefaultLogicalDevice(id)
-    }
-
-    return {
-      isRunningCommand,
-      tooltip,
-      visibleLogicalDevices,
-      capabilityName,
-      isAssigned,
-      isInflicted,
-      isAvailable,
-      isPredetermined,
-      installDevice,
-      removeDevice,
-      predetermine,
-    }
-  },
+const capabilityName = (item) => {
+  return programStore.serverVersion.startsWith('4.')
+    ? item.alternative_feature_name || item.feature.name
+    : item.alternative_capability_name || item.capability.name
 }
+
+const isAssigned = (item) => {
+  return item['x-type'] === 'assigned'
+}
+
+const isInflicted = (item) => {
+  return item['x-type'] === 'inflicted'
+}
+
+const isAvailable = (item) => {
+  return item['x-type'] === 'available'
+}
+
+const isPredetermined = (item) => {
+  return item['x-is-default'] === true
+}
+
+const installDevice = (item) => {
+  const attributes = programStore.serverVersion.startsWith('4.')
+    ? [...item.attributes]
+    : item.attributes.map((attr) => attr.id)
+
+  if (!attributes.includes(computerStore.attribute)) {
+    attributes.push(computerStore.attribute)
+  }
+  devicesStore.changeDeviceAttributes({
+    id: item.id,
+    attributes,
+  })
+  devicesStore.addAssignedDevice({
+    id: item.id,
+    device: item.device.id,
+  })
+}
+
+const removeDevice = (item) => {
+  let attributes = programStore.serverVersion.startsWith('4.')
+    ? [...item.attributes]
+    : item.attributes.map((attr) => attr.id)
+
+  attributes = attributes.filter((x) => x !== computerStore.attribute)
+  devicesStore.changeDeviceAttributes({
+    id: item.id,
+    attributes,
+  })
+  devicesStore.removeAssignedDevice({
+    id: item.id,
+    device: item.device.id,
+  })
+}
+
+/* const predetermine = (id) => {
+  devicesStore.setDefaultLogicalDevice(id)
+} */
 </script>
