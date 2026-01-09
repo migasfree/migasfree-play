@@ -7,15 +7,11 @@
   </q-banner>
 </template>
 
-<script>
-export default {
-  name: 'BannerInfo',
-
-  props: {
-    message: {
-      type: String,
-      required: true,
-    },
+<script setup>
+defineProps({
+  message: {
+    type: String,
+    required: true,
   },
-}
+})
 </script>
