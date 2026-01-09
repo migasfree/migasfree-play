@@ -38,8 +38,8 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const replaceAll = (str, find, replace) => {
-    var exp = escapeRegExp(find)
-    var re = new RegExp(exp, 'g')
+    const exp = escapeRegExp(find)
+    const re = new RegExp(exp, 'g')
 
     return str.replace(re, replace)
   }
