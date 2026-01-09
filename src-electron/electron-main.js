@@ -155,8 +155,8 @@ async function createWindow() {
 
   mainWindow.on('ready-to-show', () => {
     if (app.syncAfterStart) {
+      mainWindow.showInactive()
       mainWindow.minimize()
-      mainWindow.minimize() // FIXME why second call is needed to minimize?
     } else mainWindow.show()
   })
 
