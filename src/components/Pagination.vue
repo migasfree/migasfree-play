@@ -12,47 +12,34 @@
   />
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from 'vue'
 
 import { resultsPerPage } from 'config/app.conf'
 
-export default {
-  name: 'Pagination',
-  props: {
-    total: {
-      type: Number,
-      required: true,
-    },
-    pageChanged: {
-      type: Function,
-      required: true,
-    },
+const props = defineProps({
+  total: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const currentPage = ref(1)
-
-    const pagesCount = computed(() => Math.ceil(props.total / resultsPerPage))
-
-    const customPageChange = (customCurrentPage) => {
-      props.pageChanged(
-        customCurrentPage ? customCurrentPage : currentPage.value,
-      )
-    }
-
-    watch(
-      () => props.total,
-      (value) => {
-        if (value <= resultsPerPage) currentPage.value = 1
-      },
-    )
-
-    return {
-      currentPage,
-      pagesCount,
-      customPageChange,
-      resultsPerPage,
-    }
+  pageChanged: {
+    type: Function,
+    required: true,
   },
+})
+
+const currentPage = ref(1)
+
+const pagesCount = computed(() => Math.ceil(props.total / resultsPerPage))
+
+const customPageChange = (customCurrentPage) => {
+  props.pageChanged(customCurrentPage ? customCurrentPage : currentPage.value)
 }
+
+watch(
+  () => props.total,
+  (value) => {
+    if (value <= resultsPerPage) currentPage.value = 1
+  },
+)
 </script>
