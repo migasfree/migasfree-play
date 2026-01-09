@@ -73,7 +73,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMeta, useQuasar } from 'quasar'
@@ -83,94 +83,79 @@ import { appName, retryIntervalSeconds } from 'config/app.conf'
 import { useProgramStore } from './stores/program'
 import { useUiStore } from './stores/ui'
 
-export default {
-  name: 'App',
-  setup() {
-    const programStore = useProgramStore()
-    const uiStore = useUiStore()
-    const $q = useQuasar()
+const programStore = useProgramStore()
+const uiStore = useUiStore()
+const $q = useQuasar()
 
-    const loadedData = ref([])
-    const loadingData = ref([])
-    const retryCountdown = ref(retryIntervalSeconds)
+const loadedData = ref([])
+const loadingData = ref([])
+const retryCountdown = ref(retryIntervalSeconds)
 
-    let retryIntervalId = null
-    let countdownIntervalId = null
+let retryIntervalId = null
+let countdownIntervalId = null
 
-    const { appIsStopped, status } = storeToRefs(programStore)
-    const { isLoading } = storeToRefs(uiStore)
+const { appIsStopped, status } = storeToRefs(programStore)
+const { isLoading } = storeToRefs(uiStore)
 
-    $q.dark.set($q.localStorage.getItem('darkMode') || false)
+$q.dark.set($q.localStorage.getItem('darkMode') || false)
 
-    useMeta({ title: appName })
+useMeta({ title: appName })
 
-    const clearRetryTimers = () => {
-      if (retryIntervalId) {
-        clearInterval(retryIntervalId)
-        retryIntervalId = null
-      }
-      if (countdownIntervalId) {
-        clearInterval(countdownIntervalId)
-        countdownIntervalId = null
-      }
-    }
-
-    const startRetryTimers = () => {
-      clearRetryTimers()
-      retryCountdown.value = retryIntervalSeconds
-
-      countdownIntervalId = setInterval(() => {
-        if (retryCountdown.value > 0) {
-          retryCountdown.value--
-        }
-      }, 1000)
-
-      retryIntervalId = setInterval(() => {
-        retryCountdown.value = retryIntervalSeconds
-        retry()
-      }, retryIntervalSeconds * 1000)
-    }
-
-    const retry = async () => {
-      clearRetryTimers()
-      loadedData.value.length = 0
-      loadingData.value.length = 0
-      await programStore.init()
-      if (appIsStopped.value) {
-        startRetryTimers()
-      }
-    }
-
-    watch(status, (value, old) => {
-      if (old) loadedData.value.push(old)
-      loadingData.value.push({ label: value, value: value })
-    })
-
-    watch(appIsStopped, (stopped) => {
-      if (stopped) {
-        startRetryTimers()
-      } else {
-        clearRetryTimers()
-      }
-    })
-
-    onMounted(async () => {
-      await programStore.init()
-    })
-
-    onUnmounted(() => {
-      clearRetryTimers()
-    })
-
-    return {
-      appIsStopped,
-      status,
-      loadedData,
-      loadingData,
-      isLoading,
-      retry,
-      retryCountdown,
-    }
-  },
+const clearRetryTimers = () => {
+  if (retryIntervalId) {
+    clearInterval(retryIntervalId)
+    retryIntervalId = null
+  }
+  if (countdownIntervalId) {
+    clearInterval(countdownIntervalId)
+    countdownIntervalId = null
+  }
 }
+
+const startRetryTimers = () => {
+  clearRetryTimers()
+  retryCountdown.value = retryIntervalSeconds
+
+  countdownIntervalId = setInterval(() => {
+    if (retryCountdown.value > 0) {
+      retryCountdown.value--
+    }
+  }, 1000)
+
+  retryIntervalId = setInterval(() => {
+    retryCountdown.value = retryIntervalSeconds
+    retry()
+  }, retryIntervalSeconds * 1000)
+}
+
+const retry = async () => {
+  clearRetryTimers()
+  loadedData.value.length = 0
+  loadingData.value.length = 0
+  await programStore.init()
+  if (appIsStopped.value) {
+    startRetryTimers()
+  }
+}
+
+watch(status, (value, old) => {
+  if (old) loadedData.value.push(old)
+  loadingData.value.push({ label: value, value: value })
+})
+
+watch(appIsStopped, (stopped) => {
+  if (stopped) {
+    startRetryTimers()
+  } else {
+    clearRetryTimers()
+  }
+})
+
+onMounted(async () => {
+  await programStore.init()
+})
+
+onUnmounted(() => {
+  clearRetryTimers()
+})
 </script>
