@@ -1,2 +1,2 @@
-import 'typeface-lato'
-import 'typeface-ubuntu-mono'
+import '@fontsource/lato'
+import '@fontsource/ubuntu-mono'
