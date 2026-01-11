@@ -1,11 +1,5 @@
 export const appName = 'Migasfree Play'
 
-export const executionsMaxLength = process.env.MFP_EXECUTIONS_LIMIT || 5
-
-export const internalApi = `http://localhost:${
-  process.env.MFP_EXPRESS_PORT || 3000
-}`
-
 export const urlHelp =
   'https://fun-with-migasfree.readthedocs.io/es/master/chapter10.html#migasfree-play'
 
@@ -42,3 +36,10 @@ export const minimumClientVersion = '4.20'
 export const resultsPerPage = 10
 
 export const retryIntervalSeconds = 10
+
+export const envDefaults = {
+  expressPort: 3000,
+  executionsLimit: 5,
+  user: 'migasfree-play',
+  password: 'migasfree-play',
+}
