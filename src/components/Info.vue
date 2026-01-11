@@ -192,20 +192,18 @@
         }}</span>
       </q-card-section>
 
-      <q-card-section horizontal>
-        <vue-qrcode
-          :value="qrCode"
-          :options="{ width: 140, errorCorrectionLevel: 'low' }"
-          class="qr-code"
-        />
+      <q-card-section horizontal class="items-center q-pa-none">
+        <div class="q-pa-md flex flex-center">
+          <qrcode-vue :value="qrCode" :size="100" level="L" />
+        </div>
 
-        <q-card-section vertical class="justify-around q-px-md">
-          <p class="q-mb-sm">{{ name }} ({{ computerId }})</p>
-          <div class="text-caption text-blue-grey">
-            <p class="q-mb-sm">{{ uuid }}</p>
-            <p class="q-mb-sm">{{ host }}</p>
-            <p class="q-mb-none">{{ helpdesk }}</p>
-          </div>
+        <q-card-section class="col q-py-md q-px-md">
+          <p class="q-mb-xs text-weight-medium text-body1">
+            {{ name }} ({{ computerId }})
+          </p>
+          <p class="q-mb-xs text-caption text-blue-grey">{{ uuid }}</p>
+          <p class="q-mb-xs text-caption text-blue-grey">{{ host }}</p>
+          <p class="q-mb-none text-caption text-blue-grey">{{ helpdesk }}</p>
         </q-card-section>
       </q-card-section>
 
@@ -233,7 +231,7 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard, useQuasar } from 'quasar'
 
-import VueQrcode from '@chenfengyuan/vue-qrcode'
+import QrcodeVue from 'qrcode.vue'
 import DateView from 'components/DateView'
 import InfoItem from 'components/InfoItem'
 
