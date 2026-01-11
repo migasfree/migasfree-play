@@ -82,7 +82,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
-import { setInterval } from 'timers'
 
 import { appName } from 'config/app.conf'
 import Menu from 'components/Menu'
@@ -141,10 +140,10 @@ const synchronize = () => {
 
 if (!showApps.value) router.push({ name: 'details' })
 
-onMounted(() => {
-  const app = window.electronRemote.app
+onMounted(async () => {
+  const syncAfterStart = await window.electronAPI.getSyncAfterStart()
 
-  if (app.syncAfterStart) {
+  if (syncAfterStart) {
     synchronize()
   }
 
