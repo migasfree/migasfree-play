@@ -50,11 +50,11 @@ msgstr "Tancat"
 msgid "Installed"
 msgstr "Instal·lat"
 
-#: src/components/AppDetail.vue:182
+#: src/components/AppDetail.vue:187
 msgid "Installing %{name}"
 msgstr "Instal·lació %{name}"
 
-#: src/components/AppDetail.vue:202
+#: src/components/AppDetail.vue:207
 msgid "Uninstalling %{name}"
 msgstr "S'està desinstal·lant %{name}"
 
@@ -124,7 +124,7 @@ msgstr "Veure dispositius assignats"
 msgid "Cancel"
 msgstr "Cancel·lar"
 
-#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:389
+#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:387
 msgid "Text copied to clipboard"
 msgstr "S'ha copiat el text al porta-retalls"
 
@@ -164,35 +164,35 @@ msgstr "resultats"
 msgid "Identification"
 msgstr "Identificació"
 
-#: src/components/Info.vue:222
+#: src/components/Info.vue:220
 msgid "Print Identification"
 msgstr "Impressió d'identificació"
 
-#: src/components/Info.vue:297
+#: src/components/Info.vue:295
 msgid "disks"
 msgstr "discos"
 
-#: src/components/Info.vue:343
+#: src/components/Info.vue:341
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Info.vue:344
+#: src/components/Info.vue:342
 msgid "In repair"
 msgstr "En reparació"
 
-#: src/components/Info.vue:345
+#: src/components/Info.vue:343
 msgid "Reserved"
 msgstr "Reservat"
 
-#: src/components/Info.vue:346
+#: src/components/Info.vue:344
 msgid "Intended"
 msgstr "Assignat"
 
-#: src/components/Info.vue:347
+#: src/components/Info.vue:345
 msgid "Unsubscribed"
 msgstr "De baixa"
 
-#: src/components/Info.vue:350
+#: src/components/Info.vue:348
 msgid "Unknown"
 msgstr "Desconegut"
 
@@ -209,18 +209,18 @@ msgid "Menu"
 msgstr "Menú"
 
 #: src/components/Menu.vue:80 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:36 src/stores/program.js:107
+#: src/pages/apps/index.vue:36 src/stores/program.js:153
 msgid "Apps"
 msgstr "Aplicacions"
 
 #: src/components/Menu.vue:86 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:132
+#: src/pages/devices/index.vue:47 src/stores/program.js:178
 msgid "Devices"
 msgstr "Dispositius"
 
 #: src/components/Menu.vue:92 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:145
+#: src/stores/program.js:191
 msgid "Tags"
 msgstr "Etiquetes"
 
@@ -235,7 +235,7 @@ msgid "Info"
 msgstr "Informació"
 
 #: src/components/Menu.vue:110 src/pages/preferences/index.vue:4
-#: src/pages/preferences/index.vue:31 src/stores/program.js:65
+#: src/pages/preferences/index.vue:31 src/stores/program.js:59
 msgid "Preferences"
 msgstr "Preferències"
 
@@ -319,11 +319,11 @@ msgstr "Registre l'ordinador al servidor"
 msgid "Synchronize Computer"
 msgstr "Sincronitza l'ordinador"
 
-#: src/layouts/MainLayout.vue:126
+#: src/layouts/MainLayout.vue:125
 msgid "Synchronizing..."
 msgstr "Sincronitzant..."
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:136
 msgid "Synchronization"
 msgstr "Sincronització"
 
@@ -331,57 +331,69 @@ msgstr "Sincronització"
 msgid "Client does not manage devices"
 msgstr "El client no gestiona dispositius"
 
-#: src/stores/computer.js:133
+#: src/stores/auth.js:103
+msgid "User without privileges"
+msgstr "Usuari sense privilegis"
+
+#: src/stores/computer.js:142
 msgid "There was a problem with registration"
 msgstr "Hi ha hagut un problema amb el registre"
 
-#: src/stores/computer.js:138
+#: src/stores/computer.js:147
 msgid "Registered Computer!"
 msgstr "¡Ordinador registrat!"
 
-#: src/stores/executions.js:119
+#: src/stores/executions.js:108
 msgid "Synchronization finished"
 msgstr "Sincronització acabada"
 
-#: src/stores/executions.js:132
+#: src/stores/executions.js:121
 msgid "Please wait, other process is running!!!"
 msgstr "Espereu, un altre procés s'està executant!!!"
 
-#: src/stores/executions.js:235
+#: src/stores/executions.js:262
 msgid "Command cancelled"
 msgstr "Comanda cancel·lada"
 
-#: src/stores/program.js:77
+#: src/stores/program.js:81
 msgid "Server"
 msgstr "Servidor"
 
-#: src/stores/program.js:88
-msgid "Computer"
-msgstr "Ordinador"
-
-#: src/stores/program.js:112
-msgid "Categories"
-msgstr "Categories"
-
-#: src/stores/program.js:120
-msgid "Packages"
-msgstr "Paquets"
-
-#: src/stores/program.js:170
-msgid "This app requires at least Migasfree Client %{version}"
-msgstr "Aquesta aplicació requereix almenys Migasfree Client %{version}"
-
-#: src/stores/program.js:227
+#: src/stores/program.js:89
 msgid "Credentials are not valid. Review app settings."
 msgstr "Les credencials no són vàlides. Revisa la configuració de l'aplicació."
 
-#: src/stores/program.js:245 src/stores/ui.js:30 src/stores/ui.js:59
+#: src/stores/program.js:98 src/stores/ui.js:28 src/stores/ui.js:57
 msgid "There is no connection to the server"
 msgstr "No hi ha connexió amb el servidor"
 
-#: src/stores/program.js:268
-msgid "User without privileges"
-msgstr "Usuari sense privilegis"
+#: src/stores/program.js:108
+msgid "Failed to obtain valid token. Review app settings."
+msgstr "No s'ha pogut obtenir un token vàlid. Revisa la configuració de l'aplicació."
+
+#: src/stores/program.js:119
+msgid "Token validation failed"
+msgstr "Ha fallat la validació del token"
+
+#: src/stores/program.js:127
+msgid "Could not authenticate with server"
+msgstr "No s'ha pogut autenticar amb el servidor"
+
+#: src/stores/program.js:134
+msgid "Computer"
+msgstr "Ordinador"
+
+#: src/stores/program.js:158
+msgid "Categories"
+msgstr "Categories"
+
+#: src/stores/program.js:166
+msgid "Packages"
+msgstr "Paquets"
+
+#: src/stores/server.js:45
+msgid "This app requires at least Migasfree Client %{version}"
+msgstr "Aquesta aplicació requereix almenys Migasfree Client %{version}"
 
 #~ msgid "%{num} packages"
 #~ msgstr "%{num} paquets"

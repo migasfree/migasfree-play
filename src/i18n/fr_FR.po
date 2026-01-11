@@ -50,11 +50,11 @@ msgstr "Verrouillé"
 msgid "Installed"
 msgstr "Installé"
 
-#: src/components/AppDetail.vue:182
+#: src/components/AppDetail.vue:187
 msgid "Installing %{name}"
 msgstr "Installation de %{name}"
 
-#: src/components/AppDetail.vue:202
+#: src/components/AppDetail.vue:207
 msgid "Uninstalling %{name}"
 msgstr "Désinstallation de %{name}"
 
@@ -124,7 +124,7 @@ msgstr "Voir les périphériques attribués"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:389
+#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:387
 msgid "Text copied to clipboard"
 msgstr "Texte copié dans le presse-papiers"
 
@@ -164,35 +164,35 @@ msgstr "résultats"
 msgid "Identification"
 msgstr "Identification"
 
-#: src/components/Info.vue:222
+#: src/components/Info.vue:220
 msgid "Print Identification"
 msgstr "Imprimer l'identification"
 
-#: src/components/Info.vue:297
+#: src/components/Info.vue:295
 msgid "disks"
 msgstr "disques"
 
-#: src/components/Info.vue:343
+#: src/components/Info.vue:341
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Info.vue:344
+#: src/components/Info.vue:342
 msgid "In repair"
 msgstr "En réparation"
 
-#: src/components/Info.vue:345
+#: src/components/Info.vue:343
 msgid "Reserved"
 msgstr "Réservé"
 
-#: src/components/Info.vue:346
+#: src/components/Info.vue:344
 msgid "Intended"
 msgstr "Attribué"
 
-#: src/components/Info.vue:347
+#: src/components/Info.vue:345
 msgid "Unsubscribed"
 msgstr "Désinscrit"
 
-#: src/components/Info.vue:350
+#: src/components/Info.vue:348
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -209,18 +209,18 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/Menu.vue:80 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:36 src/stores/program.js:107
+#: src/pages/apps/index.vue:36 src/stores/program.js:153
 msgid "Apps"
 msgstr "Applications"
 
 #: src/components/Menu.vue:86 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:132
+#: src/pages/devices/index.vue:47 src/stores/program.js:178
 msgid "Devices"
 msgstr "Périphériques"
 
 #: src/components/Menu.vue:92 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:145
+#: src/stores/program.js:191
 msgid "Tags"
 msgstr "Étiquettes"
 
@@ -235,7 +235,7 @@ msgid "Info"
 msgstr "Informations"
 
 #: src/components/Menu.vue:110 src/pages/preferences/index.vue:4
-#: src/pages/preferences/index.vue:31 src/stores/program.js:65
+#: src/pages/preferences/index.vue:31 src/stores/program.js:59
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -320,11 +320,11 @@ msgstr "Enregistrer l'ordinateur sur le serveur"
 msgid "Synchronize Computer"
 msgstr "Synchroniser l'ordinateur"
 
-#: src/layouts/MainLayout.vue:126
+#: src/layouts/MainLayout.vue:125
 msgid "Synchronizing..."
 msgstr "Synchronisation en cours..."
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:136
 msgid "Synchronization"
 msgstr "Synchronisation"
 
@@ -332,59 +332,71 @@ msgstr "Synchronisation"
 msgid "Client does not manage devices"
 msgstr "Le client ne gère pas les périphériques"
 
-#: src/stores/computer.js:133
+#: src/stores/auth.js:103
+msgid "User without privileges"
+msgstr "Utilisateur sans privilèges"
+
+#: src/stores/computer.js:142
 msgid "There was a problem with registration"
 msgstr "Un problème est survenu lors de l'inscription"
 
-#: src/stores/computer.js:138
+#: src/stores/computer.js:147
 msgid "Registered Computer!"
 msgstr "Ordinateur enregistré !"
 
-#: src/stores/executions.js:119
+#: src/stores/executions.js:108
 msgid "Synchronization finished"
 msgstr "Synchronisation terminée"
 
-#: src/stores/executions.js:132
+#: src/stores/executions.js:121
 msgid "Please wait, other process is running!!!"
 msgstr "Veuillez patienter, un autre processus est en cours d'exécution !"
 
-#: src/stores/executions.js:235
+#: src/stores/executions.js:262
 msgid "Command cancelled"
 msgstr "Commande annulée"
 
-#: src/stores/program.js:77
+#: src/stores/program.js:81
 msgid "Server"
 msgstr "Serveur"
 
-#: src/stores/program.js:88
-msgid "Computer"
-msgstr "Ordinateur"
-
-#: src/stores/program.js:112
-msgid "Categories"
-msgstr "Catégories"
-
-#: src/stores/program.js:120
-msgid "Packages"
-msgstr "Paquets"
-
-#: src/stores/program.js:170
-msgid "This app requires at least Migasfree Client %{version}"
-msgstr "Cette application nécessite au moins Migasfree Client %{version}"
-
-#: src/stores/program.js:227
+#: src/stores/program.js:89
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 "Les identifiants ne sont pas valides. Vérifiez les paramètres de "
 "l'application."
 
-#: src/stores/program.js:245 src/stores/ui.js:30 src/stores/ui.js:59
+#: src/stores/program.js:98 src/stores/ui.js:28 src/stores/ui.js:57
 msgid "There is no connection to the server"
 msgstr "Il n'y a pas de connexion au serveur"
 
-#: src/stores/program.js:268
-msgid "User without privileges"
-msgstr "Utilisateur sans privilèges"
+#: src/stores/program.js:108
+msgid "Failed to obtain valid token. Review app settings."
+msgstr "Impossible d'obtenir un jeton valide. Vérifiez les paramètres de l'application."
+
+#: src/stores/program.js:119
+msgid "Token validation failed"
+msgstr "La validation du jeton a échoué"
+
+#: src/stores/program.js:127
+msgid "Could not authenticate with server"
+msgstr "Impossible de s'authentifier auprès du serveur"
+
+#: src/stores/program.js:134
+msgid "Computer"
+msgstr "Ordinateur"
+
+#: src/stores/program.js:158
+msgid "Categories"
+msgstr "Catégories"
+
+#: src/stores/program.js:166
+msgid "Packages"
+msgstr "Paquets"
+
+#: src/stores/server.js:45
+msgid "This app requires at least Migasfree Client %{version}"
+msgstr "Cette application nécessite au moins Migasfree Client %{version}"
 
 #~ msgid "%{num} packages"
 #~ msgstr "%{num} paquets"
