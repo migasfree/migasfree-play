@@ -4,10 +4,9 @@ import { defineStore, storeToRefs } from 'pinia'
 import { api } from 'boot/axios'
 
 import { useComputerStore } from './computer.js'
+import { useEnvConfigStore } from './envConfig.js'
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
-
-import { internalApi } from 'config/app.conf'
 
 export const useTagsStore = defineStore('tags', () => {
   const computerStore = useComputerStore()
@@ -24,8 +23,9 @@ export const useTagsStore = defineStore('tags', () => {
     if (!cid.value) return
 
     try {
+      const envConfigStore = useEnvConfigStore()
       const { data } = await api.get(
-        `${internalApi}/tags/?version=${clientVersion.value}`,
+        `${envConfigStore.internalApi}/tags/?version=${clientVersion.value}`,
       )
       setAvailableTags(data.available)
       setAssignedTags(data.assigned)
