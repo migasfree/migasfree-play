@@ -3,11 +3,9 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useAppsStore } from './apps.js'
+import { useEnvConfigStore } from './envConfig.js'
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
-
-import { internalApi } from 'config/app.conf'
 
 export const usePackagesStore = defineStore('packages', () => {
   const available = ref([])
@@ -15,6 +13,7 @@ export const usePackagesStore = defineStore('packages', () => {
   const inventory = ref([])
 
   const fetchPackages = async (endpoint, method = 'get', payload = null) => {
+    const envConfigStore = useEnvConfigStore()
     const uiStore = useUiStore()
     const programStore = useProgramStore()
     const { clientVersion } = storeToRefs(programStore)
@@ -22,10 +21,12 @@ export const usePackagesStore = defineStore('packages', () => {
     try {
       const { data } = await (method === 'post'
         ? api.post(
-            `${internalApi}${endpoint}?version=${clientVersion.value}`,
+            `${envConfigStore.internalApi}${endpoint}?version=${clientVersion.value}`,
             payload,
           )
-        : api.get(`${internalApi}${endpoint}?version=${clientVersion.value}`))
+        : api.get(
+            `${envConfigStore.internalApi}${endpoint}?version=${clientVersion.value}`,
+          ))
       return data
     } catch (error) {
       uiStore.notifyError(error)
@@ -37,6 +38,8 @@ export const usePackagesStore = defineStore('packages', () => {
   }
 
   const setInstalledPackages = async () => {
+    // Lazy import to avoid circular dependency with apps.js
+    const { useAppsStore } = await import('./apps.js')
     const appsStore = useAppsStore()
 
     const { getAppsPackages } = storeToRefs(appsStore)
