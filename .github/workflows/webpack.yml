@@ -34,6 +34,9 @@ jobs:
           yarn lint
           yarn format:check
 
+      - name: Run tests
+        run: yarn test:coverage
+
       - name: Build Debian package
         if: matrix.node-version == '22.x'
         run: |
