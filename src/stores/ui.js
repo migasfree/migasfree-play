@@ -4,8 +4,6 @@ import { scroll, Notify } from 'quasar'
 
 import { gettext } from 'boot/gettext'
 
-import { useProgramStore } from './program.js'
-
 const { getScrollTarget, setVerticalScrollPosition } = scroll
 
 export const useUiStore = defineStore('ui', () => {
@@ -57,9 +55,12 @@ export const useUiStore = defineStore('ui', () => {
     const message = getMessageFromError(error)
 
     if (message === gettext.$gettext('There is no connection to the server')) {
-      const programStore = useProgramStore()
-      programStore.setStatus(message)
-      programStore.setStopApp()
+      // Lazy import to avoid circular dependency
+      import('./program.js').then(({ useProgramStore }) => {
+        const programStore = useProgramStore()
+        programStore.setStatus(message)
+        programStore.setStopApp()
+      })
     }
 
     Notify.create({
