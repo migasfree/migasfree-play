@@ -4,10 +4,11 @@ import { defineStore, storeToRefs } from 'pinia'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
+import { useEnvConfigStore } from './envConfig.js'
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
 
-import { internalApi, tokenApi } from 'config/app.conf'
+import { tokenApi } from 'config/app.conf'
 
 export const useComputerStore = defineStore('computer', () => {
   const name = ref('')
@@ -33,7 +34,10 @@ export const useComputerStore = defineStore('computer', () => {
 
   const computerInfo = async () => {
     try {
-      const { data } = await api.get(`${internalApi}/preferences/server`)
+      const envConfigStore = useEnvConfigStore()
+      const { data } = await api.get(
+        `${envConfigStore.internalApi}/preferences/server`,
+      )
 
       uuid.value = data.uuid
       name.value = data.computer_name
@@ -46,7 +50,10 @@ export const useComputerStore = defineStore('computer', () => {
 
   const computerNetwork = async () => {
     try {
-      const { data } = await api.get(`${internalApi}/computer/network`)
+      const envConfigStore = useEnvConfigStore()
+      const { data } = await api.get(
+        `${envConfigStore.internalApi}/computer/network`,
+      )
       mask.value = data.mask
       network.value = data.network
     } catch (error) {
@@ -55,9 +62,10 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerId = async () => {
+    const envConfigStore = useEnvConfigStore()
     const url = clientVersion.value.startsWith('4.')
       ? `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`
-      : `${internalApi}/computer/id`
+      : `${envConfigStore.internalApi}/computer/id`
 
     try {
       const { data } = await api.get(url)
@@ -123,8 +131,9 @@ export const useComputerStore = defineStore('computer', () => {
 
   const registerComputer = async ({ user, password }) => {
     try {
+      const envConfigStore = useEnvConfigStore()
       const { data } = await api.post(
-        `${internalApi}/computer/register/?version=${clientVersion.value}`,
+        `${envConfigStore.internalApi}/computer/register/?version=${clientVersion.value}`,
         { user, password },
       )
 
