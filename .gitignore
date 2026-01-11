@@ -48,3 +48,5 @@ yarn-error.log*
 
 /packaging/rpm/rpmbuild/*
 /packaging/debian/migasfree-play
+/.yarn/*
+/coverage/*
