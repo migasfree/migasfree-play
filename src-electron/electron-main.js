@@ -6,13 +6,22 @@ import path from 'node:path'
 import os from 'node:os'
 import tcpPortUsed from 'tcp-port-used'
 import { spawn } from 'child_process'
-import { app, BrowserWindow, nativeTheme, Menu, screen } from 'electron'
-import { initialize, enable } from '@electron/remote/main/index.js'
+import {
+  app,
+  BrowserWindow,
+  nativeTheme,
+  Menu,
+  screen,
+  ipcMain,
+} from 'electron'
 import { unlinkSync } from 'fs'
+
+import { envDefaults } from '../src/config/app.conf.js'
 
 const platform = process.platform || os.platform()
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 let expressProcess
+const runningProcesses = new Map() // Store running command processes for IPC
 
 const EXPRESS_PORT = parseInt(process.env.MFP_EXPRESS_PORT || 3000)
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
@@ -59,7 +68,74 @@ app.debug = process.argv.includes('debug')
 
 launchExpress()
 
-initialize()
+// IPC Handlers - App State
+ipcMain.handle('app:get-sync-after-start', () => app.syncAfterStart)
+ipcMain.handle('app:get-platform', () => process.platform)
+ipcMain.handle('app:get-env-config', () => ({
+  expressPort:
+    parseInt(process.env.MFP_EXPRESS_PORT) || envDefaults.expressPort,
+  executionsLimit:
+    parseInt(process.env.MFP_EXECUTIONS_LIMIT) || envDefaults.executionsLimit,
+  user: process.env.MFP_USER || envDefaults.user,
+  password: process.env.MFP_PASSWORD || envDefaults.password,
+}))
+ipcMain.on('app:set-can-exit', (_, value) => {
+  app.canExit = value
+})
+
+// IPC Handlers - Window Control
+ipcMain.handle('window:show', (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.show()
+})
+ipcMain.handle('window:is-minimized', (event) => {
+  return BrowserWindow.fromWebContents(event.sender)?.isMinimized() ?? false
+})
+ipcMain.handle('window:close', (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.close()
+})
+
+// IPC Handlers - Command Execution
+ipcMain.on('command:spawn', (event, { id, command, args }) => {
+  const shellOption = process.platform === 'linux' ? '/bin/bash' : true
+  const subprocess = spawn(command, args, { shell: shellOption })
+
+  runningProcesses.set(id, subprocess)
+
+  subprocess.stdout.on('data', (data) => {
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(`command:stdout:${id}`, data.toString())
+    }
+  })
+
+  subprocess.stderr.on('data', (data) => {
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(`command:stderr:${id}`, data.toString())
+    }
+  })
+
+  subprocess.on('exit', (code) => {
+    runningProcesses.delete(id)
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(`command:exit:${id}`, code)
+    }
+  })
+
+  subprocess.on('error', (err) => {
+    runningProcesses.delete(id)
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(`command:stderr:${id}`, err.message)
+      event.sender.send(`command:exit:${id}`, 1)
+    }
+  })
+})
+
+ipcMain.on('command:kill', (_, { id }) => {
+  const subprocess = runningProcesses.get(id)
+  if (subprocess) {
+    subprocess.kill('SIGTERM')
+    runningProcesses.delete(id)
+  }
+})
 
 app.commandLine.appendSwitch('ignore-certificate-errors')
 
@@ -108,10 +184,8 @@ async function createWindow() {
     show: false,
     useContentSize: true,
     webPreferences: {
-      contextIsolation: false,
-      nodeIntegration: true, // process.env.QUASAR_NODE_INTEGRATION,
-      nodeIntegrationInWorker: true, // process.env.QUASAR_NODE_INTEGRATION,
-      nativeWindowOpen: true,
+      contextIsolation: true,
+      nodeIntegration: false,
       sandbox: false,
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
@@ -124,8 +198,6 @@ async function createWindow() {
       ),
     },
   })
-
-  enable(mainWindow.webContents)
 
   mainWindow.webContents.session.setProxy({ mode: 'system' })
 
