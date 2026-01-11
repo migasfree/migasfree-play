@@ -6,8 +6,7 @@ import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
 import { useUiStore } from './ui.js'
-
-import { internalApi } from 'config/app.conf'
+import { useEnvConfigStore } from './envConfig.js'
 
 export const usePreferencesStore = defineStore('preferences', () => {
   const uiStore = useUiStore()
@@ -28,7 +27,10 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
   const readPreferences = async () => {
     try {
-      const { data } = await api.get(`${internalApi}/preferences`)
+      const envConfigStore = useEnvConfigStore()
+      const { data } = await api.get(
+        `${envConfigStore.internalApi}/preferences`,
+      )
 
       setPreferences(data)
       gettext.current = data.language
@@ -57,7 +59,8 @@ export const usePreferencesStore = defineStore('preferences', () => {
     }
 
     try {
-      await api.post(`${internalApi}/preferences`, payload)
+      const envConfigStore = useEnvConfigStore()
+      await api.post(`${envConfigStore.internalApi}/preferences`, payload)
       Dark.set(darkMode.value)
       LocalStorage.set('darkMode', darkMode.value)
     } catch (error) {
