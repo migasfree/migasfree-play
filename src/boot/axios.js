@@ -1,4 +1,3 @@
-import { inspect } from 'util'
 import { storeToRefs } from 'pinia'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
@@ -33,8 +32,8 @@ export default boot(({ app, store }) => {
       console.debug(
         '[ REQUEST ]',
         config.url,
-        inspect(config.params),
-        inspect(config.headers),
+        JSON.stringify(config.params),
+        JSON.stringify(config.headers),
       )
 
       return config
@@ -50,7 +49,7 @@ export default boot(({ app, store }) => {
       console.debug(
         '[ RESPONSE ]',
         response.config.url,
-        inspect(response, { depth: Infinity }),
+        JSON.stringify(response.data),
       )
       return response
     },
