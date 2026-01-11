@@ -186,7 +186,7 @@ async function createWindow() {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false,
+      sandbox: true,
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       preload: path.resolve(
