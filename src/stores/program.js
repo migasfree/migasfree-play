@@ -1,58 +1,49 @@
 import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-import { compareVersions } from 'compare-versions'
+import { defineStore, storeToRefs } from 'pinia'
 
-import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
 import { useAppsStore } from './apps.js'
+import { useAuthStore } from './auth.js'
 import { useComputerStore } from './computer.js'
 import { useDevicesStore } from './devices.js'
+import { useEnvConfigStore } from './envConfig.js'
 import { useExecutionsStore } from './executions.js'
 import { useFiltersStore } from './filters.js'
 import { usePackagesStore } from './packages.js'
 import { usePreferencesStore } from './preferences.js'
+import { useServerStore } from './server.js'
 import { useTagsStore } from './tags.js'
 import { useUiStore } from './ui.js'
 
-import {
-  tokenAuth,
-  publicApi,
-  tokenApi,
-  internalApi,
-  checkTokenApi,
-  minimumClientVersion,
-} from 'config/app.conf'
-
 export const useProgramStore = defineStore('program', () => {
   const uiStore = useUiStore()
+  const authStore = useAuthStore()
+  const serverStore = useServerStore()
 
-  const protocol = ref('')
-  const host = ref('')
-  const initialUrl = ref({
-    baseDomain: '',
-    public: '',
-    token: '',
-  })
-  const token = ref('')
-  const isTokenChecked = ref(false)
-  const clientVersion = ref('0')
-  const serverVersion = ref('0')
-  const organization = ref('')
-  const manageDevices = ref(true)
-  const user = ref({
-    isPrivileged: false,
-  })
+  // Re-export refs from auth and server stores for backward compatibility
+  const { token, isTokenChecked, userIsPrivileged } = storeToRefs(authStore)
+  const {
+    protocol,
+    host,
+    initialUrl,
+    clientVersion,
+    serverVersion,
+    organization,
+    manageDevices,
+  } = storeToRefs(serverStore)
+
+  // Own state
   const status = ref('')
   const stopApp = ref(false)
 
-  const userIsPrivileged = computed(() => user.value.isPrivileged)
   const appIsStopped = computed(() => stopApp.value)
 
   const init = async () => {
     const appsStore = useAppsStore()
     const computerStore = useComputerStore()
     const devicesStore = useDevicesStore()
+    const envConfigStore = useEnvConfigStore()
     const executionsStore = useExecutionsStore()
     const filtersStore = useFiltersStore()
     const packagesStore = usePackagesStore()
@@ -62,25 +53,80 @@ export const useProgramStore = defineStore('program', () => {
     stopApp.value = false
     uiStore.loading()
 
+    // Load environment config first
+    await envConfigStore.load()
+
     setStatus(gettext.$gettext('Preferences'))
     await preferencesStore.readPreferences()
     if (appIsStopped.value) return
-    await clientInfo()
-    checkClientVersion()
-    if (appIsStopped.value) return
-    await apiProtocol()
-    await clientManageDevices()
-    await serverHost()
 
-    setInitialUrl()
+    // Get client info and check version
+    await serverStore.clientInfo()
+    const versionCheck = serverStore.checkClientVersion()
+    if (versionCheck.error) {
+      setStatus(versionCheck.message)
+      setStopApp()
+      return
+    }
+
+    // Get server connection info
+    await serverStore.apiProtocol()
+    await serverStore.clientManageDevices()
+    await serverStore.serverHost()
+    serverStore.setInitialUrl()
+
+    // Pass server info to auth store
+    authStore.setServerInfo(protocol.value, host.value)
 
     setStatus(gettext.$gettext('Server'))
     await Promise.all([
-      serverInfo(),
+      serverStore.serverInfo(),
       (async () => {
-        await getToken()
-        await checkToken()
-        if (!isTokenChecked.value) await getToken()
+        // Step 1: Get token
+        const tokenResult = await authStore.getToken()
+        if (tokenResult?.error === 'invalid_credentials') {
+          setStatus(
+            gettext.$gettext('Credentials are not valid. Review app settings.'),
+          )
+          setStopApp()
+          return
+        }
+
+        // Step 2: Check token validity
+        let checkResult = await authStore.checkToken()
+        if (checkResult?.error === 'no_connection') {
+          setStatus(gettext.$gettext('There is no connection to the server'))
+          setStopApp()
+          return
+        }
+
+        // Step 3: If token is invalid (403), get new token and verify again
+        if (checkResult?.error === 'token_invalid') {
+          const retryResult = await authStore.getToken()
+          if (retryResult?.error) {
+            setStatus(
+              gettext.$gettext(
+                'Failed to obtain valid token. Review app settings.',
+              ),
+            )
+            setStopApp()
+            return
+          }
+
+          // Verify the new token
+          checkResult = await authStore.checkToken()
+          if (checkResult?.error) {
+            setStatus(gettext.$gettext('Token validation failed'))
+            setStopApp()
+            return
+          }
+        }
+
+        // Step 4: Final verification - ensure we have a valid token
+        if (!isTokenChecked.value) {
+          setStatus(gettext.$gettext('Could not authenticate with server'))
+          setStopApp()
+        }
       })(),
     ])
     if (appIsStopped.value) return
@@ -154,169 +200,6 @@ export const useProgramStore = defineStore('program', () => {
     uiStore.loadingFinished()
   }
 
-  const clientInfo = async () => {
-    try {
-      const { data } = await api.get(`${internalApi}/preferences/client`)
-      clientVersion.value = data.version
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
-  }
-
-  const checkClientVersion = () => {
-    if (compareVersions(clientVersion.value, minimumClientVersion) < 0) {
-      setStatus(
-        gettext.interpolate(
-          gettext.$gettext(
-            'This app requires at least Migasfree Client %{version}',
-          ),
-          {
-            version: minimumClientVersion,
-          },
-        ),
-      )
-      setStopApp()
-    }
-  }
-
-  const serverInfo = async () => {
-    const url = `${initialUrl.value.public}${publicApi.serverInfo}`
-
-    try {
-      const { data } = await api.get(url)
-      serverVersion.value = data.version
-      organization.value = data.organization
-    } catch (error) {
-      if (error.response?.status === 405) {
-        try {
-          const { data } = await api.post(url)
-          serverVersion.value = data.version
-        } catch (postError) {
-          uiStore.notifyError(postError)
-        }
-      } else {
-        uiStore.notifyError(error)
-      }
-    }
-  }
-
-  const getToken = async () => {
-    const { data } = await api.get(`${internalApi}/token`)
-    if (data?.token) {
-      setToken(data.token)
-      return
-    }
-
-    try {
-      const { data } = await api.post(
-        `${protocol.value}://${host.value}${tokenAuth.url}`,
-        {
-          username: process.env.MFP_USER ?? 'migasfree-play',
-          password: process.env.MFP_PASSWORD ?? 'migasfree-play',
-        },
-      )
-
-      if (data?.token) {
-        await api.post(`${internalApi}/token`, { token: data.token })
-        setToken(data.token)
-        return
-      }
-    } catch (error) {
-      if (error?.response?.status === 400) {
-        setStatus(
-          gettext.$gettext('Credentials are not valid. Review app settings.'),
-        )
-        setStopApp()
-      }
-    }
-
-    setToken('')
-  }
-
-  const checkToken = async () => {
-    try {
-      await api.get(`${protocol.value}://${host.value}${checkTokenApi.url}`, {
-        headers: { Authorization: token.value },
-      })
-
-      setTokenChecked(true)
-    } catch (error) {
-      if (!error.response) {
-        setStatus(gettext.$gettext('There is no connection to the server'))
-        setStopApp()
-        return
-      }
-
-      if (error.response.status === 403) {
-        // Invalidate the token on the backend
-        await api.post(`${internalApi}/token`, { token: '' })
-        setTokenChecked(false)
-      }
-    }
-  }
-
-  const checkUser = async ({ username, password }) => {
-    try {
-      const { data } = await api.post(`${internalApi}/user/check`, {
-        username,
-        password,
-      })
-
-      if (data.is_privileged) {
-        user.value.isPrivileged = true
-      } else {
-        uiStore.notifyError(gettext.$gettext('User without privileges'))
-      }
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
-  }
-
-  const apiProtocol = async () => {
-    try {
-      const { data } = await api.get(
-        `${internalApi}/preferences/protocol/?version=${clientVersion.value}`,
-      )
-      protocol.value = data
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
-  }
-
-  const clientManageDevices = async () => {
-    try {
-      const { data } = await api.get(
-        `${internalApi}/preferences/manage-devices/`,
-      )
-      manageDevices.value = data
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
-  }
-
-  const serverHost = async () => {
-    try {
-      const { data } = await api.get(`${internalApi}/preferences/server`)
-      host.value = data.server
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
-  }
-
-  const setInitialUrl = () => {
-    initialUrl.value.baseDomain = `${protocol.value}://${host.value}`
-    initialUrl.value.public = `${initialUrl.value.baseDomain}${publicApi.prefix}`
-    initialUrl.value.token = `${initialUrl.value.baseDomain}${tokenApi.prefix}`
-  }
-
-  const setToken = (value) => {
-    token.value = `Token ${value}`
-  }
-
-  const setTokenChecked = (value) => {
-    isTokenChecked.value = value
-  }
-
   const setStatus = (value) => {
     status.value = value
   }
@@ -326,19 +209,25 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   return {
+    // Re-exported from authStore (backward compatibility)
+    token,
+    isTokenChecked,
+    userIsPrivileged,
+    checkUser: authStore.checkUser,
+
+    // Re-exported from serverStore (backward compatibility)
     initialUrl,
     protocol,
     host,
-    token,
     clientVersion,
     serverVersion,
     organization,
     manageDevices,
+
+    // Own state and actions
     status,
-    userIsPrivileged,
     appIsStopped,
     init,
-    checkUser,
     setStatus,
     setStopApp,
   }
