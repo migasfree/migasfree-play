@@ -16,6 +16,7 @@ export default defineConfig({
     },
   },
   resolve: {
+    extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     alias: {
       src: fileURLToPath(new URL('./src', import.meta.url)),
       config: fileURLToPath(new URL('./src/config', import.meta.url)),
