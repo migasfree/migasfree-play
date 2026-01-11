@@ -80,9 +80,6 @@ export default defineConfig((ctx) => {
           os: 'commonjs os',
           fs: 'commonjs fs',
           path: 'commonjs path',
-          child_process: 'commonjs child_process',
-          timers: 'commonjs timers',
-          qrcode: 'commonjs qrcode',
         }
       },
     },
