@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
@@ -118,6 +118,12 @@ const uiStore = useUiStore()
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { available, installed } = storeToRefs(packagesStore)
 const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
+
+const platform = ref('')
+
+onMounted(async () => {
+  platform.value = await window.electronAPI.getPlatform()
+})
 
 const rating = computed(() => props.score)
 
@@ -176,7 +182,7 @@ const installApp = (name, packages) => {
     ? `migasfree --install --package=${packagesToInstall}`
     : `migasfree install ${packagesToInstall}`
 
-  if (process.platform === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+  if (platform.value === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
   const message = interpolate($gettext('Installing %{name}'), { name })
 
@@ -196,7 +202,7 @@ const removeApp = (name, packages) => {
     ? `migasfree --remove --package=${packagesToRemove}`
     : `migasfree purge ${packagesToRemove}`
 
-  if (process.platform === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+  if (platform.value === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
 
   const message = interpolate($gettext('Uninstalling %{name}'), { name })
 
