@@ -1,21 +1,18 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { date } from 'quasar'
-import { spawn } from 'child_process'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
 import { useComputerStore } from './computer.js'
+import { useEnvConfigStore } from './envConfig.js'
 import { usePackagesStore } from './packages.js'
 import { useUiStore } from './ui.js'
 
-import { internalApi, executionsMaxLength } from 'config/app.conf'
-
-const app = window.electronRemote.app // electron-preload.js
-
 export const useExecutionsStore = defineStore('executions', () => {
   const computerStore = useComputerStore()
+  const envConfigStore = useEnvConfigStore()
   const packagesStore = usePackagesStore()
   const uiStore = useUiStore()
 
@@ -23,7 +20,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   const lastId = ref('')
   const isRunningCommand = ref(false)
   const error = ref('')
-  let currentSubprocess = null
+  let currentCommandId = null
 
   const trimEndSpaces = (text) => {
     let lines = text.split('\n')
@@ -92,7 +89,7 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   const getExecutions = async () => {
     try {
-      const { data } = await api.get(`${internalApi}/executions`)
+      const { data } = await api.get(`${envConfigStore.internalApi}/executions`)
       setExecutionsLog(data)
     } catch (error) {
       uiStore.notifyError(error)
@@ -101,18 +98,10 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   const setExecutions = async () => {
     try {
-      await api.post(`${internalApi}/executions`, items.value)
+      await api.post(`${envConfigStore.internalApi}/executions`, items.value)
     } catch (error) {
       uiStore.notifyError(error)
     }
-  }
-
-  const spawnProcess = (command, args) => {
-    if (process.platform === 'linux') {
-      return spawn(command, args, { shell: '/bin/bash' })
-    }
-    // win32 (and any other platform) falls back to default shell
-    return spawn(command, args, { shell: true })
   }
 
   const doAfterSync = async () => {
@@ -133,52 +122,90 @@ export const useExecutionsStore = defineStore('executions', () => {
       )
       return
     }
-    startedCmd()
 
-    const [command, ...args] = cmd.split(' ')
-    const subprocess = spawnProcess(command, args)
-    currentSubprocess = subprocess
+    try {
+      startedCmd()
 
-    addExecution({ command: text, icon })
+      // Generate unique command ID
+      const commandId = Date.now().toString()
+      currentCommandId = commandId
 
-    subprocess.stdout.on('data', (data) => {
-      appendExecutionText(replaceColors(trimEndSpaces(data.toString())))
-    })
+      const [command, ...args] = cmd.split(' ')
 
-    subprocess.stderr.on('data', (data) => {
-      const text = replaceColors(trimEndSpaces(data.toString()))
+      addExecution({ command: text, icon })
 
-      appendExecutionError(text)
-      appendExecutionText(text)
-    })
+      // Safety timeout (30 minutes max) to prevent stuck state
+      const timeoutId = setTimeout(
+        () => {
+          if (isRunningCommand.value && currentCommandId === commandId) {
+            console.error('Command timeout reached, forcing cleanup')
+            appendExecutionText(
+              '\n<span class="text-negative">[Command timeout - forced cleanup]</span>\n',
+            )
+            window.electronAPI.killCommand(commandId)
+            window.electronAPI.removeCommandListeners(commandId)
+            finishedCmd()
+            currentCommandId = null
+          }
+        },
+        30 * 60 * 1000,
+      ) // 30 minutes
 
-    // when the spawn child process exits, check if there were any errors
-    subprocess.on('exit', (code) => {
-      const win = window.electronRemote.getCurrentWindow() // electron-preload.js
+      // Set up listeners BEFORE spawning to avoid race condition
+      window.electronAPI.onCommandStdout(commandId, (data) => {
+        appendExecutionText(replaceColors(trimEndSpaces(data)))
+      })
 
-      if (code !== 0) {
-        const message = `Error: ${code} ${cmd}`
-        uiStore.notifyError(message)
-        appendExecutionError(message)
-        win.show()
-      } else if (error.value === '') {
-        packagesStore.setInstalledPackages()
-      } else {
-        uiStore.notifyError(
-          error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, ''),
-        )
-        resetExecutionError()
-      }
+      window.electronAPI.onCommandStderr(commandId, (data) => {
+        const text = replaceColors(trimEndSpaces(data))
+        appendExecutionError(text)
+        appendExecutionText(text)
+      })
 
-      setExecutions()
+      window.electronAPI.onCommandExit(commandId, async (code) => {
+        // Clear the safety timeout
+        clearTimeout(timeoutId)
+
+        if (code !== 0) {
+          const message = `Error: ${code} ${cmd}`
+          uiStore.notifyError(message)
+          appendExecutionError(message)
+          await window.electronAPI.showWindow()
+        } else if (error.value === '') {
+          packagesStore.setInstalledPackages()
+        } else {
+          uiStore.notifyError(
+            error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, ''),
+          )
+          resetExecutionError()
+        }
+
+        setExecutions()
+        finishedCmd()
+
+        if (cmd.includes('sync') || cmd.includes('--update')) {
+          const minimized = await window.electronAPI.isMinimized()
+          if (minimized) {
+            await window.electronAPI.closeWindow()
+          }
+
+          doAfterSync()
+        }
+
+        // Clean up listeners
+        window.electronAPI.removeCommandListeners(commandId)
+        currentCommandId = null
+      })
+
+      // Spawn command via IPC (after listeners are set up)
+      window.electronAPI.spawnCommand(commandId, command, args)
+    } catch (err) {
+      // Ensure cleanup on any error during setup
+      console.error('Error starting command:', err)
+      uiStore.notifyError(err)
       finishedCmd()
-
-      if (cmd.includes('sync') || cmd.includes('--update')) {
-        if (win.isMinimized()) win.close()
-
-        doAfterSync()
-      }
-    })
+      currentCommandId = null
+    }
   }
 
   const setExecutionsLog = (value) => {
@@ -187,14 +214,14 @@ export const useExecutionsStore = defineStore('executions', () => {
       lastId.value = Object.keys(value)[Object.keys(value).length - 1]
   }
 
-  const startedCmd = async () => {
+  const startedCmd = () => {
     isRunningCommand.value = true
-    app.canExit = false
+    window.electronAPI.setCanExit(false)
   }
 
-  const finishedCmd = async () => {
+  const finishedCmd = () => {
     isRunningCommand.value = false
-    app.canExit = true
+    window.electronAPI.setCanExit(true)
   }
 
   const addExecution = ({ command, icon }) => {
@@ -209,7 +236,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       error: '',
     }
 
-    while (Object.keys(items.value).length > executionsMaxLength)
+    while (Object.keys(items.value).length > envConfigStore.executionsLimit)
       delete items.value[Reflect.ownKeys(items.value)[0]]
   }
 
@@ -227,12 +254,15 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const cancelCurrentCommand = () => {
-    if (currentSubprocess && isRunningCommand.value) {
-      currentSubprocess.kill('SIGTERM')
+    if (currentCommandId && isRunningCommand.value) {
+      window.electronAPI.killCommand(currentCommandId)
       appendExecutionText(
         '\n<span class="text-negative">[Command cancelled by user]</span>\n',
       )
       uiStore.notifyInfo(gettext.$gettext('Command cancelled'))
+      finishedCmd()
+      window.electronAPI.removeCommandListeners(currentCommandId)
+      currentCommandId = null
     }
   }
 
