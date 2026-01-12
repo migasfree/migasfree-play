@@ -14,8 +14,12 @@ migasfree-play (5.11.0) unstable; urgency=low
   * feat: added cancel button and spinner during execution
   * feat: added fr_FR to translations
   * feat: added new composables (usePagination, usePageSync)
+  * refactor: typeface* replaced by @fontsource/*
+  * refactor: ipc usage to improved app security
+  * refactor: replaced electronRemote by window.electronAPI
+  * refactor: replaced QR component
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 8 Jan 2026 15:32:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 12 Jan 2026 12:17:00 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
