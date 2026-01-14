@@ -1,6 +1,4 @@
 import os from 'os'
-import fs from 'fs'
-import path from 'path'
 import { execSync } from 'child_process'
 import { PythonShell } from 'python-shell'
 
@@ -44,19 +42,9 @@ const pythonExecute = async (
   args = [],
   contentType = 'text/plain',
 ) => {
-  const uniqueId = `${Date.now()}-${process.pid}-${Math.random().toString(36).slice(2, 11)}`
-  const tmpFile = path.join(os.tmpdir(), `script-${uniqueId}.py`)
-  fs.writeFileSync(tmpFile, code, 'utf8')
-
-  if (debug) {
-    console.log(tmpFile)
-    console.log(code)
-    console.log(args)
-  }
-
   try {
     const options = { ...pythonShellOptions, args }
-    const results = await PythonShell.run(tmpFile, options)
+    const results = await PythonShell.runString(code, options)
 
     res.setHeader('Content-Type', contentType)
 
@@ -64,8 +52,6 @@ const pythonExecute = async (
     return results[0]
   } catch (error) {
     if (debug) console.error(error)
-  } finally {
-    if (!debug) fs.unlinkSync(tmpFile)
   }
 }
 
