@@ -36,46 +36,90 @@ if platform.system() == "Windows":
         else:
             is_privileged = False
 elif platform.system() == "Linux":
-    import crypt
+    import ctypes
+    import ctypes.util
     import re
 
-    def auth(user_, password_):
-        try:
-            hand = open('/etc/shadow')
-        except PermissionError:
-            return False
+    def pam_auth(username, password):
+        libpam = ctypes.CDLL(ctypes.util.find_library("pam"))
 
-        for line in hand:
-            x = re.findall('^%s:' % user_, line)
-            if len(x):
-                salt = line.split(":")[1]
-                if crypt.crypt(password_, salt) == salt:
-                    return True
+        class PamHandle(ctypes.Structure):
+            pass
 
-        return False
+        class PamMessage(ctypes.Structure):
+            _fields_ = [("msg_style", ctypes.c_int),
+                        ("msg", ctypes.c_char_p)]
+
+        class PamResponse(ctypes.Structure):
+            _fields_ = [("resp", ctypes.c_char_p),
+                        ("resp_retcode", ctypes.c_int)]
+
+        class PamConv(ctypes.Structure):
+            _fields_ = [("conv", ctypes.CFUNCTYPE(ctypes.c_int,
+                                                  ctypes.c_int,
+                                                  ctypes.POINTER(ctypes.POINTER(PamMessage)),
+                                                  ctypes.POINTER(ctypes.POINTER(PamResponse)),
+                                                  ctypes.c_void_p)),
+                        ("appdata_ptr", ctypes.c_void_p)]
+
+        def conversation(num_msg, msg, resp, appdata_ptr):
+            response = (PamResponse * num_msg)()
+            for i in range(num_msg):
+                response[i].resp_retcode = 0
+                response[i].resp = password.encode('utf-8')
+            resp[0] = response
+            return 0
+
+        CONV_FUNC = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int,
+                                     ctypes.POINTER(ctypes.POINTER(PamMessage)),
+                                     ctypes.POINTER(ctypes.POINTER(PamResponse)),
+                                     ctypes.c_void_p)
+
+        pam_start = libpam.pam_start
+        pam_start.restype = ctypes.c_int
+        pam_start.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.POINTER(PamConv), ctypes.POINTER(ctypes.POINTER(PamHandle))]
+
+        pam_authenticate = libpam.pam_authenticate
+        pam_authenticate.restype = ctypes.c_int
+        pam_authenticate.argtypes = [ctypes.POINTER(PamHandle), ctypes.c_int]
+
+        pam_end = libpam.pam_end
+        pam_end.restype = ctypes.c_int
+        pam_end.argtypes = [ctypes.POINTER(PamHandle), ctypes.c_int]
+
+        handle = ctypes.POINTER(PamHandle)()
+        conv = PamConv(CONV_FUNC(conversation), 0)
+
+        retval = pam_start(b"login", username.encode('utf-8'), ctypes.byref(conv), ctypes.byref(handle))
+
+        if retval == 0:
+            retval = pam_authenticate(handle, 0)
+            pam_end(handle, retval)
+
+        return retval == 0
+
+    import grp
+    import pwd
 
     def is_sudo_group(user_):
-        hand = open('/etc/group')
-        for line in hand:
-            x = re.findall('^sudo:', line)
-            if len(x):
-                for element in line.split(":")[3].split(","):
-                    if element.rstrip() == user_:
-                        return True
-
+        try:
+            sudo_gid = grp.getgrnam('sudo').gr_gid
+            user_groups = [g.gr_gid for g in grp.getgrall() if user_ in g.gr_mem]
+            user_pw = pwd.getpwnam(user_)
+            if user_pw.pw_gid == sudo_gid or sudo_gid in user_groups:
+                return True
+        except KeyError:
+            pass
         return False
 
     def is_root(user_):
-        hand = open('/etc/passwd')
-        for line in hand:
-            x = re.findall('^%s:' % user_, line)
-            if len(x):
-                if line.split(":")[2] == "0":
-                    return True
-
+        try:
+            return pwd.getpwnam(user_).pw_uid == 0
+        except KeyError:
+            pass
         return False
 
-    is_privileged = auth(user, password) and (is_sudo_group(user) or is_root(user))
+    is_privileged = pam_auth(user, password) and (is_sudo_group(user) or is_root(user))
 
 print(is_privileged)
 `
