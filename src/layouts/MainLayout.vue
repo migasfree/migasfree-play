@@ -127,9 +127,10 @@ const synchronize = () => {
   if (showSyncDetails.value && route.name !== 'details')
     router.push({ name: 'details' })
 
-  const cmd = clientVersion.value.startsWith('4.')
-    ? 'migasfree --update'
-    : 'migasfree sync'
+  const cmd = {
+    command: 'migasfree',
+    args: clientVersion.value.startsWith('4.') ? ['--update'] : ['sync'],
+  }
 
   executionsStore.run({
     cmd,
