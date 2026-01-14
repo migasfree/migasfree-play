@@ -11,8 +11,8 @@ import os
 import sys
 import platform
 
-user = '${req.body.username}'
-password = '${req.body.password}'
+user = sys.argv[1]
+password = sys.argv[2]
 is_privileged = False
 
 if platform.system() == "Windows":
@@ -81,7 +81,12 @@ print(is_privileged)
 `
 
   try {
-    const results = await pythonExecute(res, code, 'application/json')
+    const results = await pythonExecute(
+      res,
+      code,
+      [req.body.username, req.body.password],
+      'application/json',
+    )
     res.send({ is_privileged: results === 'True' })
   } catch (error) {
     if (debug) console.error(error)
