@@ -23,8 +23,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   closeWindow: () => ipcRenderer.invoke('window:close'),
 
   // Command Execution
-  spawnCommand: (id, command, args) => {
-    ipcRenderer.send('command:spawn', { id, command, args })
+  spawnCommand: (id, command, args, input, env) => {
+    ipcRenderer.send('command:spawn', { id, command, args, input, env })
   },
   killCommand: (id) => ipcRenderer.send('command:kill', { id }),
 
