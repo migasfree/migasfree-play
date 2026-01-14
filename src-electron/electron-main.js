@@ -95,7 +95,23 @@ ipcMain.handle('window:close', (event) => {
 })
 
 // IPC Handlers - Command Execution
+const ALLOWED_COMMANDS = ['migasfree']
+
 ipcMain.on('command:spawn', (event, { id, command, args }) => {
+  if (!ALLOWED_COMMANDS.includes(command)) {
+    console.error(
+      `[Security] Blocked unauthorized command execution attempt: ${command}`,
+    )
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(
+        `command:stderr:${id}`,
+        `Error: Command "${command}" is not allowed.`,
+      )
+      event.sender.send(`command:exit:${id}`, 1)
+    }
+    return
+  }
+
   const shellOption = process.platform === 'linux' ? '/bin/bash' : true
   const subprocess = spawn(command, args, { shell: shellOption })
 
