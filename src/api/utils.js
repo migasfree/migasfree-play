@@ -38,7 +38,12 @@ const pythonShellOptions = {
   encoding: 'utf8',
 }
 
-const pythonExecute = async (res, code, contentType = 'text/plain') => {
+const pythonExecute = async (
+  res,
+  code,
+  args = [],
+  contentType = 'text/plain',
+) => {
   const uniqueId = `${Date.now()}-${process.pid}-${Math.random().toString(36).slice(2, 11)}`
   const tmpFile = path.join(os.tmpdir(), `script-${uniqueId}.py`)
   fs.writeFileSync(tmpFile, code, 'utf8')
@@ -46,10 +51,12 @@ const pythonExecute = async (res, code, contentType = 'text/plain') => {
   if (debug) {
     console.log(tmpFile)
     console.log(code)
+    console.log(args)
   }
 
   try {
-    const results = await PythonShell.run(tmpFile, pythonShellOptions)
+    const options = { ...pythonShellOptions, args }
+    const results = await PythonShell.run(tmpFile, options)
 
     res.setHeader('Content-Type', contentType)
 
