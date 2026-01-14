@@ -21,7 +21,7 @@ mfc = MigasFreeClient()
 print(json.dumps(mfc.pms.available_packages()))`
 
   try {
-    const results = await pythonExecute(res, code, 'application/json')
+    const results = await pythonExecute(res, code, [], 'application/json')
     res.send(results)
   } catch (error) {
     if (debug) console.error(error)
@@ -35,13 +35,14 @@ router.post('/installed', async (req, res) => {
   const packages = JSON.stringify(req.body)
   let code = `
 import json
+import sys
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 mfc.pms_selection()
 installed = []
 
-packages = ${packages}
+packages = json.loads(sys.argv[1])
 installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in installed]
 
 print(json.dumps(installed))`
@@ -49,18 +50,24 @@ print(json.dumps(installed))`
   if (req.query.version.startsWith('4.'))
     code = `
 import json
+import sys
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 installed = []
 
-packages = ${packages}
+packages = json.loads(sys.argv[1])
 installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in installed]
 
 print(json.dumps(installed))`
 
   try {
-    const results = await pythonExecute(res, code, 'application/json')
+    const results = await pythonExecute(
+      res,
+      code,
+      [packages],
+      'application/json',
+    )
     res.send(results)
   } catch (error) {
     if (debug) console.error(error)
@@ -90,7 +97,7 @@ mfc = MigasFreeCommand()
 print(json.dumps(mfc.pms.query_all()))`
 
   try {
-    const results = await pythonExecute(res, code, 'application/json')
+    const results = await pythonExecute(res, code, [], 'application/json')
     res.send(results)
   } catch (error) {
     if (debug) console.error(error)
