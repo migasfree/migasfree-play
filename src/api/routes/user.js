@@ -41,7 +41,14 @@ elif platform.system() == "Linux":
     import re
 
     def pam_auth(username, password):
-        libpam = ctypes.CDLL(ctypes.util.find_library("pam"))
+        path = ctypes.util.find_library("pam")
+        if not path:
+            return False
+
+        try:
+            libpam = ctypes.CDLL(path)
+        except OSError:
+            return False
 
         class PamHandle(ctypes.Structure):
             pass
