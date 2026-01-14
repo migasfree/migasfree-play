@@ -130,7 +130,18 @@ export const useExecutionsStore = defineStore('executions', () => {
       const commandId = Date.now().toString()
       currentCommandId = commandId
 
-      const [command, ...args] = cmd.split(' ')
+      let command, args, input, env
+
+      if (typeof cmd === 'string') {
+        const parts = cmd.split(' ')
+        command = parts[0]
+        args = parts.slice(1)
+      } else {
+        command = cmd.command
+        args = cmd.args || []
+        input = cmd.input
+        env = cmd.env
+      }
 
       addExecution({ command: text, icon })
 
@@ -167,7 +178,7 @@ export const useExecutionsStore = defineStore('executions', () => {
         clearTimeout(timeoutId)
 
         if (code !== 0) {
-          const message = `Error: ${code} ${cmd}`
+          const message = `Error: ${code} ${typeof cmd === 'string' ? cmd : JSON.stringify(cmd)}`
           uiStore.notifyError(message)
           appendExecutionError(message)
           await window.electronAPI.showWindow()
@@ -183,7 +194,8 @@ export const useExecutionsStore = defineStore('executions', () => {
         setExecutions()
         finishedCmd()
 
-        if (cmd.includes('sync') || cmd.includes('--update')) {
+        const cmdStr = typeof cmd === 'string' ? cmd : JSON.stringify(cmd)
+        if (cmdStr.includes('sync') || cmdStr.includes('--update')) {
           const minimized = await window.electronAPI.isMinimized()
           if (minimized) {
             await window.electronAPI.closeWindow()
@@ -198,7 +210,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       })
 
       // Spawn command via IPC (after listeners are set up)
-      window.electronAPI.spawnCommand(commandId, command, args)
+      window.electronAPI.spawnCommand(commandId, command, args, input, env)
     } catch (err) {
       // Ensure cleanup on any error during setup
       console.error('Error starting command:', err)
