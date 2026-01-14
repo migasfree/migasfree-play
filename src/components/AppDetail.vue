@@ -177,12 +177,26 @@ const defaultIcon = computed(() => 'img/migasfree-play.svg')
 const installApp = (name, packages) => {
   if (!packages?.length) return
 
-  const packagesToInstall = packages.join(' ')
-  let cmd = clientVersion.value.startsWith('4.')
-    ? `migasfree --install --package=${packagesToInstall}`
-    : `migasfree install ${packagesToInstall}`
+  const cmd = {
+    command: 'migasfree',
+    args: [],
+    input: '',
+    env: {},
+  }
 
-  if (platform.value === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+  if (clientVersion.value.startsWith('4.')) {
+    // Legacy: migasfree --install --package=p1 p2 ...
+    // Splitting logic: --package=p1 is one arg, p2... are subsequent args
+    cmd.args = ['--install', `--package=${packages[0]}`, ...packages.slice(1)]
+  } else {
+    // Modern: migasfree install p1 p2 ...
+    cmd.args = ['install', ...packages]
+  }
+
+  if (platform.value === 'linux') {
+    cmd.input = 'y\n'
+    cmd.env = { LANG_ALL: 'C' }
+  }
 
   const message = interpolate($gettext('Installing %{name}'), { name })
 
@@ -196,13 +210,23 @@ const installApp = (name, packages) => {
 }
 
 const removeApp = (name, packages) => {
-  const packagesToRemove = packages.join(' ')
+  const cmd = {
+    command: 'migasfree',
+    args: [],
+    input: '',
+    env: {},
+  }
 
-  let cmd = clientVersion.value.startsWith('4.')
-    ? `migasfree --remove --package=${packagesToRemove}`
-    : `migasfree purge ${packagesToRemove}`
+  if (clientVersion.value.startsWith('4.')) {
+    cmd.args = ['--remove', `--package=${packages[0]}`, ...packages.slice(1)]
+  } else {
+    cmd.args = ['purge', ...packages]
+  }
 
-  if (platform.value === 'linux') cmd = 'LANG_ALL=C echo "y" | ' + cmd
+  if (platform.value === 'linux') {
+    cmd.input = 'y\n'
+    cmd.env = { LANG_ALL: 'C' }
+  }
 
   const message = interpolate($gettext('Uninstalling %{name}'), { name })
 
