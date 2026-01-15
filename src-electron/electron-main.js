@@ -41,6 +41,10 @@ function launchExpress() {
 
         expressProcess = spawn('node', [expressApi, app.debug ? 'debug' : ''], {
           detached: false,
+          env: {
+            ...process.env,
+            RESOURCES_PATH: process.resourcesPath,
+          },
         })
 
         if (app.debug)
@@ -97,7 +101,7 @@ ipcMain.handle('window:close', (event) => {
 // IPC Handlers - Command Execution
 const ALLOWED_COMMANDS = ['migasfree']
 
-ipcMain.on('command:spawn', (event, { id, command, args }) => {
+ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
   if (!ALLOWED_COMMANDS.includes(command)) {
     console.error(
       `[Security] Blocked unauthorized command execution attempt: ${command}`,
@@ -113,9 +117,18 @@ ipcMain.on('command:spawn', (event, { id, command, args }) => {
   }
 
   const shellOption = process.platform === 'linux' ? '/bin/bash' : true
-  const subprocess = spawn(command, args, { shell: shellOption })
+  const subprocess = spawn(command, args, {
+    shell: shellOption,
+    env: { ...process.env, ...env },
+  })
 
   runningProcesses.set(id, subprocess)
+
+  // Write input to stdin if provided (e.g., "y\n" for confirmation)
+  if (input) {
+    subprocess.stdin.write(input)
+    subprocess.stdin.end()
+  }
 
   subprocess.stdout.on('data', (data) => {
     if (!event.sender.isDestroyed()) {
