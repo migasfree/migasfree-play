@@ -1,27 +1,20 @@
 import express from 'express'
-import { pythonExecute, debug } from '../utils.js'
+import path from 'path'
+import { pythonExecute, debug, getScriptsPath } from '../utils.js'
 
 const router = express.Router()
 
 router.get('/available', async (req, res) => {
   if (debug) console.log('[express] Getting available packages...')
 
-  let code = `
-import json
-from migasfree_client.sync import MigasFreeSync
-mfs = MigasFreeSync()
-mfs.pms_selection()
-print(json.dumps(mfs.pms.available_packages()))`
+  let scriptName = 'packages_available.py'
   if (req.query.version.startsWith('4.'))
-    code = `
-import json
-from migasfree_client.client import MigasFreeClient
+    scriptName = 'packages_available_v4.py'
 
-mfc = MigasFreeClient()
-print(json.dumps(mfc.pms.available_packages()))`
+  const scriptPath = path.join(getScriptsPath(), scriptName)
 
   try {
-    const results = await pythonExecute(res, code, [], 'application/json')
+    const results = await pythonExecute(res, scriptPath, [], 'application/json')
     res.send(results)
   } catch (error) {
     if (debug) console.error(error)
@@ -33,39 +26,16 @@ router.post('/installed', async (req, res) => {
   if (debug) console.log('[express] Getting installed packages...')
 
   const packages = JSON.stringify(req.body)
-  let code = `
-import json
-import sys
-from migasfree_client.command import MigasFreeCommand
+  const args = [packages]
+  if (req.query.version.startsWith('4.')) args.unshift('--legacy')
 
-mfc = MigasFreeCommand()
-mfc.pms_selection()
-installed = []
-
-packages = json.loads(sys.argv[1])
-installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in installed]
-
-print(json.dumps(installed))`
-
-  if (req.query.version.startsWith('4.'))
-    code = `
-import json
-import sys
-from migasfree_client.command import MigasFreeCommand
-
-mfc = MigasFreeCommand()
-installed = []
-
-packages = json.loads(sys.argv[1])
-installed = [pkg for pkg in packages if mfc.pms.is_installed(pkg) and pkg not in installed]
-
-print(json.dumps(installed))`
+  const scriptPath = path.join(getScriptsPath(), 'packages_installed.py')
 
   try {
     const results = await pythonExecute(
       res,
-      code,
-      [packages],
+      scriptPath,
+      args,
       'application/json',
     )
     res.send(results)
@@ -78,26 +48,18 @@ print(json.dumps(installed))`
 router.get('/inventory', async (req, res) => {
   if (debug) console.log('[express] Getting packages inventory...')
 
-  let code = `
-import json
-from migasfree_client.command import MigasFreeCommand
+  const args = []
+  if (req.query.version.startsWith('4.')) args.unshift('--legacy')
 
-mfc = MigasFreeCommand()
-mfc.pms_selection()
-
-print(json.dumps(mfc.pms.query_all()))`
-
-  if (req.query.version.startsWith('4.'))
-    code = `
-import json
-from migasfree_client.command import MigasFreeCommand
-
-mfc = MigasFreeCommand()
-
-print(json.dumps(mfc.pms.query_all()))`
+  const scriptPath = path.join(getScriptsPath(), 'packages_inventory.py')
 
   try {
-    const results = await pythonExecute(res, code, [], 'application/json')
+    const results = await pythonExecute(
+      res,
+      scriptPath,
+      args,
+      'application/json',
+    )
     res.send(results)
   } catch (error) {
     if (debug) console.error(error)
