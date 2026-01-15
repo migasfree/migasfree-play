@@ -213,6 +213,13 @@ export default defineConfig((ctx) => {
           perMachine: true,
           runAfterFinish: false,
         },
+        extraResources: [
+          {
+            from: 'src/api/scripts',
+            to: 'app/scripts',
+            filter: ['**/*.py'],
+          },
+        ],
       },
 
       /* Extend the Esbuild config that is used for the electron-main thread */
