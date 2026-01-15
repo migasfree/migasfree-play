@@ -1,7 +1,15 @@
 import os from 'os'
+import path from 'path'
 import { execSync } from 'child_process'
 import { PythonShell } from 'python-shell'
 
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+
+const getScriptsPath = () => {
+  return IS_PRODUCTION
+    ? path.join(process.env.RESOURCES_PATH, 'app', 'scripts')
+    : path.join(process.cwd(), 'src', 'api', 'scripts')
+}
 const getPython = () => {
   const platform = os.platform()
 
@@ -44,15 +52,22 @@ const pythonExecute = async (
 ) => {
   try {
     const options = { ...pythonShellOptions, args }
-    const results = await PythonShell.runString(code, options)
+    let results
+    if (code.endsWith('.py')) {
+      results = await PythonShell.run(code, options)
+    } else {
+      results = await PythonShell.runString(code, options)
+    }
 
     res.setHeader('Content-Type', contentType)
 
-    if (debug) console.log(results[0])
-    return results[0]
+    const result = results.filter((line) => line.trim()).pop()
+
+    if (debug) console.log(result)
+    return result
   } catch (error) {
     if (debug) console.error(error)
   }
 }
 
-export { debug, pythonExecute }
+export { debug, pythonExecute, getScriptsPath }
