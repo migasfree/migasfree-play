@@ -195,7 +195,7 @@ const installApp = (name, packages) => {
 
   if (platform.value === 'linux') {
     cmd.input = 'y\n'
-    cmd.env = { LANG_ALL: 'C' }
+    cmd.env = { LC_ALL: 'C' }
   }
 
   const message = interpolate($gettext('Installing %{name}'), { name })
@@ -225,7 +225,7 @@ const removeApp = (name, packages) => {
 
   if (platform.value === 'linux') {
     cmd.input = 'y\n'
-    cmd.env = { LANG_ALL: 'C' }
+    cmd.env = { LC_ALL: 'C' }
   }
 
   const message = interpolate($gettext('Uninstalling %{name}'), { name })
