@@ -1,143 +1,154 @@
 # Migasfree Play
 
-Migasfree Client front-end. Allow install/uninstall available applications and devices.
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.12-green.svg)](https://nodejs.org/)
 
-## Install the dependencies
+Desktop application for the [Migasfree](https://github.com/migasfree) ecosystem. Provides a graphical interface to install/uninstall applications and manage devices on managed computers.
+
+## Features
+
+- 📦 **Application Catalog** - Browse and install available applications
+- 🖨️ **Device Management** - Configure and manage assigned devices
+- 🏷️ **Tag Management** - View and modify computer tags
+- 🔄 **Synchronization** - Sync with Migasfree server
+- 📊 **Execution History** - Track command execution logs
+- 🌐 **Multi-language** - Available in 5 languages
+- 🌙 **Dark Mode** - Full dark theme support
+
+## Screenshots
+
+![Apps View](./screenshots/play-apps.png)
+![Devices View](./screenshots/play-devices.png)
+![Info View](./screenshots/play-info.png)
+
+## Tech Stack
+
+| Layer             | Technology             |
+| ----------------- | ---------------------- |
+| Desktop Framework | Electron 39.x          |
+| UI Framework      | Vue.js 3 + Quasar 2.18 |
+| State Management  | Pinia 3.x              |
+| Embedded Backend  | Express 5.x            |
+| Testing           | Vitest 4.x             |
+
+## Quick Start
+
+### Requirements
+
+- Node.js >= 22.12.0
+- Yarn >= 1.21.1
+- migasfree-client >= 4.20 (production)
+
+### Installation
 
 ```bash
-yarn
+git clone https://github.com/migasfree/migasfree-play.git
+cd migasfree-play
+yarn install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Development
 
 ```bash
 sudo yarn dev
 ```
 
-### Extract gettext content
-
-```bash
-yarn gettext:extract
-```
-
-### Compile gettext content
-
-```bash
-yarn gettext:compile
-```
-
-### Lint the files
-
-```bash
-yarn run lint
-```
-
-### Build the app for production
+### Production Build
 
 ```bash
 yarn build
 ```
 
-### Build the package for Debian based distros
+### Run Tests
 
 ```bash
-sudo apt install devscripts build-essential debhelper # if not installed
+yarn test
+```
+
+## Packaging
+
+### Debian/Ubuntu
+
+```bash
+sudo apt install devscripts build-essential debhelper
 yarn build
 cd packaging
 DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
 ```
 
-### Build the package for RPM based distros
+### RPM (Fedora/RHEL)
 
 ```bash
-# sudo apt install rpm  # for Debian based distros
 yarn build
 cd packaging/rpm
 ./create-package
 ```
 
-### Build the package for Arch based distros
+### Arch Linux
 
 ```bash
 cd packaging
 makepkg
 ```
 
-### Execute app in production
+## Production Usage
 
 ```bash
+# Normal execution
 sudo migasfree-play
-```
 
-#### Execute app in production and synchronize computer immediately
-
-```bash
+# Sync immediately on start
 sudo migasfree-play sync
-```
 
-#### Execute app in production in debug mode
-
-```bash
+# Debug mode
 sudo migasfree-play debug
 ```
 
-## Screenshots
+## Configuration
 
-![migasfree-play Apps](./screenshots/play-apps.png 'migasfree-play Apps')
+Settings file: `/root/.migasfree-play/settings.json`
 
-![migasfree-play Devices](./screenshots/play-devices.png 'migasfree-play Devices')
-
-![migasfree-play Info](./screenshots/play-info.png 'migasfree-play Info')
-
-## Settings
-
-File: /root/.migasfree-play/settings.json
-
-Default content:
-
-```
+```json
 {
   "language": "es_ES",
-  "show_language": true,
-  "show_computer_link": true,
-  "show_sync_details": true,
   "show_apps": true,
   "show_devices": true,
   "show_tags": true,
-  "show_details": true,
-  "show_preferences": true,
-  "show_info": true,
-  "show_help": true,
-  "dark_mode": true,
-  "show_dark_mode": true
+  "dark_mode": true
 }
 ```
 
-### Available languages
+### Available Languages
 
-- American English (en_US)
-- Català (ca_ES)
+- English (en_US)
 - Español (es_ES)
+- Français (fr_FR)
+- Català (ca_ES)
 - Euskara (eu_ES)
 - Galego (gl_ES)
 
-### Environment variables
+### Environment Variables
 
-You can set values ​​for the following environment variables:
+| Variable               | Description      | Default        |
+| ---------------------- | ---------------- | -------------- |
+| `MFP_EXPRESS_PORT`     | Express API port | 3000           |
+| `MFP_QUASAR_PORT`      | Dev server port  | 9999           |
+| `MFP_EXECUTIONS_LIMIT` | History limit    | 5              |
+| `MFP_USER`             | Default user     | migasfree-play |
+| `MFP_PASSWORD`         | Default password | migasfree-play |
+| `MFP_CMD_FLAGS`        | Extra CLI flags  | (empty)        |
 
-```
-MFP_USER=migasfree-play
-MFP_PASSWORD=migasfree-play
+## Documentation
 
-MFP_QUASAR_PORT=9999
-MFP_EXPRESS_PORT=3000
+- [Architecture](./ARCHITECTURE.md) - Technical architecture documentation
+- [Onboarding](./ONBOARDING.md) - Developer onboarding guide
 
-MFP_EXECUTIONS_LIMIT=5
+## License
 
-MFP_CMD_FLAGS=
-```
+[GPL-3.0](LICENSE) © 2017-2026 Migasfree Team
 
-## Requirements in production
+## Links
 
-- NodeJS >= 18
-- migasfree-client >= 4.20
+- [Migasfree Project](https://migasfree.org)
+- [Migasfree Server](https://github.com/migasfree/migasfree-backend)
+- [Migasfree Client](https://github.com/migasfree/migasfree-client)
