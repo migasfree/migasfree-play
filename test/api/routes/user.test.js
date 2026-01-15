@@ -4,6 +4,7 @@ import request from 'supertest'
 vi.mock('src/api/utils.js', () => ({
   debug: false,
   pythonExecute: vi.fn(),
+  getScriptsPath: vi.fn(() => '/mock/scripts'),
 }))
 
 import app from 'src/api/index.js'
