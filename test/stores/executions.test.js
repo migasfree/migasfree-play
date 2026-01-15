@@ -93,6 +93,8 @@ describe('Executions Store', () => {
       commandId,
       'ls',
       ['-la'],
+      undefined,
+      undefined,
     )
     expect(store.items[store.lastId].command).toBe('List files')
 
