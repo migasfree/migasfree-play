@@ -38,7 +38,6 @@ export const resultsPerPage = 10
 export const retryIntervalSeconds = 10
 
 export const envDefaults = {
-  expressPort: 3000,
   executionsLimit: 5,
   user: 'migasfree-play',
   password: 'migasfree-play',
