@@ -11,7 +11,6 @@
 import ESLintPlugin from 'eslint-webpack-plugin'
 import { defineConfig } from '#q-app/wrappers'
 import { fileURLToPath } from 'node:url'
-import path from 'node:path'
 
 export default defineConfig((ctx) => {
   return {
@@ -215,7 +214,7 @@ export default defineConfig((ctx) => {
         },
         extraResources: [
           {
-            from: 'src/api/scripts',
+            from: 'src-electron/resources/scripts',
             to: 'app/scripts',
             filter: ['**/*.py'],
           },
@@ -223,66 +222,9 @@ export default defineConfig((ctx) => {
       },
 
       /* Extend the Esbuild config that is used for the electron-main thread */
-      extendElectronMainConf(cfg) {
-        cfg.entryPoints = [
-          {
-            in: path.join(
-              fileURLToPath(new URL('.', import.meta.url)),
-              'src',
-              'api',
-              'index.js',
-            ),
-            out: ctx.prod
-              ? path.join(
-                  fileURLToPath(new URL('.', import.meta.url)),
-                  'dist',
-                  'electron',
-                  'UnPackaged',
-                  'api',
-                )
-              : path.join(
-                  fileURLToPath(new URL('.', import.meta.url)),
-                  '.quasar',
-                  'dev-electron',
-                  'api',
-                ),
-          },
-          {
-            in: path.join(
-              fileURLToPath(new URL('.', import.meta.url)),
-              'src-electron',
-              'electron-main',
-            ),
-            out: ctx.prod
-              ? path.join(
-                  fileURLToPath(new URL('.', import.meta.url)),
-                  'dist',
-                  'electron',
-                  'UnPackaged',
-                  'electron-main',
-                )
-              : path.join(
-                  fileURLToPath(new URL('.', import.meta.url)),
-                  '.quasar',
-                  'dev-electron',
-                  'electron-main',
-                ),
-          },
-        ]
-        cfg.outdir = ctx.prod
-          ? path.join(
-              fileURLToPath(new URL('.', import.meta.url)),
-              'dist',
-              'electron',
-              'UnPackaged',
-            )
-          : path.join(
-              fileURLToPath(new URL('.', import.meta.url)),
-              '.quasar',
-              'dev-electron',
-            )
-        delete cfg.outfile
-      },
+      // extendElectronMainConf(cfg) {
+      //   // do nothing
+      // },
     },
   }
 })
