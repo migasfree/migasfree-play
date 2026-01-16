@@ -196,7 +196,7 @@ export default defineConfig((ctx) => {
         appId: 'org.migasfree.migasfree-play',
         // icon: 'public/img/migasfree-play.svg',
         compression: 'maximum',
-        asar: false,
+        asar: true,
         linux: {
           target: ['dir'],
           category: 'System',
@@ -212,6 +212,7 @@ export default defineConfig((ctx) => {
           perMachine: true,
           runAfterFinish: false,
         },
+
         extraResources: [
           {
             from: 'src-electron/resources/scripts',
