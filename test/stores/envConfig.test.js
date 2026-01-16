@@ -9,7 +9,6 @@ describe('EnvConfig Store', () => {
 
     // Reset the mock implementation for each test
     window.electronAPI.getEnvConfig.mockResolvedValue({
-      expressPort: 4000,
       executionsLimit: 10,
       user: 'test-user',
       password: 'test-password',
@@ -18,11 +17,9 @@ describe('EnvConfig Store', () => {
 
   it('should have default values initially', () => {
     const store = useEnvConfigStore()
-    expect(store.expressPort).toBe(3000)
     expect(store.executionsLimit).toBe(5)
     expect(store.user).toBe('migasfree-play')
     expect(store.password).toBe('migasfree-play')
-    expect(store.internalApi).toBe('http://localhost:3000')
     expect(store.isLoaded).toBe(false)
   })
 
@@ -32,11 +29,9 @@ describe('EnvConfig Store', () => {
     await store.load()
 
     expect(window.electronAPI.getEnvConfig).toHaveBeenCalledTimes(1)
-    expect(store.expressPort).toBe(4000)
     expect(store.executionsLimit).toBe(10)
     expect(store.user).toBe('test-user')
     expect(store.password).toBe('test-password')
-    expect(store.internalApi).toBe('http://localhost:4000')
     expect(store.isLoaded).toBe(true)
   })
 

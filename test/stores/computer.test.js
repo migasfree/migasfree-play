@@ -26,7 +26,7 @@ vi.mock('config/app.conf', () => ({
 
 vi.mock('src/stores/envConfig', async () => ({
   useEnvConfigStore: () => ({
-    internalApi: 'http://localhost:3000',
+    // removed internalApi
   }),
 }))
 
@@ -58,6 +58,20 @@ describe('Computer Store', () => {
     const { useProgramStore } = await import('src/stores/program')
     const programStore = useProgramStore()
     programStore.clientVersion.value = '5.0'
+
+    // Mock default electronAPI responses
+    window.electronAPI.preferences.getServerInfo.mockResolvedValue({
+      uuid: '',
+      computer_name: '',
+      user: '',
+      project: '',
+    })
+    window.electronAPI.computer.getNetwork.mockResolvedValue({
+      mask: '',
+      network: '',
+    })
+    window.electronAPI.computer.getId.mockResolvedValue(0)
+    window.electronAPI.computer.register.mockResolvedValue(1)
   })
 
   describe('Initial State', () => {
@@ -91,27 +105,16 @@ describe('Computer Store', () => {
         project: 'test-project',
       }
 
-      api.get.mockResolvedValue({ data: mockData })
+      window.electronAPI.preferences.getServerInfo.mockResolvedValue(mockData)
 
       const store = useComputerStore()
       await store.computerInfo()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/preferences/server',
-      )
+      expect(window.electronAPI.preferences.getServerInfo).toHaveBeenCalled()
       expect(store.uuid).toBe('test-uuid-123')
       expect(store.name).toBe('computer-1')
       expect(store.user).toBe('testuser')
       expect(store.project).toBe('test-project')
-    })
-
-    it('handles API errors', async () => {
-      api.get.mockRejectedValue(new Error('Network error'))
-
-      const store = useComputerStore()
-      await store.computerInfo()
-
-      expect(store.uuid).toBe('')
     })
   })
 
@@ -122,14 +125,12 @@ describe('Computer Store', () => {
         network: '192.168.1.0',
       }
 
-      api.get.mockResolvedValue({ data: mockData })
+      window.electronAPI.computer.getNetwork.mockResolvedValue(mockData)
 
       const store = useComputerStore()
       await store.computerNetwork()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/computer/network',
-      )
+      expect(window.electronAPI.computer.getNetwork).toHaveBeenCalled()
       expect(store.mask).toBe('255.255.255.0')
       expect(store.network).toBe('192.168.1.0')
     })
@@ -137,12 +138,12 @@ describe('Computer Store', () => {
 
   describe('computerId()', () => {
     it('fetches computer id for v5 client', async () => {
-      api.get.mockResolvedValue({ data: 42 })
+      window.electronAPI.computer.getId.mockResolvedValue(42)
 
       const store = useComputerStore()
       await store.computerId()
 
-      expect(api.get).toHaveBeenCalledWith('http://localhost:3000/computer/id')
+      expect(window.electronAPI.computer.getId).toHaveBeenCalled()
       expect(store.cid).toBe(42)
     })
 
@@ -166,7 +167,7 @@ describe('Computer Store', () => {
     })
 
     it('sets computer link after getting id', async () => {
-      api.get.mockResolvedValue({ data: 42 })
+      window.electronAPI.computer.getId.mockResolvedValue(42)
 
       const store = useComputerStore()
       // Set cid directly and check if link is set correctly after computerId
@@ -276,20 +277,23 @@ describe('Computer Store', () => {
 
   describe('registerComputer()', () => {
     it('posts registration and updates CID on success', async () => {
-      api.post.mockResolvedValue({ data: 789 })
-      api.get.mockResolvedValue({ data: 789 })
+      window.electronAPI.computer.register.mockResolvedValue(789)
+      window.electronAPI.computer.getId.mockResolvedValue(789)
 
       const store = useComputerStore()
       await store.registerComputer({ user: 'admin', password: 'secret' })
 
-      expect(api.post).toHaveBeenCalledWith(
-        'http://localhost:3000/computer/register/?version=5.0',
-        { user: 'admin', password: 'secret' },
+      expect(window.electronAPI.computer.register).toHaveBeenCalledWith(
+        'admin',
+        'secret',
+        '5.0',
       )
+      expect(window.electronAPI.computer.getId).toHaveBeenCalled()
+      expect(store.cid).toBe(789)
     })
 
     it('shows error if registration returns 0', async () => {
-      api.post.mockResolvedValue({ data: 0 })
+      window.electronAPI.computer.register.mockResolvedValue('0')
 
       const store = useComputerStore()
       await store.registerComputer({ user: 'admin', password: 'wrong' })

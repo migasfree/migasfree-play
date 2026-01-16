@@ -20,7 +20,6 @@ vi.mock('boot/gettext', () => ({
 vi.mock('src/stores/envConfig', () => ({
   useEnvConfigStore: vi.fn(() => ({
     load: vi.fn().mockResolvedValue(true),
-    internalApi: 'http://test-api',
     user: 'test-user',
     password: 'test-pass',
   })),
@@ -84,24 +83,31 @@ describe('Program Store', () => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
 
-    // Setup API mocks
+    // Setup electronAPI mocks for ServerStore calls
+    window.electronAPI.preferences.getClientInfo.mockResolvedValue({
+      version: '5.0.0',
+    })
+    window.electronAPI.preferences.getProtocol.mockResolvedValue('http')
+    window.electronAPI.preferences.canManageDevices.mockResolvedValue(true)
+    window.electronAPI.preferences.getServerInfo.mockResolvedValue({
+      server: 'migasfree.org',
+    })
+
+    // Setup Axios mocks for External API calls (Token, Server Info)
     api.get.mockImplementation((url) => {
-      if (url.includes('/preferences/client'))
-        return Promise.resolve({ data: { version: '5.0.0' } })
-      if (url.includes('/preferences/protocol'))
-        return Promise.resolve({ data: 'http' })
-      if (url.includes('/preferences/manage-devices'))
-        return Promise.resolve({ data: true })
-      if (url.includes('/preferences/server'))
-        return Promise.resolve({ data: { server: 'migasfree.org' } })
+      // Server Info (Public API)
       if (url.includes('/info'))
         return Promise.resolve({
           data: { version: '5.0.0', organization: 'Test Org' },
         })
+      // Token API
       if (url.includes('/token'))
         return Promise.resolve({ data: { token: 'valid-token' } })
+
       return Promise.resolve({ data: {} })
     })
+
+    api.post.mockResolvedValue({ data: { token: 'valid-token' } })
   })
 
   it('init() flow runs successfully', async () => {
@@ -116,10 +122,9 @@ describe('Program Store', () => {
   })
 
   it('init() stops app if client version is too low', async () => {
-    api.get.mockImplementation((url) => {
-      if (url.includes('/preferences/client'))
-        return Promise.resolve({ data: { version: '0.0.1' } }) // Too low
-      return Promise.resolve({ data: {} })
+    // Override mock for this test
+    window.electronAPI.preferences.getClientInfo.mockResolvedValue({
+      version: '0.0.1',
     })
 
     const store = useProgramStore()

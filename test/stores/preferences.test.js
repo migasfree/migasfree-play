@@ -2,15 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { usePreferencesStore } from 'src/stores/preferences'
 
-import { api } from 'boot/axios'
-
-vi.mock('boot/axios', () => ({
-  api: {
-    get: vi.fn(),
-    post: vi.fn(),
-  },
-}))
-
+// Mock Quasar's Dark and LocalStorage
 vi.mock('quasar', () => ({
   Dark: {
     set: vi.fn(),
@@ -26,12 +18,6 @@ vi.mock('boot/gettext', () => ({
     $gettext: (msg) => msg,
     current: 'es_ES',
   },
-}))
-
-vi.mock('src/stores/envConfig', async () => ({
-  useEnvConfigStore: () => ({
-    internalApi: 'http://localhost:3000',
-  }),
 }))
 
 vi.mock('src/stores/ui', () => ({
@@ -58,6 +44,10 @@ describe('Preferences Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+
+    // Default mock implementation
+    window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
+    window.electronAPI.preferences.write.mockResolvedValue(undefined)
   })
 
   describe('Initial State', () => {
@@ -79,12 +69,12 @@ describe('Preferences Store', () => {
 
   describe('readPreferences()', () => {
     it('fetches and sets all preference values', async () => {
-      api.get.mockResolvedValue({ data: mockPreferencesData })
+      window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
 
       const store = usePreferencesStore()
       await store.readPreferences()
 
-      expect(api.get).toHaveBeenCalledWith('http://localhost:3000/preferences')
+      expect(window.electronAPI.preferences.read).toHaveBeenCalled()
       expect(store.language).toBe('en_US')
       expect(store.showLanguage).toBe(true)
       expect(store.showComputerLink).toBe(true)
@@ -97,7 +87,7 @@ describe('Preferences Store', () => {
 
     it('sets dark mode via Quasar', async () => {
       const { Dark, LocalStorage } = await import('quasar')
-      api.get.mockResolvedValue({ data: mockPreferencesData })
+      window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
 
       const store = usePreferencesStore()
       await store.readPreferences()
@@ -107,7 +97,9 @@ describe('Preferences Store', () => {
     })
 
     it('handles API errors', async () => {
-      api.get.mockRejectedValue(new Error('Network error'))
+      window.electronAPI.preferences.read.mockRejectedValue(
+        new Error('IPC Error'),
+      )
 
       const store = usePreferencesStore()
       await store.readPreferences()
@@ -119,15 +111,12 @@ describe('Preferences Store', () => {
 
   describe('savePreferences()', () => {
     it('posts all preferences', async () => {
-      api.post.mockResolvedValue({})
-
       const store = usePreferencesStore()
       store.language = 'ca_ES'
       store.darkMode = true
       await store.savePreferences()
 
-      expect(api.post).toHaveBeenCalledWith(
-        'http://localhost:3000/preferences',
+      expect(window.electronAPI.preferences.write).toHaveBeenCalledWith(
         expect.objectContaining({
           language: 'ca_ES',
           dark_mode: true,
@@ -138,7 +127,6 @@ describe('Preferences Store', () => {
 
     it('sets dark mode after saving', async () => {
       const { Dark, LocalStorage } = await import('quasar')
-      api.post.mockResolvedValue({})
 
       const store = usePreferencesStore()
       store.darkMode = true

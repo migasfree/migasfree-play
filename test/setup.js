@@ -10,7 +10,6 @@ global.window.electronAPI = {
   getSyncAfterStart: vi.fn().mockResolvedValue(false),
   getPlatform: vi.fn().mockResolvedValue('linux'),
   getEnvConfig: vi.fn().mockResolvedValue({
-    expressPort: 3000,
     executionsLimit: 5,
     user: 'migasfree-play',
     password: 'migasfree-play',
@@ -25,6 +24,43 @@ global.window.electronAPI = {
   onCommandStderr: vi.fn().mockReturnValue(() => {}),
   onCommandExit: vi.fn().mockReturnValue(() => {}),
   removeCommandListeners: vi.fn(),
+
+  // Nested APIs
+  preferences: {
+    read: vi.fn(),
+    write: vi.fn(),
+    getClientInfo: vi.fn(),
+    getProtocol: vi.fn(),
+    canManageDevices: vi.fn(),
+    getServerInfo: vi.fn(),
+  },
+  tags: {
+    get: vi.fn(),
+  },
+  packages: {
+    getAvailable: vi.fn(),
+    getInstalled: vi.fn(),
+    getInventory: vi.fn(),
+  },
+  computer: {
+    getData: vi.fn(),
+    getId: vi.fn(),
+    getNetwork: vi.fn(),
+    register: vi.fn(),
+  },
+  executions: {
+    read: vi.fn(),
+    write: vi.fn(),
+  },
+  token: {
+    read: vi.fn(),
+    write: vi.fn(),
+    remove: vi.fn(),
+  },
+  user: {
+    isPrivileged: vi.fn(),
+    check: vi.fn(),
+  },
 }
 
 // Mock Quasar plugins

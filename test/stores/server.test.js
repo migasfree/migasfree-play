@@ -29,12 +29,6 @@ vi.mock('config/app.conf', () => ({
   minimumClientVersion: '5.0',
 }))
 
-vi.mock('src/stores/envConfig', async () => ({
-  useEnvConfigStore: () => ({
-    internalApi: 'http://localhost:3000',
-  }),
-}))
-
 vi.mock('src/stores/ui', () => ({
   useUiStore: () => ({ notifyError: vi.fn() }),
 }))
@@ -43,6 +37,14 @@ describe('Server Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    window.electronAPI.preferences.getClientInfo.mockResolvedValue({
+      version: '0',
+    })
+    window.electronAPI.preferences.getProtocol.mockResolvedValue('')
+    window.electronAPI.preferences.canManageDevices.mockResolvedValue(true)
+    window.electronAPI.preferences.getServerInfo.mockResolvedValue({
+      server: '',
+    })
   })
 
   describe('Initial State', () => {
@@ -64,14 +66,16 @@ describe('Server Store', () => {
 
   describe('clientInfo()', () => {
     it('fetches and sets client version', async () => {
-      api.get.mockResolvedValue({ data: { version: '5.10' } })
+      window.electronAPI.preferences.getClientInfo.mockResolvedValue({
+        version: '5.10',
+      })
 
       const store = useServerStore()
       await store.clientInfo()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/preferences/client',
-      )
+      expect(
+        window.electronAPI.preferences.getClientInfo,
+      ).toHaveBeenCalledTimes(1)
       expect(store.clientVersion).toBe('5.10')
     })
   })
@@ -102,6 +106,7 @@ describe('Server Store', () => {
       const store = useServerStore()
       store.setInitialUrl() // Will use empty values, but we mock the API
 
+      // This still uses Axios because it hits the external public API
       api.get.mockResolvedValue({
         data: { version: '5.5', organization: 'TestOrg' },
       })
@@ -120,14 +125,14 @@ describe('Server Store', () => {
 
   describe('apiProtocol()', () => {
     it('fetches and sets protocol', async () => {
-      api.get.mockResolvedValue({ data: 'https' })
+      window.electronAPI.preferences.getProtocol.mockResolvedValue('https')
 
       const store = useServerStore()
       store.clientVersion = '5.0'
       await store.apiProtocol()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/preferences/protocol/?version=5.0',
+      expect(window.electronAPI.preferences.getProtocol).toHaveBeenCalledWith(
+        '5.0',
       )
       expect(store.protocol).toBe('https')
     })
@@ -135,7 +140,9 @@ describe('Server Store', () => {
 
   describe('serverHost()', () => {
     it('fetches and sets server host', async () => {
-      api.get.mockResolvedValue({ data: { server: 'migasfree.example.com' } })
+      window.electronAPI.preferences.getServerInfo.mockResolvedValue({
+        server: 'migasfree.example.com',
+      })
 
       const store = useServerStore()
       await store.serverHost()
@@ -164,7 +171,7 @@ describe('Server Store', () => {
 
   describe('clientManageDevices()', () => {
     it('fetches and sets manageDevices', async () => {
-      api.get.mockResolvedValue({ data: false })
+      window.electronAPI.preferences.canManageDevices.mockResolvedValue(false)
 
       const store = useServerStore()
       await store.clientManageDevices()

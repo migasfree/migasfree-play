@@ -24,7 +24,7 @@ vi.mock('config/app.conf', () => ({
 
 vi.mock('src/stores/envConfig', async () => ({
   useEnvConfigStore: () => ({
-    internalApi: 'http://localhost:3000',
+    // internalApi removed
     user: 'testuser',
     password: 'testpass',
   }),
@@ -38,6 +38,15 @@ describe('Auth Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+
+    // Default mock return values
+    window.electronAPI.token.read.mockResolvedValue({})
+    window.electronAPI.token.write.mockResolvedValue(undefined)
+    window.electronAPI.user.check.mockResolvedValue({ is_privileged: false })
+    window.electronAPI.getEnvConfig.mockResolvedValue({
+      user: 'testuser',
+      password: 'testpass',
+    })
   })
 
   describe('Initial State', () => {
@@ -77,7 +86,7 @@ describe('Auth Store', () => {
 
   describe('getToken()', () => {
     it('uses cached token if available', async () => {
-      api.get.mockResolvedValue({ data: { token: 'cached-token' } })
+      window.electronAPI.token.read.mockResolvedValue({ token: 'cached-token' })
 
       const store = useAuthStore()
       await store.getToken()
@@ -87,7 +96,7 @@ describe('Auth Store', () => {
     })
 
     it('fetches new token from server if not cached', async () => {
-      api.get.mockResolvedValue({ data: {} })
+      window.electronAPI.token.read.mockResolvedValue({}) // No local token
       api.post.mockResolvedValue({ data: { token: 'new-token' } })
 
       const store = useAuthStore()
@@ -95,10 +104,13 @@ describe('Auth Store', () => {
       await store.getToken()
 
       expect(store.token).toBe('Token new-token')
+      expect(window.electronAPI.token.write).toHaveBeenCalledWith({
+        token: 'new-token',
+      })
     })
 
     it('returns error on invalid credentials', async () => {
-      api.get.mockResolvedValue({ data: {} })
+      window.electronAPI.token.read.mockResolvedValue({})
       api.post.mockRejectedValue({ response: { status: 400 } })
 
       const store = useAuthStore()
@@ -136,7 +148,6 @@ describe('Auth Store', () => {
 
     it('invalidates token on 403 response', async () => {
       api.get.mockRejectedValue({ response: { status: 403 } })
-      api.post.mockResolvedValue({})
 
       const store = useAuthStore()
       store.setServerInfo('https', 'api.example.com')
@@ -145,15 +156,13 @@ describe('Auth Store', () => {
       await store.checkToken()
 
       expect(store.isTokenChecked).toBe(false)
-      expect(api.post).toHaveBeenCalledWith('http://localhost:3000/token', {
-        token: '',
-      })
+      expect(window.electronAPI.token.write).toHaveBeenCalledWith({ token: '' })
     })
   })
 
   describe('checkUser()', () => {
     it('sets user as privileged when server confirms', async () => {
-      api.post.mockResolvedValue({ data: { is_privileged: true } })
+      window.electronAPI.user.check.mockResolvedValue({ is_privileged: true })
 
       const store = useAuthStore()
       await store.checkUser({ username: 'admin', password: 'pass' })
@@ -162,7 +171,7 @@ describe('Auth Store', () => {
     })
 
     it('does not set privileged when user lacks privileges', async () => {
-      api.post.mockResolvedValue({ data: { is_privileged: false } })
+      window.electronAPI.user.check.mockResolvedValue({ is_privileged: false })
 
       const store = useAuthStore()
       await store.checkUser({ username: 'user', password: 'pass' })

@@ -2,12 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useTagsStore } from 'src/stores/tags'
 
-import { api } from 'boot/axios'
-
-vi.mock('boot/axios', () => ({
-  api: { get: vi.fn() },
-}))
-
 vi.mock('src/stores/computer', async () => {
   const { ref } = await import('vue')
   const state = {
@@ -15,12 +9,6 @@ vi.mock('src/stores/computer', async () => {
   }
   return { useComputerStore: () => state }
 })
-
-vi.mock('src/stores/envConfig', async () => ({
-  useEnvConfigStore: () => ({
-    internalApi: 'http://localhost:3000',
-  }),
-}))
 
 vi.mock('src/stores/program', async () => {
   const { ref } = await import('vue')
@@ -42,6 +30,12 @@ describe('Tags Store', () => {
     const { useComputerStore } = await import('src/stores/computer')
     const computerStore = useComputerStore()
     computerStore.cid.value = 123
+
+    // Default mock response
+    window.electronAPI.tags.get.mockResolvedValue({
+      available: [],
+      assigned: [],
+    })
   })
 
   describe('Initial State', () => {
@@ -65,7 +59,7 @@ describe('Tags Store', () => {
       const store = useTagsStore()
       await store.getTags()
 
-      expect(api.get).not.toHaveBeenCalled()
+      expect(window.electronAPI.tags.get).not.toHaveBeenCalled()
     })
 
     it('fetches and sets available/assigned tags', async () => {
@@ -77,20 +71,18 @@ describe('Tags Store', () => {
         assigned: [{ id: 1, name: 'tag1' }],
       }
 
-      api.get.mockResolvedValue({ data: mockTags })
+      window.electronAPI.tags.get.mockResolvedValue(mockTags)
 
       const store = useTagsStore()
       await store.getTags()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/tags/?version=5.0',
-      )
+      expect(window.electronAPI.tags.get).toHaveBeenCalledWith('5.0')
       expect(store.available).toEqual(mockTags.available)
       expect(store.assigned).toEqual(mockTags.assigned)
     })
 
     it('handles API errors', async () => {
-      api.get.mockRejectedValue(new Error('Network error'))
+      window.electronAPI.tags.get.mockRejectedValue(new Error('Network error'))
 
       const store = useTagsStore()
       await store.getTags()
