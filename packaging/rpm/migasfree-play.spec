@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Mon, 12 Jan 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
+* Fri, 16 Jan 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
 - feat: upgraded several components (node >= 22.12)
 - fix: avoid multiple crontab writing
 - feat: added util-linux dependency (flock usage)
@@ -62,6 +62,9 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 - refactor: ipc usage to improved app security
 - refactor: replaced electronRemote by window.electronAPI
 - refactor: replaced QR component
+- fix: sensible files reading
+- feat: separate python code from javascript code
+- refactor: express removed
 
 * Fri, 5 Sep 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.10-0
 - fix: app initial values

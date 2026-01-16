@@ -18,8 +18,11 @@ migasfree-play (5.11.0) unstable; urgency=low
   * refactor: ipc usage to improved app security
   * refactor: replaced electronRemote by window.electronAPI
   * refactor: replaced QR component
+  * fix: sensible files reading
+  * feat: separate python code from javascript code
+  * refactor: express removed
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 12 Jan 2026 12:17:00 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 16 Jan 2026 12:03:58 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
