@@ -9,10 +9,8 @@
         :icon="item.icon"
         size="lg"
         class="q-mx-xs"
-        :disabled="$route.name === item.route"
-        v-bind="
-          item.external ? { type: 'a', target: '_blank', href: item.href } : {}
-        "
+        :disable="!item.external && $route.name === item.route"
+        v-bind="item.external ? { target: '_blank', href: item.href } : {}"
         @click="!item.external && $router.push({ name: item.route })"
       >
         <q-tooltip>{{ item.label }}</q-tooltip>
