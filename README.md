@@ -111,10 +111,18 @@ Settings file: `/root/.migasfree-play/settings.json`
 ```json
 {
   "language": "es_ES",
+  "show_language": true,
+  "show_computer_link": true,
+  "show_sync_details": false,
   "show_apps": true,
   "show_devices": true,
   "show_tags": true,
-  "dark_mode": true
+  "show_details": true,
+  "show_preferences": true,
+  "show_info": true,
+  "show_help": true,
+  "dark_mode": false,
+  "show_dark_mode": true
 }
 ```
 
