@@ -2,24 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { usePackagesStore } from 'src/stores/packages'
 
-import { api } from 'boot/axios'
-
-vi.mock('boot/axios', () => ({
-  api: {
-    get: vi.fn(),
-    post: vi.fn(),
-  },
-}))
-
-vi.mock('src/stores/envConfig', async () => {
-  const { ref } = await import('vue')
-  return {
-    useEnvConfigStore: () => ({
-      internalApi: ref('http://localhost:3000').value,
-    }),
-  }
-})
-
+// Mock environment and dependencies
 vi.mock('src/stores/program', async () => {
   const { ref } = await import('vue')
   const state = {
@@ -46,6 +29,15 @@ describe('Packages Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+
+    // Mock window.electronAPI
+    vi.stubGlobal('electronAPI', {
+      packages: {
+        getAvailable: vi.fn(),
+        getInstalled: vi.fn(),
+        getInventory: vi.fn(),
+      },
+    })
   })
 
   describe('Initial State', () => {
@@ -68,19 +60,21 @@ describe('Packages Store', () => {
   describe('setAvailablePackages()', () => {
     it('fetches and stores available packages', async () => {
       const mockPackages = ['package1', 'package2', 'package3']
-      api.get.mockResolvedValue({ data: mockPackages })
+      window.electronAPI.packages.getAvailable.mockResolvedValue(mockPackages)
 
       const store = usePackagesStore()
       await store.setAvailablePackages()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/packages/available/?version=5.0',
+      expect(window.electronAPI.packages.getAvailable).toHaveBeenCalledWith(
+        '5.0',
       )
       expect(store.available).toEqual(mockPackages)
     })
 
-    it('handles API errors', async () => {
-      api.get.mockRejectedValue(new Error('Network error'))
+    it('handles errors', async () => {
+      window.electronAPI.packages.getAvailable.mockRejectedValue(
+        new Error('IPC error'),
+      )
 
       const store = usePackagesStore()
       await store.setAvailablePackages()
@@ -92,20 +86,22 @@ describe('Packages Store', () => {
   describe('setInstalledPackages()', () => {
     it('posts apps packages and stores installed list', async () => {
       const mockInstalled = ['firefox', 'vlc']
-      api.post.mockResolvedValue({ data: mockInstalled })
+      window.electronAPI.packages.getInstalled.mockResolvedValue(mockInstalled)
 
       const store = usePackagesStore()
       await store.setInstalledPackages()
 
-      expect(api.post).toHaveBeenCalledWith(
-        'http://localhost:3000/packages/installed/?version=5.0',
+      expect(window.electronAPI.packages.getInstalled).toHaveBeenCalledWith(
         ['firefox', 'vlc'],
+        '5.0',
       )
       expect(store.installed).toEqual(mockInstalled)
     })
 
-    it('handles API errors', async () => {
-      api.post.mockRejectedValue(new Error('Network error'))
+    it('handles errors', async () => {
+      window.electronAPI.packages.getInstalled.mockRejectedValue(
+        new Error('IPC error'),
+      )
 
       const store = usePackagesStore()
       await store.setInstalledPackages()
@@ -120,13 +116,13 @@ describe('Packages Store', () => {
         { name: 'package1', version: '1.0' },
         { name: 'package2', version: '2.0' },
       ]
-      api.get.mockResolvedValue({ data: mockInventory })
+      window.electronAPI.packages.getInventory.mockResolvedValue(mockInventory)
 
       const store = usePackagesStore()
       await store.setInventory()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'http://localhost:3000/packages/inventory/?version=5.0',
+      expect(window.electronAPI.packages.getInventory).toHaveBeenCalledWith(
+        '5.0',
       )
       expect(store.inventory).toEqual(mockInventory)
     })

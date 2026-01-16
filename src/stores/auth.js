@@ -4,7 +4,6 @@ import { defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useEnvConfigStore } from './envConfig.js'
 import { useUiStore } from './ui.js'
 
 import { tokenAuth, checkTokenApi } from 'config/app.conf'
@@ -30,33 +29,35 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const getToken = async () => {
-    const envConfigStore = useEnvConfigStore()
-    const { data } = await api.get(`${envConfigStore.internalApi}/token`)
+    const data = await window.electronAPI.token.read()
     if (data?.token) {
       setToken(data.token)
       return
     }
 
     try {
+      const config = await window.electronAPI.getEnvConfig()
       const { data } = await api.post(
         `${_protocol}://${_host}${tokenAuth.url}`,
         {
-          username: envConfigStore.user,
-          password: envConfigStore.password,
+          username: config.user,
+          password: config.password,
         },
       )
 
       if (data?.token) {
-        await api.post(`${envConfigStore.internalApi}/token`, {
+        await window.electronAPI.token.write({
           token: data.token,
         })
         setToken(data.token)
         return
       }
     } catch (error) {
+      console.error('getToken error:', error)
       if (error?.response?.status === 400) {
         return { error: 'invalid_credentials' }
       }
+      return { error: error.message }
     }
 
     setToken('')
@@ -75,11 +76,12 @@ export const useAuthStore = defineStore('auth', () => {
         return { error: 'no_connection' }
       }
 
-      if (error.response.status === 403) {
+      const msg = error.message || ''
+      if (error.response.status === 403 || msg.includes('token_invalid')) {
         // Invalidate the token on the backend
-        const envConfigStore = useEnvConfigStore()
-        await api.post(`${envConfigStore.internalApi}/token`, { token: '' })
+        await window.electronAPI.token.write({ token: '' })
         setTokenChecked(false)
+        return { error: 'token_invalid' }
       }
 
       return { error: 'token_invalid' }
@@ -88,14 +90,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const checkUser = async ({ username, password }) => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.post(
-        `${envConfigStore.internalApi}/user/check`,
-        {
-          username,
-          password,
-        },
-      )
+      const data = await window.electronAPI.user.check(username, password)
 
       if (data.is_privileged) {
         user.value.isPrivileged = true

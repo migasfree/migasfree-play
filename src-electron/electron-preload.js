@@ -18,9 +18,58 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setCanExit: (value) => ipcRenderer.send('app:set-can-exit', value),
 
   // Window Control
-  showWindow: () => ipcRenderer.invoke('window:show'),
+  show: () => ipcRenderer.invoke('window:show'),
   isMinimized: () => ipcRenderer.invoke('window:is-minimized'),
-  closeWindow: () => ipcRenderer.invoke('window:close'),
+  minimize: () => ipcRenderer.invoke('window:minimize'),
+  toggleMaximize: () => ipcRenderer.invoke('window:toggle-maximize'),
+  close: () => ipcRenderer.invoke('window:close'),
+
+  // Domain APIs
+  packages: {
+    getAvailable: (version) =>
+      ipcRenderer.invoke('packages:get-available', { version }),
+    getInstalled: (packages, version) =>
+      ipcRenderer.invoke('packages:get-installed', { packages, version }),
+    getInventory: (version) =>
+      ipcRenderer.invoke('packages:get-inventory', { version }),
+  },
+
+  preferences: {
+    read: () => ipcRenderer.invoke('preferences:read'),
+    write: (content) => ipcRenderer.invoke('preferences:write', content),
+    getServerInfo: () => ipcRenderer.invoke('preferences:get-server-info'),
+    getClientInfo: () => ipcRenderer.invoke('preferences:get-client-info'),
+    getProtocol: (version) =>
+      ipcRenderer.invoke('preferences:get-protocol', { version }),
+    canManageDevices: () =>
+      ipcRenderer.invoke('preferences:can-manage-devices'),
+  },
+
+  computer: {
+    getId: () => ipcRenderer.invoke('computer:get-id'),
+    getNetwork: () => ipcRenderer.invoke('computer:get-network'),
+    register: (user, password, version) =>
+      ipcRenderer.invoke('computer:register', { user, password, version }),
+  },
+
+  token: {
+    read: () => ipcRenderer.invoke('token:read'),
+    write: (data) => ipcRenderer.invoke('token:write', data),
+  },
+
+  executions: {
+    read: () => ipcRenderer.invoke('executions:read'),
+    write: (data) => ipcRenderer.invoke('executions:write', data),
+  },
+
+  tags: {
+    get: (version) => ipcRenderer.invoke('tags:get', { version }),
+  },
+
+  user: {
+    check: (username, password) =>
+      ipcRenderer.invoke('user:check', { username, password }),
+  },
 
   // Command Execution
   spawnCommand: (id, command, args, input, env) => {

@@ -4,7 +4,6 @@ import { defineStore, storeToRefs } from 'pinia'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useEnvConfigStore } from './envConfig.js'
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
 
@@ -34,10 +33,7 @@ export const useComputerStore = defineStore('computer', () => {
 
   const computerInfo = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/preferences/server`,
-      )
+      const data = await window.electronAPI.preferences.getServerInfo()
 
       uuid.value = data.uuid
       name.value = data.computer_name
@@ -50,10 +46,7 @@ export const useComputerStore = defineStore('computer', () => {
 
   const computerNetwork = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/computer/network`,
-      )
+      const data = await window.electronAPI.computer.getNetwork()
       mask.value = data.mask
       network.value = data.network
     } catch (error) {
@@ -62,19 +55,15 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerId = async () => {
-    const envConfigStore = useEnvConfigStore()
-    const url = clientVersion.value.startsWith('4.')
-      ? `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`
-      : `${envConfigStore.internalApi}/computer/id`
+    const url = `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`
 
     try {
-      const { data } = await api.get(url)
-
       if (clientVersion.value.startsWith('4.')) {
+        const { data } = await api.get(url)
         cid.value = data.id
         helpdesk.value = data.helpdesk
       } else {
-        cid.value = data
+        cid.value = await window.electronAPI.computer.getId()
       }
 
       setComputerLink()
@@ -131,13 +120,31 @@ export const useComputerStore = defineStore('computer', () => {
 
   const registerComputer = async ({ user, password }) => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.post(
-        `${envConfigStore.internalApi}/computer/register/?version=${clientVersion.value}`,
-        { user, password },
+      await window.electronAPI.computer.register(
+        user,
+        password,
+        clientVersion.value,
+      )
+      // The updated handler returns void on success, or throws error
+      // But let's check what register returns in our handler
+      // It returns result of python script.
+      // The python script returns 0 on error (in original logic)?
+      // Original logic: if (data === 0) -> problem.
+      // New handler returns output of python script.
+      // Let's assume new handler behaves similarly but let's double check handler return.
+
+      // Wait, my handler for register:
+      // const result = await pythonExecute(...)
+      // return result
+
+      // So I should treat it same way.
+      const result = await window.electronAPI.computer.register(
+        user,
+        password,
+        clientVersion.value,
       )
 
-      if (data === 0) {
+      if (result === 0 || result === '0') {
         uiStore.notifyError(
           gettext.$gettext('There was a problem with registration'),
         )

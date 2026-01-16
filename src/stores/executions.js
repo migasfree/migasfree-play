@@ -2,11 +2,11 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { date } from 'quasar'
 
-import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
 import { useComputerStore } from './computer.js'
 import { useEnvConfigStore } from './envConfig.js'
+
 import { usePackagesStore } from './packages.js'
 import { useUiStore } from './ui.js'
 
@@ -89,7 +89,7 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   const getExecutions = async () => {
     try {
-      const { data } = await api.get(`${envConfigStore.internalApi}/executions`)
+      const data = await window.electronAPI.executions.read()
       setExecutionsLog(data)
     } catch (error) {
       uiStore.notifyError(error)
@@ -98,7 +98,7 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   const setExecutions = async () => {
     try {
-      await api.post(`${envConfigStore.internalApi}/executions`, items.value)
+      await window.electronAPI.executions.write(items.value)
     } catch (error) {
       uiStore.notifyError(error)
     }

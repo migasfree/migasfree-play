@@ -1,10 +1,8 @@
 import { ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
-import { api } from 'boot/axios'
-
 import { useComputerStore } from './computer.js'
-import { useEnvConfigStore } from './envConfig.js'
+
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
 
@@ -23,10 +21,7 @@ export const useTagsStore = defineStore('tags', () => {
     if (!cid.value) return
 
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/tags/?version=${clientVersion.value}`,
-      )
+      const data = await window.electronAPI.tags.get(clientVersion.value)
       setAvailableTags(data.available)
       setAssignedTags(data.assigned)
     } catch (error) {

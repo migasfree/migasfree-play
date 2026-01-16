@@ -5,7 +5,6 @@ import { compareVersions } from 'compare-versions'
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
-import { useEnvConfigStore } from './envConfig.js'
 import { useUiStore } from './ui.js'
 
 import { publicApi, tokenApi, minimumClientVersion } from 'config/app.conf'
@@ -27,10 +26,7 @@ export const useServerStore = defineStore('server', () => {
 
   const clientInfo = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/preferences/client`,
-      )
+      const data = await window.electronAPI.preferences.getClientInfo()
       clientVersion.value = data.version
     } catch (error) {
       uiStore.notifyError(error)
@@ -77,9 +73,8 @@ export const useServerStore = defineStore('server', () => {
 
   const apiProtocol = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/preferences/protocol/?version=${clientVersion.value}`,
+      const data = await window.electronAPI.preferences.getProtocol(
+        clientVersion.value,
       )
       protocol.value = data
     } catch (error) {
@@ -89,10 +84,7 @@ export const useServerStore = defineStore('server', () => {
 
   const clientManageDevices = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/preferences/manage-devices/`,
-      )
+      const data = await window.electronAPI.preferences.canManageDevices()
       manageDevices.value = data
     } catch (error) {
       uiStore.notifyError(error)
@@ -101,10 +93,7 @@ export const useServerStore = defineStore('server', () => {
 
   const serverHost = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/preferences/server`,
-      )
+      const data = await window.electronAPI.preferences.getServerInfo()
       host.value = data.server
     } catch (error) {
       uiStore.notifyError(error)

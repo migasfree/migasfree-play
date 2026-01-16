@@ -1,9 +1,6 @@
 import { ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
-import { api } from 'boot/axios'
-
-import { useEnvConfigStore } from './envConfig.js'
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
 
@@ -13,20 +10,23 @@ export const usePackagesStore = defineStore('packages', () => {
   const inventory = ref([])
 
   const fetchPackages = async (endpoint, method = 'get', payload = null) => {
-    const envConfigStore = useEnvConfigStore()
     const uiStore = useUiStore()
     const programStore = useProgramStore()
     const { clientVersion } = storeToRefs(programStore)
 
     try {
-      const { data } = await (method === 'post'
-        ? api.post(
-            `${envConfigStore.internalApi}${endpoint}?version=${clientVersion.value}`,
-            payload,
-          )
-        : api.get(
-            `${envConfigStore.internalApi}${endpoint}?version=${clientVersion.value}`,
-          ))
+      const methods = {
+        '/packages/available/': window.electronAPI.packages.getAvailable,
+        '/packages/installed/': window.electronAPI.packages.getInstalled,
+        '/packages/inventory/': window.electronAPI.packages.getInventory,
+      }
+
+      const methodFn = methods[endpoint]
+      const data =
+        method === 'post'
+          ? await methodFn(payload, clientVersion.value)
+          : await methodFn(clientVersion.value)
+
       return data
     } catch (error) {
       uiStore.notifyError(error)

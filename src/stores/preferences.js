@@ -2,11 +2,9 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { Dark, LocalStorage } from 'quasar'
 
-import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
 import { useUiStore } from './ui.js'
-import { useEnvConfigStore } from './envConfig.js'
 
 export const usePreferencesStore = defineStore('preferences', () => {
   const uiStore = useUiStore()
@@ -27,10 +25,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
   const readPreferences = async () => {
     try {
-      const envConfigStore = useEnvConfigStore()
-      const { data } = await api.get(
-        `${envConfigStore.internalApi}/preferences`,
-      )
+      const data = await window.electronAPI.preferences.read()
 
       setPreferences(data)
       gettext.current = data.language
@@ -59,8 +54,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
     }
 
     try {
-      const envConfigStore = useEnvConfigStore()
-      await api.post(`${envConfigStore.internalApi}/preferences`, payload)
+      await window.electronAPI.preferences.write(payload)
       Dark.set(darkMode.value)
       LocalStorage.set('darkMode', darkMode.value)
     } catch (error) {
