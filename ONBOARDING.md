@@ -8,12 +8,9 @@
 
 migasfree-play is an **Electron desktop application** that allows users to install/uninstall applications and manage devices through a graphical interface.
 
-```mermaid
-flowchart TB
     subgraph ElectronApp["🖥️ Electron App"]
         subgraph MainProcess["Main Process"]
             EM["electron-main.js<br/>Window + IPC"]
-            EXPRESS["Express API<br/>:3000"]
         end
 
         subgraph RendererProcess["Renderer Process"]
@@ -27,22 +24,17 @@ flowchart TB
         CLI["migasfree-client<br/>(Python CLI)"]
     end
 
-    EM --> EXPRESS
+    EM --> CLI
     VUE <--> PINIA
-    PINIA --> EXPRESS
+    PINIA --> EM
     PINIA --> SERVER
-    EXPRESS --> CLI
-```
 
 ### Why This Architecture?
 
-| Decision             | Reason                                                         |
-| -------------------- | -------------------------------------------------------------- |
-| **Electron**         | Cross-platform desktop app (Linux, Windows) with system access |
-| **Vue 3 + Quasar**   | Modern UI with ready-to-use components, i18n support           |
-| **Pinia**            | Reactive global state, better debugging than Vuex              |
-| **Embedded Express** | Secure proxy between Vue and Python CLI                        |
-| **python-shell**     | Executes Python scripts that interact with migasfree-client    |
+| **Electron** | Cross-platform desktop app (Linux, Windows) with system access |
+| **Vue 3 + Quasar** | Modern UI with ready-to-use components, i18n support |
+| **Pinia** | Reactive global state, better debugging than Vuex |
+| **IPC + Python** | Secure communication with system-level Python scripts |
 
 ---
 
@@ -52,15 +44,14 @@ flowchart TB
 migasfree-play/
 ├── 📦 src-electron/           # Electron main process
 │   ├── electron-main.js       # 👉 Window, IPC, CLI spawn
-│   └── electron-preload.js    # 👉 Secure bridge renderer ↔ main
+│   ├── electron-preload.js    # 👉 Secure bridge renderer ↔ main
+│   ├── handlers/              # 👉 IPC Handlers
+│   ├── resources/             # 👉 Static resources
+│   │   └── scripts/           # 👉 Python scripts (.py)
+│   └── python-utils.js        # 👉 Python execution utilities
 │
 ├── 🎨 src/                    # Renderer process (Vue/Quasar)
-│   ├── api/                   # Embedded Express API
-│   │   ├── index.js           # 👉 CORS config, rate-limiting
-│   │   ├── routes/            # 👉 7 route modules
-│   │   ├── scripts/           # 👉 Python scripts (.py)
-│   │   └── utils.js           # 👉 pythonExecute, getScriptsPath
-│   │
+│   ├── boot/                  # 👉 App initialization (axios, i18n)
 │   ├── stores/                # 👉 BUSINESS LOGIC (Pinia)
 │   │   ├── program.js         # Main orchestrator
 │   │   ├── auth.js            # Token, privileges
@@ -88,8 +79,7 @@ migasfree-play/
 | Business logic    | `src/stores/`                      |
 | Server API calls  | `src/stores/apps.js`, `server.js`  |
 | Command execution | `src/stores/executions.js`         |
-| Local API         | `src/api/routes/`                  |
-| Python scripts    | `src/api/scripts/`                 |
+| Python scripts    | `src-electron/resources/scripts/`  |
 | UI components     | `src/components/`                  |
 | Views/pages       | `src/pages/`                       |
 | Electron config   | `src-electron/electron-main.js`    |
@@ -158,7 +148,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 
 // Mock dependencies
-vi.mock('src/api/utils.js', () => ({
+vi.mock('src-electron/python-utils.js', () => ({
   pythonExecute: vi.fn(),
   getScriptsPath: vi.fn(() => '/mock/scripts'),
 }))
@@ -189,7 +179,7 @@ yarn test:coverage  # With coverage
 
 1. **Start with stores** - Business logic lives in `src/stores/`
 2. **Use Vue DevTools** - Pinia has excellent integration
-3. **Python scripts** - Located in `src/api/scripts/`, executed via `pythonExecute()`
+3. **Python scripts** - Located in `src-electron/resources/scripts/`, executed via `pythonExecute()`
 4. **Hot reload** - Works for Vue, but `electron-main.js` changes require restart
 5. **Debugging** - Run with `sudo migasfree-play debug` in production
 

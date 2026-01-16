@@ -6,15 +6,15 @@
 
 ## Technology Stack
 
-| Layer                | Technology        | Version    |
-| -------------------- | ----------------- | ---------- |
-| Desktop Framework    | Electron          | 39.x       |
-| UI Framework         | Vue.js 3 + Quasar | 3.5 / 2.18 |
-| State Management     | Pinia             | 3.x        |
-| HTTP Client          | Axios             | 1.x        |
-| Embedded Backend     | Express.js        | 5.x        |
-| Internationalization | vue3-gettext      | 4.x        |
-| Testing              | Vitest            | 4.x        |
+| Layer             | Technology        | Version    |
+| ----------------- | ----------------- | ---------- |
+| Desktop Framework | Electron          | 39.x       |
+| UI Framework      | Vue.js 3 + Quasar | 3.5 / 2.18 |
+| State Management  | Pinia             | 3.x        |
+| HTTP Client       | Axios             | 1.x        |
+
+| Internationalization | vue3-gettext | 4.x |
+| Testing | Vitest | 4.x |
 
 ---
 
@@ -24,7 +24,6 @@
 flowchart TB
     subgraph Electron["Electron Main Process"]
         EM[electron-main.js]
-        EXPRESS[Express API :3000]
         IPC[IPC Handlers]
     end
 
@@ -63,11 +62,10 @@ flowchart TB
         CLIENT[migasfree-client CLI]
     end
 
-    EM --> EXPRESS
     EM --> IPC
     VUE <--> PRELOAD
     PRELOAD <--> IPC
-    Stores --> EXPRESS
+    Stores --> IPC
     Stores --> MIGASFREE
     EXECUTIONS --> CLIENT
 ```
@@ -80,14 +78,13 @@ flowchart TB
 migasfree-play/
 ├── src-electron/           # Electron code (main process)
 │   ├── electron-main.js    # Entry point, window management, IPC
-│   └── electron-preload.js # Secure bridge between main and renderer
+│   ├── electron-preload.js # Secure bridge between main and renderer
+│   ├── handlers/           # IPC Handlers logic
+│   ├── resources/          # Static resources (scripts)
+│   └── python-utils.js     # Python execution helper
 │
 ├── src/                    # Vue/Quasar code (renderer process)
-│   ├── api/                # Embedded Express API
-│   │   ├── index.js        # Express server configuration
-│   │   ├── routes/         # API routes (7 modules)
-│   │   └── utils.js        # API utilities
-│   │
+│   ├── boot/               # Initialization plugins
 │   ├── stores/             # Global state (Pinia)
 │   │   ├── program.js      # Main store, orchestration
 │   │   ├── auth.js         # Token and user authentication
@@ -152,30 +149,6 @@ sequenceDiagram
 | `window:close`             | invoke | Close window                  |
 | `command:spawn`            | send   | Execute system command        |
 | `command:kill`             | send   | Terminate running command     |
-
----
-
-## Embedded Express API
-
-The application includes an Express server that acts as a proxy between the Vue frontend and the local system:
-
-### Endpoints
-
-| Route          | Description                               |
-| -------------- | ----------------------------------------- |
-| `/packages`    | Package management (installed, available) |
-| `/preferences` | Read/write user preferences               |
-| `/computer`    | Local computer information                |
-| `/token`       | Authentication token management           |
-| `/executions`  | Execution history                         |
-| `/user`        | Privileged user verification              |
-| `/tags`        | Computer tag management                   |
-
-### Security
-
-- CORS restricted to `localhost:9999`
-- Rate limiting: 80 requests/minute
-- Origin validation on all requests
 
 ---
 
@@ -274,14 +247,14 @@ The application communicates with the Migasfree server through two types of API:
 ```mermaid
 sequenceDiagram
     participant App
-    participant Express as Local Express
+    participant IPC as Electron IPC
     participant Server as Migasfree Server
 
-    App->>Express: GET /token
-    Express-->>App: cached token (if exists)
-    App->>Server: POST /token-auth/
+    App->>IPC: invoke('token:read')
+    IPC-->>App: cached token (if exists)
+    App->>Server: POST /token-auth/ (via Axios)
     Server-->>App: { token: "xxx" }
-    App->>Express: POST /token
+    App->>IPC: invoke('token:write')
     App->>Server: GET /rest-auth/user/ (verify)
     Server-->>App: 200 OK
 ```
@@ -400,13 +373,13 @@ Packaging generates:
 
 ## Environment Variables
 
-| Variable               | Description      | Default        |
-| ---------------------- | ---------------- | -------------- |
-| `MFP_EXPRESS_PORT`     | Express API port | 3000           |
-| `MFP_QUASAR_PORT`      | Dev server port  | 9999           |
-| `MFP_EXECUTIONS_LIMIT` | History limit    | 5              |
-| `MFP_USER`             | Default user     | migasfree-play |
-| `MFP_PASSWORD`         | Default password | migasfree-play |
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+
+| `MFP_QUASAR_PORT` | Dev server port | 9999 |
+| `MFP_EXECUTIONS_LIMIT` | History limit | 5 |
+| `MFP_USER` | Default user | migasfree-play |
+| `MFP_PASSWORD` | Default password | migasfree-play |
 
 ---
 
@@ -418,7 +391,7 @@ Packaging generates:
 - `vue` + `quasar` - UI framework
 - `pinia` - State management
 - `axios` - HTTP client
-- `express` - Embedded backend
+
 - `python-shell` - Python script execution
 
 ### Development

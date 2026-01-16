@@ -28,8 +28,8 @@ Desktop application for the [Migasfree](https://github.com/migasfree) ecosystem.
 | Desktop Framework | Electron 39.x          |
 | UI Framework      | Vue.js 3 + Quasar 2.18 |
 | State Management  | Pinia 3.x              |
-| Embedded Backend  | Express 5.x            |
-| Testing           | Vitest 4.x             |
+
+| Testing | Vitest 4.x |
 
 ## Quick Start
 
@@ -129,14 +129,14 @@ Settings file: `/root/.migasfree-play/settings.json`
 
 ### Environment Variables
 
-| Variable               | Description      | Default        |
-| ---------------------- | ---------------- | -------------- |
-| `MFP_EXPRESS_PORT`     | Express API port | 3000           |
-| `MFP_QUASAR_PORT`      | Dev server port  | 9999           |
-| `MFP_EXECUTIONS_LIMIT` | History limit    | 5              |
-| `MFP_USER`             | Default user     | migasfree-play |
-| `MFP_PASSWORD`         | Default password | migasfree-play |
-| `MFP_CMD_FLAGS`        | Extra CLI flags  | (empty)        |
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+
+| `MFP_QUASAR_PORT` | Dev server port | 9999 |
+| `MFP_EXECUTIONS_LIMIT` | History limit | 5 |
+| `MFP_USER` | Default user | migasfree-play |
+| `MFP_PASSWORD` | Default password | migasfree-play |
+| `MFP_CMD_FLAGS` | Extra CLI flags | (empty) |
 
 ## Documentation
 
