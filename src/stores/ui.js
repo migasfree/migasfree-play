@@ -21,9 +21,11 @@ export const useUiStore = defineStore('ui', () => {
   const getMessageFromError = (error) => {
     if (typeof error === 'string') return error
 
+    // Only treat as network error if it's actually an Axios error
+    // Axios errors have either 'code' or 'isAxiosError' property
     if (
       error?.code === 'ERR_NETWORK' ||
-      (!error?.response && typeof error !== 'string')
+      (error?.isAxiosError && !error?.response)
     ) {
       return gettext.$gettext('There is no connection to the server')
     }
