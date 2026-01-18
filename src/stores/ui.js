@@ -55,12 +55,17 @@ export const useUiStore = defineStore('ui', () => {
     const message = getMessageFromError(error)
 
     if (message === gettext.$gettext('There is no connection to the server')) {
-      // Lazy import to avoid circular dependency
-      import('./program.js').then(({ useProgramStore }) => {
-        const programStore = useProgramStore()
-        programStore.setStatus(message)
-        programStore.setStopApp()
-      })
+      // Only trigger stop/retry mechanism if app is still in loading phase
+      // This prevents the retry loop from starting after a successful load
+      // when a network error occurs during normal operation (e.g., after sync)
+      if (isLoading.value) {
+        // Lazy import to avoid circular dependency
+        import('./program.js').then(({ useProgramStore }) => {
+          const programStore = useProgramStore()
+          programStore.setStatus(message)
+          programStore.setStopApp()
+        })
+      }
     }
 
     Notify.create({
