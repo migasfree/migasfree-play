@@ -98,7 +98,9 @@ export const useExecutionsStore = defineStore('executions', () => {
 
   const setExecutions = async () => {
     try {
-      await window.electronAPI.executions.write(items.value)
+      // Convert Vue reactive proxy to plain object for IPC serialization
+      const plainData = JSON.parse(JSON.stringify(items.value))
+      await window.electronAPI.executions.write(plainData)
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -107,9 +109,9 @@ export const useExecutionsStore = defineStore('executions', () => {
   const doAfterSync = async () => {
     uiStore.notifyInfo(gettext.$gettext('Synchronization finished'))
 
-    await computerStore.computerId() // update CID if sync has launched autoregister
+    await computerStore.computerId()
     await Promise.all([
-      computerStore.computerData(), // update sync data (sync_end_date, ...)
+      computerStore.computerData(),
       packagesStore.setAvailablePackages(),
       packagesStore.setInventory(),
     ])
