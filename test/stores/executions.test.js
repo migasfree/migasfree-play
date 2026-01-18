@@ -240,5 +240,136 @@ describe('Executions Store', () => {
       // Should not throw
       await expect(store.getExecutions()).resolves.not.toThrow()
     })
+
+    it('setExecutions() handles write errors gracefully', async () => {
+      window.electronAPI.executions.write.mockRejectedValue(
+        new Error('Write failed'),
+      )
+
+      const store = useExecutionsStore()
+      const commandId = '111222333'
+      vi.spyOn(Date, 'now').mockReturnValue(Number(commandId))
+
+      let exitCallback = null
+      window.electronAPI.onCommandExit.mockImplementation((id, cb) => {
+        exitCallback = cb
+        return () => {}
+      })
+
+      store.run({ cmd: 'test', text: 'Test', icon: 'icon' })
+
+      // Complete the command - should not throw even if write fails
+      await expect(exitCallback(0)).resolves.not.toThrow()
+    })
+  })
+
+  describe('Command formats', () => {
+    it('runs command with object format (command, args, input, env)', async () => {
+      const store = useExecutionsStore()
+      const commandId = '555666777'
+      vi.spyOn(Date, 'now').mockReturnValue(Number(commandId))
+
+      window.electronAPI.spawnCommand.mockImplementation(() => {})
+
+      let exitCallback = null
+      window.electronAPI.onCommandExit.mockImplementation((id, cb) => {
+        exitCallback = cb
+        return () => {}
+      })
+
+      const cmd = {
+        command: 'migasfree',
+        args: ['sync'],
+        input: 'some-input',
+        env: { MY_VAR: 'value' },
+      }
+
+      store.run({ cmd, text: 'Sync', icon: 'mdi-sync' })
+
+      expect(window.electronAPI.spawnCommand).toHaveBeenCalledWith(
+        commandId,
+        'migasfree',
+        ['sync'],
+        'some-input',
+        { MY_VAR: 'value' },
+      )
+
+      await exitCallback(0)
+    })
+
+    it('triggers doAfterSync for sync commands', async () => {
+      const store = useExecutionsStore()
+      const commandId = '888999000'
+      vi.spyOn(Date, 'now').mockReturnValue(Number(commandId))
+
+      let exitCallback = null
+      window.electronAPI.onCommandExit.mockImplementation((id, cb) => {
+        exitCallback = cb
+        return () => {}
+      })
+
+      // Run a sync command
+      store.run({
+        cmd: { command: 'migasfree', args: ['sync'] },
+        text: 'Synchronization',
+        icon: 'mdi-sync',
+      })
+
+      window.electronAPI.isMinimized.mockResolvedValue(false)
+
+      // Complete the command - doAfterSync should be called
+      await exitCallback(0)
+
+      // After sync, isMinimized was checked (part of doAfterSync flow)
+      expect(window.electronAPI.isMinimized).toHaveBeenCalled()
+    })
+
+    it('prevents running multiple commands simultaneously', () => {
+      const store = useExecutionsStore()
+
+      // Mock to capture callbacks but not complete
+      window.electronAPI.onCommandExit.mockImplementation(() => () => {})
+
+      // Start first command
+      store.run({ cmd: 'first', text: 'First', icon: '' })
+      expect(store.isRunningCommand).toBe(true)
+
+      // Try to start second command
+      store.run({ cmd: 'second', text: 'Second', icon: '' })
+
+      // Should still only have one command in progress
+      // spawnCommand called only once (for first command)
+      expect(window.electronAPI.spawnCommand).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('Error handling in stderr', () => {
+    it('captures stderr output as error', async () => {
+      const store = useExecutionsStore()
+      const commandId = '123123123'
+      vi.spyOn(Date, 'now').mockReturnValue(Number(commandId))
+
+      let stderrCallback = null
+      let exitCallback = null
+
+      window.electronAPI.onCommandStderr.mockImplementation((id, cb) => {
+        stderrCallback = cb
+        return () => {}
+      })
+      window.electronAPI.onCommandExit.mockImplementation((id, cb) => {
+        exitCallback = cb
+        return () => {}
+      })
+
+      store.run({ cmd: 'failing-cmd', text: 'Failing', icon: '' })
+
+      // Simulate stderr output
+      stderrCallback('Error: Something went wrong')
+
+      // Check that error was captured
+      expect(store.error).toContain('Error: Something went wrong')
+
+      await exitCallback(0)
+    })
   })
 })

@@ -134,4 +134,32 @@ describe('Program Store', () => {
     expect(store.appIsStopped).toBe(true)
     expect(store.status).toContain('requires at least')
   })
+
+  it('init() stops app on invalid credentials', async () => {
+    // Mock authStore.getToken to return invalid_credentials error
+    api.post.mockRejectedValue({ response: { status: 400 } })
+
+    const store = useProgramStore()
+
+    await store.init()
+
+    expect(store.appIsStopped).toBe(true)
+    expect(store.status).toContain('Credentials are not valid')
+  })
+
+  it('setStatus() updates status value', () => {
+    const store = useProgramStore()
+
+    store.setStatus('Loading...')
+
+    expect(store.status).toBe('Loading...')
+  })
+
+  it('setStopApp() stops the app', () => {
+    const store = useProgramStore()
+
+    expect(store.appIsStopped).toBe(false)
+    store.setStopApp()
+    expect(store.appIsStopped).toBe(true)
+  })
 })
