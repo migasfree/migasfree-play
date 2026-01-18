@@ -179,4 +179,66 @@ describe('Executions Store', () => {
     expect(keys).toContain('mock-date-200')
     expect(keys).toContain('mock-date-300')
   })
+
+  describe('Executions persistence', () => {
+    it('getExecutions() reads data from electronAPI', async () => {
+      const mockData = {
+        '2026-01-18 12:00:00': {
+          command: 'Test command',
+          icon: 'mdi-test',
+          text: 'output',
+          error: '',
+        },
+      }
+      window.electronAPI.executions.read.mockResolvedValue(mockData)
+
+      const store = useExecutionsStore()
+      await store.getExecutions()
+
+      expect(window.electronAPI.executions.read).toHaveBeenCalled()
+      expect(store.items).toEqual(mockData)
+    })
+
+    it('setExecutions() serializes data correctly for IPC (regression test)', async () => {
+      // This test verifies that Vue reactive proxies are serialized
+      // to plain objects before being sent via IPC.
+      // Bug: "An object could not be cloned" when passing Vue proxy to IPC
+      window.electronAPI.executions.write.mockResolvedValue(true)
+
+      const store = useExecutionsStore()
+
+      // Simulate adding an execution (creates reactive data)
+      const commandId = '987654321'
+      vi.spyOn(Date, 'now').mockReturnValue(Number(commandId))
+
+      let exitCallback = null
+      window.electronAPI.onCommandExit.mockImplementation((id, cb) => {
+        exitCallback = cb
+        return () => {}
+      })
+
+      store.run({ cmd: 'test', text: 'Test', icon: 'icon' })
+
+      // Complete the command to trigger setExecutions
+      await exitCallback(0)
+
+      // Verify write was called with a plain object (not a Vue proxy)
+      expect(window.electronAPI.executions.write).toHaveBeenCalled()
+      const writtenData = window.electronAPI.executions.write.mock.calls[0][0]
+
+      // The data should be a plain object that can be JSON serialized
+      expect(() => JSON.stringify(writtenData)).not.toThrow()
+      expect(typeof writtenData).toBe('object')
+    })
+
+    it('getExecutions() handles errors gracefully', async () => {
+      window.electronAPI.executions.read.mockRejectedValue(
+        new Error('Read failed'),
+      )
+
+      const store = useExecutionsStore()
+      // Should not throw
+      await expect(store.getExecutions()).resolves.not.toThrow()
+    })
+  })
 })

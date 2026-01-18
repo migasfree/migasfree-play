@@ -124,6 +124,57 @@ describe('UI Store', () => {
       })
     })
 
+    it('notifyError() handles Axios errors without response as network errors', async () => {
+      const { Notify } = await import('quasar')
+      const store = useUiStore()
+
+      // Axios error without response (network failure)
+      const error = { isAxiosError: true }
+
+      store.notifyError(error)
+
+      expect(Notify.create).toHaveBeenCalledWith({
+        color: 'negative',
+        position: 'bottom',
+        icon: 'mdi-alert-circle-outline',
+        message: 'There is no connection to the server',
+      })
+    })
+
+    it('notifyError() does NOT treat non-Axios errors as network errors', async () => {
+      const { Notify } = await import('quasar')
+      const store = useUiStore()
+
+      // Non-Axios error (e.g., IPC error, file write error)
+      const error = new Error('Failed to write executions file')
+
+      store.notifyError(error)
+
+      // Should show actual error message, not "no connection"
+      expect(Notify.create).toHaveBeenCalledWith({
+        color: 'negative',
+        position: 'bottom',
+        icon: 'mdi-alert-circle-outline',
+        message: 'Failed to write executions file',
+      })
+    })
+
+    it('notifyError() shows error.message for generic Error objects', async () => {
+      const { Notify } = await import('quasar')
+      const store = useUiStore()
+
+      const error = new Error('An object could not be cloned')
+
+      store.notifyError(error)
+
+      expect(Notify.create).toHaveBeenCalledWith({
+        color: 'negative',
+        position: 'bottom',
+        icon: 'mdi-alert-circle-outline',
+        message: 'An object could not be cloned',
+      })
+    })
+
     it('notifyError() handles status code mapping', async () => {
       const { Notify } = await import('quasar')
       const store = useUiStore()
