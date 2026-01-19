@@ -156,8 +156,50 @@ describe('Devices Store', () => {
         expect.stringContaining('/devices/devices/available/?cid=123'),
         { headers: { Authorization: 'Token xyz789' } },
       )
-      expect(store.devices).toHaveLength(1)
       expect(store.devices[0]['x-type']).toBe('available')
+    })
+
+    it('does not add duplicate devices if already present', async () => {
+      const mockAvailable = {
+        results: [
+          {
+            id: 100, // Existing device
+            model: { name: 'Existing Legacy', manufacturer: { name: 'HP' } },
+            data: { NAME: 'Existing Legacy' },
+          },
+          {
+            id: 200, // New device
+            model: { name: 'New Scanner', manufacturer: { name: 'Canon' } },
+            data: { NAME: 'New Scanner' },
+          },
+        ],
+      }
+
+      api.get.mockResolvedValue({ data: mockAvailable })
+
+      const store = useDevicesStore()
+      // Simulate existing device
+      store.devices = [
+        {
+          id: 100,
+          'x-type': 'assigned',
+          model: { name: 'Existing Legacy', manufacturer: { name: 'HP' } },
+        },
+      ]
+
+      await store.getAvailableDevices()
+
+      expect(api.get).toHaveBeenCalled()
+      // Should have 2 devices total (100 + 200), not 3
+      expect(store.devices).toHaveLength(2)
+
+      // Verify device 100 retains its original type
+      const dev100 = store.devices.find((d) => d.id === 100)
+      expect(dev100['x-type']).toBe('assigned')
+
+      // Verify device 200 is added as available
+      const dev200 = store.devices.find((d) => d.id === 200)
+      expect(dev200['x-type']).toBe('available')
     })
   })
 
