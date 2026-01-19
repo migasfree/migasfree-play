@@ -169,6 +169,9 @@ export const useProgramStore = defineStore('program', () => {
           packagesStore.setInstalledPackages(),
           packagesStore.setInventory(),
         ])
+        if (preferencesStore.showApps) {
+          appsStore.filterApps()
+        }
       })(),
     )
 
