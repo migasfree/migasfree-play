@@ -13,7 +13,7 @@ export default function registerUserHandlers() {
         username || '',
         password || '',
       ])
-      return { is_privileged: results.trim() === 'True' }
+      return { is_privileged: (results || '').trim() === 'True' }
     } catch (error) {
       if (debug) console.error(error)
       return { is_privileged: false }
