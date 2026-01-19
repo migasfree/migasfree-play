@@ -46,15 +46,15 @@ msgstr "Gérer avec des privilèges"
 msgid "Locked"
 msgstr "Verrouillé"
 
-#: src/components/AppDetail.vue:82
+#: src/components/AppDetail.vue:89
 msgid "Installed"
 msgstr "Installé"
 
-#: src/components/AppDetail.vue:187
+#: src/components/AppDetail.vue:209
 msgid "Installing %{name}"
 msgstr "Installation de %{name}"
 
-#: src/components/AppDetail.vue:207
+#: src/components/AppDetail.vue:239
 msgid "Uninstalling %{name}"
 msgstr "Désinstallation de %{name}"
 
@@ -204,42 +204,42 @@ msgstr "Utilisateur avec des privilèges sur l'ordinateur"
 msgid "Login"
 msgstr "Connexion"
 
-#: src/components/Menu.vue:28
+#: src/components/Menu.vue:26
 msgid "Menu"
 msgstr "Menu"
 
-#: src/components/Menu.vue:80 src/pages/apps/index.vue:4
+#: src/components/Menu.vue:78 src/pages/apps/index.vue:4
 #: src/pages/apps/index.vue:36 src/stores/program.js:153
 msgid "Apps"
 msgstr "Applications"
 
-#: src/components/Menu.vue:86 src/pages/devices/index.vue:4
+#: src/components/Menu.vue:84 src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:47 src/stores/program.js:178
 msgid "Devices"
 msgstr "Périphériques"
 
-#: src/components/Menu.vue:92 src/components/Tags.vue:6
+#: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
 #: src/stores/program.js:191
 msgid "Tags"
 msgstr "Étiquettes"
 
-#: src/components/Menu.vue:98 src/pages/details/index.vue:4
+#: src/components/Menu.vue:96 src/pages/details/index.vue:4
 #: src/pages/details/index.vue:32
 msgid "Details"
 msgstr "Détails"
 
-#: src/components/Menu.vue:104 src/pages/info/index.vue:4
+#: src/components/Menu.vue:102 src/pages/info/index.vue:4
 #: src/pages/info/index.vue:34
 msgid "Info"
 msgstr "Informations"
 
-#: src/components/Menu.vue:110 src/pages/preferences/index.vue:4
+#: src/components/Menu.vue:108 src/pages/preferences/index.vue:4
 #: src/pages/preferences/index.vue:31 src/stores/program.js:59
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/components/Menu.vue:116
+#: src/components/Menu.vue:114
 msgid "Help"
 msgstr "Aide"
 
@@ -324,7 +324,7 @@ msgstr "Synchroniser l'ordinateur"
 msgid "Synchronizing..."
 msgstr "Synchronisation en cours..."
 
-#: src/layouts/MainLayout.vue:136
+#: src/layouts/MainLayout.vue:137
 msgid "Synchronization"
 msgstr "Synchronisation"
 
@@ -332,27 +332,31 @@ msgstr "Synchronisation"
 msgid "Client does not manage devices"
 msgstr "Le client ne gère pas les périphériques"
 
-#: src/stores/auth.js:103
+#: src/stores/auth.js:97
+msgid "User with privileges"
+msgstr "Utilisateur avec privilèges"
+
+#: src/stores/auth.js:99
 msgid "User without privileges"
 msgstr "Utilisateur sans privilèges"
 
-#: src/stores/computer.js:142
+#: src/stores/computer.js:149
 msgid "There was a problem with registration"
 msgstr "Un problème est survenu lors de l'inscription"
 
-#: src/stores/computer.js:147
+#: src/stores/computer.js:154
 msgid "Registered Computer!"
 msgstr "Ordinateur enregistré !"
 
-#: src/stores/executions.js:108
+#: src/stores/executions.js:110
 msgid "Synchronization finished"
 msgstr "Synchronisation terminée"
 
-#: src/stores/executions.js:121
+#: src/stores/executions.js:123
 msgid "Please wait, other process is running!!!"
 msgstr "Veuillez patienter, un autre processus est en cours d'exécution !"
 
-#: src/stores/executions.js:262
+#: src/stores/executions.js:276
 msgid "Command cancelled"
 msgstr "Commande annulée"
 
@@ -366,13 +370,15 @@ msgstr ""
 "Les identifiants ne sont pas valides. Vérifiez les paramètres de "
 "l'application."
 
-#: src/stores/program.js:98 src/stores/ui.js:28 src/stores/ui.js:57
+#: src/stores/program.js:98 src/stores/ui.js:30 src/stores/ui.js:59
 msgid "There is no connection to the server"
 msgstr "Il n'y a pas de connexion au serveur"
 
 #: src/stores/program.js:108
 msgid "Failed to obtain valid token. Review app settings."
-msgstr "Impossible d'obtenir un jeton valide. Vérifiez les paramètres de l'application."
+msgstr ""
+"Impossible d'obtenir un jeton valide. Vérifiez les paramètres de "
+"l'application."
 
 #: src/stores/program.js:119
 msgid "Token validation failed"
@@ -394,7 +400,7 @@ msgstr "Catégories"
 msgid "Packages"
 msgstr "Paquets"
 
-#: src/stores/server.js:45
+#: src/stores/server.js:41
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Cette application nécessite au moins Migasfree Client %{version}"
 

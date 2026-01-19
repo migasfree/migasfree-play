@@ -46,15 +46,15 @@ msgstr "Kudeatu pribilegioekin"
 msgid "Locked"
 msgstr "Blokeatua"
 
-#: src/components/AppDetail.vue:82
+#: src/components/AppDetail.vue:89
 msgid "Installed"
 msgstr "Instalatua"
 
-#: src/components/AppDetail.vue:187
+#: src/components/AppDetail.vue:209
 msgid "Installing %{name}"
 msgstr "Instalatzen %{name}"
 
-#: src/components/AppDetail.vue:207
+#: src/components/AppDetail.vue:239
 msgid "Uninstalling %{name}"
 msgstr "Desinstalatzen %{name}"
 
@@ -204,42 +204,42 @@ msgstr "Ordenagailuan pribilegioak dituen erabiltzailea"
 msgid "Login"
 msgstr "Saioa hasi"
 
-#: src/components/Menu.vue:28
+#: src/components/Menu.vue:26
 msgid "Menu"
 msgstr "Menua"
 
-#: src/components/Menu.vue:80 src/pages/apps/index.vue:4
+#: src/components/Menu.vue:78 src/pages/apps/index.vue:4
 #: src/pages/apps/index.vue:36 src/stores/program.js:153
 msgid "Apps"
 msgstr "Aplikazioak"
 
-#: src/components/Menu.vue:86 src/pages/devices/index.vue:4
+#: src/components/Menu.vue:84 src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:47 src/stores/program.js:178
 msgid "Devices"
 msgstr "Gailuak"
 
-#: src/components/Menu.vue:92 src/components/Tags.vue:6
+#: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
 #: src/stores/program.js:191
 msgid "Tags"
 msgstr "Etiketak"
 
-#: src/components/Menu.vue:98 src/pages/details/index.vue:4
+#: src/components/Menu.vue:96 src/pages/details/index.vue:4
 #: src/pages/details/index.vue:32
 msgid "Details"
 msgstr "Xehetasunak"
 
-#: src/components/Menu.vue:104 src/pages/info/index.vue:4
+#: src/components/Menu.vue:102 src/pages/info/index.vue:4
 #: src/pages/info/index.vue:34
 msgid "Info"
 msgstr "Informazioa"
 
-#: src/components/Menu.vue:110 src/pages/preferences/index.vue:4
+#: src/components/Menu.vue:108 src/pages/preferences/index.vue:4
 #: src/pages/preferences/index.vue:31 src/stores/program.js:59
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/components/Menu.vue:116
+#: src/components/Menu.vue:114
 msgid "Help"
 msgstr "Laguntza"
 
@@ -323,7 +323,7 @@ msgstr "Ordenagailua sinkronizatu"
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
-#: src/layouts/MainLayout.vue:136
+#: src/layouts/MainLayout.vue:137
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
@@ -331,27 +331,31 @@ msgstr "Sinkronizazioa"
 msgid "Client does not manage devices"
 msgstr "Bezeroak ez ditu gailuak kudeatzen"
 
-#: src/stores/auth.js:103
+#: src/stores/auth.js:97
+msgid "User with privileges"
+msgstr "Pribilegioko erabiltzailea"
+
+#: src/stores/auth.js:99
 msgid "User without privileges"
 msgstr "Pribilegiorik gabeko erabiltzailea"
 
-#: src/stores/computer.js:142
+#: src/stores/computer.js:149
 msgid "There was a problem with registration"
 msgstr "Arazo bat izan da erregistroarekin"
 
-#: src/stores/computer.js:147
+#: src/stores/computer.js:154
 msgid "Registered Computer!"
 msgstr "¡Erregistratutako ordenagailua!"
 
-#: src/stores/executions.js:108
+#: src/stores/executions.js:110
 msgid "Synchronization finished"
 msgstr "Sinkronizazioa amaitu da"
 
-#: src/stores/executions.js:121
+#: src/stores/executions.js:123
 msgid "Please wait, other process is running!!!"
 msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 
-#: src/stores/executions.js:262
+#: src/stores/executions.js:276
 msgid "Command cancelled"
 msgstr "Komandoa bertan behera utzi da"
 
@@ -363,7 +367,7 @@ msgstr "Zerbitzaria"
 msgid "Credentials are not valid. Review app settings."
 msgstr "Kredentzialak ez dira baliozkoak. Berrikusi aplikazioaren ezarpenak."
 
-#: src/stores/program.js:98 src/stores/ui.js:28 src/stores/ui.js:57
+#: src/stores/program.js:98 src/stores/ui.js:30 src/stores/ui.js:59
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
 
@@ -391,7 +395,7 @@ msgstr "Kategoriak"
 msgid "Packages"
 msgstr "Paketeak"
 
-#: src/stores/server.js:45
+#: src/stores/server.js:41
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
 

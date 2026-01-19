@@ -46,15 +46,15 @@ msgstr "Xestionar con privilexios"
 msgid "Locked"
 msgstr "Pechado"
 
-#: src/components/AppDetail.vue:82
+#: src/components/AppDetail.vue:89
 msgid "Installed"
 msgstr "Instalado"
 
-#: src/components/AppDetail.vue:187
+#: src/components/AppDetail.vue:209
 msgid "Installing %{name}"
 msgstr "Instalando %{name}"
 
-#: src/components/AppDetail.vue:207
+#: src/components/AppDetail.vue:239
 msgid "Uninstalling %{name}"
 msgstr "Desinstalando %{name}"
 
@@ -204,42 +204,42 @@ msgstr "Usuario con privilexios no ordenador"
 msgid "Login"
 msgstr "Acceder"
 
-#: src/components/Menu.vue:28
+#: src/components/Menu.vue:26
 msgid "Menu"
 msgstr "Menú"
 
-#: src/components/Menu.vue:80 src/pages/apps/index.vue:4
+#: src/components/Menu.vue:78 src/pages/apps/index.vue:4
 #: src/pages/apps/index.vue:36 src/stores/program.js:153
 msgid "Apps"
 msgstr "Aplicacións"
 
-#: src/components/Menu.vue:86 src/pages/devices/index.vue:4
+#: src/components/Menu.vue:84 src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:47 src/stores/program.js:178
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: src/components/Menu.vue:92 src/components/Tags.vue:6
+#: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
 #: src/stores/program.js:191
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/components/Menu.vue:98 src/pages/details/index.vue:4
+#: src/components/Menu.vue:96 src/pages/details/index.vue:4
 #: src/pages/details/index.vue:32
 msgid "Details"
 msgstr "Detalles"
 
-#: src/components/Menu.vue:104 src/pages/info/index.vue:4
+#: src/components/Menu.vue:102 src/pages/info/index.vue:4
 #: src/pages/info/index.vue:34
 msgid "Info"
 msgstr "Información"
 
-#: src/components/Menu.vue:110 src/pages/preferences/index.vue:4
+#: src/components/Menu.vue:108 src/pages/preferences/index.vue:4
 #: src/pages/preferences/index.vue:31 src/stores/program.js:59
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: src/components/Menu.vue:116
+#: src/components/Menu.vue:114
 msgid "Help"
 msgstr "Axuda"
 
@@ -323,7 +323,7 @@ msgstr "Sincronizar ordenador"
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
-#: src/layouts/MainLayout.vue:136
+#: src/layouts/MainLayout.vue:137
 msgid "Synchronization"
 msgstr "Sincronización"
 
@@ -331,27 +331,31 @@ msgstr "Sincronización"
 msgid "Client does not manage devices"
 msgstr "O cliente non xestiona dispositivos"
 
-#: src/stores/auth.js:103
+#: src/stores/auth.js:97
+msgid "User with privileges"
+msgstr "Usuario con privilexios"
+
+#: src/stores/auth.js:99
 msgid "User without privileges"
 msgstr "Usuario sen privilexios"
 
-#: src/stores/computer.js:142
+#: src/stores/computer.js:149
 msgid "There was a problem with registration"
 msgstr "Houbo un problema co rexistro"
 
-#: src/stores/computer.js:147
+#: src/stores/computer.js:154
 msgid "Registered Computer!"
 msgstr "¡Ordenador rexistrado!"
 
-#: src/stores/executions.js:108
+#: src/stores/executions.js:110
 msgid "Synchronization finished"
 msgstr "Sincronización rematada"
 
-#: src/stores/executions.js:121
+#: src/stores/executions.js:123
 msgid "Please wait, other process is running!!!"
 msgstr "Agarde, outro proceso está en execución!!!"
 
-#: src/stores/executions.js:262
+#: src/stores/executions.js:276
 msgid "Command cancelled"
 msgstr "Comando cancelado"
 
@@ -363,13 +367,14 @@ msgstr "Servidor"
 msgid "Credentials are not valid. Review app settings."
 msgstr "As credenciais non son válidas. Revisa a configuración da aplicación."
 
-#: src/stores/program.js:98 src/stores/ui.js:28 src/stores/ui.js:57
+#: src/stores/program.js:98 src/stores/ui.js:30 src/stores/ui.js:59
 msgid "There is no connection to the server"
 msgstr "Non hai conexión co servidor"
 
 #: src/stores/program.js:108
 msgid "Failed to obtain valid token. Review app settings."
-msgstr "Non se puido obter un token válido. Revisa a configuración da aplicación."
+msgstr ""
+"Non se puido obter un token válido. Revisa a configuración da aplicación."
 
 #: src/stores/program.js:119
 msgid "Token validation failed"
@@ -391,7 +396,7 @@ msgstr "Categorías"
 msgid "Packages"
 msgstr "Paquetes"
 
-#: src/stores/server.js:45
+#: src/stores/server.js:41
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Esta aplicación require polo menos Migasfree Client %{version}"
 
