@@ -47,10 +47,8 @@ const manageDevices = programStore.manageDevices
 useMeta({ title: $gettext('Devices') })
 
 const { isUpdating, sync } = usePageSync(async () => {
-  await Promise.all([
-    devicesStore.computerDevices(),
-    devicesStore.getAvailableDevices(),
-    devicesStore.getFeaturesDevices(),
-  ])
+  await devicesStore.computerDevices()
+  await devicesStore.getAvailableDevices()
+  await devicesStore.getFeaturesDevices()
 })
 </script>

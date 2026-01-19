@@ -176,11 +176,9 @@ export const useProgramStore = defineStore('program', () => {
       optionalPromises.push(
         (async () => {
           setStatus(gettext.$gettext('Devices'))
-          await Promise.all([
-            devicesStore.computerDevices(),
-            devicesStore.getAvailableDevices(),
-            devicesStore.getFeaturesDevices(),
-          ])
+          await devicesStore.computerDevices()
+          await devicesStore.getAvailableDevices()
+          await devicesStore.getFeaturesDevices()
         })(),
       )
     }
