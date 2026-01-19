@@ -39,56 +39,77 @@
       </q-card-section>
 
       <q-card-actions class="q-gutter-md">
-        <q-btn
-          v-if="isInstallable"
-          color="positive"
-          icon="mdi-download"
-          :loading="isRunningCommand"
-          :disabled="isRunningCommand"
-          @click="installApp(name, packages)"
-        >
-          <q-tooltip
-            >{{ $gettext('Install') }} ({{ packages.join(', ') }})</q-tooltip
-          >
-        </q-btn>
-
-        <q-btn
-          v-if="isRemovable"
-          color="negative"
-          icon="mdi-delete"
-          :loading="isRunningCommand"
-          :disabled="isRunningCommand"
-          @click="removeApp(name, packages)"
-        >
-          <q-tooltip
-            >{{ $gettext('Uninstall') }} ({{ packages.join(', ') }})</q-tooltip
-          >
-        </q-btn>
-
-        <q-btn
-          v-if="isPrivileged"
-          color="orange"
-          icon="mdi-wizard-hat"
-          @click="$emit('openlogin')"
-        >
-          <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
-        </q-btn>
-
-        <q-btn v-if="!isAvailable" color="brown" icon="mdi-lock">
-          <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
-        </q-btn>
-
-        <Transition name="bounce">
-          <q-chip
-            v-if="isInstalled"
+        <div class="row items-center q-gutter-x-sm">
+          <q-btn
+            v-if="isInstallable"
+            flat
+            round
+            dense
             color="positive"
-            text-color="white"
-            icon="mdi-check-circle"
-            outline
+            icon="mdi-download"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
+            @click="installApp(name, packages)"
           >
-            {{ $gettext('Installed') }}
-          </q-chip>
-        </Transition>
+            <q-tooltip
+              >{{ $gettext('Install') }} ({{ packages.join(', ') }})</q-tooltip
+            >
+          </q-btn>
+
+          <q-btn
+            v-if="isRemovable"
+            flat
+            round
+            dense
+            color="negative"
+            icon="mdi-delete"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
+            @click="removeApp(name, packages)"
+          >
+            <q-tooltip
+              >{{ $gettext('Uninstall') }} ({{
+                packages.join(', ')
+              }})</q-tooltip
+            >
+          </q-btn>
+
+          <q-btn
+            v-if="isPrivileged"
+            flat
+            round
+            dense
+            color="orange"
+            icon="mdi-wizard-hat"
+            @click="$emit('openlogin')"
+          >
+            <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
+          </q-btn>
+
+          <q-btn
+            v-if="!isAvailable"
+            flat
+            round
+            dense
+            color="brown"
+            icon="mdi-lock"
+          >
+            <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
+          </q-btn>
+
+          <Transition name="bounce">
+            <q-chip
+              v-if="isInstalled"
+              color="positive"
+              text-color="white"
+              icon="mdi-check-circle"
+              outline
+              dense
+            >
+              {{ $gettext('Installed') }}
+            </q-chip>
+          </Transition>
+        </div>
       </q-card-actions>
     </q-card>
   </div>
