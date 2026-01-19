@@ -24,34 +24,34 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
-#: src/components/AppDetail.vue:51
-#: src/components/DeviceDetail.vue:94
+#: src/components/AppDetail.vue:55
+#: src/components/DeviceDetail.vue:110
 msgid "Install"
 msgstr ""
 
-#: src/components/AppDetail.vue:64
-#: src/components/DeviceDetail.vue:67
+#: src/components/AppDetail.vue:71
+#: src/components/DeviceDetail.vue:96
 msgid "Uninstall"
 msgstr ""
 
-#: src/components/AppDetail.vue:74
+#: src/components/AppDetail.vue:86
 #: src/components/Tags.vue:43
 msgid "Manage with privileges"
 msgstr ""
 
-#: src/components/AppDetail.vue:78
+#: src/components/AppDetail.vue:97
 msgid "Locked"
 msgstr ""
 
-#: src/components/AppDetail.vue:89
+#: src/components/AppDetail.vue:109
 msgid "Installed"
 msgstr ""
 
-#: src/components/AppDetail.vue:209
+#: src/components/AppDetail.vue:230
 msgid "Installing %{name}"
 msgstr ""
 
-#: src/components/AppDetail.vue:239
+#: src/components/AppDetail.vue:260
 msgid "Uninstalling %{name}"
 msgstr ""
 
@@ -78,6 +78,18 @@ msgstr ""
 msgid "There are not items to show."
 msgstr ""
 
+#: src/components/CopyButton.vue:37
+msgid "Copy"
+msgstr ""
+
+#: src/components/CopyButton.vue:43
+msgid "Text copied to clipboard"
+msgstr ""
+
+#: src/components/CopyButton.vue:49
+msgid "Failed to copy text"
+msgstr ""
+
 #: src/components/CredentialsForm.vue:8
 #: src/components/CredentialsForm.vue:25
 msgid "* Required"
@@ -91,20 +103,16 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/components/DeviceDetail.vue:36
-msgid "Predetermined"
+#: src/components/DeviceDetail.vue:53
+msgid "Default"
 msgstr ""
 
-#: src/components/DeviceDetail.vue:46
-msgid "Inflicted"
-msgstr ""
-
-#: src/components/DeviceDetail.vue:54
+#: src/components/DeviceDetail.vue:69
 msgid "Assigned"
 msgstr ""
 
-#: src/components/DeviceDetail.vue:80
-msgid "Predetermine"
+#: src/components/DeviceDetail.vue:81
+msgid "Policy"
 msgstr ""
 
 #: src/components/DeviceFilter.vue:6
@@ -123,11 +131,6 @@ msgstr ""
 #: src/components/Login.vue:23
 #: src/components/Register.vue:21
 msgid "Cancel"
-msgstr ""
-
-#: src/components/ExecutionDetail.vue:128
-#: src/components/Info.vue:387
-msgid "Text copied to clipboard"
 msgstr ""
 
 #: src/components/Info.vue:23
@@ -155,47 +158,43 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: src/components/Info.vue:155
-msgid "Copy"
-msgstr ""
-
-#: src/components/Info.vue:180
+#: src/components/Info.vue:173
 msgid "results"
 msgstr ""
 
-#: src/components/Info.vue:191
+#: src/components/Info.vue:184
 msgid "Identification"
 msgstr ""
 
-#: src/components/Info.vue:220
+#: src/components/Info.vue:213
 msgid "Print Identification"
 msgstr ""
 
-#: src/components/Info.vue:295
+#: src/components/Info.vue:287
 msgid "disks"
 msgstr ""
 
-#: src/components/Info.vue:341
+#: src/components/Info.vue:333
 msgid "Available"
 msgstr ""
 
-#: src/components/Info.vue:342
+#: src/components/Info.vue:334
 msgid "In repair"
 msgstr ""
 
-#: src/components/Info.vue:343
+#: src/components/Info.vue:335
 msgid "Reserved"
 msgstr ""
 
-#: src/components/Info.vue:344
+#: src/components/Info.vue:336
 msgid "Intended"
 msgstr ""
 
-#: src/components/Info.vue:345
+#: src/components/Info.vue:337
 msgid "Unsubscribed"
 msgstr ""
 
-#: src/components/Info.vue:348
+#: src/components/Info.vue:340
 msgid "Unknown"
 msgstr ""
 
@@ -221,7 +220,7 @@ msgstr ""
 #: src/components/Menu.vue:84
 #: src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:47
-#: src/stores/program.js:178
+#: src/stores/program.js:181
 msgid "Devices"
 msgstr ""
 
@@ -229,7 +228,7 @@ msgstr ""
 #: src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4
 #: src/pages/tags/index.vue:31
-#: src/stores/program.js:191
+#: src/stores/program.js:192
 msgid "Tags"
 msgstr ""
 

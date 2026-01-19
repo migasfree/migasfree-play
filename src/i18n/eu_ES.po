@@ -34,31 +34,31 @@ msgstr "Datuak kargatzen"
 msgid "Please wait..."
 msgstr "Mesedez, itxaron..."
 
-#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
+#: src/components/AppDetail.vue:55 src/components/DeviceDetail.vue:110
 msgid "Install"
 msgstr "Instalatu"
 
-#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:67
+#: src/components/AppDetail.vue:71 src/components/DeviceDetail.vue:96
 msgid "Uninstall"
 msgstr "Desinstalatu"
 
-#: src/components/AppDetail.vue:74 src/components/Tags.vue:43
+#: src/components/AppDetail.vue:86 src/components/Tags.vue:43
 msgid "Manage with privileges"
 msgstr "Kudeatu pribilegioekin"
 
-#: src/components/AppDetail.vue:78
+#: src/components/AppDetail.vue:97
 msgid "Locked"
 msgstr "Blokeatua"
 
-#: src/components/AppDetail.vue:89
+#: src/components/AppDetail.vue:109
 msgid "Installed"
 msgstr "Instalatua"
 
-#: src/components/AppDetail.vue:209
+#: src/components/AppDetail.vue:230
 msgid "Installing %{name}"
 msgstr "Instalatzen %{name}"
 
-#: src/components/AppDetail.vue:239
+#: src/components/AppDetail.vue:260
 msgid "Uninstalling %{name}"
 msgstr "Desinstalatzen %{name}"
 
@@ -83,6 +83,18 @@ msgstr "Ikusi instalatutako aplikazioak"
 msgid "There are not items to show."
 msgstr "Ez dago elementurik erakusteko."
 
+#: src/components/CopyButton.vue:37
+msgid "Copy"
+msgstr "Kopiatu"
+
+#: src/components/CopyButton.vue:43
+msgid "Text copied to clipboard"
+msgstr "Testua arbelean kopiatu da"
+
+#: src/components/CopyButton.vue:49
+msgid "Failed to copy text"
+msgstr "Huts egin du testua kopiatzean"
+
 #: src/components/CredentialsForm.vue:8 src/components/CredentialsForm.vue:25
 msgid "* Required"
 msgstr "* Beharrezkoa"
@@ -95,21 +107,17 @@ msgstr "Erabiltzailea"
 msgid "Password"
 msgstr "Pasahitza"
 
-#: src/components/DeviceDetail.vue:36
-msgid "Predetermined"
-msgstr "Aurrez zehaztuta"
+#: src/components/DeviceDetail.vue:53
+msgid "Default"
+msgstr "Lehenetsia"
 
-#: src/components/DeviceDetail.vue:46
-msgid "Inflicted"
-msgstr "Heredatu"
-
-#: src/components/DeviceDetail.vue:54
+#: src/components/DeviceDetail.vue:69
 msgid "Assigned"
 msgstr "Esleitua"
 
-#: src/components/DeviceDetail.vue:80
-msgid "Predetermine"
-msgstr "Aurrez zehaztu"
+#: src/components/DeviceDetail.vue:81
+msgid "Policy"
+msgstr "Direktiba"
 
 #: src/components/DeviceFilter.vue:6
 msgid "Search in name or model or manufacturer"
@@ -127,10 +135,6 @@ msgstr "Ikusi esleitutako gailuak"
 #: src/components/Register.vue:21
 msgid "Cancel"
 msgstr "Utzi"
-
-#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:387
-msgid "Text copied to clipboard"
-msgstr "Testua arbelean kopiatu da"
 
 #: src/components/Info.vue:23
 msgid "Last synchronization"
@@ -156,47 +160,43 @@ msgstr "Software inbentarioa"
 msgid "Search"
 msgstr "Bilatu"
 
-#: src/components/Info.vue:155
-msgid "Copy"
-msgstr "Kopiatu"
-
-#: src/components/Info.vue:180
+#: src/components/Info.vue:173
 msgid "results"
 msgstr "emaitzak"
 
-#: src/components/Info.vue:191
+#: src/components/Info.vue:184
 msgid "Identification"
 msgstr "Identifikazioa"
 
-#: src/components/Info.vue:220
+#: src/components/Info.vue:213
 msgid "Print Identification"
 msgstr "Inprimatu Identifikazioa"
 
-#: src/components/Info.vue:295
+#: src/components/Info.vue:287
 msgid "disks"
 msgstr "diskoak"
 
-#: src/components/Info.vue:341
+#: src/components/Info.vue:333
 msgid "Available"
 msgstr "Eskuragarri"
 
-#: src/components/Info.vue:342
+#: src/components/Info.vue:334
 msgid "In repair"
 msgstr "Konponketan"
 
-#: src/components/Info.vue:343
+#: src/components/Info.vue:335
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
-#: src/components/Info.vue:344
+#: src/components/Info.vue:336
 msgid "Intended"
 msgstr "Asmoa"
 
-#: src/components/Info.vue:345
+#: src/components/Info.vue:337
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
-#: src/components/Info.vue:348
+#: src/components/Info.vue:340
 msgid "Unknown"
 msgstr "Ezezaguna"
 
@@ -218,13 +218,13 @@ msgid "Apps"
 msgstr "Aplikazioak"
 
 #: src/components/Menu.vue:84 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:178
+#: src/pages/devices/index.vue:47 src/stores/program.js:181
 msgid "Devices"
 msgstr "Gailuak"
 
 #: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:191
+#: src/stores/program.js:192
 msgid "Tags"
 msgstr "Etiketak"
 
@@ -402,6 +402,15 @@ msgstr "Paketeak"
 #: src/stores/server.js:41
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
+
+#~ msgid "Predetermined"
+#~ msgstr "Aurrez zehaztuta"
+
+#~ msgid "Inflicted"
+#~ msgstr "Heredatu"
+
+#~ msgid "Predetermine"
+#~ msgstr "Aurrez zehaztu"
 
 #~ msgid "%{num} packages"
 #~ msgstr "%{num} paketeak"

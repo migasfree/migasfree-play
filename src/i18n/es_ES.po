@@ -35,31 +35,31 @@ msgstr "Cargando datos"
 msgid "Please wait..."
 msgstr "Por favor, espere..."
 
-#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
+#: src/components/AppDetail.vue:55 src/components/DeviceDetail.vue:110
 msgid "Install"
 msgstr "Instalar"
 
-#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:67
+#: src/components/AppDetail.vue:71 src/components/DeviceDetail.vue:96
 msgid "Uninstall"
 msgstr "Desinstalar"
 
-#: src/components/AppDetail.vue:74 src/components/Tags.vue:43
+#: src/components/AppDetail.vue:86 src/components/Tags.vue:43
 msgid "Manage with privileges"
 msgstr "Gestionar con privilegios"
 
-#: src/components/AppDetail.vue:78
+#: src/components/AppDetail.vue:97
 msgid "Locked"
 msgstr "Bloqueado"
 
-#: src/components/AppDetail.vue:89
+#: src/components/AppDetail.vue:109
 msgid "Installed"
 msgstr "Instalado"
 
-#: src/components/AppDetail.vue:209
+#: src/components/AppDetail.vue:230
 msgid "Installing %{name}"
 msgstr "Instalando %{name}"
 
-#: src/components/AppDetail.vue:239
+#: src/components/AppDetail.vue:260
 msgid "Uninstalling %{name}"
 msgstr "Desinstalando %{name}"
 
@@ -84,6 +84,18 @@ msgstr "Ver aplicaciones instaladas"
 msgid "There are not items to show."
 msgstr "No hay elementos para mostrar."
 
+#: src/components/CopyButton.vue:37
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/components/CopyButton.vue:43
+msgid "Text copied to clipboard"
+msgstr "Texto copiado al portapapeles"
+
+#: src/components/CopyButton.vue:49
+msgid "Failed to copy text"
+msgstr "Fallo al copiar el texto"
+
 #: src/components/CredentialsForm.vue:8 src/components/CredentialsForm.vue:25
 msgid "* Required"
 msgstr "* Obligatorio"
@@ -96,21 +108,17 @@ msgstr "Usuario"
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/components/DeviceDetail.vue:36
-msgid "Predetermined"
-msgstr "Predeterminado"
+#: src/components/DeviceDetail.vue:53
+msgid "Default"
+msgstr "Por defecto"
 
-#: src/components/DeviceDetail.vue:46
-msgid "Inflicted"
-msgstr "Heredado"
-
-#: src/components/DeviceDetail.vue:54
+#: src/components/DeviceDetail.vue:69
 msgid "Assigned"
 msgstr "Asignado"
 
-#: src/components/DeviceDetail.vue:80
-msgid "Predetermine"
-msgstr "Predeterminar"
+#: src/components/DeviceDetail.vue:81
+msgid "Policy"
+msgstr "Directiva"
 
 #: src/components/DeviceFilter.vue:6
 msgid "Search in name or model or manufacturer"
@@ -128,10 +136,6 @@ msgstr "Ver dispositivos asignados"
 #: src/components/Register.vue:21
 msgid "Cancel"
 msgstr "Cancelar"
-
-#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:387
-msgid "Text copied to clipboard"
-msgstr "Texto copiado al portapapeles"
 
 #: src/components/Info.vue:23
 msgid "Last synchronization"
@@ -157,47 +161,43 @@ msgstr "Inventario software"
 msgid "Search"
 msgstr "Buscar"
 
-#: src/components/Info.vue:155
-msgid "Copy"
-msgstr "Copiar"
-
-#: src/components/Info.vue:180
+#: src/components/Info.vue:173
 msgid "results"
 msgstr "resultados"
 
-#: src/components/Info.vue:191
+#: src/components/Info.vue:184
 msgid "Identification"
 msgstr "Identificación"
 
-#: src/components/Info.vue:220
+#: src/components/Info.vue:213
 msgid "Print Identification"
 msgstr "Imprimir identificación"
 
-#: src/components/Info.vue:295
+#: src/components/Info.vue:287
 msgid "disks"
 msgstr "discos"
 
-#: src/components/Info.vue:341
+#: src/components/Info.vue:333
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Info.vue:342
+#: src/components/Info.vue:334
 msgid "In repair"
 msgstr "En reparación"
 
-#: src/components/Info.vue:343
+#: src/components/Info.vue:335
 msgid "Reserved"
 msgstr "Reservado"
 
-#: src/components/Info.vue:344
+#: src/components/Info.vue:336
 msgid "Intended"
 msgstr "Asignado"
 
-#: src/components/Info.vue:345
+#: src/components/Info.vue:337
 msgid "Unsubscribed"
 msgstr "Baja"
 
-#: src/components/Info.vue:348
+#: src/components/Info.vue:340
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -219,13 +219,13 @@ msgid "Apps"
 msgstr "Aplicaciones"
 
 #: src/components/Menu.vue:84 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:178
+#: src/pages/devices/index.vue:47 src/stores/program.js:181
 msgid "Devices"
 msgstr "Dispositivos"
 
 #: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:191
+#: src/stores/program.js:192
 msgid "Tags"
 msgstr "Etiquetas"
 
@@ -405,6 +405,15 @@ msgstr "Paquetes"
 #: src/stores/server.js:41
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Esta aplicación requiere al menos Migasfree Client %{version}"
+
+#~ msgid "Predetermined"
+#~ msgstr "Predeterminado"
+
+#~ msgid "Inflicted"
+#~ msgstr "Heredado"
+
+#~ msgid "Predetermine"
+#~ msgstr "Predeterminar"
 
 #~ msgid "%{num} packages"
 #~ msgstr "%{num} paquetes"

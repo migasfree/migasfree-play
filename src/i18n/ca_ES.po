@@ -34,31 +34,31 @@ msgstr "Carregant dades"
 msgid "Please wait..."
 msgstr "Si us plau, esperi..."
 
-#: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
+#: src/components/AppDetail.vue:55 src/components/DeviceDetail.vue:110
 msgid "Install"
 msgstr "Instal·lar"
 
-#: src/components/AppDetail.vue:64 src/components/DeviceDetail.vue:67
+#: src/components/AppDetail.vue:71 src/components/DeviceDetail.vue:96
 msgid "Uninstall"
 msgstr "Desinstal·la"
 
-#: src/components/AppDetail.vue:74 src/components/Tags.vue:43
+#: src/components/AppDetail.vue:86 src/components/Tags.vue:43
 msgid "Manage with privileges"
 msgstr "Gestionar amb privilegis"
 
-#: src/components/AppDetail.vue:78
+#: src/components/AppDetail.vue:97
 msgid "Locked"
 msgstr "Tancat"
 
-#: src/components/AppDetail.vue:89
+#: src/components/AppDetail.vue:109
 msgid "Installed"
 msgstr "Instal·lat"
 
-#: src/components/AppDetail.vue:209
+#: src/components/AppDetail.vue:230
 msgid "Installing %{name}"
 msgstr "Instal·lació %{name}"
 
-#: src/components/AppDetail.vue:239
+#: src/components/AppDetail.vue:260
 msgid "Uninstalling %{name}"
 msgstr "S'està desinstal·lant %{name}"
 
@@ -83,6 +83,18 @@ msgstr "Veure aplicacions instal·lades"
 msgid "There are not items to show."
 msgstr "No hi ha elements per mostrar."
 
+#: src/components/CopyButton.vue:37
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/components/CopyButton.vue:43
+msgid "Text copied to clipboard"
+msgstr "S'ha copiat el text al porta-retalls"
+
+#: src/components/CopyButton.vue:49
+msgid "Failed to copy text"
+msgstr "Ha fallat al copiar el text"
+
 #: src/components/CredentialsForm.vue:8 src/components/CredentialsForm.vue:25
 msgid "* Required"
 msgstr "* Obligatori"
@@ -95,21 +107,17 @@ msgstr "Usuari/a"
 msgid "Password"
 msgstr "Contrasenya"
 
-#: src/components/DeviceDetail.vue:36
-msgid "Predetermined"
-msgstr "Predeterminat"
+#: src/components/DeviceDetail.vue:53
+msgid "Default"
+msgstr "Per defecte"
 
-#: src/components/DeviceDetail.vue:46
-msgid "Inflicted"
-msgstr "Heretat"
-
-#: src/components/DeviceDetail.vue:54
+#: src/components/DeviceDetail.vue:69
 msgid "Assigned"
 msgstr "Assignat"
 
-#: src/components/DeviceDetail.vue:80
-msgid "Predetermine"
-msgstr "Predeterminar"
+#: src/components/DeviceDetail.vue:81
+msgid "Policy"
+msgstr "Directiva"
 
 #: src/components/DeviceFilter.vue:6
 msgid "Search in name or model or manufacturer"
@@ -127,10 +135,6 @@ msgstr "Veure dispositius assignats"
 #: src/components/Register.vue:21
 msgid "Cancel"
 msgstr "Cancel·lar"
-
-#: src/components/ExecutionDetail.vue:128 src/components/Info.vue:387
-msgid "Text copied to clipboard"
-msgstr "S'ha copiat el text al porta-retalls"
 
 #: src/components/Info.vue:23
 msgid "Last synchronization"
@@ -156,47 +160,43 @@ msgstr "Inventari de programari"
 msgid "Search"
 msgstr "Cerca"
 
-#: src/components/Info.vue:155
-msgid "Copy"
-msgstr "Copiar"
-
-#: src/components/Info.vue:180
+#: src/components/Info.vue:173
 msgid "results"
 msgstr "resultats"
 
-#: src/components/Info.vue:191
+#: src/components/Info.vue:184
 msgid "Identification"
 msgstr "Identificació"
 
-#: src/components/Info.vue:220
+#: src/components/Info.vue:213
 msgid "Print Identification"
 msgstr "Impressió d'identificació"
 
-#: src/components/Info.vue:295
+#: src/components/Info.vue:287
 msgid "disks"
 msgstr "discos"
 
-#: src/components/Info.vue:341
+#: src/components/Info.vue:333
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Info.vue:342
+#: src/components/Info.vue:334
 msgid "In repair"
 msgstr "En reparació"
 
-#: src/components/Info.vue:343
+#: src/components/Info.vue:335
 msgid "Reserved"
 msgstr "Reservat"
 
-#: src/components/Info.vue:344
+#: src/components/Info.vue:336
 msgid "Intended"
 msgstr "Assignat"
 
-#: src/components/Info.vue:345
+#: src/components/Info.vue:337
 msgid "Unsubscribed"
 msgstr "De baixa"
 
-#: src/components/Info.vue:348
+#: src/components/Info.vue:340
 msgid "Unknown"
 msgstr "Desconegut"
 
@@ -218,13 +218,13 @@ msgid "Apps"
 msgstr "Aplicacions"
 
 #: src/components/Menu.vue:84 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:178
+#: src/pages/devices/index.vue:47 src/stores/program.js:181
 msgid "Devices"
 msgstr "Dispositius"
 
 #: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:191
+#: src/stores/program.js:192
 msgid "Tags"
 msgstr "Etiquetes"
 
@@ -403,6 +403,15 @@ msgstr "Paquets"
 #: src/stores/server.js:41
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aquesta aplicació requereix almenys Migasfree Client %{version}"
+
+#~ msgid "Predetermined"
+#~ msgstr "Predeterminat"
+
+#~ msgid "Inflicted"
+#~ msgstr "Heretat"
+
+#~ msgid "Predetermine"
+#~ msgstr "Predeterminar"
 
 #~ msgid "%{num} packages"
 #~ msgstr "%{num} paquets"
