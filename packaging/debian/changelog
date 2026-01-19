@@ -21,8 +21,9 @@ migasfree-play (5.11.0) unstable; urgency=low
   * fix: sensible files reading
   * feat: separate python code from javascript code
   * refactor: express removed
+  * fix: devices page
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Sun, 18 Jan 2026 19:40:21 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 19 Jan 2026 12:28:30 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
