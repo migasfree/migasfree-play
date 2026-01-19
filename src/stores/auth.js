@@ -94,6 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       if (data.is_privileged) {
         user.value.isPrivileged = true
+        uiStore.notifySuccess(gettext.$gettext('User with privileges'))
       } else {
         uiStore.notifyError(gettext.$gettext('User without privileges'))
       }
