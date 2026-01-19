@@ -1,82 +1,84 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header unelevated class="print-hide">
-      <q-toolbar>
-        <q-btn
-          v-if="showComputerLink"
-          stretch
-          flat
-          :label="computerText"
-          :href="link"
-          type="a"
-          target="_blank"
-          no-caps
-          size="21px"
+  <div>
+    <q-layout view="lHh Lpr lFf">
+      <q-header unelevated class="print-hide">
+        <q-toolbar>
+          <q-btn
+            v-if="showComputerLink"
+            stretch
+            flat
+            :label="computerText"
+            :href="link"
+            type="a"
+            target="_blank"
+            no-caps
+            size="21px"
+          >
+            <q-tooltip>{{ $gettext('View Computer') }}</q-tooltip>
+          </q-btn>
+          <q-toolbar-title v-else
+            >{{ computerText
+            }}<q-tooltip>{{ computerText }}</q-tooltip></q-toolbar-title
+          >
+
+          <q-btn
+            v-if="!cid"
+            color="warning"
+            icon="mdi-server-plus"
+            @click="openRegister"
+            ><q-tooltip>{{
+              $gettext('Register Computer on the Server')
+            }}</q-tooltip></q-btn
+          >
+
+          <q-space />
+
+          <Menu />
+        </q-toolbar>
+      </q-header>
+
+      <q-page-container id="main">
+        <router-view />
+
+        <q-page-sticky
+          class="print-hide"
+          position="bottom-right"
+          :offset="[18, 18]"
         >
-          <q-tooltip>{{ $gettext('View Computer') }}</q-tooltip>
-        </q-btn>
-        <q-toolbar-title v-else
-          >{{ computerText
-          }}<q-tooltip>{{ computerText }}</q-tooltip></q-toolbar-title
+          <q-btn
+            ref="sync"
+            fab
+            icon="mdi-play"
+            :color="$q.dark.isActive ? 'indigo' : 'secondary'"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
+            @click="synchronize"
+          >
+            <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
+          </q-btn>
+        </q-page-sticky>
+
+        <q-page-scroller
+          position="bottom-right"
+          reverse
+          :offset="[18, 100]"
+          :scroll-offset="0"
         >
+          <q-btn fab icon="mdi-chevron-down" color="primary" />
+        </q-page-scroller>
 
-        <q-btn
-          v-if="!cid"
-          color="warning"
-          icon="mdi-server-plus"
-          @click="openRegister"
-          ><q-tooltip>{{
-            $gettext('Register Computer on the Server')
-          }}</q-tooltip></q-btn
+        <q-page-scroller
+          position="bottom-right"
+          :offset="[18, 100]"
+          :scroll-offset="300"
         >
+          <q-btn fab icon="mdi-chevron-up" color="primary" />
+        </q-page-scroller>
+      </q-page-container>
+    </q-layout>
 
-        <q-space />
-
-        <Menu />
-      </q-toolbar>
-    </q-header>
-
-    <q-page-container id="main">
-      <router-view />
-
-      <q-page-sticky
-        class="print-hide"
-        position="bottom-right"
-        :offset="[18, 18]"
-      >
-        <q-btn
-          ref="sync"
-          fab
-          icon="mdi-play"
-          :color="$q.dark.isActive ? 'indigo' : 'secondary'"
-          :loading="isRunningCommand"
-          :disabled="isRunningCommand"
-          @click="synchronize"
-        >
-          <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
-        </q-btn>
-      </q-page-sticky>
-
-      <q-page-scroller
-        position="bottom-right"
-        reverse
-        :offset="[18, 100]"
-        :scroll-offset="0"
-      >
-        <q-btn fab icon="mdi-chevron-down" color="primary" />
-      </q-page-scroller>
-
-      <q-page-scroller
-        position="bottom-right"
-        :offset="[18, 100]"
-        :scroll-offset="300"
-      >
-        <q-btn fab icon="mdi-chevron-up" color="primary" />
-      </q-page-scroller>
-    </q-page-container>
-  </q-layout>
-
-  <Register :value="showRegister" @closed="showRegister = !showRegister" />
+    <Register :value="showRegister" @closed="showRegister = !showRegister" />
+  </div>
 </template>
 
 <script setup>
