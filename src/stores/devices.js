@@ -210,6 +210,11 @@ export const useDevicesStore = defineStore('devices', () => {
     })
   }
 
+  const getCapabilityName = (item) =>
+    serverVersion.value.startsWith('4.')
+      ? item.feature?.name || ''
+      : item.capability?.name || ''
+
   const addLogicalDevices = (value) => {
     const inflictedIds = new Set(inflictedLogicalDevices.value.map((d) => d.id))
     const assignedIds = new Set(assignedLogicalDevices.value.map((d) => d.id))
@@ -228,7 +233,7 @@ export const useDevicesStore = defineStore('devices', () => {
     })
 
     value.results.sort((a, b) =>
-      a.capability.name.localeCompare(b.capability.name),
+      getCapabilityName(a).localeCompare(getCapabilityName(b)),
     )
 
     devices.value[value.index].logical = value.results
