@@ -1,100 +1,119 @@
 <template>
   <div class="col-md-6 col-sm-6 col-xs-12 q-pa-sm">
-    <q-card flat bordered>
+    <q-card flat bordered class="column full-height">
       <q-card-section horizontal>
-        <q-card-section class="col-9">
-          <div class="text-h5">
+        <q-card-section class="col-8">
+          <div class="text-h5 ellipsis">
             {{ name }}
+            <q-tooltip>{{ name }}</q-tooltip>
           </div>
           <div class="text-caption text-blue-grey">
             {{ id }} {{ alternativeName ? `(${alternativeName})` : '' }}
           </div>
+          <div v-if="description" class="text-caption text-grey-8 q-mt-sm">
+            <q-icon name="mdi-map-marker" /> {{ description }}
+          </div>
         </q-card-section>
 
-        <q-card-section class="col-3 text-right">
+        <q-card-section class="col-4 text-right">
           <q-icon
             :name="
               connection === 'TCP' ? 'mdi-printer-pos-network' : 'mdi-printer'
             "
-            size="64px"
-          />
-        </q-card-section>
-
-        <q-tooltip>{{ tooltip }}</q-tooltip>
-      </q-card-section>
-
-      <q-card-section v-if="description">
-        <q-icon name="mdi-map-marker" size="md" /> {{ description }}
-      </q-card-section>
-
-      <template v-if="logical">
-        <q-separator inset />
-        <q-card-section v-for="item in visibleLogicalDevices" :key="item.id">
-          <template v-if="isPredetermined(item)">
-            <q-icon name="mdi-star" size="md" color="info">
-              <q-tooltip>
-                {{ $gettext('Predetermined') }}
-              </q-tooltip>
-            </q-icon>
-          </template>
-
-          <span class="feature">{{ capabilityName(item) }}</span>
-
-          <template v-if="isInflicted(item)">
-            <q-icon name="mdi-link-variant" size="md" color="info">
-              <q-tooltip>
-                {{ $gettext('Inflicted') }}
-              </q-tooltip>
-            </q-icon>
-          </template>
-
-          <template v-if="isAssigned(item)">
-            <q-icon name="mdi-checkbox-marked" size="md" color="info">
-              <q-tooltip>
-                {{ $gettext('Assigned') }}
-              </q-tooltip>
-            </q-icon>
-
-            <q-btn
-              color="negative"
-              icon="mdi-delete"
-              class="float-right"
-              size="md"
-              :loading="isRunningCommand"
-              :disabled="isRunningCommand"
-              @click="removeDevice(item)"
-            >
-              <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
-            </q-btn>
-
-            <!-- q-btn
-              v-if="!isPredetermined(item)"
-              color="primary"
-              class="float-right q-mx-md"
-              icon="mdi-star"
-              size="md"
-              :loading="isRunningCommand"
-              :disabled="isRunningCommand"
-              @click="predetermine(item.id)"
-            >
-              <q-tooltip>{{ $gettext('Predetermine') }}</q-tooltip>
-            </q-btn -->
-          </template>
-
-          <q-btn
-            v-if="isAvailable(item)"
-            color="positive"
-            icon="mdi-download"
-            class="float-right"
-            size="md"
-            :loading="isRunningCommand"
-            :disabled="isRunningCommand"
-            @click="installDevice(item)"
+            size="72px"
+            color="primary"
           >
-            <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
-          </q-btn>
+            <q-tooltip>
+              {{ connection }} <span v-if="ip">({{ ip }})</span>
+            </q-tooltip>
+          </q-icon>
         </q-card-section>
-      </template>
+      </q-card-section>
+
+      <q-separator inset />
+
+      <q-card-section class="q-pa-none">
+        <q-list separator>
+          <q-item v-for="item in visibleLogicalDevices" :key="item.id">
+            <q-item-section avatar>
+              <q-icon
+                name="mdi-format-list-bulleted-type"
+                size="md"
+                color="grey-7"
+              />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>{{ capabilityName(item) }}</q-item-label>
+              <q-item-label
+                v-if="isPredetermined(item)"
+                caption
+                class="text-info"
+              >
+                <q-icon name="mdi-star" size="xs" /> {{ $gettext('Default') }}
+              </q-item-label>
+            </q-item-section>
+
+            <q-item-section side>
+              <div class="row items-center q-gutter-x-sm">
+                <!-- Assigned Status -->
+                <Transition name="bounce">
+                  <q-chip
+                    v-if="isAssigned(item)"
+                    color="positive"
+                    text-color="white"
+                    icon="mdi-check-circle"
+                    outline
+                    dense
+                  >
+                    {{ $gettext('Assigned') }}
+                  </q-chip>
+                </Transition>
+
+                <!-- Inflicted Status -->
+                <q-chip
+                  v-if="isInflicted(item)"
+                  color="info"
+                  text-color="white"
+                  icon="mdi-link-variant"
+                  dense
+                >
+                  {{ $gettext('Policy') }}
+                </q-chip>
+
+                <!-- Actions -->
+                <q-btn
+                  v-if="isAssigned(item)"
+                  flat
+                  round
+                  dense
+                  color="negative"
+                  icon="mdi-delete"
+                  :loading="isRunningCommand"
+                  :disabled="isRunningCommand"
+                  @click="removeDevice(item)"
+                >
+                  <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
+                </q-btn>
+
+                <q-btn
+                  v-if="isAvailable(item)"
+                  flat
+                  round
+                  dense
+                  color="positive"
+                  icon="mdi-download"
+                  :loading="isRunningCommand"
+                  :disabled="isRunningCommand"
+                  @click="installDevice(item)"
+                >
+                  <q-tooltip>{{ $gettext('Install') }}</q-tooltip>
+                </q-btn>
+              </div>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
     </q-card>
   </div>
 </template>
@@ -126,11 +145,6 @@ const filtersStore = useFiltersStore()
 const programStore = useProgramStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
-
-const tooltip = computed(() => {
-  if (props.ip) return `${props.connection} (${props.ip})`
-  else return props.connection
-})
 
 const logical = computed(() => JSON.parse(JSON.stringify(props.logical)))
 
@@ -195,8 +209,4 @@ const removeDevice = (item) => {
     device: item.device.id,
   })
 }
-
-/* const predetermine = (id) => {
-  devicesStore.setDefaultLogicalDevice(id)
-} */
 </script>
