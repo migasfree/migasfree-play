@@ -146,14 +146,7 @@
                 <q-tooltip>{{ $gettext('Search') }}</q-tooltip>
               </q-btn>
 
-              <q-btn
-                flat
-                icon="mdi-content-copy"
-                color="primary"
-                @click.stop="copyInventory"
-              >
-                <q-tooltip>{{ $gettext('Copy') }}</q-tooltip>
-              </q-btn>
+              <CopyButton :text="inventoryText" />
             </div>
           </q-item-section>
         </template>
@@ -229,16 +222,16 @@
 import { ref, computed, watch, nextTick, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { copyToClipboard, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 
 import QrcodeVue from 'qrcode.vue'
+import CopyButton from 'components/CopyButton'
 import DateView from 'components/DateView'
 import InfoItem from 'components/InfoItem'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
-import { useUiStore } from 'src/stores/ui'
 
 import app from '../../package.json'
 
@@ -248,7 +241,6 @@ const $q = useQuasar()
 const computerStore = useComputerStore()
 const packagesStore = usePackagesStore()
 const programStore = useProgramStore()
-const uiStore = useUiStore()
 
 const headerBgClass = computed(() =>
   $q.dark.isActive ? 'bg-indigo' : 'bg-secondary',
@@ -315,13 +307,13 @@ const productIcon = computed(() => {
     docker: 'mdi-docker',
   }
 
-  return icons[data.value.product_system] ?? 'mdi-help'
+  return icons[data.value.product_system] ?? icons['desktop']
 })
 
 const cpuIcon = computed(() => {
   const arch = data.value.architecture
 
-  return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-help'
+  return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-cpu-64-bit'
 })
 
 const statusIcon = computed(() => {
@@ -382,11 +374,9 @@ const sortArray = (array) => {
   return [...array].sort((a, b) => a - b)
 }
 
-const copyInventory = async () => {
-  copyToClipboard(sortArray(filteredInventory.value).join('\n')).then(() => {
-    uiStore.notifySuccess($gettext('Text copied to clipboard'))
-  })
-}
+const inventoryText = computed(() => {
+  return sortArray(filteredInventory.value).join('\n')
+})
 </script>
 
 <style scoped>
