@@ -2,22 +2,26 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/App.vue:18
+#: src/App.vue:26
 msgid "Impossible to continue."
 msgstr ""
 
-#: src/App.vue:22
+#: src/App.vue:30
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/App.vue:35
+#: src/App.vue:43
 msgid "Retry now"
 msgstr ""
 
-#: src/App.vue:46
+#: src/App.vue:62
 msgid "Loading data"
+msgstr ""
+
+#: src/App.vue:65
+msgid "Please wait..."
 msgstr ""
 
 #: src/components/AppDetail.vue:51
@@ -312,23 +316,23 @@ msgstr ""
 msgid "Set Tags"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:16
+#: src/layouts/MainLayout.vue:17
 msgid "View Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:26
+#: src/layouts/MainLayout.vue:30
 msgid "Register Computer on the Server"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:53
+#: src/layouts/MainLayout.vue:57
 msgid "Synchronize Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:125
+#: src/layouts/MainLayout.vue:130
 msgid "Synchronizing..."
 msgstr ""
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:142
 msgid "Synchronization"
 msgstr ""
 

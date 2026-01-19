@@ -12,23 +12,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: src/App.vue:18
+#: src/App.vue:26
 msgid "Impossible to continue."
 msgstr "Impossible continuar."
 
-#: src/App.vue:22
+#: src/App.vue:30
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Reintent automàtic en %{ count } segon..."
 msgstr[1] "Reintent automàtic en %{ count } segons..."
 
-#: src/App.vue:35
+#: src/App.vue:43
 msgid "Retry now"
 msgstr "Reintenta ara"
 
-#: src/App.vue:46
+#: src/App.vue:62
 msgid "Loading data"
 msgstr "Carregant dades"
+
+#: src/App.vue:65
+msgid "Please wait..."
+msgstr "Si us plau, esperi..."
 
 #: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
 msgid "Install"
@@ -307,23 +311,23 @@ msgstr "Configuració d'etiquetes..."
 msgid "Set Tags"
 msgstr "Estableix etiquetes"
 
-#: src/layouts/MainLayout.vue:16
+#: src/layouts/MainLayout.vue:17
 msgid "View Computer"
 msgstr "Veure ordinador"
 
-#: src/layouts/MainLayout.vue:26
+#: src/layouts/MainLayout.vue:30
 msgid "Register Computer on the Server"
 msgstr "Registre l'ordinador al servidor"
 
-#: src/layouts/MainLayout.vue:53
+#: src/layouts/MainLayout.vue:57
 msgid "Synchronize Computer"
 msgstr "Sincronitza l'ordinador"
 
-#: src/layouts/MainLayout.vue:125
+#: src/layouts/MainLayout.vue:130
 msgid "Synchronizing..."
 msgstr "Sincronitzant..."
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:142
 msgid "Synchronization"
 msgstr "Sincronització"
 

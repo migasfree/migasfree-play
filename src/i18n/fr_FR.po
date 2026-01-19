@@ -12,23 +12,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Generated-By: easygettext\n"
 
-#: src/App.vue:18
+#: src/App.vue:26
 msgid "Impossible to continue."
 msgstr "Impossible de continuer."
 
-#: src/App.vue:22
+#: src/App.vue:30
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Réessai automatique dans %{ count } seconde..."
 msgstr[1] "Réessai automatique dans %{ count } secondes..."
 
-#: src/App.vue:35
+#: src/App.vue:43
 msgid "Retry now"
 msgstr "Réessayer maintenant"
 
-#: src/App.vue:46
+#: src/App.vue:62
 msgid "Loading data"
 msgstr "Chargement des données"
+
+#: src/App.vue:65
+msgid "Please wait..."
+msgstr "Veuillez patienter..."
 
 #: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
 msgid "Install"
@@ -308,23 +312,23 @@ msgstr "Définition des étiquettes..."
 msgid "Set Tags"
 msgstr "Définir les étiquettes"
 
-#: src/layouts/MainLayout.vue:16
+#: src/layouts/MainLayout.vue:17
 msgid "View Computer"
 msgstr "Voir l'ordinateur"
 
-#: src/layouts/MainLayout.vue:26
+#: src/layouts/MainLayout.vue:30
 msgid "Register Computer on the Server"
 msgstr "Enregistrer l'ordinateur sur le serveur"
 
-#: src/layouts/MainLayout.vue:53
+#: src/layouts/MainLayout.vue:57
 msgid "Synchronize Computer"
 msgstr "Synchroniser l'ordinateur"
 
-#: src/layouts/MainLayout.vue:125
+#: src/layouts/MainLayout.vue:130
 msgid "Synchronizing..."
 msgstr "Synchronisation en cours..."
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:142
 msgid "Synchronization"
 msgstr "Synchronisation"
 

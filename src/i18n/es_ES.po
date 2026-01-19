@@ -13,23 +13,27 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: src/App.vue:18
+#: src/App.vue:26
 msgid "Impossible to continue."
 msgstr "Imposible continuar."
 
-#: src/App.vue:22
+#: src/App.vue:30
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Reintento automático en %{ count } segundo..."
 msgstr[1] "Reintento automático en %{ count } segundos..."
 
-#: src/App.vue:35
+#: src/App.vue:43
 msgid "Retry now"
 msgstr "Reintentar ahora"
 
-#: src/App.vue:46
+#: src/App.vue:62
 msgid "Loading data"
 msgstr "Cargando datos"
+
+#: src/App.vue:65
+msgid "Please wait..."
+msgstr "Por favor, espere..."
 
 #: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
 msgid "Install"
@@ -308,23 +312,23 @@ msgstr "Estableciendo etiquetas..."
 msgid "Set Tags"
 msgstr "Establecer etiquetas"
 
-#: src/layouts/MainLayout.vue:16
+#: src/layouts/MainLayout.vue:17
 msgid "View Computer"
 msgstr "Ver ordenador"
 
-#: src/layouts/MainLayout.vue:26
+#: src/layouts/MainLayout.vue:30
 msgid "Register Computer on the Server"
 msgstr "Registrar el ordenador en el servidor"
 
-#: src/layouts/MainLayout.vue:53
+#: src/layouts/MainLayout.vue:57
 msgid "Synchronize Computer"
 msgstr "Sincronizar ordenador"
 
-#: src/layouts/MainLayout.vue:125
+#: src/layouts/MainLayout.vue:130
 msgid "Synchronizing..."
 msgstr "Sincronizando..."
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:142
 msgid "Synchronization"
 msgstr "Sincronización"
 

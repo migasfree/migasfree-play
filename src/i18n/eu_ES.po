@@ -12,23 +12,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: src/App.vue:18
+#: src/App.vue:26
 msgid "Impossible to continue."
 msgstr "Ezinezkoa da jarraitzea."
 
-#: src/App.vue:22
+#: src/App.vue:30
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Berrsaiakera automatikoa segundo %{ count } barru..."
 msgstr[1] "Berrsaiakera automatikoa %{ count } segundo barru..."
 
-#: src/App.vue:35
+#: src/App.vue:43
 msgid "Retry now"
 msgstr "Saiatu berriro orain"
 
-#: src/App.vue:46
+#: src/App.vue:62
 msgid "Loading data"
 msgstr "Datuak kargatzen"
+
+#: src/App.vue:65
+msgid "Please wait..."
+msgstr "Mesedez, itxaron..."
 
 #: src/components/AppDetail.vue:51 src/components/DeviceDetail.vue:94
 msgid "Install"
@@ -307,23 +311,23 @@ msgstr "Etiketak ezartzea..."
 msgid "Set Tags"
 msgstr "Ezarri etiketak"
 
-#: src/layouts/MainLayout.vue:16
+#: src/layouts/MainLayout.vue:17
 msgid "View Computer"
 msgstr "Ikusi Ordenagailua"
 
-#: src/layouts/MainLayout.vue:26
+#: src/layouts/MainLayout.vue:30
 msgid "Register Computer on the Server"
 msgstr "Erregistratu ordenagailua zerbitzarian"
 
-#: src/layouts/MainLayout.vue:53
+#: src/layouts/MainLayout.vue:57
 msgid "Synchronize Computer"
 msgstr "Ordenagailua sinkronizatu"
 
-#: src/layouts/MainLayout.vue:125
+#: src/layouts/MainLayout.vue:130
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
-#: src/layouts/MainLayout.vue:137
+#: src/layouts/MainLayout.vue:142
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
