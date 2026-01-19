@@ -15,7 +15,10 @@
         >
           <q-tooltip>{{ $gettext('View Computer') }}</q-tooltip>
         </q-btn>
-        <q-toolbar-title v-else>{{ computerText }}</q-toolbar-title>
+        <q-toolbar-title v-else
+          >{{ computerText
+          }}<q-tooltip>{{ computerText }}</q-tooltip></q-toolbar-title
+        >
 
         <q-btn
           v-if="!cid"
