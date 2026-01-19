@@ -42,12 +42,7 @@
             @click.stop="showError = true"
           />
 
-          <q-btn
-            flat
-            icon="mdi-content-copy"
-            color="primary"
-            @click.stop="copyDetails"
-          />
+          <CopyButton :text="textToCopy" />
         </div>
       </q-item-section>
     </template>
@@ -75,13 +70,12 @@
 import { watch, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { copyToClipboard } from 'quasar'
 import { htmlToText } from 'html-to-text'
 
+import CopyButton from 'components/CopyButton'
 import DateView from 'components/DateView'
 
 import { useExecutionsStore } from 'src/stores/executions'
-import { useUiStore } from 'src/stores/ui'
 
 const props = defineProps({
   id: { type: String, required: true },
@@ -93,7 +87,6 @@ const props = defineProps({
 
 const { $gettext } = useGettext()
 
-const uiStore = useUiStore()
 const executionsStore = useExecutionsStore()
 const { lastId, isRunningCommand } = storeToRefs(executionsStore)
 
@@ -103,6 +96,8 @@ const showError = ref(false)
 const isCurrentlyRunning = computed(
   () => props.id === lastId.value && isRunningCommand.value,
 )
+
+const textToCopy = computed(() => htmlToText(props.text))
 
 watch(
   () => props.text,
@@ -121,12 +116,6 @@ watch(
 
 const onScroll = (info) => {
   scrollInfo.value = info
-}
-
-const copyDetails = () => {
-  copyToClipboard(htmlToText(props.text)).then(() => {
-    uiStore.notifySuccess($gettext('Text copied to clipboard'))
-  })
 }
 
 const cancelCommand = () => {
