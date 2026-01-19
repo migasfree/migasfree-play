@@ -78,9 +78,17 @@
           <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
         </q-btn>
 
-        <q-chip v-if="isInstalled" outline color="primary" text-color="white">
-          {{ $gettext('Installed') }}
-        </q-chip>
+        <Transition name="bounce">
+          <q-chip
+            v-if="isInstalled"
+            color="positive"
+            text-color="white"
+            icon="mdi-check-circle"
+            outline
+          >
+            {{ $gettext('Installed') }}
+          </q-chip>
+        </Transition>
       </q-card-actions>
     </q-card>
   </div>
