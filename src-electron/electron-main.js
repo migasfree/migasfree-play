@@ -70,6 +70,10 @@ if (app.debug) {
     logStream(message, 'ERROR')
     originalError.apply(console, args)
   }
+
+  ipcMain.on('app:log', (_, { message, type }) => {
+    logStream(message, type)
+  })
 }
 
 // IPC Handlers - App State
