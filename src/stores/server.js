@@ -23,6 +23,7 @@ export const useServerStore = defineStore('server', () => {
   const serverVersion = ref('0')
   const organization = ref('')
   const manageDevices = ref(true)
+  const systemInfo = ref(null)
 
   const clientInfo = async () => {
     try {
@@ -94,6 +95,7 @@ export const useServerStore = defineStore('server', () => {
   const serverHost = async () => {
     try {
       const data = await window.electronAPI.preferences.getServerInfo()
+      systemInfo.value = data
       host.value = data.server
     } catch (error) {
       uiStore.notifyError(error)
@@ -114,6 +116,7 @@ export const useServerStore = defineStore('server', () => {
     serverVersion,
     organization,
     manageDevices,
+    systemInfo,
     clientInfo,
     checkClientVersion,
     serverInfo,
