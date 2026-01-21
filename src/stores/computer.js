@@ -3,6 +3,7 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
+import { useServerStore } from './server.js'
 
 import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
@@ -23,6 +24,7 @@ export const useComputerStore = defineStore('computer', () => {
   const attribute = ref(0)
 
   const uiStore = useUiStore()
+  const serverStore = useServerStore()
   const programStore = useProgramStore()
   const { clientVersion, protocol, host, initialUrl, token, serverVersion } =
     storeToRefs(programStore)
@@ -33,7 +35,9 @@ export const useComputerStore = defineStore('computer', () => {
 
   const computerInfo = async () => {
     try {
-      const data = await window.electronAPI.preferences.getServerInfo()
+      const data =
+        serverStore.systemInfo ||
+        (await window.electronAPI.preferences.getServerInfo())
 
       uuid.value = data.uuid
       name.value = data.computer_name
