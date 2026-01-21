@@ -29,12 +29,9 @@ export default boot(({ app, store }) => {
       // config.timeout = 10000
       config.cancelToken = cancelSource.token
 
-      console.debug(
-        '[ REQUEST ]',
-        config.url,
-        JSON.stringify(config.params),
-        JSON.stringify(config.headers),
-      )
+      const message = `[ REQUEST ] ${config.url} ${JSON.stringify(config.params)} ${JSON.stringify(config.headers)}`
+      console.debug(message)
+      if (window.electronAPI) window.electronAPI.log(message, 'DEBUG')
 
       return config
     },
@@ -46,11 +43,9 @@ export default boot(({ app, store }) => {
 
   api.interceptors.response.use(
     (response) => {
-      console.debug(
-        '[ RESPONSE ]',
-        response.config.url,
-        JSON.stringify(response.data),
-      )
+      const message = `[ RESPONSE ] ${response.config.url} ${JSON.stringify(response.data)}`
+      console.debug(message)
+      if (window.electronAPI) window.electronAPI.log(message, 'DEBUG')
       return response
     },
 
