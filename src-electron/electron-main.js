@@ -12,7 +12,7 @@ import {
   screen,
   ipcMain,
 } from 'electron'
-import { unlinkSync } from 'fs'
+import { unlinkSync, appendFileSync } from 'fs'
 
 import { envDefaults } from '../src/config/app.conf.js'
 import registerPackagesHandlers from './handlers/packages.js'
@@ -39,6 +39,38 @@ registerUserHandlers()
 app.canExit = true
 app.syncAfterStart = process.argv.includes('sync')
 app.debug = process.argv.includes('debug')
+
+if (app.debug) {
+  const logFile = path.join(os.tmpdir(), 'migasfree-play.log')
+  const logStream = (message, type = 'INFO') => {
+    const timestamp = new Date().toISOString()
+    const logMessage = `[${timestamp}] [${type}] ${message}\n`
+    try {
+      appendFileSync(logFile, logMessage)
+    } catch {
+      // Ignore write errors
+    }
+  }
+
+  const originalLog = console.log
+  const originalError = console.error
+
+  console.log = (...args) => {
+    const message = args
+      .map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
+      .join(' ')
+    logStream(message, 'INFO')
+    originalLog.apply(console, args)
+  }
+
+  console.error = (...args) => {
+    const message = args
+      .map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
+      .join(' ')
+    logStream(message, 'ERROR')
+    originalError.apply(console, args)
+  }
+}
 
 // IPC Handlers - App State
 ipcMain.handle('app:get-sync-after-start', () => app.syncAfterStart)
