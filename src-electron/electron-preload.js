@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getPlatform: () => ipcRenderer.invoke('app:get-platform'),
   getEnvConfig: () => ipcRenderer.invoke('app:get-env-config'),
   setCanExit: (value) => ipcRenderer.send('app:set-can-exit', value),
+  log: (message, type) => ipcRenderer.send('app:log', { message, type }),
 
   // Window Control
   show: () => ipcRenderer.invoke('window:show'),
