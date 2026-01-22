@@ -44,7 +44,7 @@ const { filteredDevices } = storeToRefs(devicesStore)
 const { paginatedItems, pageChanged } = usePagination(filteredDevices)
 
 const name = (item) => {
-  return item.data?.NAME ?? `${item.model.manufacturer.name} ${item.model.name}`
+  return item.data?.NAME || `${item.model.manufacturer.name} ${item.model.name}`
 }
 
 const alternativeName = (item) => {
