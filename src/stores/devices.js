@@ -128,7 +128,7 @@ export const useDevicesStore = defineStore('devices', () => {
       )
 
       const data = serverVersion.value.startsWith('4.')
-        ? response.data.map((v) => ({ ...v, data: JSON.parse(v.data) }))
+        ? { ...response.data, data: JSON.parse(response.data.data) }
         : response.data
 
       return data
@@ -148,10 +148,12 @@ export const useDevicesStore = defineStore('devices', () => {
 
   const getLogicalDevice = async ({ id, index }) => {
     try {
-      const { data } = await tokenRequest(
-        'get',
-        `${initialUrl.value.token}${tokenApi.logicalDevice}?device__id=${id}`,
-      )
+      let url = `${initialUrl.value.token}${tokenApi.logicalDevice}?device__id=${id}`
+      if (serverVersion.value.startsWith('4.')) {
+        url = `${initialUrl.value.token}${tokenApi.logicalDevice}available/?cid=${cid.value}&did=${id}`
+      }
+
+      const { data } = await tokenRequest('get', url)
 
       if (!data?.results?.length) return
 
