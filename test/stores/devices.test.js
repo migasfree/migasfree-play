@@ -363,6 +363,30 @@ describe('Devices Store', () => {
       expect(result).toEqual(responseData)
     })
 
+    it('parses data field as JSON for v4 server', async () => {
+      // Change serverVersion to v4
+      const { useProgramStore } = await import('src/stores/program')
+      const programStore = useProgramStore()
+      programStore.serverVersion.value = '4.20'
+
+      const responseData = {
+        id: 100,
+        name: 'Test Device',
+        data: '{"NAME": "Printer v4", "IP": "192.168.1.1"}',
+      }
+      api.get.mockResolvedValue({ data: responseData })
+
+      const store = useDevicesStore()
+      const result = await store.getDeviceData(100)
+
+      // Should parse data string to object
+      expect(result.data).toEqual({ NAME: 'Printer v4', IP: '192.168.1.1' })
+      expect(typeof result.data).toBe('object')
+
+      // Reset serverVersion
+      programStore.serverVersion.value = '5.0'
+    })
+
     it('handles error and rethrows', async () => {
       const error = new Error('Network error')
       api.get.mockRejectedValue(error)
