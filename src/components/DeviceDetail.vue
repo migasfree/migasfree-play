@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-6 col-sm-6 col-xs-12 q-pa-sm">
-    <q-card flat bordered class="column full-height">
+    <q-card flat bordered>
       <q-card-section horizontal>
         <q-card-section class="col-8">
           <div class="text-h5 ellipsis">
