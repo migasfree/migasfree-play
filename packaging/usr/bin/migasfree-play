@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [ "$(id -u)" != "0" ]
 then
@@ -50,12 +51,14 @@ then
 
     if [ -z "$DISPLAY" ]
     then
+        # shellcheck disable=SC2009
         DISPLAY=$(ps -u "$SUDO_USER" e | grep -Eo 'DISPLAY=[^ ]+' | head -n1 | cut -d= -f2)
         export DISPLAY="${DISPLAY:-:0}"
     fi
 
     if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -z "$WAYLAND_DISPLAY" ]
     then
+        # shellcheck disable=SC2009
         WAYLAND_DISPLAY=$(ps -u "$SUDO_USER" e | grep -Eo 'WAYLAND_DISPLAY=[^ ]+' | head -n1 | cut -d= -f2)
         export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
     fi
@@ -69,8 +72,7 @@ else
 fi
 
 _PYTHON=$(command -v python2)
-[ -n "$_PYTHON" ] && $_PYTHON -c "import migasfree_client" 2&> /dev/null || false
-if [ $? -ne 0 ] || [ -z "$_PYTHON" ]
+if [ -z "$_PYTHON" ] || ! "$_PYTHON" -c "import migasfree_client" > /dev/null 2>&1
 then
     _PYTHON=$(command -v python3)
 fi
@@ -121,7 +123,7 @@ fi
 
 while true
 do
-    _STATUS=$(curl --write-out %{http_code} --silent --output /dev/null "$_SERVER") || :
+    _STATUS=$(curl --write-out '%{http_code}' --silent --output /dev/null "$_SERVER") || :
     if [ "$_STATUS" = "200" ] || [ "$_STATUS" = "302" ]
     then
         echo "Connection established with the server."
@@ -200,12 +202,13 @@ if [ "$_CONNECTIVITY" = "True" ]
 then
     [ "$_DEBUG" = "debug" ] && export ELECTRON_ENABLE_LOGGING=1
 
-    _WAYLAND_FLAGS=""
+    _WAYLAND_FLAGS=()
     if [ "$XDG_SESSION_TYPE" = "wayland" ]
     then
-        _WAYLAND_FLAGS="--enable-features=UseOzonePlatform --ozone-platform=wayland"
+        _WAYLAND_FLAGS=("--enable-features=UseOzonePlatform" "--ozone-platform=wayland")
     fi
 
+    # shellcheck disable=SC2086
     /usr/share/migasfree-play/migasfree-play "$_SYNC" "$_DEBUG" \
-      --no-sandbox --disable-gpu-sandbox $_WAYLAND_FLAGS $MFP_CMD_FLAGS
+      --no-sandbox --disable-gpu-sandbox "${_WAYLAND_FLAGS[@]}" $MFP_CMD_FLAGS
 fi
