@@ -57,7 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (error?.response?.status === 400) {
         return { error: 'invalid_credentials' }
       }
-      return { error: error.message }
+      return { error: error.message || String(error) }
     }
 
     setToken('')
