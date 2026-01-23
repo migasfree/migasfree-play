@@ -2,7 +2,17 @@ import path from 'path'
 import { ipcMain } from 'electron'
 import { pythonExecute, debug, getScriptsPath } from '../python-utils.js'
 
+/**
+ * Registers IPC handlers related to package management.
+ */
 export default function registerPackagesHandlers() {
+  /**
+   * Retrieves available packages from the server.
+   * @param {Object} _ - Unused event object.
+   * @param {Object} params - Parameters.
+   * @param {string} params.version - Client/Server version for compatibility.
+   * @returns {Promise<Array>} List of available packages.
+   */
   ipcMain.handle('packages:get-available', async (_, { version }) => {
     if (debug) console.log('[ipc] Getting available packages...')
 
@@ -20,6 +30,14 @@ export default function registerPackagesHandlers() {
     }
   })
 
+  /**
+   * Retrieves information about installed packages.
+   * @param {Object} _ - Unused event object.
+   * @param {Object} params - Parameters.
+   * @param {Array} params.packages - List of packages to check.
+   * @param {string} params.version - Client/Server version for compatibility.
+   * @returns {Promise<Array>} List of installed packages with details.
+   */
   ipcMain.handle('packages:get-installed', async (_, { packages, version }) => {
     if (debug) console.log('[ipc] Getting installed packages...')
 
@@ -38,6 +56,13 @@ export default function registerPackagesHandlers() {
     }
   })
 
+  /**
+   * Retrieves the package inventory from the local system.
+   * @param {Object} _ - Unused event object.
+   * @param {Object} params - Parameters.
+   * @param {string} params.version - Client/Server version for compatibility.
+   * @returns {Promise<Array>} List of local inventory packages.
+   */
   ipcMain.handle('packages:get-inventory', async (_, { version }) => {
     if (debug) console.log('[ipc] Getting packages inventory...')
 
