@@ -31,16 +31,29 @@ Desktop application for the [Migasfree](https://github.com/migasfree) ecosystem.
 
 | Testing | Vitest 4.x |
 
+## 📚 Documentation
+
+The documentation is organized using the **Diátaxis** framework:
+
+| Quadrant          | Purpose                           | Links                                                                        |
+| :---------------- | :-------------------------------- | :--------------------------------------------------------------------------- |
+| **Tutorials**     | Learning-oriented (Step-by-step)  | [Developer Onboarding](docs/ONBOARDING.md)                                   |
+| **How-to Guides** | Task-oriented (Recipes)           | [User Guide](docs/USER_GUIDE.md), [Troubleshooting](docs/TROUBLESHOOTING.md) |
+| **Explanation**   | Understanding-oriented (Concepts) | [Architecture](docs/ARCHITECTURE.md)                                         |
+| **Reference**     | Information-oriented (Facts)      | [Technical Reference](docs/REFERENCE.md)                                     |
+
+---
+
 ## Quick Start
 
-### Requirements
+### 1. Requirements
 
 - Node.js >= 22.12.0
 - Yarn >= 1.21.1
-- Python >= 3.6.0
+- Python >= 3.6
 - migasfree-client >= 4.20 (production)
 
-### Installation
+### 2. Installation
 
 ```bash
 git clone https://github.com/migasfree/migasfree-play.git
@@ -48,121 +61,21 @@ cd migasfree-play
 yarn install
 ```
 
-### Development
+### 3. Development
 
 ```bash
 sudo yarn dev
 ```
 
-### Production Build
+For more details on commands and environment configuration, see the [Reference Guide](docs/REFERENCE.md).
 
-```bash
-yarn build
-```
+---
 
-### Run Tests
+## Security
 
-```bash
-yarn test
-```
+Migasfree Play uses environment variables for secure configuration. By default, it uses insecure credentials which **must** be changed in production.
 
-## Packaging
-
-### Debian/Ubuntu
-
-```bash
-sudo apt install devscripts build-essential debhelper
-yarn build
-cd packaging
-DEB_BUILD_OPTIONS=noautodbgsym debuild --no-lintian --no-tgz-check -us -uc
-```
-
-### RPM (Fedora/RHEL)
-
-```bash
-yarn build
-cd packaging/rpm
-./create-package
-```
-
-### Arch Linux
-
-```bash
-cd packaging
-makepkg
-```
-
-## Production Usage
-
-```bash
-# Normal execution
-sudo migasfree-play
-
-# Sync immediately on start
-sudo migasfree-play sync
-
-# Debug mode
-sudo migasfree-play debug
-```
-
-## Configuration
-
-Settings file: `/root/.migasfree-play/settings.json`
-
-```json
-{
-  "language": "es_ES",
-  "show_language": true,
-  "show_computer_link": true,
-  "show_sync_details": false,
-  "show_apps": true,
-  "show_devices": true,
-  "show_tags": true,
-  "show_details": true,
-  "show_preferences": true,
-  "show_info": true,
-  "show_help": true,
-  "dark_mode": false,
-  "show_dark_mode": true
-}
-```
-
-### Available Languages
-
-- English (en_US)
-- Español (es_ES)
-- Français (fr_FR)
-- Català (ca_ES)
-- Euskara (eu_ES)
-- Galego (gl_ES)
-
-### Environment Variables
-
-| Variable | Description | Default |
-| -------- | ----------- | ------- |
-
-| `MFP_QUASAR_PORT` | Dev server port | 9999 |
-| `MFP_EXECUTIONS_LIMIT` | History limit | 5 |
-| `MFP_USER` | Default user | migasfree-play |
-| `MFP_PASSWORD` | Default password | migasfree-play |
-| `MFP_CMD_FLAGS` | Extra CLI flags | (empty) |
-
-## Documentation
-
-- [Architecture](./ARCHITECTURE.md) - Technical architecture documentation
-- [Onboarding](./ONBOARDING.md) - Developer onboarding guide
-
-## Security Configuration
-
-The application uses credentials to authenticate with the Migasfree server. By default, it uses insecure hardcoded credentials which **must** be changed in production environments by setting environment variables:
-
-| Variable               | Description                                 | Default          |
-| ---------------------- | ------------------------------------------- | ---------------- |
-| `MFP_USER`             | Username for server authentication          | `migasfree-play` |
-| `MFP_PASSWORD`         | Password for server authentication          | `migasfree-play` |
-| `MFP_EXECUTIONS_LIMIT` | Maximum concurrent executions display limit | `5`              |
-
-For more details, see the [ONBOARDING.md](ONBOARDING.md) guide.
+See [Reference: Environment Variables](docs/REFERENCE.md#🔐-environment-variables) for instructions.
 
 ## License
 
