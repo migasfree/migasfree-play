@@ -55,18 +55,33 @@ if (app.debug) {
   const originalLog = console.log
   const originalError = console.error
 
+  const serializeArg = (arg) => {
+    if (arg instanceof Error) {
+      return JSON.stringify(
+        arg,
+        (key, value) => {
+          if (value instanceof Error) {
+            return Object.getOwnPropertyNames(value).reduce((acc, k) => {
+              acc[k] = value[k]
+              return acc
+            }, {})
+          }
+          return value
+        },
+        2,
+      )
+    }
+    return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+  }
+
   console.log = (...args) => {
-    const message = args
-      .map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
-      .join(' ')
+    const message = args.map(serializeArg).join(' ')
     logStream(message, 'INFO')
     originalLog.apply(console, args)
   }
 
   console.error = (...args) => {
-    const message = args
-      .map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
-      .join(' ')
+    const message = args.map(serializeArg).join(' ')
     logStream(message, 'ERROR')
     originalError.apply(console, args)
   }
