@@ -50,7 +50,9 @@ export const useUiStore = defineStore('ui', () => {
       return msg
     }
 
-    return error?.message ?? ''
+    const fallback =
+      typeof error === 'object' ? JSON.stringify(error) : String(error)
+    return error?.message ?? fallback
   }
 
   const notifyError = (error) => {
