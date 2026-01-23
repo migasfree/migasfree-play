@@ -60,14 +60,13 @@ export const useDevicesStore = defineStore('devices', () => {
       assignedLogicalDevices.value = data.assigned_logical_devices_to_cid
       inflictedLogicalDevices.value = data.inflicted_logical_devices
 
-      await Promise.all([
-        ...assignedLogicalDevices.value.map((item) =>
-          addDeviceIfMissing(item, 'assigned'),
-        ),
-        ...inflictedLogicalDevices.value.map((item) =>
-          addDeviceIfMissing(item, 'inflicted'),
-        ),
-      ])
+      // Process sequentially to avoid race conditions with duplicate checks
+      for (const item of assignedLogicalDevices.value) {
+        await addDeviceIfMissing(item, 'assigned')
+      }
+      for (const item of inflictedLogicalDevices.value) {
+        await addDeviceIfMissing(item, 'inflicted')
+      }
     } catch (err) {
       uiStore.notifyError(err)
     }
@@ -164,8 +163,20 @@ export const useDevicesStore = defineStore('devices', () => {
 
       if (!data?.results?.length) return
 
+      let results = data.results
+
+      // Deduplicate logical devices for v4 servers compatibility
+      if (serverVersion.value.startsWith('4.')) {
+        const seen = new Set()
+        results = results.filter((item) => {
+          if (seen.has(item.id)) return false
+          seen.add(item.id)
+          return true
+        })
+      }
+
       addLogicalDevices({
-        results: data.results,
+        results,
         index,
       })
     } catch (error) {
