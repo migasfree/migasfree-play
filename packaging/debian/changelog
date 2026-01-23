@@ -22,8 +22,11 @@ migasfree-play (5.11.0) unstable; urgency=low
   * feat: separate python code from javascript code
   * refactor: express removed
   * fix: devices page
+  * feat: added debug file
+  * fix: getLogicalDevice url
+  * fix: possible devices duplication (v4)
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 19 Jan 2026 12:28:30 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 23 Jan 2026 08:48:30 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
