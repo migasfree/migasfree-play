@@ -40,57 +40,68 @@ app.canExit = true
 app.syncAfterStart = process.argv.includes('sync')
 app.debug = process.argv.includes('debug')
 
-if (app.debug) {
-  const logFile = path.join(os.tmpdir(), 'migasfree-play.log')
-  const logStream = (message, type = 'INFO') => {
-    const timestamp = new Date().toISOString()
-    const logMessage = `[${timestamp}] [${type}] ${message}\n`
-    try {
-      appendFileSync(logFile, logMessage, { mode: 0o600 })
-      chmodSync(logFile, 0o600)
-    } catch {
-      // Ignore write/chmod errors
-    }
+const logFile = path.join(os.tmpdir(), 'migasfree-play.log')
+const logStream = (message, type = 'INFO') => {
+  if (!app.debug) return
+  const timestamp = new Date().toISOString()
+  const logMessage = `[${timestamp}] [${type}] ${message}\n`
+  try {
+    appendFileSync(logFile, logMessage, { mode: 0o600 })
+    chmodSync(logFile, 0o600)
+  } catch {
+    // Ignore write/chmod errors
   }
-
-  const originalLog = console.log
-  const originalError = console.error
-
-  const serializeArg = (arg) => {
-    if (arg instanceof Error) {
-      return JSON.stringify(
-        arg,
-        (key, value) => {
-          if (value instanceof Error) {
-            return Object.getOwnPropertyNames(value).reduce((acc, k) => {
-              acc[k] = value[k]
-              return acc
-            }, {})
-          }
-          return value
-        },
-        2,
-      )
-    }
-    return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
-  }
-
-  console.log = (...args) => {
-    const message = args.map(serializeArg).join(' ')
-    logStream(message, 'INFO')
-    originalLog.apply(console, args)
-  }
-
-  console.error = (...args) => {
-    const message = args.map(serializeArg).join(' ')
-    logStream(message, 'ERROR')
-    originalError.apply(console, args)
-  }
-
-  ipcMain.on('app:log', (_, { message, type }) => {
-    logStream(message, type)
-  })
 }
+
+const serializeArg = (arg) => {
+  if (arg === null) return 'null'
+  if (arg === undefined) return 'undefined'
+
+  if (arg instanceof Error || (typeof arg === 'object' && 'message' in arg)) {
+    const errObj = {}
+    Object.getOwnPropertyNames(arg).forEach((key) => {
+      errObj[key] = arg[key]
+    })
+    // If it's an Axios error, include response status and data
+    if (arg.response) {
+      errObj.response = {
+        status: arg.response.status,
+        data: arg.response.data,
+      }
+    }
+    return JSON.stringify(errObj, null, 2)
+  }
+
+  if (typeof arg === 'object') {
+    try {
+      const str = JSON.stringify(arg, null, 2)
+      return str === '{}' ? String(arg) : str
+    } catch {
+      return String(arg)
+    }
+  }
+
+  return String(arg)
+}
+
+const originalLog = console.log
+const originalError = console.error
+
+console.log = (...args) => {
+  const message = args.map(serializeArg).join(' ')
+  logStream(message, 'INFO')
+  originalLog.apply(console, args)
+}
+
+console.error = (...args) => {
+  const message = args.map(serializeArg).join(' ')
+  logStream(message, 'ERROR')
+  originalError.apply(console, args)
+}
+
+ipcMain.on('app:log', (_, { message, type }) => {
+  logStream(message, type)
+})
 
 // IPC Handlers - App State
 ipcMain.handle('app:get-sync-after-start', () => app.syncAfterStart)
