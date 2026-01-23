@@ -1,7 +1,14 @@
 import { ipcMain } from 'electron'
 import { pythonExecute, debug } from '../python-utils.js'
 
+/**
+ * Registers IPC handlers related to computer information and registration.
+ */
 export default function registerComputerHandlers() {
+  /**
+   * Retrieves the Migasfree computer ID.
+   * @returns {Promise<string>} The computer ID or '0' if unavailable.
+   */
   ipcMain.handle('computer:get-id', async () => {
     if (debug) console.log('[ipc] Getting computer ID...')
 
@@ -18,6 +25,11 @@ print(MigasFreeCommand().get_computer_id())`
     }
   })
 
+  /**
+   * Retrieves network information (IP, mask, network CIDR).
+   * @returns {Promise<Object>} Network information object.
+   * @throws {Error} If network information is unavailable.
+   */
   ipcMain.handle('computer:get-network', async () => {
     if (debug) console.log('[ipc] Getting network info...')
 
@@ -41,10 +53,20 @@ print(json.dumps(ret))`
     }
   })
 
+  /**
+   * Registers the computer with the Migasfree server.
+   * @param {Object} _ - Unused event object.
+   * @param {Object} params - Registration parameters.
+   * @param {string} params.user - Username for authentication.
+   * @param {string} params.password - Password for authentication.
+   * @param {string} params.version - Client/Server version for compatibility.
+   * @returns {Promise<string>} Execution result.
+   */
   ipcMain.handle(
     'computer:register',
     async (_, { user, password, version }) => {
       if (debug) console.log('[ipc] Registering Computer...')
+      // ... (rest of the function remains the same)
 
       let code = `
 from migasfree_client.command import MigasFreeCommand
