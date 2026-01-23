@@ -8,6 +8,55 @@ export const cancelSource = axios.CancelToken.source()
 
 const api = axios.create()
 
+// Override console to ensure logs reach the main process log file
+if (window.electronAPI) {
+  const originalLog = console.log
+  const originalError = console.error
+  const originalWarn = console.warn
+  const originalDebug = console.debug
+
+  const serialize = (arg) => {
+    if (arg === null) return 'null'
+    if (arg === undefined) return 'undefined'
+    if (arg instanceof Error) {
+      return JSON.stringify(
+        Object.getOwnPropertyNames(arg).reduce((acc, key) => {
+          acc[key] = arg[key]
+          return acc
+        }, {}),
+      )
+    }
+    if (typeof arg === 'object') {
+      try {
+        return JSON.stringify(arg)
+      } catch {
+        return String(arg)
+      }
+    }
+    return String(arg)
+  }
+
+  console.log = (...args) => {
+    originalLog.apply(console, args)
+    window.electronAPI.log(args.map(serialize).join(' '), 'INFO')
+  }
+
+  console.error = (...args) => {
+    originalError.apply(console, args)
+    window.electronAPI.log(args.map(serialize).join(' '), 'ERROR')
+  }
+
+  console.warn = (...args) => {
+    originalWarn.apply(console, args)
+    window.electronAPI.log(args.map(serialize).join(' '), 'WARN')
+  }
+
+  console.debug = (...args) => {
+    originalDebug.apply(console, args)
+    window.electronAPI.log(args.map(serialize).join(' '), 'DEBUG')
+  }
+}
+
 export default boot(({ app, store }) => {
   api.interceptors.request.use(
     (config) => {
@@ -31,7 +80,6 @@ export default boot(({ app, store }) => {
 
       const message = `[ REQUEST ] ${config.url} ${JSON.stringify(config.params)} ${JSON.stringify(config.headers)}`
       console.debug(message)
-      if (window.electronAPI) window.electronAPI.log(message, 'DEBUG')
 
       return config
     },
@@ -45,17 +93,18 @@ export default boot(({ app, store }) => {
     (response) => {
       const message = `[ RESPONSE ] ${response.config.url} ${JSON.stringify(response.data)}`
       console.debug(message)
-      if (window.electronAPI) window.electronAPI.log(message, 'DEBUG')
       return response
     },
 
     (error) => {
-      // TODO https://dev.to/localeai/architecting-http-clients-in-vue-js-applications-for-effective-network-communication-1eec
-      if ('response' in error) {
-        console.error(error.response.status, error.message)
+      let message = ''
+      if (error.response) {
+        message = `[ RESPONSE ERROR ] ${error.config.url} ${error.response.status} ${JSON.stringify(error.response.data)}`
       } else {
-        console.error(error)
+        message = `[ REQUEST ERROR ] ${error.message}`
       }
+
+      console.error(message)
 
       return Promise.reject(error)
     },
