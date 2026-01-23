@@ -37,6 +37,9 @@ export const resultsPerPage = 10
 
 export const retryIntervalSeconds = 10
 
+// Default environment values.
+// WARNING: Do not use these defaults in production.
+// Override them using MFP_USER and MFP_PASSWORD environment variables.
 export const envDefaults = {
   executionsLimit: 5,
   user: 'migasfree-play',

@@ -37,6 +37,7 @@ Desktop application for the [Migasfree](https://github.com/migasfree) ecosystem.
 
 - Node.js >= 22.12.0
 - Yarn >= 1.21.1
+- Python >= 3.6.0
 - migasfree-client >= 4.20 (production)
 
 ### Installation
@@ -150,6 +151,18 @@ Settings file: `/root/.migasfree-play/settings.json`
 
 - [Architecture](./ARCHITECTURE.md) - Technical architecture documentation
 - [Onboarding](./ONBOARDING.md) - Developer onboarding guide
+
+## Security Configuration
+
+The application uses credentials to authenticate with the Migasfree server. By default, it uses insecure hardcoded credentials which **must** be changed in production environments by setting environment variables:
+
+| Variable               | Description                                 | Default          |
+| ---------------------- | ------------------------------------------- | ---------------- |
+| `MFP_USER`             | Username for server authentication          | `migasfree-play` |
+| `MFP_PASSWORD`         | Password for server authentication          | `migasfree-play` |
+| `MFP_EXECUTIONS_LIMIT` | Maximum concurrent executions display limit | `5`              |
+
+For more details, see the [ONBOARDING.md](ONBOARDING.md) guide.
 
 ## License
 

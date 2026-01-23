@@ -34,7 +34,7 @@ migasfree-play is an **Electron desktop application** that allows users to insta
 | **Electron** | Cross-platform desktop app (Linux, Windows) with system access |
 | **Vue 3 + Quasar** | Modern UI with ready-to-use components, i18n support |
 | **Pinia** | Reactive global state, better debugging than Vuex |
-| **IPC + Python** | Secure communication with system-level Python scripts |
+| **IPC + Python** | Secure communication with system-level Python scripts (Python 3.6+) |
 
 ---
 
@@ -137,6 +137,21 @@ window.electronAPI.spawnCommand(id, 'migasfree', ['sync'])
 | `window:show`              | invoke | Show window                |
 | `command:spawn`            | send   | Execute system command     |
 | `command:kill`             | send   | Terminate running command  |
+
+---
+
+## 🔐 Security Configuration
+
+The app relies on environment variables for sensitive configuration. If missing, it falls back to defaults defined in `src/config/app.conf.js`.
+
+> [!WARNING]
+> Never use the default credentials in production. The main process will log a security warning if defaults are detected.
+
+| Variable               | Description                        | Overrides Default |
+| ---------------------- | ---------------------------------- | ----------------- |
+| `MFP_USER`             | Username for server authentication | `migasfree-play`  |
+| `MFP_PASSWORD`         | Password for server authentication | `migasfree-play`  |
+| `MFP_EXECUTIONS_LIMIT` | Concurrent executions limit (int)  | `5`               |
 
 ---
 

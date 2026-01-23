@@ -12,7 +12,7 @@ import {
   screen,
   ipcMain,
 } from 'electron'
-import { unlinkSync, appendFileSync } from 'fs'
+import { unlinkSync, appendFileSync, chmodSync } from 'fs'
 
 import { envDefaults } from '../src/config/app.conf.js'
 import registerPackagesHandlers from './handlers/packages.js'
@@ -46,9 +46,10 @@ if (app.debug) {
     const timestamp = new Date().toISOString()
     const logMessage = `[${timestamp}] [${type}] ${message}\n`
     try {
-      appendFileSync(logFile, logMessage)
+      appendFileSync(logFile, logMessage, { mode: 0o600 })
+      chmodSync(logFile, 0o600)
     } catch {
-      // Ignore write errors
+      // Ignore write/chmod errors
     }
   }
 
@@ -94,12 +95,23 @@ if (app.debug) {
 // IPC Handlers - App State
 ipcMain.handle('app:get-sync-after-start', () => app.syncAfterStart)
 ipcMain.handle('app:get-platform', () => process.platform)
-ipcMain.handle('app:get-env-config', () => ({
-  executionsLimit:
-    parseInt(process.env.MFP_EXECUTIONS_LIMIT) || envDefaults.executionsLimit,
-  user: process.env.MFP_USER || envDefaults.user,
-  password: process.env.MFP_PASSWORD || envDefaults.password,
-}))
+ipcMain.handle('app:get-env-config', () => {
+  const user = process.env.MFP_USER || envDefaults.user
+  const password = process.env.MFP_PASSWORD || envDefaults.password
+
+  if (user === envDefaults.user || password === envDefaults.password) {
+    console.warn(
+      '[Security] Application is using default credentials. Set MFP_USER and MFP_PASSWORD environment variables.',
+    )
+  }
+
+  return {
+    executionsLimit:
+      parseInt(process.env.MFP_EXECUTIONS_LIMIT) || envDefaults.executionsLimit,
+    user,
+    password,
+  }
+})
 ipcMain.on('app:set-can-exit', (_, value) => {
   app.canExit = value
 })
