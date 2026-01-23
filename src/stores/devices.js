@@ -105,6 +105,13 @@ export const useDevicesStore = defineStore('devices', () => {
           ...item,
           data: JSON.parse(item.data),
         }))
+        // Deduplicate results for v4 servers compatibility (buggy servers may return duplicates)
+        const seen = new Set()
+        results = results.filter((item) => {
+          if (seen.has(item.id)) return false
+          seen.add(item.id)
+          return true
+        })
       }
 
       results.forEach((item) => {
