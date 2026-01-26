@@ -42,6 +42,7 @@ describe('Auth Store', () => {
     // Default mock return values
     window.electronAPI.token.read.mockResolvedValue({})
     window.electronAPI.token.write.mockResolvedValue(undefined)
+    window.electronAPI.token.request = vi.fn() // Add request mock
     window.electronAPI.user.check.mockResolvedValue({ is_privileged: false })
     window.electronAPI.getEnvConfig.mockResolvedValue({
       user: 'testuser',
@@ -72,14 +73,14 @@ describe('Auth Store', () => {
       store.setServerInfo('https', 'api.example.com')
 
       // Verify by checking that getToken uses these values
-      api.get.mockResolvedValue({ data: {} })
-      api.post.mockResolvedValue({ data: { token: 'abc' } })
+      window.electronAPI.token.request.mockResolvedValue({ token: 'abc' })
 
       await store.getToken()
 
-      expect(api.post).toHaveBeenCalledWith(
+      expect(window.electronAPI.token.request).toHaveBeenCalledWith(
         'https://api.example.com/token-auth/',
-        expect.any(Object),
+        'testuser',
+        'testpass',
       )
     })
   })
@@ -92,12 +93,12 @@ describe('Auth Store', () => {
       await store.getToken()
 
       expect(store.token).toBe('Token cached-token')
-      expect(api.post).not.toHaveBeenCalled()
+      expect(window.electronAPI.token.request).not.toHaveBeenCalled()
     })
 
     it('fetches new token from server if not cached', async () => {
       window.electronAPI.token.read.mockResolvedValue({}) // No local token
-      api.post.mockResolvedValue({ data: { token: 'new-token' } })
+      window.electronAPI.token.request.mockResolvedValue({ token: 'new-token' })
 
       const store = useAuthStore()
       store.setServerInfo('https', 'api.example.com')
@@ -109,9 +110,25 @@ describe('Auth Store', () => {
       })
     })
 
+    it('returns error on invalid credentials (403)', async () => {
+      const error = { response: { status: 403 } }
+      window.electronAPI.token.request.mockRejectedValue(error)
+
+      // Mock console.error to avoid cluttering test output
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const store = useAuthStore()
+      const result = await store.requestToken()
+
+      expect(result).toEqual({ error: 'invalid_credentials' })
+      consoleSpy.mockRestore()
+    })
+
     it('returns error on invalid credentials', async () => {
       window.electronAPI.token.read.mockResolvedValue({})
-      api.post.mockRejectedValue({ response: { status: 400 } })
+      window.electronAPI.token.request.mockRejectedValue({
+        response: { status: 400 },
+      })
 
       const store = useAuthStore()
       store.setServerInfo('https', 'api.example.com')
