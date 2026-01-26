@@ -56,13 +56,14 @@ export default function registerTokenHandlers() {
 
       // Return error structure similar to axios error for consistency
       if (error.response) {
-        throw {
-          response: {
+        // Serialize error details to pass through IPC
+        throw new Error(
+          JSON.stringify({
             status: error.response.status,
             data: error.response.data,
-          },
-          message: error.message,
-        }
+            message: error.message,
+          }),
+        )
       }
       throw error
     }
