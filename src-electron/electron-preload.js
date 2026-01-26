@@ -56,6 +56,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   token: {
     read: () => ipcRenderer.invoke('token:read'),
     write: (data) => ipcRenderer.invoke('token:write', data),
+    request: (url, username, password) =>
+      ipcRenderer.invoke('token:request', { url, username, password }),
   },
 
   executions: {
