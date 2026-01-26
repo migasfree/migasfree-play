@@ -28,13 +28,14 @@ export const useAuthStore = defineStore('auth', () => {
     _host = host
   }
 
-  const getToken = async () => {
+  // Read token from storage only
+  const readToken = async () => {
     const data = await window.electronAPI.token.read()
-    if (data?.token) {
-      setToken(data.token)
-      return
-    }
+    return data?.token || null
+  }
 
+  // Request new token from server
+  const requestToken = async () => {
     try {
       const config = await window.electronAPI.getEnvConfig()
       const { data } = await api.post(
@@ -44,23 +45,45 @@ export const useAuthStore = defineStore('auth', () => {
           password: config.password,
         },
       )
-
-      if (data?.token) {
-        await window.electronAPI.token.write({
-          token: data.token,
-        })
-        setToken(data.token)
-        return
-      }
+      return data?.token || null
     } catch (error) {
-      console.error('getToken error:', error)
+      console.error('requestToken error:', error)
       if (error?.response?.status === 400) {
         return { error: 'invalid_credentials' }
       }
       return { error: error.message || String(error) }
     }
+  }
+
+  // Save token to storage and set in memory
+  const saveToken = async (tokenValue) => {
+    await window.electronAPI.token.write({ token: tokenValue })
+    setToken(tokenValue)
+  }
+
+  // Clear invalid token
+  const clearToken = async () => {
+    await window.electronAPI.token.write({ token: '' })
+    setToken('')
+    setTokenChecked(false)
+  }
+
+  // Legacy function for backward compatibility
+  const getToken = async () => {
+    const storedToken = await readToken()
+    if (storedToken) {
+      setToken(storedToken)
+      return
+    }
+
+    const newToken = await requestToken()
+    if (newToken && !newToken.error) {
+      await saveToken(newToken)
+      return
+    }
 
     setToken('')
+    return newToken // Return error if any
   }
 
   const checkToken = async () => {
@@ -117,6 +140,10 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     userIsPrivileged,
     setServerInfo,
+    readToken,
+    requestToken,
+    saveToken,
+    clearToken,
     getToken,
     checkToken,
     checkUser,
