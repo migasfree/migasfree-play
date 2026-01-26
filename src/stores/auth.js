@@ -38,17 +38,19 @@ export const useAuthStore = defineStore('auth', () => {
   const requestToken = async () => {
     try {
       const config = await window.electronAPI.getEnvConfig()
-      const { data } = await api.post(
+      const data = await window.electronAPI.token.request(
         `${_protocol}://${_host}${tokenAuth.url}`,
-        {
-          username: config.user,
-          password: config.password,
-        },
+        config.user,
+        config.password,
       )
       return data?.token || null
     } catch (error) {
       console.error('requestToken error:', error)
-      if (error?.response?.status === 400) {
+      if (
+        error?.response?.status === 400 ||
+        error?.response?.status === 401 ||
+        error?.response?.status === 403
+      ) {
         return { error: 'invalid_credentials' }
       }
       return { error: error.message || String(error) }
