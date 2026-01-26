@@ -37,4 +37,34 @@ export default function registerTokenHandlers() {
       throw new Error('Failed to write token')
     }
   })
+
+  ipcMain.handle('token:request', async (_, { url, username, password }) => {
+    if (debug) console.log(`[ipc] Requesting token from ${url}`)
+
+    try {
+      // Dynamic import because axios is an EcoModule and might be ESM
+      const axios = (await import('axios')).default
+
+      const response = await axios.post(url, {
+        username,
+        password,
+      })
+
+      return response.data
+    } catch (error) {
+      if (debug) console.error('Token request failed:', error.message)
+
+      // Return error structure similar to axios error for consistency
+      if (error.response) {
+        throw {
+          response: {
+            status: error.response.status,
+            data: error.response.data,
+          },
+          message: error.message,
+        }
+      }
+      throw error
+    }
+  })
 }
