@@ -92,22 +92,26 @@ describe('Program Store', () => {
     window.electronAPI.preferences.getServerInfo.mockResolvedValue({
       server: 'migasfree.org',
     })
+    // Setup Auth mocks
+    window.electronAPI.token.request = vi
+      .fn()
+      .mockResolvedValue({ token: 'valid-token' })
+    window.electronAPI.token.read.mockResolvedValue({})
+    window.electronAPI.token.write.mockResolvedValue(undefined)
+    window.electronAPI.getEnvConfig.mockResolvedValue({
+      user: 'test-user',
+      password: 'test-pass',
+    })
 
-    // Setup Axios mocks for External API calls (Token, Server Info)
+    // Setup Axios mocks for External API calls (Server Info Only)
     api.get.mockImplementation((url) => {
       // Server Info (Public API)
       if (url.includes('/info'))
         return Promise.resolve({
           data: { version: '5.0.0', organization: 'Test Org' },
         })
-      // Token API
-      if (url.includes('/token'))
-        return Promise.resolve({ data: { token: 'valid-token' } })
-
       return Promise.resolve({ data: {} })
     })
-
-    api.post.mockResolvedValue({ data: { token: 'valid-token' } })
   })
 
   it('init() flow runs successfully', async () => {
@@ -136,8 +140,10 @@ describe('Program Store', () => {
   })
 
   it('init() stops app on invalid credentials', async () => {
-    // Mock authStore.getToken to return invalid_credentials error
-    api.post.mockRejectedValue({ response: { status: 400 } })
+    // Mock authStore.requestToken to return invalid_credentials error
+    window.electronAPI.token.request.mockRejectedValue({
+      response: { status: 400 },
+    })
 
     const store = useProgramStore()
 
