@@ -46,11 +46,23 @@ export const useAuthStore = defineStore('auth', () => {
       return data?.token || null
     } catch (error) {
       console.error('requestToken error:', error)
-      if (
-        error?.response?.status === 400 ||
-        error?.response?.status === 401 ||
-        error?.response?.status === 403
-      ) {
+
+      let status = error?.response?.status
+
+      // Parse IPC error if present
+      const match =
+        error.message &&
+        error.message.match(/Error invoking remote method.*?: (\{.*\})/)
+      if (match) {
+        try {
+          const payload = JSON.parse(match[1])
+          status = payload.status
+        } catch (e) {
+          console.error('Failed to parse IPC error payload', e)
+        }
+      }
+
+      if (status === 400 || status === 401 || status === 403) {
         return { error: 'invalid_credentials' }
       }
       return { error: error.message || String(error) }
