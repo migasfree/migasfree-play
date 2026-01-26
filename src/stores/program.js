@@ -82,9 +82,28 @@ export const useProgramStore = defineStore('program', () => {
     await Promise.all([
       serverStore.serverInfo(),
       (async () => {
-        // Step 1: Get token
-        const tokenResult = await authStore.getToken()
-        if (tokenResult?.error === 'invalid_credentials') {
+        // Step 1: Read existing token from storage
+        const storedToken = await authStore.readToken()
+
+        if (storedToken) {
+          authStore.setToken(storedToken)
+
+          // Step 2: Validate existing token
+          const checkResult = await authStore.checkToken()
+
+          if (checkResult?.success) {
+            // Token is valid, continue
+            return
+          }
+
+          // Token is invalid, clear it
+          await authStore.clearToken()
+        }
+
+        // Step 3: No valid token, request new one
+        const newToken = await authStore.requestToken()
+
+        if (newToken?.error === 'invalid_credentials') {
           setStatus(
             gettext.$gettext('Credentials are not valid. Review app settings.'),
           )
@@ -92,39 +111,24 @@ export const useProgramStore = defineStore('program', () => {
           return
         }
 
-        // Step 2: Check token validity
-        let checkResult = await authStore.checkToken()
-        if (checkResult?.error === 'no_connection') {
+        if (newToken?.error) {
           setStatus(gettext.$gettext('There is no connection to the server'))
           setStopApp()
           return
         }
 
-        // Step 3: If token is invalid (403), get new token and verify again
-        if (checkResult?.error === 'token_invalid') {
-          const retryResult = await authStore.getToken()
-          if (retryResult?.error) {
-            setStatus(
-              gettext.$gettext(
-                'Failed to obtain valid token. Review app settings.',
-              ),
-            )
-            setStopApp()
-            return
-          }
-
-          // Verify the new token
-          checkResult = await authStore.checkToken()
-          if (checkResult?.error) {
-            setStatus(gettext.$gettext('Token validation failed'))
-            setStopApp()
-            return
-          }
+        if (!newToken) {
+          setStatus(gettext.$gettext('Failed to obtain token'))
+          setStopApp()
+          return
         }
 
-        // Step 4: Final verification - ensure we have a valid token
-        if (!isTokenChecked.value) {
-          setStatus(gettext.$gettext('Could not authenticate with server'))
+        // Step 4: Save and verify new token
+        await authStore.saveToken(newToken)
+        const verifyResult = await authStore.checkToken()
+
+        if (!verifyResult?.success) {
+          setStatus(gettext.$gettext('Token validation failed'))
           setStopApp()
         }
       })(),
