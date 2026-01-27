@@ -12,27 +12,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Generated-By: easygettext\n"
 
-#: src/App.vue:26
+#: src/App.vue:34
 msgid "Impossible to continue."
 msgstr "Impossible de continuer."
 
-#: src/App.vue:30
+#: src/App.vue:38
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Réessai automatique dans %{ count } seconde..."
 msgstr[1] "Réessai automatique dans %{ count } secondes..."
 
-#: src/App.vue:43
+#: src/App.vue:55
 msgid "Retry now"
 msgstr "Réessayer maintenant"
-
-#: src/App.vue:62
-msgid "Loading data"
-msgstr "Chargement des données"
-
-#: src/App.vue:65
-msgid "Please wait..."
-msgstr "Veuillez patienter..."
 
 #: src/components/AppDetail.vue:55 src/components/DeviceDetail.vue:110
 msgid "Install"
@@ -136,67 +128,67 @@ msgstr "Voir les périphériques attribués"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/components/Info.vue:23
-msgid "Last synchronization"
-msgstr "Dernière synchronisation"
+#: src/components/Info.vue:39 src/layouts/MainLayout.vue:144
+msgid "Synchronization"
+msgstr "Synchronisation"
 
-#: src/components/Info.vue:40
-msgid "Hardware"
-msgstr "Matériel"
-
-#: src/components/Info.vue:62
-msgid "Network Data"
-msgstr "Données réseau"
-
-#: src/components/Info.vue:81
+#: src/components/Info.vue:59
 msgid "Migasfree Data"
 msgstr "Données Migasfree"
 
-#: src/components/Info.vue:110
+#: src/components/Info.vue:107
+msgid "Hardware"
+msgstr "Matériel"
+
+#: src/components/Info.vue:139
+msgid "Network Data"
+msgstr "Données Réseau"
+
+#: src/components/Info.vue:175
 msgid "Software Inventory"
-msgstr "Inventaire logiciel"
+msgstr "Inventaire Logiciel"
 
-#: src/components/Info.vue:125 src/components/Info.vue:146
-msgid "Search"
-msgstr "Rechercher"
+#: src/components/Info.vue:189
+msgid "Search..."
+msgstr "Rechercher..."
 
-#: src/components/Info.vue:173
+#: src/components/Info.vue:236
+msgid "No results found"
+msgstr "Aucun résultat trouvé"
+
+#: src/components/Info.vue:243
 msgid "results"
 msgstr "résultats"
 
-#: src/components/Info.vue:184
-msgid "Identification"
-msgstr "Identification"
+#: src/components/Info.vue:275
+msgid "Print Label"
+msgstr "Imprimer l'étiquette"
 
-#: src/components/Info.vue:213
-msgid "Print Identification"
-msgstr "Imprimer l'identification"
-
-#: src/components/Info.vue:287
+#: src/components/Info.vue:368
 msgid "disks"
 msgstr "disques"
 
-#: src/components/Info.vue:333
+#: src/components/Info.vue:426
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Info.vue:334
+#: src/components/Info.vue:427
 msgid "In repair"
 msgstr "En réparation"
 
-#: src/components/Info.vue:335
+#: src/components/Info.vue:428
 msgid "Reserved"
 msgstr "Réservé"
 
-#: src/components/Info.vue:336
+#: src/components/Info.vue:429
 msgid "Intended"
 msgstr "Attribué"
 
-#: src/components/Info.vue:337
+#: src/components/Info.vue:430
 msgid "Unsubscribed"
 msgstr "Désinscrit"
 
-#: src/components/Info.vue:340
+#: src/components/Info.vue:433
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -213,18 +205,18 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/Menu.vue:78 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:36 src/stores/program.js:153
+#: src/pages/apps/index.vue:36 src/stores/program.js:157
 msgid "Apps"
 msgstr "Applications"
 
 #: src/components/Menu.vue:84 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:181
+#: src/pages/devices/index.vue:47 src/stores/program.js:185
 msgid "Devices"
 msgstr "Périphériques"
 
 #: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:192
+#: src/stores/program.js:196
 msgid "Tags"
 msgstr "Étiquettes"
 
@@ -324,31 +316,27 @@ msgstr "Enregistrer l'ordinateur sur le serveur"
 msgid "Synchronize Computer"
 msgstr "Synchroniser l'ordinateur"
 
-#: src/layouts/MainLayout.vue:130
+#: src/layouts/MainLayout.vue:132
 msgid "Synchronizing..."
 msgstr "Synchronisation en cours..."
-
-#: src/layouts/MainLayout.vue:142
-msgid "Synchronization"
-msgstr "Synchronisation"
 
 #: src/pages/devices/index.vue:18
 msgid "Client does not manage devices"
 msgstr "Le client ne gère pas les périphériques"
 
-#: src/stores/auth.js:97
+#: src/stores/auth.js:134
 msgid "User with privileges"
 msgstr "Utilisateur avec privilèges"
 
-#: src/stores/auth.js:99
+#: src/stores/auth.js:136
 msgid "User without privileges"
 msgstr "Utilisateur sans privilèges"
 
-#: src/stores/computer.js:149
+#: src/stores/computer.js:155
 msgid "There was a problem with registration"
 msgstr "Un problème est survenu lors de l'inscription"
 
-#: src/stores/computer.js:154
+#: src/stores/computer.js:160
 msgid "Registered Computer!"
 msgstr "Ordinateur enregistré !"
 
@@ -368,45 +356,63 @@ msgstr "Commande annulée"
 msgid "Server"
 msgstr "Serveur"
 
-#: src/stores/program.js:89
+#: src/stores/program.js:108
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 "Les identifiants ne sont pas valides. Vérifiez les paramètres de "
 "l'application."
 
-#: src/stores/program.js:98 src/stores/ui.js:30 src/stores/ui.js:59
+#: src/stores/program.js:115 src/stores/ui.js:30 src/stores/ui.js:61
 msgid "There is no connection to the server"
 msgstr "Il n'y a pas de connexion au serveur"
 
-#: src/stores/program.js:108
-msgid "Failed to obtain valid token. Review app settings."
-msgstr ""
-"Impossible d'obtenir un jeton valide. Vérifiez les paramètres de "
-"l'application."
+#: src/stores/program.js:121
+#, fuzzy
+msgid "Failed to obtain token"
+msgstr "Échec de la copie du texte"
 
-#: src/stores/program.js:119
+#: src/stores/program.js:131
 msgid "Token validation failed"
 msgstr "La validation du jeton a échoué"
 
-#: src/stores/program.js:127
-msgid "Could not authenticate with server"
-msgstr "Impossible de s'authentifier auprès du serveur"
-
-#: src/stores/program.js:134
+#: src/stores/program.js:138
 msgid "Computer"
 msgstr "Ordinateur"
 
-#: src/stores/program.js:158
+#: src/stores/program.js:162
 msgid "Categories"
 msgstr "Catégories"
 
-#: src/stores/program.js:166
+#: src/stores/program.js:170
 msgid "Packages"
 msgstr "Paquets"
 
-#: src/stores/server.js:41
+#: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Cette application nécessite au moins Migasfree Client %{version}"
+
+#~ msgid "Loading data"
+#~ msgstr "Chargement des données"
+
+#~ msgid "Please wait..."
+#~ msgstr "Veuillez patienter..."
+
+#~ msgid "Last synchronization"
+#~ msgstr "Dernière synchronisation"
+
+#~ msgid "Identification"
+#~ msgstr "Identification"
+
+#~ msgid "Print Identification"
+#~ msgstr "Imprimer l'identification"
+
+#~ msgid "Failed to obtain valid token. Review app settings."
+#~ msgstr ""
+#~ "Impossible d'obtenir un jeton valide. Vérifiez les paramètres de "
+#~ "l'application."
+
+#~ msgid "Could not authenticate with server"
+#~ msgstr "Impossible de s'authentifier auprès du serveur"
 
 #~ msgid "Predetermined"
 #~ msgstr "Prédéterminé"
