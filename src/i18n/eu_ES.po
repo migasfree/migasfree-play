@@ -12,27 +12,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: src/App.vue:26
+#: src/App.vue:34
 msgid "Impossible to continue."
 msgstr "Ezinezkoa da jarraitzea."
 
-#: src/App.vue:30
+#: src/App.vue:38
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Berrsaiakera automatikoa segundo %{ count } barru..."
 msgstr[1] "Berrsaiakera automatikoa %{ count } segundo barru..."
 
-#: src/App.vue:43
+#: src/App.vue:55
 msgid "Retry now"
 msgstr "Saiatu berriro orain"
-
-#: src/App.vue:62
-msgid "Loading data"
-msgstr "Datuak kargatzen"
-
-#: src/App.vue:65
-msgid "Please wait..."
-msgstr "Mesedez, itxaron..."
 
 #: src/components/AppDetail.vue:55 src/components/DeviceDetail.vue:110
 msgid "Install"
@@ -136,67 +128,67 @@ msgstr "Ikusi esleitutako gailuak"
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/components/Info.vue:23
-msgid "Last synchronization"
-msgstr "Azken sinkronizazioa"
+#: src/components/Info.vue:39 src/layouts/MainLayout.vue:144
+msgid "Synchronization"
+msgstr "Sinkronizazioa"
 
-#: src/components/Info.vue:40
+#: src/components/Info.vue:59
+msgid "Migasfree Data"
+msgstr "Migasfree Datuak"
+
+#: src/components/Info.vue:107
 msgid "Hardware"
 msgstr "Hardwarea"
 
-#: src/components/Info.vue:62
+#: src/components/Info.vue:139
 msgid "Network Data"
-msgstr "Sareko datuak"
+msgstr "Sareko Datuak"
 
-#: src/components/Info.vue:81
-msgid "Migasfree Data"
-msgstr "Migasfree datuak"
-
-#: src/components/Info.vue:110
+#: src/components/Info.vue:175
 msgid "Software Inventory"
-msgstr "Software inbentarioa"
+msgstr "Software Inbentarioa"
 
-#: src/components/Info.vue:125 src/components/Info.vue:146
-msgid "Search"
-msgstr "Bilatu"
+#: src/components/Info.vue:189
+msgid "Search..."
+msgstr "Bilatu..."
 
-#: src/components/Info.vue:173
+#: src/components/Info.vue:236
+msgid "No results found"
+msgstr "Ez da emaitzarik aurkitu"
+
+#: src/components/Info.vue:243
 msgid "results"
 msgstr "emaitzak"
 
-#: src/components/Info.vue:184
-msgid "Identification"
-msgstr "Identifikazioa"
+#: src/components/Info.vue:275
+msgid "Print Label"
+msgstr "Inprimatu Etiketa"
 
-#: src/components/Info.vue:213
-msgid "Print Identification"
-msgstr "Inprimatu Identifikazioa"
-
-#: src/components/Info.vue:287
+#: src/components/Info.vue:368
 msgid "disks"
 msgstr "diskoak"
 
-#: src/components/Info.vue:333
+#: src/components/Info.vue:426
 msgid "Available"
 msgstr "Eskuragarri"
 
-#: src/components/Info.vue:334
+#: src/components/Info.vue:427
 msgid "In repair"
 msgstr "Konponketan"
 
-#: src/components/Info.vue:335
+#: src/components/Info.vue:428
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
-#: src/components/Info.vue:336
+#: src/components/Info.vue:429
 msgid "Intended"
 msgstr "Asmoa"
 
-#: src/components/Info.vue:337
+#: src/components/Info.vue:430
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
-#: src/components/Info.vue:340
+#: src/components/Info.vue:433
 msgid "Unknown"
 msgstr "Ezezaguna"
 
@@ -213,18 +205,18 @@ msgid "Menu"
 msgstr "Menua"
 
 #: src/components/Menu.vue:78 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:36 src/stores/program.js:153
+#: src/pages/apps/index.vue:36 src/stores/program.js:157
 msgid "Apps"
 msgstr "Aplikazioak"
 
 #: src/components/Menu.vue:84 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:181
+#: src/pages/devices/index.vue:47 src/stores/program.js:185
 msgid "Devices"
 msgstr "Gailuak"
 
 #: src/components/Menu.vue:90 src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:192
+#: src/stores/program.js:196
 msgid "Tags"
 msgstr "Etiketak"
 
@@ -323,31 +315,27 @@ msgstr "Erregistratu ordenagailua zerbitzarian"
 msgid "Synchronize Computer"
 msgstr "Ordenagailua sinkronizatu"
 
-#: src/layouts/MainLayout.vue:130
+#: src/layouts/MainLayout.vue:132
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
-
-#: src/layouts/MainLayout.vue:142
-msgid "Synchronization"
-msgstr "Sinkronizazioa"
 
 #: src/pages/devices/index.vue:18
 msgid "Client does not manage devices"
 msgstr "Bezeroak ez ditu gailuak kudeatzen"
 
-#: src/stores/auth.js:97
+#: src/stores/auth.js:134
 msgid "User with privileges"
 msgstr "Pribilegioko erabiltzailea"
 
-#: src/stores/auth.js:99
+#: src/stores/auth.js:136
 msgid "User without privileges"
 msgstr "Pribilegiorik gabeko erabiltzailea"
 
-#: src/stores/computer.js:149
+#: src/stores/computer.js:155
 msgid "There was a problem with registration"
 msgstr "Arazo bat izan da erregistroarekin"
 
-#: src/stores/computer.js:154
+#: src/stores/computer.js:160
 msgid "Registered Computer!"
 msgstr "¡Erregistratutako ordenagailua!"
 
@@ -367,41 +355,60 @@ msgstr "Komandoa bertan behera utzi da"
 msgid "Server"
 msgstr "Zerbitzaria"
 
-#: src/stores/program.js:89
+#: src/stores/program.js:108
 msgid "Credentials are not valid. Review app settings."
 msgstr "Kredentzialak ez dira baliozkoak. Berrikusi aplikazioaren ezarpenak."
 
-#: src/stores/program.js:98 src/stores/ui.js:30 src/stores/ui.js:59
+#: src/stores/program.js:115 src/stores/ui.js:30 src/stores/ui.js:61
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
 
-#: src/stores/program.js:108
-msgid "Failed to obtain valid token. Review app settings."
-msgstr "Ezin izan da baliozko tokena lortu. Berrikusi aplikazioaren ezarpenak."
+#: src/stores/program.js:121
+#, fuzzy
+msgid "Failed to obtain token"
+msgstr "Huts egin du testua kopiatzean"
 
-#: src/stores/program.js:119
+#: src/stores/program.js:131
 msgid "Token validation failed"
 msgstr "Tokenaren baliozkotzeak huts egin du"
 
-#: src/stores/program.js:127
-msgid "Could not authenticate with server"
-msgstr "Ezin izan da zerbitzariarekin autentifikatu"
-
-#: src/stores/program.js:134
+#: src/stores/program.js:138
 msgid "Computer"
 msgstr "Ordenagailua"
 
-#: src/stores/program.js:158
+#: src/stores/program.js:162
 msgid "Categories"
 msgstr "Kategoriak"
 
-#: src/stores/program.js:166
+#: src/stores/program.js:170
 msgid "Packages"
 msgstr "Paketeak"
 
-#: src/stores/server.js:41
+#: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
+
+#~ msgid "Loading data"
+#~ msgstr "Datuak kargatzen"
+
+#~ msgid "Please wait..."
+#~ msgstr "Mesedez, itxaron..."
+
+#~ msgid "Last synchronization"
+#~ msgstr "Azken sinkronizazioa"
+
+#~ msgid "Identification"
+#~ msgstr "Identifikazioa"
+
+#~ msgid "Print Identification"
+#~ msgstr "Inprimatu Identifikazioa"
+
+#~ msgid "Failed to obtain valid token. Review app settings."
+#~ msgstr ""
+#~ "Ezin izan da baliozko tokena lortu. Berrikusi aplikazioaren ezarpenak."
+
+#~ msgid "Could not authenticate with server"
+#~ msgstr "Ezin izan da zerbitzariarekin autentifikatu"
 
 #~ msgid "Predetermined"
 #~ msgstr "Aurrez zehaztuta"
