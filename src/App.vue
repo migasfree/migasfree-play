@@ -4,90 +4,110 @@
       <div
         v-if="isLoading"
         key="loading"
-        class="row justify-center items-center content-center window-height"
+        class="row justify-center items-center content-center window-height bg-grey-1"
       >
-        <div class="col-12 text-center q-mb-xl">
-          <img
-            id="logo"
-            class="pulse"
-            src="img/migasfree-play.svg"
-            width="200"
-          />
-          <p class="text-h6 text-grey-8">migasfree &#x1f49a; change</p>
-        </div>
-
-        <template v-if="appIsStopped">
-          <div class="col-10 col-md-6">
-            <q-banner class="text-white bg-red rounded-borders shadow-2">
-              <template #avatar>
-                <q-icon name="mdi-alert-octagon" />
-              </template>
-              <div class="text-h6">
-                {{ status }}.<br />{{ $gettext('Impossible to continue.') }}
-              </div>
-              <div class="text-subtitle2 q-mt-sm">
-                {{
-                  $ngettext(
-                    'Automatic retry in %{ count } second...',
-                    'Automatic retry in %{ count } seconds...',
-                    retryCountdown,
-                    { count: retryCountdown },
-                  )
-                }}
-              </div>
-            </q-banner>
-
-            <div class="text-center q-mt-lg">
-              <q-btn
-                icon="mdi-reload"
-                :label="$gettext('Retry now')"
-                color="primary"
-                rounded
-                unelevated
-                @click="retry"
-              />
+        <div class="col-10 col-sm-6 col-md-4 text-center">
+          <div class="q-mb-xl">
+            <img
+              id="logo"
+              class="pulse"
+              src="img/migasfree-play.svg"
+              width="180"
+            />
+            <div class="text-h6 text-grey-8 q-mt-sm">
+              migasfree &#x1f49a; change
             </div>
           </div>
-        </template>
 
-        <div v-else class="col-10 col-sm-6 col-md-4">
-          <q-card flat bordered class="bg-grey-1">
-            <q-list padding>
-              <q-item>
-                <q-item-section avatar>
-                  <q-spinner-dots color="primary" size="md" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label class="text-subtitle1 text-weight-bold">{{
-                    $gettext('Loading data')
-                  }}</q-item-label>
-                  <q-item-label caption>{{
-                    $gettext('Please wait...')
-                  }}</q-item-label>
-                </q-item-section>
-              </q-item>
+          <Transition name="fade" mode="out-in">
+            <div v-if="appIsStopped" key="error">
+              <q-card flat bordered class="bg-white shadow-1">
+                <q-card-section class="text-center q-pa-lg">
+                  <q-icon
+                    name="mdi-alert-circle-outline"
+                    color="negative"
+                    size="4rem"
+                    class="q-mb-md"
+                  />
+                  <div class="text-h6 q-mb-xs">{{ status }}</div>
+                  <div class="text-body2 text-grey-7">
+                    {{ $gettext('Impossible to continue.') }}
+                  </div>
+                  <div class="text-caption text-grey-6 q-mt-sm">
+                    {{
+                      $ngettext(
+                        'Automatic retry in %{ count } second...',
+                        'Automatic retry in %{ count } seconds...',
+                        retryCountdown,
+                        { count: retryCountdown },
+                      )
+                    }}
+                  </div>
+                </q-card-section>
 
-              <q-separator spaced />
+                <q-separator />
 
-              <TransitionGroup name="list">
-                <q-item v-for="item in loadingData" :key="item.label" dense>
-                  <q-item-section avatar>
-                    <q-icon
-                      v-if="loadedData.includes(item.value)"
-                      color="positive"
-                      name="mdi-check-circle"
-                      size="sm"
-                    />
-                    <q-spinner v-else color="primary" size="xs" />
-                  </q-item-section>
+                <q-card-actions align="center" class="q-pa-md">
+                  <q-btn
+                    unelevated
+                    rounded
+                    color="primary"
+                    :label="$gettext('Retry now')"
+                    icon="mdi-reload"
+                    class="q-px-lg"
+                    @click="retry"
+                  />
+                </q-card-actions>
+              </q-card>
+            </div>
 
-                  <q-item-section>
-                    <q-item-label>{{ item.label }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </TransitionGroup>
-            </q-list>
-          </q-card>
+            <div v-else key="progress" class="text-left">
+              <div
+                class="loading-container q-pa-md bg-white rounded-borders shadow-1 border-grey-3"
+              >
+                <TransitionGroup name="list" tag="div" class="loading-list">
+                  <div
+                    v-for="(item, index) in loadingData"
+                    :key="item.label"
+                    class="loading-item row items-center q-py-xs"
+                    :class="{
+                      'opacity-50 text-grey-7': index < loadingData.length - 1,
+                    }"
+                  >
+                    <div
+                      class="col-auto q-mr-md"
+                      style="width: 24px; text-align: center"
+                    >
+                      <q-icon
+                        v-if="
+                          loadedData.includes(item.value) &&
+                          index < loadingData.length - 1
+                        "
+                        color="positive"
+                        name="mdi-check-circle"
+                        size="xs"
+                      />
+                      <q-spinner
+                        v-else
+                        color="primary"
+                        size="xs"
+                        class="block"
+                      />
+                    </div>
+                    <div
+                      class="col text-body2 transition-colors"
+                      :class="{
+                        'text-weight-bold text-primary':
+                          index === loadingData.length - 1,
+                      }"
+                    >
+                      {{ item.label }}
+                    </div>
+                  </div>
+                </TransitionGroup>
+              </div>
+            </div>
+          </Transition>
         </div>
       </div>
 
@@ -184,3 +204,46 @@ onUnmounted(() => {
   clearRetryTimers()
 })
 </script>
+
+<style lang="scss">
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.transition-colors {
+  transition:
+    color 0.3s ease,
+    font-weight 0.3s ease;
+}
+
+.loading-container {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.loading-list {
+  position: relative;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>
