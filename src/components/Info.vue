@@ -1,228 +1,317 @@
 <template>
-  <div class="print-hide q-my-lg">
-    <div class="column items-center">
-      <!-- App Header -->
-      <div class="app-header q-mb-lg text-center">
-        <img width="100" src="img/migasfree-play.svg" class="q-mb-md" />
-        <h4 class="q-ma-none text-weight-bold">{{ app.name }}</h4>
-        <p class="text-subtitle1 text-blue-grey q-mb-xs">{{ app.version }}</p>
-        <p class="text-caption text-blue-grey-6">
+  <div class="q-pa-md">
+    <!-- App Header & Identification -->
+    <div class="row q-col-gutter-md q-mb-lg justify-center print-hide">
+      <div class="col-12 text-center">
+        <div class="row items-center justify-center q-gutter-x-md">
+          <img width="64" src="img/migasfree-play.svg" class="pulse-hover" />
+          <div class="text-left">
+            <h4 class="q-my-none text-h5 text-weight-bold text-primary">
+              {{ app.name }}
+            </h4>
+            <div class="text-subtitle2 text-grey-7">{{ app.version }}</div>
+          </div>
+        </div>
+        <p
+          class="text-caption text-grey-6 q-mt-sm q-mb-none max-width-600 q-mx-auto"
+        >
           {{ app.description }}
         </p>
-        <p class="text-caption text-blue-grey-8 q-mb-none">
-          {{ app.copyright }} <br />
-          {{ app.author }}
-        </p>
+        <div class="text-center q-mt-lg text-caption text-grey-5 print-hide">
+          {{ app.copyright }} • {{ app.author }}
+        </div>
       </div>
-
-      <!-- User & Sync Card -->
-      <q-card v-if="user" flat bordered class="info-card q-ma-md">
-        <q-card-section :class="['card-header text-white', headerBgClass]">
-          <q-icon name="mdi-sync" size="sm" class="q-mr-sm" />
-          <span class="text-subtitle1 text-weight-medium">{{
-            $gettext('Last synchronization')
-          }}</span>
-        </q-card-section>
-
-        <q-list>
-          <InfoItem icon="mdi-account" :label="user" />
-          <InfoItem icon="mdi-calendar-check">
-            <DateView :value="syncEndDate" />
-          </InfoItem>
-        </q-list>
-      </q-card>
-
-      <!-- Hardware Card -->
-      <q-card v-if="'product' in data" flat bordered class="info-card q-ma-md">
-        <q-card-section :class="['card-header text-white', headerBgClass]">
-          <q-icon name="mdi-chip" size="sm" class="q-mr-sm" />
-          <span class="text-subtitle1 text-weight-medium">{{
-            $gettext('Hardware')
-          }}</span>
-        </q-card-section>
-
-        <q-list>
-          <InfoItem :icon="productIcon" :label="data.product" />
-          <InfoItem :icon="cpuIcon" :label="data.cpu" />
-          <InfoItem icon="mdi-memory" :label="computerRam" />
-          <InfoItem icon="mdi-harddisk" :label="computerStorage" />
-        </q-list>
-      </q-card>
-
-      <!-- Network Card -->
-      <q-card
-        v-if="'mac_address' in data"
-        flat
-        bordered
-        class="info-card q-ma-md"
-      >
-        <q-card-section :class="['card-header text-white', headerBgClass]">
-          <q-icon name="mdi-ethernet" size="sm" class="q-mr-sm" />
-          <span class="text-subtitle1 text-weight-medium">{{
-            $gettext('Network Data')
-          }}</span>
-        </q-card-section>
-
-        <q-list>
-          <InfoItem icon="mdi-domain" :label="data.fqdn" />
-          <InfoItem
-            icon="mdi-ip-network"
-            :label="`${data.ip_address} / ${mask} (${network})`"
-          />
-          <InfoItem icon="mdi-swap-vertical" :label="computerMac" />
-        </q-list>
-      </q-card>
-
-      <!-- Migasfree Data Card -->
-      <q-card flat bordered class="info-card q-ma-md">
-        <q-card-section :class="['card-header text-white', headerBgClass]">
-          <q-icon name="mdi-server" size="sm" class="q-mr-sm" />
-          <span class="text-subtitle1 text-weight-medium">{{
-            $gettext('Migasfree Data')
-          }}</span>
-        </q-card-section>
-
-        <q-list>
-          <InfoItem icon="mdi-server" :label="`${host} (${serverVersion})`" />
-          <InfoItem icon="mdi-desktop-classic" :label="client" />
-          <InfoItem
-            icon="mdi-bank"
-            :label="organization"
-            :show="!!organization"
-          />
-          <InfoItem icon="mdi-sitemap" :label="project" />
-          <InfoItem icon="mdi-pound" :label="computerId" />
-          <InfoItem :icon="statusIcon" :label="statusText" />
-        </q-list>
-      </q-card>
     </div>
 
-    <!-- Software Inventory -->
-    <q-card
-      v-if="inventory.length > 0"
-      flat
-      bordered
-      class="info-card q-ma-md q-mb-lg"
-    >
-      <q-card-section :class="['card-header text-white', headerBgClass]">
-        <q-icon name="mdi-package-variant" size="sm" class="q-mr-sm" />
-        <span class="text-subtitle1 text-weight-medium">{{
-          $gettext('Software Inventory')
-        }}</span>
-        <q-space />
-        <q-badge color="white" text-color="grey-8" class="text-weight-bold">
-          {{ inventory.length }}
-        </q-badge>
-      </q-card-section>
+    <!-- Main Grid -->
+    <div class="row q-col-gutter-lg">
+      <!-- Left Column: System & Hardware -->
+      <div class="col-12 col-md-8 print-hide">
+        <div class="row q-col-gutter-md">
+          <!-- User & Sync -->
+          <div class="col-12 col-sm-6">
+            <q-card flat bordered class="info-card h-full">
+              <q-card-section>
+                <div
+                  class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
+                >
+                  <q-icon name="mdi-sync" size="sm" class="q-mr-sm" />
+                  {{ $gettext('Synchronization') }}
+                </div>
+                <q-list dense padding>
+                  <InfoItem icon="mdi-account" :label="user" class="q-py-sm" />
+                  <InfoItem icon="mdi-calendar-check" class="q-py-sm">
+                    <DateView :value="syncEndDate" />
+                  </InfoItem>
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </div>
 
-      <q-expansion-item v-model="expanded" :content-inset-level="0.5">
-        <template #header>
-          <q-item-section>
-            <q-input
-              v-if="showSearch"
-              ref="searchInput"
-              v-model="search"
-              :placeholder="$gettext('Search')"
-              clearable
-              dense
-              @clear="showSearch = false"
-              @click.stop
-            >
-              <template #prepend>
-                <q-icon name="mdi-magnify" />
-              </template>
-            </q-input>
-          </q-item-section>
+          <!-- Connection -->
+          <div class="col-12 col-sm-6">
+            <q-card flat bordered class="info-card h-full">
+              <q-card-section>
+                <div
+                  class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
+                >
+                  <q-icon name="mdi-server-network" size="sm" class="q-mr-sm" />
+                  {{ $gettext('Migasfree Data') }}
+                </div>
+                <q-list dense padding>
+                  <InfoItem
+                    icon="mdi-server"
+                    :label="`${host} (${serverVersion})`"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-desktop-classic"
+                    :label="client"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-bank"
+                    :label="organization"
+                    :show="!!organization"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-sitemap"
+                    :label="project"
+                    :show="!!project"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-pound"
+                    :label="computerId"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    :icon="statusIcon"
+                    :label="statusText"
+                    class="q-py-sm"
+                  />
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </div>
 
-          <q-item-section side>
-            <div class="row q-gutter-x-sm">
-              <q-btn
-                v-if="!showSearch"
-                flat
-                icon="mdi-magnify"
-                color="primary"
-                @click.stop="toggleSearch"
-              >
-                <q-tooltip>{{ $gettext('Search') }}</q-tooltip>
-              </q-btn>
+          <!-- Hardware -->
+          <div v-if="'product' in data" class="col-12 col-sm-6">
+            <q-card flat bordered class="info-card h-full">
+              <q-card-section>
+                <div
+                  class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
+                >
+                  <q-icon name="mdi-chip" size="sm" class="q-mr-sm" />
+                  {{ $gettext('Hardware') }}
+                </div>
+                <q-list dense padding>
+                  <InfoItem
+                    :icon="productIcon"
+                    :label="data.product"
+                    class="q-py-sm"
+                  />
+                  <InfoItem :icon="cpuIcon" :label="data.cpu" class="q-py-sm" />
+                  <InfoItem
+                    icon="mdi-memory"
+                    :label="computerRam"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-harddisk"
+                    :label="computerStorage"
+                    class="q-py-sm"
+                  />
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </div>
 
-              <CopyButton :text="inventoryText" />
-            </div>
-          </q-item-section>
-        </template>
+          <!-- Network -->
+          <div v-if="'mac_address' in data" class="col-12 col-sm-6">
+            <q-card flat bordered class="info-card h-full">
+              <q-card-section>
+                <div
+                  class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
+                >
+                  <q-icon name="mdi-ethernet" size="sm" class="q-mr-sm" />
+                  {{ $gettext('Network Data') }}
+                </div>
+                <q-list dense padding>
+                  <InfoItem
+                    icon="mdi-domain"
+                    :label="data.fqdn || name"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-ip-network"
+                    :label="networkLabel"
+                    class="q-py-sm"
+                  />
+                  <InfoItem
+                    icon="mdi-swap-vertical"
+                    :label="computerMac"
+                    class="q-py-sm"
+                  />
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </div>
 
-        <q-list>
-          <q-virtual-scroll
-            class="inventory-list"
-            :items-size="filteredInventory.length"
-            :items="filteredInventory"
-          >
-            <template #default="{ item }">
-              <q-item dense>
-                {{ item }}
-              </q-item>
-            </template>
-          </q-virtual-scroll>
-        </q-list>
-      </q-expansion-item>
+          <!-- Software Inventory (Full Width in Grid) -->
+          <div v-if="inventory.length > 0" class="col-12">
+            <q-card flat bordered class="info-card">
+              <q-card-section class="q-pb-none">
+                <div class="row items-center justify-between">
+                  <div
+                    class="text-subtitle1 text-weight-bold row items-center text-primary"
+                  >
+                    <q-icon
+                      name="mdi-package-variant"
+                      size="sm"
+                      class="q-mr-sm"
+                    />
+                    {{ $gettext('Software Inventory') }}
+                    <q-badge
+                      color="primary"
+                      transparent
+                      align="top"
+                      class="q-ml-sm text-weight-bold"
+                    >
+                      {{ inventory.length }}
+                    </q-badge>
+                  </div>
 
-      <p
-        v-if="search && expanded"
-        class="text-caption text-right text-blue-grey q-mt-sm q-mb-none q-px-md"
-      >
-        {{ filteredInventory.length }} {{ $gettext('results') }}
-      </p>
-    </q-card>
-  </div>
+                  <div class="row q-gutter-x-sm items-center">
+                    <q-input
+                      v-model="search"
+                      :placeholder="$gettext('Search...')"
+                      dense
+                      outlined
+                      rounded
+                      class="search-input"
+                    >
+                      <template #prepend>
+                        <q-icon name="mdi-magnify" size="xs" />
+                      </template>
+                      <template v-if="search" #append>
+                        <q-icon
+                          name="mdi-close"
+                          size="xs"
+                          class="cursor-pointer"
+                          @click="search = ''"
+                        />
+                      </template>
+                    </q-input>
+                    <CopyButton :text="inventoryText" round flat size="sm" />
+                  </div>
+                </div>
+              </q-card-section>
 
-  <!-- Identification Card -->
-  <div class="column items-center">
-    <q-card flat bordered class="info-card identification-card">
-      <q-card-section :class="['card-header text-white', headerBgClass]">
-        <q-icon name="mdi-qrcode" size="sm" class="q-mr-sm" />
-        <span class="text-subtitle1 text-weight-medium">{{
-          $gettext('Identification')
-        }}</span>
-      </q-card-section>
-
-      <q-card-section horizontal class="items-center q-pa-none">
-        <div class="q-pa-md flex flex-center">
-          <qrcode-vue :value="qrCode" :size="100" level="L" />
+              <q-card-section>
+                <div
+                  class="inventory-container bg-grey-1 rounded-borders q-pa-sm"
+                >
+                  <q-virtual-scroll
+                    class="inventory-list"
+                    :items-size="filteredInventory.length"
+                    :items="filteredInventory"
+                    style="height: 250px"
+                  >
+                    <template #default="{ item }">
+                      <q-item dense class="inventory-item">
+                        <q-item-section>
+                          <q-item-label class="text-body2">{{
+                            item
+                          }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-virtual-scroll>
+                  <div
+                    v-if="filteredInventory.length === 0"
+                    class="text-center text-grey-6 q-py-md"
+                  >
+                    {{ $gettext('No results found') }}
+                  </div>
+                </div>
+                <div
+                  v-if="search"
+                  class="text-right text-caption text-grey-6 q-mt-sm"
+                >
+                  {{ filteredInventory.length }} {{ $gettext('results') }}
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
         </div>
+      </div>
 
-        <q-card-section class="col q-py-md q-px-md">
-          <p class="q-mb-xs text-weight-medium text-body1">
-            {{ name }} ({{ computerId }})
-          </p>
-          <p class="q-mb-xs text-caption text-blue-grey">{{ uuid }}</p>
-          <p class="q-mb-xs text-caption text-blue-grey">{{ host }}</p>
-          <p class="q-mb-none text-caption text-blue-grey">{{ helpdesk }}</p>
-        </q-card-section>
-      </q-card-section>
+      <!-- Right Column: Identity -->
+      <div class="col-12 col-md-4">
+        <div class="sticky-top">
+          <q-card flat bordered class="info-card print-card">
+            <q-card-section class="text-center">
+              <div class="q-pa-md q-mb-md">
+                <qrcode-vue :value="qrCode" :size="140" level="L" />
+              </div>
 
-      <q-separator inset />
+              <div class="text-h6 text-weight-bold q-mb-xs text-primary">
+                {{ name }}
+              </div>
+              <div class="text-subtitle2 text-grey-8">{{ computerId }}</div>
 
-      <q-card-actions align="center" class="print-hide">
-        <q-btn
-          :color="$q.dark.isActive ? 'indigo' : 'positive'"
-          icon="mdi-printer"
-          class="q-mx-lg"
-          @click="printLabel"
-        >
-          <q-tooltip class="print-hide">{{
-            $gettext('Print Identification')
-          }}</q-tooltip>
-        </q-btn>
-      </q-card-actions>
-    </q-card>
+              <q-separator class="q-my-md" />
+
+              <div class="text-body2 text-grey-8 q-mb-xs">{{ uuid }}</div>
+              <div class="text-body2 text-grey-8 q-mb-xs">{{ host }}</div>
+              <div class="text-body2 text-grey-8">{{ helpdesk }}</div>
+
+              <div class="q-mt-lg print-hide">
+                <q-btn
+                  outline
+                  color="primary"
+                  :label="$gettext('Print Label')"
+                  icon="mdi-printer"
+                  class="full-width"
+                  @click="printLabel"
+                />
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+    </div>
   </div>
+  <Teleport to="body">
+    <div class="print-container hidden-print">
+      <div class="print-card-content">
+        <div class="text-center">
+          <div class="q-pa-md q-mb-md">
+            <qrcode-vue :value="qrCode" :size="200" level="L" render-as="svg" />
+          </div>
+
+          <div class="text-h5 text-weight-bold q-mb-sm text-black">
+            {{ name }}
+          </div>
+          <div class="text-h6 text-grey-9 q-mb-md">{{ computerId }}</div>
+
+          <hr class="print-separator" />
+
+          <div class="text-body1 text-black q-mb-xs">{{ uuid }}</div>
+          <div class="text-body1 text-black q-mb-xs">{{ host }}</div>
+          <div class="text-body1 text-black">{{ helpdesk }}</div>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, useTemplateRef } from 'vue'
+import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { useQuasar } from 'quasar'
 
 import QrcodeVue from 'qrcode.vue'
 import CopyButton from 'components/CopyButton'
@@ -236,22 +325,14 @@ import { useProgramStore } from 'src/stores/program'
 import app from '../../package.json'
 
 const { $gettext } = useGettext()
-const $q = useQuasar()
 
 const computerStore = useComputerStore()
 const packagesStore = usePackagesStore()
 const programStore = useProgramStore()
 
-const headerBgClass = computed(() =>
-  $q.dark.isActive ? 'bg-indigo' : 'bg-secondary',
-)
-
 const search = ref('')
-const showSearch = ref(false)
-const expanded = ref(false)
-const searchInput = useTemplateRef('searchInput')
 
-const { cid, data, user, mask, network, project, name, uuid, helpdesk } =
+const { cid, data, user, mask, network, project, name, uuid, helpdesk, ip } =
   storeToRefs(computerStore)
 const { inventory } = storeToRefs(packagesStore)
 
@@ -295,6 +376,18 @@ const computerMac = computed(() => {
     .match(/.{1,12}/g)
     .map((chunk) => chunk.replace(/(.{2})/g, '$1:').slice(0, -1))
     .join(', ')
+})
+
+const networkLabel = computed(() => {
+  const ipAddr = ip.value || data.value.ip_address || ''
+  const m = mask.value || ''
+  const n = network.value || ''
+
+  let label = ipAddr
+  if (m) label += ` / ${m}`
+  if (n) label += ` (${n})`
+
+  return label
 })
 
 const computerId = computed(() => `CID-${cid.value ?? '?'}`)
@@ -348,24 +441,6 @@ const qrCode = computed(() =>
   }),
 )
 
-watch(
-  () => search.value,
-  () => {
-    expanded.value = !!search.value
-  },
-)
-
-const toggleSearch = async () => {
-  showSearch.value = !showSearch.value
-  expanded.value = showSearch.value
-  if (showSearch.value) {
-    await nextTick()
-    if (searchInput.value) {
-      searchInput.value.focus()
-    }
-  }
-}
-
 const printLabel = () => {
   window.print()
 }
@@ -380,67 +455,105 @@ const inventoryText = computed(() => {
 </script>
 
 <style scoped>
-.info-card {
-  width: 83.33%;
+.max-width-600 {
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  transition: box-shadow 0.3s ease;
-  overflow: hidden;
+}
+
+.info-card {
+  transition: all 0.3s ease;
+  height: 100%;
 }
 
 .info-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.card-header {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
+.h-full {
+  height: 100%;
 }
 
-.app-header h4 {
-  font-size: 1.5rem;
-  letter-spacing: 0.5px;
+.search-input {
+  width: 200px;
 }
 
-.status-chip {
-  font-size: 0.75rem;
-  font-weight: 600;
+.sticky-top {
+  position: sticky;
+  top: 24px;
 }
 
-.inventory-list {
-  max-height: 300px;
-  border-radius: 8px;
+.pulse-hover {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pulse-hover:hover {
+  transform: scale(1.1);
 }
 
 .inventory-item {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 }
 
-.inventory-item:last-child {
-  border-bottom: none;
+.inventory-item:hover {
+  background: rgba(0, 0, 0, 0.03);
 }
 
-.qr-code {
-  border-radius: 8px;
-  padding: 8px;
-  background: white;
-}
-
-.identification-card {
-  margin-bottom: 24px;
+/* Dark Mode Adjustments */
+.body--dark .info-card {
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .body--dark .info-card:hover {
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
-.body--dark .inventory-item {
-  border-bottom-color: rgba(255, 255, 255, 0.05);
+.body--dark .inventory-container {
+  background: rgba(255, 255, 255, 0.05) !important;
 }
 
-.body--dark .qr-code {
-  background: white;
+.body--dark .text-grey-7,
+.body--dark .text-grey-6,
+.body--dark .text-grey-8 {
+  color: #bbb !important;
+}
+
+/* Default state: hidden */
+.hidden-print {
+  display: none;
+}
+
+/* Print Styles */
+@media print {
+  /* Hide the entire app */
+  :global(body > #q-app) {
+    display: none !important;
+  }
+
+  /* Show only our print container */
+  .hidden-print {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .print-card-content {
+    border: 2px solid #000;
+    padding: 40px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 500px;
+  }
+
+  .print-separator {
+    border: 0;
+    border-top: 1px solid #000;
+    margin: 20px 0;
+  }
 }
 </style>
