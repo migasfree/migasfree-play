@@ -2,26 +2,18 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/App.vue:26
+#: src/App.vue:34
 msgid "Impossible to continue."
 msgstr ""
 
-#: src/App.vue:30
+#: src/App.vue:38
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/App.vue:43
+#: src/App.vue:55
 msgid "Retry now"
-msgstr ""
-
-#: src/App.vue:62
-msgid "Loading data"
-msgstr ""
-
-#: src/App.vue:65
-msgid "Please wait..."
 msgstr ""
 
 #: src/components/AppDetail.vue:55
@@ -133,68 +125,68 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/Info.vue:23
-msgid "Last synchronization"
+#: src/components/Info.vue:39
+#: src/layouts/MainLayout.vue:144
+msgid "Synchronization"
 msgstr ""
 
-#: src/components/Info.vue:40
-msgid "Hardware"
-msgstr ""
-
-#: src/components/Info.vue:62
-msgid "Network Data"
-msgstr ""
-
-#: src/components/Info.vue:81
+#: src/components/Info.vue:59
 msgid "Migasfree Data"
 msgstr ""
 
-#: src/components/Info.vue:110
+#: src/components/Info.vue:107
+msgid "Hardware"
+msgstr ""
+
+#: src/components/Info.vue:139
+msgid "Network Data"
+msgstr ""
+
+#: src/components/Info.vue:175
 msgid "Software Inventory"
 msgstr ""
 
-#: src/components/Info.vue:125
-#: src/components/Info.vue:146
-msgid "Search"
+#: src/components/Info.vue:189
+msgid "Search..."
 msgstr ""
 
-#: src/components/Info.vue:173
+#: src/components/Info.vue:236
+msgid "No results found"
+msgstr ""
+
+#: src/components/Info.vue:243
 msgid "results"
 msgstr ""
 
-#: src/components/Info.vue:184
-msgid "Identification"
+#: src/components/Info.vue:275
+msgid "Print Label"
 msgstr ""
 
-#: src/components/Info.vue:213
-msgid "Print Identification"
-msgstr ""
-
-#: src/components/Info.vue:287
+#: src/components/Info.vue:368
 msgid "disks"
 msgstr ""
 
-#: src/components/Info.vue:333
+#: src/components/Info.vue:426
 msgid "Available"
 msgstr ""
 
-#: src/components/Info.vue:334
+#: src/components/Info.vue:427
 msgid "In repair"
 msgstr ""
 
-#: src/components/Info.vue:335
+#: src/components/Info.vue:428
 msgid "Reserved"
 msgstr ""
 
-#: src/components/Info.vue:336
+#: src/components/Info.vue:429
 msgid "Intended"
 msgstr ""
 
-#: src/components/Info.vue:337
+#: src/components/Info.vue:430
 msgid "Unsubscribed"
 msgstr ""
 
-#: src/components/Info.vue:340
+#: src/components/Info.vue:433
 msgid "Unknown"
 msgstr ""
 
@@ -213,14 +205,14 @@ msgstr ""
 #: src/components/Menu.vue:78
 #: src/pages/apps/index.vue:4
 #: src/pages/apps/index.vue:36
-#: src/stores/program.js:153
+#: src/stores/program.js:157
 msgid "Apps"
 msgstr ""
 
 #: src/components/Menu.vue:84
 #: src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:47
-#: src/stores/program.js:181
+#: src/stores/program.js:185
 msgid "Devices"
 msgstr ""
 
@@ -228,7 +220,7 @@ msgstr ""
 #: src/components/Tags.vue:6
 #: src/pages/tags/index.vue:4
 #: src/pages/tags/index.vue:31
-#: src/stores/program.js:192
+#: src/stores/program.js:196
 msgid "Tags"
 msgstr ""
 
@@ -327,31 +319,27 @@ msgstr ""
 msgid "Synchronize Computer"
 msgstr ""
 
-#: src/layouts/MainLayout.vue:130
+#: src/layouts/MainLayout.vue:132
 msgid "Synchronizing..."
-msgstr ""
-
-#: src/layouts/MainLayout.vue:142
-msgid "Synchronization"
 msgstr ""
 
 #: src/pages/devices/index.vue:18
 msgid "Client does not manage devices"
 msgstr ""
 
-#: src/stores/auth.js:97
+#: src/stores/auth.js:134
 msgid "User with privileges"
 msgstr ""
 
-#: src/stores/auth.js:99
+#: src/stores/auth.js:136
 msgid "User without privileges"
 msgstr ""
 
-#: src/stores/computer.js:149
+#: src/stores/computer.js:155
 msgid "There was a problem with registration"
 msgstr ""
 
-#: src/stores/computer.js:154
+#: src/stores/computer.js:160
 msgid "Registered Computer!"
 msgstr ""
 
@@ -371,40 +359,36 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
-#: src/stores/program.js:89
+#: src/stores/program.js:108
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 
-#: src/stores/program.js:98
+#: src/stores/program.js:115
 #: src/stores/ui.js:30
-#: src/stores/ui.js:59
+#: src/stores/ui.js:61
 msgid "There is no connection to the server"
 msgstr ""
 
-#: src/stores/program.js:108
-msgid "Failed to obtain valid token. Review app settings."
+#: src/stores/program.js:121
+msgid "Failed to obtain token"
 msgstr ""
 
-#: src/stores/program.js:119
+#: src/stores/program.js:131
 msgid "Token validation failed"
 msgstr ""
 
-#: src/stores/program.js:127
-msgid "Could not authenticate with server"
-msgstr ""
-
-#: src/stores/program.js:134
+#: src/stores/program.js:138
 msgid "Computer"
 msgstr ""
 
-#: src/stores/program.js:158
+#: src/stores/program.js:162
 msgid "Categories"
 msgstr ""
 
-#: src/stores/program.js:166
+#: src/stores/program.js:170
 msgid "Packages"
 msgstr ""
 
-#: src/stores/server.js:41
+#: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr ""
