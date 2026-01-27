@@ -63,6 +63,7 @@
           reverse
           :offset="[18, 100]"
           :scroll-offset="0"
+          class="print-hide"
         >
           <q-btn fab icon="mdi-chevron-down" color="primary" />
         </q-page-scroller>
@@ -71,6 +72,7 @@
           position="bottom-right"
           :offset="[18, 100]"
           :scroll-offset="300"
+          class="print-hide"
         >
           <q-btn fab icon="mdi-chevron-up" color="primary" />
         </q-page-scroller>
@@ -156,3 +158,11 @@ onMounted(async () => {
   setInterval(synchronize, 24 * 60 * 60 * 1000)
 })
 </script>
+
+<style>
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+}
+</style>
