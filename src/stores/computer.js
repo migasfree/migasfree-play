@@ -17,6 +17,7 @@ export const useComputerStore = defineStore('computer', () => {
   const project = ref('')
   const user = ref('')
   const link = ref('')
+  const ip = ref('')
   const mask = ref('')
   const network = ref('')
   const helpdesk = ref('')
@@ -53,6 +54,7 @@ export const useComputerStore = defineStore('computer', () => {
       const data = await window.electronAPI.computer.getNetwork()
       mask.value = data.mask
       network.value = data.network
+      ip.value = data.ip_address
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -169,6 +171,7 @@ export const useComputerStore = defineStore('computer', () => {
     project,
     user,
     link,
+    ip,
     mask,
     network,
     helpdesk,
