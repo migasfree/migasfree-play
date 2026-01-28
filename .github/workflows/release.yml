@@ -9,6 +9,8 @@ jobs:
   build-linux:
     name: Build Linux (DEB & RPM)
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -52,6 +54,8 @@ jobs:
   build-windows:
     name: Build Windows (EXE & MSI)
     runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
