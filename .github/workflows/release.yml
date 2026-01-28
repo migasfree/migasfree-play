@@ -16,12 +16,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-          cache: 'yarn'
 
       - name: Install dependencies
         run: |
           corepack enable
-          yarn install --frozen-lockfile
+          yarn install
 
       - name: Install System Dependencies
         run: |
@@ -60,12 +59,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-          cache: 'yarn'
 
       - name: Install dependencies
         run: |
           corepack enable
-          yarn install --frozen-lockfile
+          yarn install
 
       - name: Build Application
         run: yarn build
