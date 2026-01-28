@@ -65,18 +65,14 @@
     "eslint-webpack-plugin": "5.0.2",
     "globals": "17.0.0",
     "happy-dom": "20.1.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7",
     "postcss": "8.5.6",
     "prettier": "3.7.4",
     "vite": "7.3.1",
     "vitest": "4.0.16",
     "vue-eslint-parser": "10.2.0",
     "webpack": "5.104.1"
-  },
-  "resolutions": {
-    "call-bind": "1.0.8",
-    "get-intrinsic": "1.2.5"
   },
   "browserslist": [
     "defaults and supports es6-module"
