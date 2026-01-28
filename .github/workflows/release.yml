@@ -42,13 +42,16 @@ jobs:
           cd packaging/rpm
           ./create-package
 
+      - name: Move RPM to root
+        run: mv packaging/rpm/rpmbuild/RPMS/x86_64/*.rpm .
+
       - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: linux-packages
           path: |
             *.deb
-            packaging/rpm/rpmbuild/RPMS/x86_64/*.rpm
+            *.rpm
           if-no-files-found: error
 
   build-windows:
