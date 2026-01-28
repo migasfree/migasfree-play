@@ -25,8 +25,13 @@ migasfree-play (5.11.0) unstable; urgency=low
   * feat: added debug file
   * fix: getLogicalDevice url
   * fix: possible devices duplication (v4)
+  * refactor(auth): separate token management into single-responsibility
+    functions
+  * refactor(program): optimize auth flow to validate before requesting
+  * feat(ui): redesign app splash screen with timeline and error card
+  * feat(ui): redesign identity card and implement dedicated print view
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 23 Jan 2026 08:48:30 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 26 Jan 2026 08:44:30 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
