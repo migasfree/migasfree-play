@@ -30,8 +30,9 @@ migasfree-play (5.11.0) unstable; urgency=low
   * refactor(program): optimize auth flow to validate before requesting
   * feat(ui): redesign app splash screen with timeline and error card
   * feat(ui): redesign identity card and implement dedicated print view
+  * fix(token): implement robust ssl ca discovery and crash handling
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 26 Jan 2026 08:44:30 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 30 Jan 2026 09:04:45 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 

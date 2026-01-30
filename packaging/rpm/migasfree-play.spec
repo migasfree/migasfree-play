@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Wed, 26 Jan 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
+* Fri, 30 Jan 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
 - feat: upgraded several components (node >= 22.12)
 - fix: avoid multiple crontab writing
 - feat: added util-linux dependency (flock usage)
@@ -73,6 +73,7 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 - refactor(program): optimize auth flow to validate before requesting
 - feat(ui): redesign app splash screen with timeline and error card
 - feat(ui): redesign identity card and implement dedicated print view
+- fix(token): implement robust ssl ca discovery and crash handling
 
 * Fri, 5 Sep 2025 Jose Antonio Chavarría <jachavar@gmail.com> - 5.10-0
 - fix: app initial values
