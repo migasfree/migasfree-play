@@ -126,7 +126,7 @@ describe('Executions Store', () => {
     // Simulate exit with error code
     await exitCallback(1)
 
-    expect(window.electronAPI.showWindow).toHaveBeenCalled()
+    expect(window.electronAPI.show).toHaveBeenCalled()
     expect(store.items[store.lastId].error).toContain('Error: 1 fail')
   })
 

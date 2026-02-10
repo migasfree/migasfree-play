@@ -135,7 +135,11 @@ ipcMain.handle('window:is-minimized', (event) => {
   return BrowserWindow.fromWebContents(event.sender)?.isMinimized() ?? false
 })
 ipcMain.handle('window:close', (event) => {
-  BrowserWindow.fromWebContents(event.sender)?.close()
+  const win = BrowserWindow.fromWebContents(event.sender)
+  if (win) {
+    win.hide()
+    win.close()
+  }
 })
 
 // IPC Handlers - Command Execution

@@ -176,6 +176,9 @@ export const useExecutionsStore = defineStore('executions', () => {
       })
 
       window.electronAPI.onCommandExit(commandId, async (code) => {
+        // Capture minimized state BEFORE any potential window.show() calls
+        const minimized = await window.electronAPI.isMinimized()
+
         // Clear the safety timeout
         clearTimeout(timeoutId)
 
@@ -183,7 +186,7 @@ export const useExecutionsStore = defineStore('executions', () => {
           const message = `Error: ${code} ${typeof cmd === 'string' ? cmd : JSON.stringify(cmd)}`
           uiStore.notifyError(message)
           appendExecutionError(message)
-          await window.electronAPI.showWindow()
+          await window.electronAPI.show()
         } else if (error.value === '') {
           packagesStore.setInstalledPackages()
         } else {
@@ -198,9 +201,8 @@ export const useExecutionsStore = defineStore('executions', () => {
 
         const cmdStr = typeof cmd === 'string' ? cmd : JSON.stringify(cmd)
         if (cmdStr.includes('sync') || cmdStr.includes('--update')) {
-          const minimized = await window.electronAPI.isMinimized()
           if (minimized) {
-            await window.electronAPI.closeWindow()
+            await window.electronAPI.close()
           }
 
           doAfterSync()
