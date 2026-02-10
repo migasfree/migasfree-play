@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Fri, 30 Jan 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
+* Tue, 10 Feb 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
 - feat: upgraded several components (node >= 22.12)
 - fix: avoid multiple crontab writing
 - feat: added util-linux dependency (flock usage)

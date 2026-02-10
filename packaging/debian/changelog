@@ -32,7 +32,7 @@ migasfree-play (5.11.0) unstable; urgency=low
   * feat(ui): redesign identity card and implement dedicated print view
   * fix(token): implement robust ssl ca discovery and crash handling
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 30 Jan 2026 09:04:45 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Tue, 10 Feb 2026 11:35:45 +0100
 
 migasfree-play (5.10.0) unstable; urgency=low
 
