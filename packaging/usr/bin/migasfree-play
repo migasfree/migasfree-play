@@ -191,7 +191,7 @@ then
         _CRON_ENTRY="$_TIME * * * export DISPLAY=$DISPLAY; $_TASK"
     fi
 
-    crontab -l | grep --invert-match "$_TASK" > "$_FILE"
+    crontab -l | grep --invert-match "$_TASK" > "$_FILE" || :
     if ! grep -Fxq "$_CRON_ENTRY" "$_FILE"
     then
         echo "$_CRON_ENTRY" >> "$_FILE"
