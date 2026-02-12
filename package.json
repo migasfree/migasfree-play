@@ -26,7 +26,7 @@
     "@fontsource/lato": "5.2.6",
     "@fontsource/ubuntu-mono": "5.2.6",
     "@quasar/extras": "1.17.0",
-    "axios": "1.13.2",
+    "axios": "1.13.5",
     "compare-versions": "6.1.1",
     "dayjs": "1.11.19",
     "html-to-text": "9.0.5",
