@@ -42,6 +42,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const replaceColors = (txt) => {
+    const start = performance.now()
     txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
 
     // Patterns that should be stripped completely
@@ -84,6 +85,12 @@ export const useExecutionsStore = defineStore('executions', () => {
     txt = txt.replace(/^ +/gm, (m) => '&nbsp;'.repeat(m.length))
     txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
 
+    const end = performance.now()
+    if (end - start > 50) {
+      console.warn(
+        `mfp:replaceColors:slow - ${Math.round(end - start)}ms for ${txt.length} chars`,
+      )
+    }
     return txt
   }
 
