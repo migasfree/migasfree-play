@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-layout view="lHh Lpr lFf">
-      <q-header unelevated class="print-hide">
+      <q-header elevated class="print-hide">
         <q-toolbar>
           <q-btn
             v-if="showComputerLink"
@@ -49,7 +49,7 @@
             ref="sync"
             fab
             icon="mdi-play"
-            :color="$q.dark.isActive ? 'indigo' : 'secondary'"
+            color="primary"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
             @click="synchronize"
