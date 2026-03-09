@@ -19,7 +19,7 @@
             class="q-ml-sm"
           />
         </div>
-        <div class="text-caption text-blue-grey"><DateView :value="id" /></div>
+        <div class="text-caption text-muted"><DateView :value="id" /></div>
       </q-item-section>
 
       <q-item-section side>
