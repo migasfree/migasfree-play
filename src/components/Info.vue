@@ -9,15 +9,15 @@
             <h4 class="q-my-none text-h5 text-weight-bold text-primary">
               {{ app.name }}
             </h4>
-            <div class="text-subtitle2 text-grey-7">{{ app.version }}</div>
+            <div class="text-subtitle2 text-muted">{{ app.version }}</div>
           </div>
         </div>
         <p
-          class="text-caption text-grey-6 q-mt-sm q-mb-none max-width-600 q-mx-auto"
+          class="text-caption text-muted q-mt-sm q-mb-none max-width-600 q-mx-auto"
         >
           {{ app.description }}
         </p>
-        <div class="text-center q-mt-lg text-caption text-grey-5 print-hide">
+        <div class="text-center q-mt-lg text-caption text-muted print-hide">
           {{ app.copyright }} • {{ app.author }}
         </div>
       </div>
@@ -214,10 +214,9 @@
                   class="inventory-container bg-grey-1 rounded-borders q-pa-sm"
                 >
                   <q-virtual-scroll
-                    class="inventory-list"
+                    class="inventory-list height-250"
                     :items-size="filteredInventory.length"
                     :items="filteredInventory"
-                    style="height: 250px"
                   >
                     <template #default="{ item }">
                       <q-item dense class="inventory-item">
@@ -470,6 +469,10 @@ const inventoryText = computed(() => {
 
 .h-full {
   height: 100%;
+}
+
+.height-250 {
+  height: 250px;
 }
 
 .search-input {
