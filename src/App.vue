@@ -1,120 +1,121 @@
 <template>
   <div id="q-app">
-    <Transition name="fade" mode="out-in">
+    <Transition name="fade">
       <div
         v-if="isLoading"
         key="loading"
-        class="row justify-center items-center content-center window-height bg-grey-1"
+        class="splash-overlay window-height animated-background"
       >
-        <div class="col-10 col-sm-6 col-md-4 text-center">
-          <div class="q-mb-xl">
-            <img
-              id="logo"
-              class="pulse"
-              src="img/migasfree-play.svg"
-              width="180"
-            />
-            <div class="text-h6 text-grey-8 q-mt-sm">
-              migasfree &#x1f49a; change
-            </div>
-          </div>
-
-          <Transition name="fade" mode="out-in">
-            <div v-if="appIsStopped" key="error">
-              <q-card flat bordered class="bg-white shadow-1">
-                <q-card-section class="text-center q-pa-lg">
-                  <q-icon
-                    name="mdi-alert-circle-outline"
-                    color="negative"
-                    size="4rem"
-                    class="q-mb-md"
-                  />
-                  <div class="text-h6 q-mb-xs">{{ status }}</div>
-                  <div class="text-body2 text-grey-7">
-                    {{ $gettext('Impossible to continue.') }}
-                  </div>
-                  <div class="text-caption text-grey-6 q-mt-sm">
-                    {{
-                      $ngettext(
-                        'Automatic retry in %{ count } second...',
-                        'Automatic retry in %{ count } seconds...',
-                        retryCountdown,
-                        { count: retryCountdown },
-                      )
-                    }}
-                  </div>
-                </q-card-section>
-
-                <q-separator />
-
-                <q-card-actions align="center" class="q-pa-md">
-                  <q-btn
-                    unelevated
-                    rounded
-                    color="primary"
-                    :label="$gettext('Retry now')"
-                    icon="mdi-reload"
-                    class="q-px-lg"
-                    @click="retry"
-                  />
-                </q-card-actions>
-              </q-card>
-            </div>
-
-            <div v-else key="progress" class="text-left">
-              <div
-                class="loading-container q-pa-md bg-white rounded-borders shadow-1 border-grey-3"
-              >
-                <TransitionGroup name="list" tag="div" class="loading-list">
-                  <div
-                    v-for="(item, index) in loadingData"
-                    :key="item.label"
-                    class="loading-item row items-center q-py-xs"
-                    :class="{
-                      'opacity-50 text-grey-7': index < loadingData.length - 1,
-                    }"
-                  >
-                    <div
-                      class="col-auto q-mr-md"
-                      style="width: 24px; text-align: center"
-                    >
-                      <q-icon
-                        v-if="
-                          loadedData.includes(item.value) &&
-                          index < loadingData.length - 1
-                        "
-                        color="positive"
-                        name="mdi-check-circle"
-                        size="xs"
-                      />
-                      <q-spinner
-                        v-else
-                        color="primary"
-                        size="xs"
-                        class="block"
-                      />
-                    </div>
-                    <div
-                      class="col text-body2 transition-colors"
-                      :class="{
-                        'text-weight-bold text-primary':
-                          index === loadingData.length - 1,
-                      }"
-                    >
-                      {{ item.label }}
-                    </div>
-                  </div>
-                </TransitionGroup>
+        <div class="row justify-center items-center content-center full-height">
+          <div class="col-10 col-sm-6 col-md-4 text-center">
+            <div class="q-mb-xl">
+              <img
+                id="logo"
+                class="pulse"
+                src="img/migasfree-play.svg"
+                width="180"
+              />
+              <div class="text-h6 text-grey-8 q-mt-sm">
+                migasfree &#x1f49a; change
               </div>
             </div>
-          </Transition>
+
+            <Transition name="fade" mode="out-in">
+              <div v-if="appIsStopped" key="error">
+                <q-card flat bordered class="glass-card">
+                  <q-card-section class="text-center q-pa-lg">
+                    <q-icon
+                      name="mdi-alert-circle-outline"
+                      color="negative"
+                      size="4rem"
+                      class="q-mb-md"
+                    />
+                    <div class="text-h6 q-mb-xs">{{ status }}</div>
+                    <div class="text-body2 text-grey-7">
+                      {{ $gettext('Impossible to continue.') }}
+                    </div>
+                    <div class="text-caption text-grey-6 q-mt-sm">
+                      {{
+                        $ngettext(
+                          'Automatic retry in %{ count } second...',
+                          'Automatic retry in %{ count } seconds...',
+                          retryCountdown,
+                          { count: retryCountdown },
+                        )
+                      }}
+                    </div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-actions align="center" class="q-pa-md">
+                    <q-btn
+                      unelevated
+                      rounded
+                      color="primary"
+                      :label="$gettext('Retry now')"
+                      icon="mdi-reload"
+                      class="q-px-lg"
+                      @click="retry"
+                    />
+                  </q-card-actions>
+                </q-card>
+              </div>
+
+              <div v-else key="progress" class="text-left">
+                <div class="loading-container q-pa-md glass-card">
+                  <TransitionGroup name="list" tag="div" class="loading-list">
+                    <div
+                      v-for="(item, index) in loadingData"
+                      :key="item.label"
+                      class="loading-item row items-center q-py-xs"
+                      :class="[
+                        `delay-${index}`,
+                        {
+                          'opacity-50 text-grey-7':
+                            index < loadingData.length - 1,
+                        },
+                      ]"
+                    >
+                      <div class="col-auto q-mr-md text-center icon-box">
+                        <q-icon
+                          v-if="
+                            loadedData.includes(item.value) &&
+                            index < loadingData.length - 1
+                          "
+                          color="positive"
+                          name="mdi-check-circle"
+                          size="xs"
+                        />
+                        <q-spinner
+                          v-else
+                          color="primary"
+                          size="xs"
+                          class="block"
+                        />
+                      </div>
+                      <div
+                        class="col text-body2 transition-colors"
+                        :class="{
+                          'text-weight-bold text-primary':
+                            index === loadingData.length - 1,
+                        }"
+                      >
+                        {{ item.label }}
+                      </div>
+                    </div>
+                  </TransitionGroup>
+                </div>
+              </div>
+            </Transition>
+          </div>
         </div>
       </div>
-
-      <div v-else key="main">
-        <router-view />
-      </div>
     </Transition>
+
+    <div v-show="!isLoading" id="main-content">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -206,6 +207,10 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+.icon-box {
+  width: 24px;
+}
+
 .opacity-50 {
   opacity: 0.5;
 }
@@ -229,7 +234,7 @@ onUnmounted(() => {
 /* Transitions */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .fade-enter-from,
@@ -239,11 +244,36 @@ onUnmounted(() => {
 
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+.splash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5000;
+  background: var(--body-bg, #f7f2f0);
+}
+
+.body--dark .splash-overlay {
+  background: #0d0807;
+}
+
+#main-content {
+  position: relative;
+  z-index: 1;
+}
+
+@for $i from 0 through 20 {
+  .delay-#{$i} {
+    animation-delay: #{$i * 0.1}s;
+  }
 }
 </style>
