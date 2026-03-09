@@ -4,7 +4,8 @@
       <div
         v-if="isLoading"
         key="loading"
-        class="splash-overlay window-height animated-background"
+        class="splash-overlay window-height animated-background flex flex-center"
+        :style="{ pointerEvents: isLoading ? 'auto' : 'none' }"
       >
         <div class="row justify-center items-center content-center full-height">
           <div class="col-10 col-sm-6 col-md-4 text-center">
@@ -234,7 +235,8 @@ onUnmounted(() => {
 /* Transitions */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
+  pointer-events: none !important;
 }
 
 .fade-enter-from,
