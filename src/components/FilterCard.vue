@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-card class="q-mx-sm q-my-lg" flat bordered>
+      <q-card class="q-mx-sm q-my-lg" bordered>
         <q-card-section>
           <slot />
         </q-card-section>
