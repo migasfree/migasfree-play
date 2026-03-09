@@ -11,19 +11,22 @@ export function usePagination(items) {
   const uiStore = useUiStore()
   const paginatedItems = ref(items.value.slice(0, resultsPerPage))
 
-  const pageChanged = (currentPage = 1) => {
+  const pageChanged = (currentPage = 1, shouldScroll = true) => {
     const start = (currentPage - 1) * resultsPerPage
     const end = start + resultsPerPage
 
     paginatedItems.value = items.value.slice(start, end)
 
-    setTimeout(() => {
-      uiStore.scrollToElement(document.getElementById('main'))
-    }, 250)
+    if (shouldScroll) {
+      setTimeout(() => {
+        const el = document.getElementById('main')
+        if (el) uiStore.scrollToElement(el)
+      }, 250)
+    }
   }
 
   watch(items, () => {
-    pageChanged()
+    pageChanged(1, false)
   })
 
   return { paginatedItems, pageChanged }
