@@ -67,6 +67,12 @@ vi.mock('src/stores/filters', () => ({
 }))
 vi.mock('src/stores/packages', () => ({
   usePackagesStore: () => ({
+    get availableSet() {
+      return new Set()
+    },
+    get installedSet() {
+      return new Set()
+    },
     setAvailablePackages: vi.fn(),
     setInstalledPackages: vi.fn(),
     setInventory: vi.fn(),

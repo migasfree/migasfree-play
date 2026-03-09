@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { useProgramStore } from './program.js'
@@ -55,10 +55,20 @@ export const usePackagesStore = defineStore('packages', () => {
     inventory.value = await fetchPackages('/packages/inventory/')
   }
 
+  const availableSet = computed(() => {
+    return new Set(available.value)
+  })
+
+  const installedSet = computed(() => {
+    return new Set(installed.value)
+  })
+
   return {
     available,
     installed,
     inventory,
+    availableSet,
+    installedSet,
     setAvailablePackages,
     setInstalledPackages,
     setInventory,

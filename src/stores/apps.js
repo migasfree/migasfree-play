@@ -16,15 +16,7 @@ export const useAppsStore = defineStore('apps', () => {
   const filteredApps = ref([])
 
   const getAppsPackages = computed(() => {
-    let packages = []
-
-    apps.value.forEach((value) => {
-      if (value.packages_to_install.length > 0) {
-        packages = packages.concat(value.packages_to_install)
-      }
-    })
-
-    return packages
+    return apps.value.flatMap((app) => app.packages_to_install || [])
   })
 
   const loadApps = async () => {
@@ -59,11 +51,6 @@ export const useAppsStore = defineStore('apps', () => {
 
     const { searchApp, selectedCategory, onlyInstalledApps } =
       storeToRefs(filtersStore)
-    const { installed } = storeToRefs(packagesStore)
-
-    const installedSet = onlyInstalledApps.value
-      ? new Set(installed.value)
-      : null
 
     const pattern = searchApp.value?.toLowerCase()
     const categoryId = selectedCategory.value?.id
@@ -88,7 +75,7 @@ export const useAppsStore = defineStore('apps', () => {
 
         // All required packages must be in the installed set
         const allInstalled = app.packages_to_install.every((pkg) =>
-          installedSet.has(pkg),
+          packagesStore.installedSet.has(pkg),
         )
         if (!allInstalled) return false
       }
@@ -100,16 +87,17 @@ export const useAppsStore = defineStore('apps', () => {
   }
 
   const setApps = ({ value, project }) => {
-    apps.value = []
+    const results = []
     value.forEach((item) => {
       const pkg = item.packages_by_project.find(
         (p) => p.project.name === project,
       )
       if (pkg) {
         item.packages_to_install = pkg.packages_to_install
-        apps.value.push(item)
+        results.push(item)
       }
     })
+    apps.value = results
   }
 
   return {

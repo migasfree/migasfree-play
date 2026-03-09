@@ -50,8 +50,20 @@ vi.mock('src/stores/filters', async () => {
 
 vi.mock('src/stores/packages', async () => {
   const { ref } = await import('vue')
+  const installed = ref([])
+  const available = ref([])
   const state = {
-    installed: ref([]),
+    installed,
+    available,
+    get installedSet() {
+      return new Set(installed.value)
+    },
+    get availableSet() {
+      return new Set(available.value)
+    },
+    setAvailablePackages: vi.fn(),
+    setInstalledPackages: vi.fn(),
+    setInventory: vi.fn(),
   }
   return { usePackagesStore: () => state }
 })

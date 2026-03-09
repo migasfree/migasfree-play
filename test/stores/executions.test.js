@@ -35,6 +35,12 @@ vi.mock('src/stores/computer', () => ({
 
 vi.mock('src/stores/packages', () => ({
   usePackagesStore: () => ({
+    get availableSet() {
+      return new Set()
+    },
+    get installedSet() {
+      return new Set()
+    },
     setAvailablePackages: vi.fn(),
     setInventory: vi.fn(),
     setInstalledPackages: vi.fn(),

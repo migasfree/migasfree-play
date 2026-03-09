@@ -53,14 +53,13 @@ export const useProgramStore = defineStore('program', () => {
     stopApp.value = false
     uiStore.loading()
 
-    // Load environment config first
+    // 1. Core initialization (Sequential)
     await envConfigStore.load()
 
     setStatus(gettext.$gettext('Preferences'))
     await preferencesStore.readPreferences()
     if (appIsStopped.value) return
 
-    // Get client info and check version
     await serverStore.clientInfo()
     const versionCheck = serverStore.checkClientVersion()
     if (versionCheck.error) {
@@ -69,40 +68,27 @@ export const useProgramStore = defineStore('program', () => {
       return
     }
 
-    // Get server connection info
     await serverStore.apiProtocol()
     await serverStore.clientManageDevices()
     await serverStore.serverHost()
     serverStore.setInitialUrl()
 
-    // Pass server info to auth store
+    // Authentication Setup
     authStore.setServerInfo(protocol.value, host.value)
-
     setStatus(gettext.$gettext('Server'))
+
     await Promise.all([
       serverStore.serverInfo(),
       (async () => {
-        // Step 1: Read existing token from storage
         const storedToken = await authStore.readToken()
-
         if (storedToken) {
           authStore.setToken(storedToken)
-
-          // Step 2: Validate existing token
           const checkResult = await authStore.checkToken()
-
-          if (checkResult?.success) {
-            // Token is valid, continue
-            return
-          }
-
-          // Token is invalid, clear it
+          if (checkResult?.success) return
           await authStore.clearToken()
         }
 
-        // Step 3: No valid token, request new one
         const newToken = await authStore.requestToken()
-
         if (newToken?.error === 'invalid_credentials') {
           setStatus(
             gettext.$gettext('Credentials are not valid. Review app settings.'),
@@ -110,23 +96,19 @@ export const useProgramStore = defineStore('program', () => {
           setStopApp()
           return
         }
-
         if (newToken?.error) {
           setStatus(gettext.$gettext('There is no connection to the server'))
           setStopApp()
           return
         }
-
         if (!newToken) {
           setStatus(gettext.$gettext('Failed to obtain token'))
           setStopApp()
           return
         }
 
-        // Step 4: Save and verify new token
         await authStore.saveToken(newToken)
         const verifyResult = await authStore.checkToken()
-
         if (!verifyResult?.success) {
           setStatus(gettext.$gettext('Token validation failed'))
           setStopApp()
@@ -135,6 +117,7 @@ export const useProgramStore = defineStore('program', () => {
     ])
     if (appIsStopped.value) return
 
+    // Computer Identification
     setStatus(gettext.$gettext('Computer'))
     await computerStore.computerInfo()
     await computerStore.computerId()
@@ -149,30 +132,30 @@ export const useProgramStore = defineStore('program', () => {
       computerStore.computerAttribute(),
     ])
 
-    const optionalPromises = []
+    // 2. Heavy Data loading (Parallel)
+    const heavyPromises = []
 
-    optionalPromises.push(executionsStore.getExecutions())
+    heavyPromises.push(executionsStore.getExecutions())
 
-    if (preferencesStore.showApps) {
-      setStatus(gettext.$gettext('Apps'))
-      await appsStore.loadApps()
-
-      optionalPromises.push(
-        (async () => {
-          setStatus(gettext.$gettext('Categories'))
-          await filtersStore.setCategories()
-        })(),
-      )
-    }
-
-    optionalPromises.push(
+    heavyPromises.push(
       (async () => {
+        if (preferencesStore.showApps) {
+          setStatus(gettext.$gettext('Apps'))
+          await appsStore.loadApps()
+          await filtersStore.setCategories()
+        }
+
         setStatus(gettext.$gettext('Packages'))
         await Promise.all([
           packagesStore.setAvailablePackages(),
           packagesStore.setInstalledPackages(),
           packagesStore.setInventory(),
         ])
+
+        // Force Set pre-computation (Performance Fix)
+        packagesStore.availableSet.size
+        packagesStore.installedSet.size
+
         if (preferencesStore.showApps) {
           appsStore.filterApps()
         }
@@ -180,7 +163,7 @@ export const useProgramStore = defineStore('program', () => {
     )
 
     if (preferencesStore.showDevices) {
-      optionalPromises.push(
+      heavyPromises.push(
         (async () => {
           setStatus(gettext.$gettext('Devices'))
           await devicesStore.computerDevices()
@@ -191,7 +174,7 @@ export const useProgramStore = defineStore('program', () => {
     }
 
     if (preferencesStore.showTags) {
-      optionalPromises.push(
+      heavyPromises.push(
         (async () => {
           setStatus(gettext.$gettext('Tags'))
           await tagsStore.getTags()
@@ -199,7 +182,7 @@ export const useProgramStore = defineStore('program', () => {
       )
     }
 
-    await Promise.all(optionalPromises)
+    await Promise.all(heavyPromises)
 
     setStatus('')
     uiStore.loadingFinished()
@@ -214,13 +197,10 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   return {
-    // Re-exported from authStore (backward compatibility)
     token,
     isTokenChecked,
     userIsPrivileged,
     checkUser: authStore.checkUser,
-
-    // Re-exported from serverStore (backward compatibility)
     initialUrl,
     protocol,
     host,
@@ -228,8 +208,6 @@ export const useProgramStore = defineStore('program', () => {
     serverVersion,
     organization,
     manageDevices,
-
-    // Own state and actions
     status,
     appIsStopped,
     init,
