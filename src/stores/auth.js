@@ -28,13 +28,11 @@ export const useAuthStore = defineStore('auth', () => {
     _host = host
   }
 
-  // Read token from storage only
   const readToken = async () => {
     const data = await window.electronAPI.token.read()
     return data?.token || null
   }
 
-  // Request new token from server
   const requestToken = async () => {
     try {
       const config = await window.electronAPI.getEnvConfig()
@@ -46,17 +44,13 @@ export const useAuthStore = defineStore('auth', () => {
       return data?.token || null
     } catch (error) {
       console.error('requestToken error:', error)
-
       let status = error?.response?.status
-
-      // Parse IPC error if present
       const match =
         error.message &&
         error.message.match(/Error invoking remote method.*?: (\{.*\})/)
       if (match) {
         try {
-          const payload = JSON.parse(match[1])
-          status = payload.status
+          status = JSON.parse(match[1]).status
         } catch (e) {
           console.error('Failed to parse IPC error payload', e)
         }
@@ -69,20 +63,17 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // Save token to storage and set in memory
   const saveToken = async (tokenValue) => {
     await window.electronAPI.token.write({ token: tokenValue })
     setToken(tokenValue)
   }
 
-  // Clear invalid token
   const clearToken = async () => {
     await window.electronAPI.token.write({ token: '' })
     setToken('')
     setTokenChecked(false)
   }
 
-  // Legacy function for backward compatibility
   const getToken = async () => {
     const storedToken = await readToken()
     if (storedToken) {
@@ -97,7 +88,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     setToken('')
-    return newToken // Return error if any
+    return newToken
   }
 
   const checkToken = async () => {
@@ -109,18 +100,15 @@ export const useAuthStore = defineStore('auth', () => {
       setTokenChecked(true)
       return { success: true }
     } catch (error) {
-      if (!error.response) {
-        return { error: 'no_connection' }
-      }
-
-      const msg = error.message || ''
-      if (error.response.status === 403 || msg.includes('token_invalid')) {
-        // Invalidate the token on the backend
+      if (!error.response) return { error: 'no_connection' }
+      if (
+        error.response.status === 403 ||
+        (error.message || '').includes('token_invalid')
+      ) {
         await window.electronAPI.token.write({ token: '' })
         setTokenChecked(false)
         return { error: 'token_invalid' }
       }
-
       return { error: 'token_invalid' }
     }
   }
