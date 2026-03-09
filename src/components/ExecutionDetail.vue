@@ -52,7 +52,11 @@
     <q-card>
       <q-card-section class="terminal-wrapper">
         <!-- Legacy HTML fallback for old persisted executions -->
-        <div v-if="isLegacyHtml" class="text-mono" v-html="text"></div>
+        <div
+          v-if="isLegacyHtml"
+          class="text-mono legacy-container q-pa-md"
+          v-html="text"
+        ></div>
         <!-- xterm.js terminal for raw ANSI output -->
         <div v-else ref="terminalRef" class="terminal-container"></div>
       </q-card-section>
@@ -208,7 +212,7 @@ const onExpand = () => {
 // Create terminal on mount if this is the default-opened item
 onMounted(() => {
   if (isDefaultOpened.value && !isLegacyHtml.value) {
-    // Allow the expansion animation to complete and the container to get dimensions
+    // Allow the animation to complete and the container to get dimensions
     setTimeout(() => {
       createTerminal()
     }, 100)
@@ -257,11 +261,25 @@ const cancelCommand = () => {
   padding: 0 !important;
 }
 
-.terminal-container {
+.terminal-container,
+.legacy-container {
   min-height: 200px;
   background: #1e1e2e;
   border-radius: 0 0 8px 8px;
+}
+
+.terminal-container {
   padding: 8px;
+}
+
+.legacy-container {
+  max-height: 400px;
+  overflow-y: auto;
+  color: #cdd6f4;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .terminal-container :deep(.xterm) {
