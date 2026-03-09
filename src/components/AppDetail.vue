@@ -1,15 +1,15 @@
 <template>
   <div class="col-md-6 col-sm-6 col-xs-12 q-pa-sm">
-    <q-card flat bordered>
+    <q-card bordered>
       <q-card-section horizontal>
         <q-card-section class="col-8">
           <div class="text-h5">
             {{ name }}
           </div>
-          <div class="text-caption text-blue-grey">
+          <div class="text-caption text-muted">
             {{ category }}
           </div>
-          <q-rating v-model="rating" color="primary" readonly />
+          <q-rating :model-value="props.score" color="primary" readonly />
         </q-card-section>
 
         <q-card-section class="col-4 text-right">
@@ -30,12 +30,16 @@
       <q-card-section>
         <template v-if="moreInfo">
           <q-expansion-item :label="truncatedDescription">
-            <q-card>
-              <q-markdown :src="moreInfo" no-link no-linkify></q-markdown>
-            </q-card>
+            <template #default>
+              <q-card v-if="moreInfo" class="q-pa-md">
+                <q-markdown :src="moreInfo" no-link no-linkify></q-markdown>
+              </q-card>
+            </template>
           </q-expansion-item>
         </template>
-        <q-markdown v-else :src="truncatedDescription"></q-markdown>
+        <div v-else class="text-muted text-body2">
+          {{ truncatedDescription }}
+        </div>
       </q-card-section>
 
       <q-card-actions class="q-gutter-md">
@@ -49,11 +53,11 @@
             icon="mdi-download"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
-            @click="installApp(name, packages)"
+            @click="installApp(props.name, props.packages)"
           >
-            <q-tooltip
-              >{{ $gettext('Install') }} ({{ packages.join(', ') }})</q-tooltip
-            >
+            <q-tooltip>
+              {{ $gettext('Install') }} ({{ props.packages.join(', ') }})
+            </q-tooltip>
           </q-btn>
 
           <q-btn
@@ -65,13 +69,11 @@
             icon="mdi-delete"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
-            @click="removeApp(name, packages)"
+            @click="removeApp(props.name, props.packages)"
           >
-            <q-tooltip
-              >{{ $gettext('Uninstall') }} ({{
-                packages.join(', ')
-              }})</q-tooltip
-            >
+            <q-tooltip>
+              {{ $gettext('Uninstall') }} ({{ props.packages.join(', ') }})
+            </q-tooltip>
           </q-btn>
 
           <q-btn
@@ -101,7 +103,6 @@
             <q-chip
               v-if="isInstalled"
               color="positive"
-              text-color="white"
               icon="mdi-check-circle"
               outline
               dense
@@ -116,10 +117,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
+import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
@@ -139,22 +141,17 @@ defineEmits(['openlogin'])
 
 const { $gettext, interpolate } = useGettext()
 
+const computerStore = useComputerStore()
 const executionsStore = useExecutionsStore()
 const packagesStore = usePackagesStore()
 const programStore = useProgramStore()
 const uiStore = useUiStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
-const { available, installed } = storeToRefs(packagesStore)
+const { availableSet, installedSet } = storeToRefs(packagesStore)
 const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
 
-const platform = ref('')
-
-onMounted(async () => {
-  platform.value = await window.electronAPI.getPlatform()
-})
-
-const rating = computed(() => props.score)
+const { platform } = storeToRefs(computerStore)
 
 const truncatedDescription = computed(() => props.description.split('\n')[0])
 
@@ -164,25 +161,14 @@ const moreInfo = computed(() => {
   return trimmed.join('\n')
 })
 
-const packages = computed(() => JSON.parse(JSON.stringify(props.packages)))
-
-const installedPackages = computed(() =>
-  JSON.parse(JSON.stringify(installed.value)),
-)
-
-const availablePackages = computed(() =>
-  JSON.parse(JSON.stringify(available.value)),
-)
-
 const isInstalled = computed(
   () =>
-    packages.value.length > 0 &&
-    packages.value.filter((x) => !installedPackages.value.includes(x))
-      .length === 0,
+    props.packages.length > 0 &&
+    props.packages.every((pkg) => installedSet.value.has(pkg)),
 )
 
 const isAvailable = computed(() =>
-  packages.value.filter((x) => !availablePackages.value.includes(x)),
+  props.packages.every((pkg) => availableSet.value.has(pkg)),
 )
 
 const isInstallable = computed(
@@ -190,7 +176,7 @@ const isInstallable = computed(
     (props.level === 'U' || userIsPrivileged.value) &&
     isAvailable.value &&
     !isInstalled.value &&
-    packages.value.length > 0,
+    props.packages.length > 0,
 )
 
 const isRemovable = computed(
