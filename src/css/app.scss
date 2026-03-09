@@ -1,27 +1,211 @@
 // app global css in SCSS form
 @import './animations.scss';
-.body--light {
-  background-color: #f2f2f7;
 
-  header {
-    background-color: $secondary;
+:root {
+  --font-ui: 'Dosis', sans-serif;
+  --surface: rgba(255, 255, 255, 0.7);
+  --border: rgba(0, 0, 0, 0.1);
+  --text-main: #431407;
+  --text-muted: #6b554f;
+
+  /* Quasar Mappings Light */
+  --q-primary: #431407;
+  --q-secondary: #8d7772;
+  --q-accent: #feda00;
+  --q-positive: #166534;
+  --q-negative: #dc2626;
+  --q-warning: #a16207;
+  --q-info: #1e40af;
+
+  /* Toolbar */
+  /* --app-bar-bg: #431407;
+  --app-bar-on-bg: #fefce8;*/
+}
+
+.body--dark {
+  --q-primary: #feda00;
+  --q-secondary: #fefce8;
+  --q-accent: #feda00;
+
+  /* High Contrast Semantics for Dark Mode */
+  --q-positive: #4ade80;
+  --q-negative: #f87171;
+  --q-warning: #fbbf24;
+  --q-info: #38bdf8;
+
+  --surface: rgba(30, 30, 30, 0.5);
+  --border: rgba(255, 255, 255, 0.1);
+  --text-main: #fefce8;
+  --text-muted: #a38c86;
+  background-color: #0d0807;
+}
+
+.body--light {
+  background-color: #f7f2f0;
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-h5,
+.text-h6 {
+  font-family: var(--font-ui) !important;
+  font-weight: 500;
+}
+
+/* Base Glassmorphism Class */
+.glass-card {
+  background: var(--surface) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Animated Background */
+.animated-background {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(25, 118, 210, 0.1),
+    transparent 85%
+  );
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
 .text-mono {
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
-.body--dark {
-  --q-color-primary: #29a9f4;
+.text-muted {
+  color: var(--text-muted) !important;
+}
 
-  header {
-    background-color: $blue-grey-10;
-  }
+.q-header {
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  background-color: var(--app-bar-bg) !important;
+  background-color: var(--surface) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--app-bar-on-bg) !important;
 }
 
 .overflow {
   min-height: 6em;
   max-height: 25em;
   overflow: auto;
+}
+
+/* =========================================
+   QUASAR COMPONENT OVERRIDES
+   ========================================= */
+
+/* --- Inputs & Fields ("Modern Flat Clean") --- */
+.q-field__control {
+  border-radius: 8px !important;
+  padding: 0 12px;
+  min-height: 56px !important;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s !important;
+}
+
+.q-field__label {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-size: 1rem;
+  top: 18px;
+  color: var(--neutral-500);
+  transition:
+    transform 0.3s,
+    font-size 0.3s !important;
+}
+
+.q-field--float .q-field__label {
+  transform: translateY(-40%) scale(0.75) !important;
+  font-weight: 700;
+  color: var(--brand-primary) !important;
+}
+
+.q-field__native,
+.q-field__prefix,
+.q-field__suffix,
+.q-field__input {
+  font-weight: 500;
+  color: var(--text-main);
+  padding-top: 20px !important;
+  padding-bottom: 6px !important;
+}
+
+.q-field--outlined .q-field__control {
+  background: transparent !important;
+}
+
+.q-field--outlined.q-field--focused .q-field__control {
+  box-shadow: 0 0 0 2px rgba(67, 20, 7, 0.1) !important;
+}
+
+[data-theme='dark'] .q-field--outlined.q-field--focused .q-field__control {
+  box-shadow: 0 0 0 2px rgba(254, 218, 0, 0.1) !important;
+}
+
+/* --- Chips & Tags --- */
+.q-chip {
+  border-radius: 12px !important;
+  font-weight: 600;
+}
+
+.q-chip.bg-primary {
+  color: var(--brand-on-primary, #fff) !important;
+  background-color: var(--brand-primary, #431407) !important;
+}
+
+.q-chip--clickable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(67, 20, 7, 0.12);
+}
+
+/* --- Badges --- */
+.q-badge {
+  border-radius: 8px !important;
+  padding: 4px 8px;
+  font-weight: 700;
+}
+
+.q-badge--floating {
+  top: -8px;
+  right: -8px;
+}
+
+/* --- Global Hover Effects (Cards/Buttons) --- */
+.q-card:not(.no-hover):hover,
+.panel:not(.no-hover):hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--brand-primary, #431407) !important;
+}
+
+.body--dark .q-card:not(.no-hover):hover,
+.body--dark .panel:not(.no-hover):hover {
+  border-color: var(--brand-tertiary, #feda00) !important;
 }
