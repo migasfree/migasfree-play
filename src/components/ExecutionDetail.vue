@@ -176,13 +176,13 @@ const createTerminal = () => {
 
   // Write existing text (for restored executions)
   if (props.text) {
-    terminal.write(props.text)
+    terminal.write(props.text, () => {
+      // Scroll to top for completed executions, keep bottom for live ones
+      if (!isCurrentlyRunning.value) {
+        terminal.scrollToTop()
+      }
+    })
     writtenLength = props.text.length
-
-    // Scroll to top for completed executions, keep bottom for live ones
-    if (!isCurrentlyRunning.value) {
-      terminal.scrollToTop()
-    }
   }
 }
 
