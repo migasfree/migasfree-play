@@ -22,77 +22,12 @@ export const useExecutionsStore = defineStore('executions', () => {
   const error = ref('')
   let currentCommandId = null
 
-  const trimEndSpaces = (text) => {
-    let lines = text.split('\n')
-    for (let i = 0; i < lines.length; i++) {
-      lines[i] = lines[i].replace(/ +$/, '')
-    }
-    return lines.join('\n')
-  }
-
-  const escapeRegExp = (text) => {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
-  }
-
-  const replaceAll = (str, find, replace) => {
-    const exp = escapeRegExp(find)
-    const re = new RegExp(exp, 'g')
-
-    return str.replace(re, replace)
-  }
-
-  const replaceColors = (txt) => {
-    const start = performance.now()
-    txt = txt.replace(/\\x1b\[\?25l([\s\S]*?)\\x1b\[\?25h/g, '')
-
-    // Patterns that should be stripped completely
-    const stripPatterns = [
-      '/\r\x1b[2K\x1b[32m[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]\x1b[0m/g',
-      '/\x1b[32m[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]\x1b[0m/g',
-      '/\x1b[?25[lh]/g',
-      '/\x1b[1A/g',
-      '/\x1b[1m/g',
-      '/\x1b[2K/g',
-      '/\r\x1b[2K/g',
-    ]
-    stripPatterns.forEach((p) => {
-      txt = txt.replace(p, '')
-    })
-
-    // Mapping of ANSI codes -> HTML spans
-    const ansiMap = [
-      ['\x1b[95m', "<span class='text-purple'>"],
-      ['\x1b[35m', "<span class='text-purple'>"],
-      ['\x1b[92m', "<span class='text-green'>"],
-      ['\x1b[1;32m', "<span class='text-green'>"],
-      ['\x1b[1;92m', "<span class='text-light-green'>"],
-      ['\x1b[93m', "<span class='text-amber'>"],
-      ['\x1b[91m', "<span class='text-negative'>"],
-      ['\x1b[1;91m', "<span class='text-negative'>"],
-      ['\x1b[33m', "<span class='text-amber'>"],
-      ['\x1b[32m', "<span class='text-blue'>"],
-      ['\x1b[1;34m', "<span class='text-blue'>"],
-      ['\x1b[1;36m', "<span class='text-indigo'>"],
-      ['\x1b[2;36m', "<span class='text-teal'>"],
-      ['\x1b[4;94m', "<span class='text-blue'>"],
-      ['\x1b[0m', '</span>'],
-    ]
-    ansiMap.forEach(([code, repl]) => {
-      txt = replaceAll(txt, code, repl)
-    })
-
-    txt = txt.replace(/\t/g, '&nbsp;'.repeat(8))
-    txt = txt.replace(/^ +/gm, (m) => '&nbsp;'.repeat(m.length))
-    txt = txt.replace(/(?:\r\n|\r|\n)/g, '<br />')
-
-    const end = performance.now()
-    if (end - start > 50) {
-      console.warn(
-        `mfp:replaceColors:slow - ${Math.round(end - start)}ms for ${txt.length} chars`,
-      )
-    }
-    return txt
-  }
+  const stripAnsi = (text) =>
+    text.replace(
+      // eslint-disable-next-line no-control-regex
+      /\x1b\[[0-9;]*[a-zA-Z]|\x1b\[\?[0-9;]*[a-zA-Z]/g,
+      '',
+    )
 
   const getExecutions = async () => {
     try {
@@ -159,9 +94,7 @@ export const useExecutionsStore = defineStore('executions', () => {
         () => {
           if (isRunningCommand.value && currentCommandId === commandId) {
             console.error('Command timeout reached, forcing cleanup')
-            appendExecutionText(
-              '\n<span class="text-negative">[Command timeout - forced cleanup]</span>\n',
-            )
+            appendExecutionText('\n[Command timeout - forced cleanup]\n')
             window.electronAPI.killCommand(commandId)
             window.electronAPI.removeCommandListeners(commandId)
             finishedCmd()
@@ -173,13 +106,12 @@ export const useExecutionsStore = defineStore('executions', () => {
 
       // Set up listeners BEFORE spawning to avoid race condition
       window.electronAPI.onCommandStdout(commandId, (data) => {
-        appendExecutionText(replaceColors(trimEndSpaces(data)))
+        appendExecutionText(data)
       })
 
       window.electronAPI.onCommandStderr(commandId, (data) => {
-        const text = replaceColors(trimEndSpaces(data))
-        appendExecutionError(text)
-        appendExecutionText(text)
+        appendExecutionError(data)
+        appendExecutionText(data)
       })
 
       window.electronAPI.onCommandExit(commandId, async (code) => {
@@ -197,9 +129,7 @@ export const useExecutionsStore = defineStore('executions', () => {
         } else if (error.value === '') {
           packagesStore.setInstalledPackages()
         } else {
-          uiStore.notifyError(
-            error.value.replace(/<br \/>/g, '\n').replace(/(<([^>]+)>)/gi, ''),
-          )
+          uiStore.notifyError(stripAnsi(error.value))
           resetExecutionError()
         }
 
@@ -279,9 +209,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   const cancelCurrentCommand = () => {
     if (currentCommandId && isRunningCommand.value) {
       window.electronAPI.killCommand(currentCommandId)
-      appendExecutionText(
-        '\n<span class="text-negative">[Command cancelled by user]</span>\n',
-      )
+      appendExecutionText('\n[Command cancelled by user]\n')
       uiStore.notifyInfo(gettext.$gettext('Command cancelled'))
       finishedCmd()
       window.electronAPI.removeCommandListeners(currentCommandId)
@@ -294,6 +222,7 @@ export const useExecutionsStore = defineStore('executions', () => {
     lastId,
     isRunningCommand,
     error,
+    stripAnsi,
     getExecutions,
     run,
     cancelCurrentCommand,

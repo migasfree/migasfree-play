@@ -349,6 +349,33 @@ describe('Executions Store', () => {
     })
   })
 
+  describe('stripAnsi utility', () => {
+    it('strips basic ANSI color codes', () => {
+      const store = useExecutionsStore()
+      const input = '\x1b[32mOK\x1b[0m Package installed'
+      expect(store.stripAnsi(input)).toBe('OK Package installed')
+    })
+
+    it('strips multiple and complex ANSI sequences', () => {
+      const store = useExecutionsStore()
+      const input =
+        '\x1b[1;91mERROR\x1b[0m: \x1b[93mwarning\x1b[0m in \x1b[4;94mfile.txt\x1b[0m'
+      expect(store.stripAnsi(input)).toBe('ERROR: warning in file.txt')
+    })
+
+    it('strips cursor visibility sequences', () => {
+      const store = useExecutionsStore()
+      const input = '\x1b[?25lhidden text\x1b[?25h'
+      expect(store.stripAnsi(input)).toBe('hidden text')
+    })
+
+    it('returns plain text unchanged', () => {
+      const store = useExecutionsStore()
+      const input = 'plain text without any codes'
+      expect(store.stripAnsi(input)).toBe(input)
+    })
+  })
+
   describe('Error handling in stderr', () => {
     it('captures stderr output as error', async () => {
       const store = useExecutionsStore()
