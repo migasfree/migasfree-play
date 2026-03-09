@@ -7,10 +7,10 @@
             {{ name }}
             <q-tooltip>{{ name }}</q-tooltip>
           </div>
-          <div class="text-caption text-blue-grey">
+          <div class="text-caption text-muted">
             {{ id }} {{ alternativeName ? `(${alternativeName})` : '' }}
           </div>
-          <div v-if="description" class="text-caption text-grey-8 q-mt-sm">
+          <div v-if="description" class="text-caption text-muted q-mt-sm">
             <q-icon name="mdi-map-marker" /> {{ description }}
           </div>
         </q-card-section>
@@ -61,7 +61,6 @@
                   <q-chip
                     v-if="isAssigned(item)"
                     color="positive"
-                    text-color="white"
                     icon="mdi-check-circle"
                     outline
                     dense
@@ -74,7 +73,6 @@
                 <q-chip
                   v-if="isInflicted(item)"
                   color="info"
-                  text-color="white"
                   icon="mdi-link-variant"
                   dense
                 >
