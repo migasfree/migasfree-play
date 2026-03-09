@@ -38,6 +38,18 @@
   --text-main: #fefce8;
   --text-muted: #a38c86;
   background-color: #0d0807;
+
+  /* High Contrast for Yellow Elements */
+  .bg-primary,
+  .bg-accent,
+  .q-btn.bg-primary,
+  .q-btn.bg-accent,
+  .q-badge.bg-primary,
+  .q-badge.bg-accent,
+  .q-chip.bg-primary,
+  .q-chip.bg-accent {
+    color: #431407 !important;
+  }
 }
 
 .body--light {
