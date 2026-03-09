@@ -4,9 +4,6 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { useEnvConfigStore } from 'src/stores/envConfig'
 
 vi.mock('quasar', () => ({
-  date: {
-    formatDate: () => `mock-date-${Date.now()}`,
-  },
   useQuasar: () => ({
     dark: { isActive: false },
     notify: vi.fn(),
@@ -160,8 +157,8 @@ describe('Executions Store', () => {
     envStore.executionsLimit = 2
 
     // Helper to run a command to completion
-    const runCommand = async (id) => {
-      vi.spyOn(Date, 'now').mockReturnValue(Number(id))
+    const runCommand = async (time) => {
+      vi.setSystemTime(new Date(time))
 
       let exitCallback = null
       window.electronAPI.onCommandExit.mockImplementation((_, cb) => {
@@ -169,21 +166,23 @@ describe('Executions Store', () => {
         return () => {}
       })
 
-      store.run({ cmd: `cmd-${id}`, text: `Command ${id}`, icon: '' })
+      store.run({ cmd: `cmd-${time}`, text: `Command ${time}`, icon: '' })
       await exitCallback(0)
     }
 
-    await runCommand('100')
-    await runCommand('200')
-    await runCommand('300')
+    vi.useFakeTimers()
+    await runCommand('2026-03-09T10:00:00.000Z')
+    await runCommand('2026-03-09T11:00:00.000Z')
+    await runCommand('2026-03-09T12:00:00.000Z')
 
     // Should only have 2 items (limit is 2)
     const keys = Object.keys(store.items)
     expect(keys.length).toBe(2)
 
-    expect(keys).not.toContain('mock-date-100')
-    expect(keys).toContain('mock-date-200')
-    expect(keys).toContain('mock-date-300')
+    expect(keys).not.toContain('2026-03-09T10:00:00.000Z')
+    expect(keys).toContain('2026-03-09T11:00:00.000Z')
+    expect(keys).toContain('2026-03-09T12:00:00.000Z')
+    vi.useRealTimers()
   })
 
   describe('Executions persistence', () => {

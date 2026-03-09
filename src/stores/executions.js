@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { date } from 'quasar'
 
 import { gettext } from 'boot/gettext'
 
@@ -178,10 +177,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const addExecution = ({ command, icon }) => {
-    lastId.value = date.formatDate(
-      Date.parse(new Date()),
-      'YYYY-MM-DD HH:mm:ss',
-    )
+    lastId.value = new Date().toISOString()
     items.value[lastId.value] = {
       command,
       icon,
