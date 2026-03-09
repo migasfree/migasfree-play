@@ -1,2 +1,2 @@
-import '@fontsource/lato'
-import '@fontsource/ubuntu-mono'
+import '@fontsource/dosis'
+import '@fontsource/jetbrains-mono'

@@ -23,8 +23,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@fontsource/lato": "5.2.6",
-    "@fontsource/ubuntu-mono": "5.2.6",
+    "@fontsource/dosis": "5.2.8",
+    "@fontsource/jetbrains-mono": "5.2.8",
     "@quasar/extras": "1.17.0",
     "axios": "1.13.5",
     "compare-versions": "6.1.1",
