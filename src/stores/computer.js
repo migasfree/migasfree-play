@@ -23,6 +23,7 @@ export const useComputerStore = defineStore('computer', () => {
   const helpdesk = ref('')
   const data = ref({})
   const attribute = ref(0)
+  const platform = ref('')
 
   const uiStore = useUiStore()
   const serverStore = useServerStore()
@@ -44,6 +45,7 @@ export const useComputerStore = defineStore('computer', () => {
       name.value = data.computer_name
       user.value = data.user
       project.value = data.project
+      platform.value = await window.electronAPI.getPlatform()
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -177,6 +179,7 @@ export const useComputerStore = defineStore('computer', () => {
     helpdesk,
     data,
     attribute,
+    platform,
     computerInfo,
     computerNetwork,
     computerId,
