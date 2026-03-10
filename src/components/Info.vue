@@ -30,7 +30,7 @@
         <div class="row q-col-gutter-md">
           <!-- User & Sync -->
           <div class="col-12 col-sm-6">
-            <q-card flat bordered class="info-card h-full">
+            <q-card flat bordered class="info-card card-stretch">
               <q-card-section>
                 <div
                   class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
@@ -50,7 +50,7 @@
 
           <!-- Connection -->
           <div class="col-12 col-sm-6">
-            <q-card flat bordered class="info-card h-full">
+            <q-card flat bordered class="info-card card-stretch">
               <q-card-section>
                 <div
                   class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
@@ -98,7 +98,7 @@
 
           <!-- Hardware -->
           <div v-if="'product' in data" class="col-12 col-sm-6">
-            <q-card flat bordered class="info-card h-full">
+            <q-card flat bordered class="info-card card-stretch">
               <q-card-section>
                 <div
                   class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
@@ -130,7 +130,7 @@
 
           <!-- Network -->
           <div v-if="'mac_address' in data" class="col-12 col-sm-6">
-            <q-card flat bordered class="info-card h-full">
+            <q-card flat bordered class="info-card card-stretch">
               <q-card-section>
                 <div
                   class="text-subtitle1 text-weight-bold row items-center q-mb-md text-primary"
@@ -253,7 +253,7 @@
           <div class="label-container flex flex-center">
             <!-- The Actual Label (80x50mm optimized) -->
             <div id="printable-label" class="physical-label shadow-10">
-              <div
+              <header
                 class="label-header row no-wrap items-center justify-between q-px-md q-py-sm"
               >
                 <div class="row no-wrap items-center">
@@ -276,11 +276,11 @@
                   </div>
                 </div>
                 <qrcode-vue :value="qrCode" :size="80" level="L" />
-              </div>
+              </header>
 
               <q-separator class="opacity-10" />
 
-              <div class="label-body q-px-md q-py-sm">
+              <section class="label-body q-px-md q-py-sm">
                 <div class="row items-baseline no-wrap q-mb-xs">
                   <div
                     class="text-subtitle1 text-weight-bolder tracking-tight ellipsis q-mr-sm"
@@ -310,15 +310,15 @@
                     {{ host }}
                   </div>
                 </div>
-              </div>
+              </section>
 
-              <div
+              <footer
                 class="label-footer q-px-md q-py-xs bg-grey-1 text-center border-top"
               >
                 <div class="label-helpdesk text-weight-bold text-grey-8">
                   {{ helpdesk }}
                 </div>
-              </div>
+              </footer>
             </div>
           </div>
 
@@ -563,15 +563,17 @@ const inventoryText = computed(() => {
 }
 
 .info-card {
-  transition: all 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
   height: 100%;
 }
 
 .info-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
-.h-full {
+.card-stretch {
   height: 100%;
 }
 
@@ -601,19 +603,21 @@ const inventoryText = computed(() => {
 }
 
 .inventory-item:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--bg-surface-variant);
 }
 
 /* === Physical Label (80x50mm optimized) === */
 .physical-label {
   width: 320px;
-  background: white;
-  color: #1a1210;
-  border-radius: 12px;
+  background: var(--bg-card);
+  color: var(--neutral-900);
+  border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
   font-family: var(--font-ui);
-  transition: all 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .label-logo {
@@ -627,17 +631,17 @@ const inventoryText = computed(() => {
 }
 
 .label-subtitle {
-  font-size: 9px;
+  font-size: 8px;
   line-height: 1;
 }
 
 .label-overline {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   line-height: 1;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .label-uuid {
@@ -646,7 +650,7 @@ const inventoryText = computed(() => {
 }
 
 .label-server {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .label-helpdesk {
@@ -666,7 +670,7 @@ const inventoryText = computed(() => {
 }
 
 .border-top {
-  border-top: 1px dashed #e0e0e0;
+  border-top: 1px dashed var(--neutral-300);
 }
 
 .uppercase {
@@ -683,13 +687,13 @@ const inventoryText = computed(() => {
 }
 
 .body--dark .inventory-container {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: var(--bg-surface-variant) !important;
 }
 
 .body--dark .physical-label {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--bg-surface-variant);
+  color: var(--neutral-900);
+  border-color: var(--border);
   backdrop-filter: blur(10px);
 }
 
