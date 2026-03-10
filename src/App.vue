@@ -4,38 +4,56 @@
       <div
         v-if="isLoading"
         key="loading"
-        class="splash-overlay window-height animated-background flex flex-center"
+        class="splash-overlay flex flex-center"
         :style="{ pointerEvents: isLoading ? 'auto' : 'none' }"
       >
-        <div class="row justify-center items-center content-center full-height">
-          <div class="text-center splash-content">
-            <div class="q-mb-xl">
-              <img
-                id="logo"
-                class="pulse"
-                src="img/migasfree-play.svg"
-                width="180"
-              />
-              <div class="text-h6 text-grey-8 q-mt-sm">
-                migasfree &#x1f49a; change
+        <div class="splash-content text-center">
+          <!-- Logo & Brand Section -->
+          <div class="brand-section q-mb-xl">
+            <img
+              id="logo"
+              class="pulse-gentle q-mb-md"
+              src="img/migasfree-play.svg"
+              width="160"
+            />
+            <div class="row items-center justify-center brand-text-group">
+              <span class="text-h4 text-weight-bold brand-name q-mr-sm"
+                >migasfree</span
+              >
+              <div class="brand-slogan text-subtitle1 text-grey-7">
+                <q-icon name="mdi-heart" color="negative" size="xs" /> change
               </div>
             </div>
+          </div>
 
-            <Transition name="fade" mode="out-in">
-              <div v-if="appIsStopped" key="error">
-                <q-card flat bordered class="glass-card">
-                  <q-card-section class="text-center q-pa-lg">
-                    <q-icon
-                      name="mdi-alert-circle-outline"
-                      color="negative"
-                      size="4rem"
-                      class="q-mb-md"
-                    />
-                    <div class="text-h6 q-mb-xs">{{ status }}</div>
-                    <div class="text-body2 text-grey-7">
-                      {{ $gettext('Impossible to continue.') }}
+          <!-- Interaction Zone: Progress or Error -->
+          <Transition name="fade" mode="out-in">
+            <!-- Error State -->
+            <div v-if="appIsStopped" key="error">
+              <q-card flat class="glass-card error-card">
+                <q-card-section class="q-pa-xl">
+                  <q-icon
+                    name="mdi-alert-octagon-outline"
+                    color="negative"
+                    size="64px"
+                    class="q-mb-lg"
+                  />
+                  <div class="text-h5 text-weight-bolder q-mb-sm">
+                    {{ status }}
+                  </div>
+                  <p class="text-body1 text-grey-7 q-mb-lg">
+                    {{ $gettext('Impossible to synchronize with the server.') }}
+                  </p>
+
+                  <div
+                    class="retry-indicator q-pa-md rounded-borders bg-surface-variant"
+                  >
+                    <div
+                      class="text-caption text-weight-bold uppercase letter-spacing-1 text-grey-6 q-mb-xs"
+                    >
+                      {{ $gettext('Network Failure') }}
                     </div>
-                    <div class="text-caption text-grey-6 q-mt-sm">
+                    <div class="text-body2 text-weight-medium">
                       {{
                         $ngettext(
                           'Automatic retry in %{ count } second...',
@@ -45,71 +63,68 @@
                         )
                       }}
                     </div>
-                  </q-card-section>
+                  </div>
+                </q-card-section>
 
-                  <q-separator />
+                <q-separator vertical class="opacity-10" />
 
-                  <q-card-actions align="center" class="q-pa-md">
-                    <q-btn
-                      unelevated
-                      rounded
-                      color="primary"
-                      :label="$gettext('Retry now')"
-                      icon="mdi-reload"
-                      class="q-px-lg"
-                      @click="retry"
-                    />
-                  </q-card-actions>
-                </q-card>
-              </div>
+                <q-card-actions align="center" class="q-pa-lg">
+                  <q-btn
+                    unelevated
+                    rounded
+                    color="primary"
+                    padding="12px 32px"
+                    :label="$gettext('Retry now')"
+                    icon="mdi-reload"
+                    class="text-weight-bold"
+                    @click="retry"
+                  />
+                </q-card-actions>
+              </q-card>
+            </div>
 
-              <div v-else key="progress" class="text-left">
-                <div class="loading-container q-pa-md glass-card">
-                  <TransitionGroup name="list" tag="div" class="loading-list">
+            <!-- Loading Progress -->
+            <div v-else key="progress" class="loading-progress">
+              <div class="loading-container glass-card q-pa-lg">
+                <div class="loading-list">
+                  <TransitionGroup name="list">
                     <div
                       v-for="(item, index) in loadingData"
                       :key="item.label"
-                      class="loading-item row items-center q-py-xs"
+                      class="loading-item row items-center q-py-sm"
                       :class="[
-                        `delay-${index}`,
                         {
-                          'opacity-50 text-grey-7':
-                            index < loadingData.length - 1,
+                          'is-past': index < loadingData.length - 1,
+                          'is-current': index === loadingData.length - 1,
                         },
                       ]"
                     >
-                      <div class="col-auto q-mr-md text-center icon-box">
-                        <q-icon
-                          v-if="
-                            loadedData.includes(item.value) &&
-                            index < loadingData.length - 1
-                          "
-                          color="positive"
-                          name="mdi-check-circle"
-                          size="xs"
-                        />
-                        <q-spinner
-                          v-else
-                          color="primary"
-                          size="xs"
-                          class="block"
-                        />
-                      </div>
                       <div
-                        class="col text-body2 transition-colors"
-                        :class="{
-                          'text-weight-bold text-primary':
-                            index === loadingData.length - 1,
-                        }"
+                        class="col-auto q-mr-md flex flex-center status-indicator"
                       >
+                        <q-icon
+                          v-if="index < loadingData.length - 1"
+                          color="positive"
+                          name="mdi-check-bold"
+                          size="14px"
+                          class="animated zoomIn"
+                        />
+                        <q-spinner-dots v-else color="primary" size="20px" />
+                      </div>
+                      <div class="col text-left text-body2 loading-text">
                         {{ item.label }}
                       </div>
                     </div>
                   </TransitionGroup>
                 </div>
               </div>
-            </Transition>
-          </div>
+
+              <!-- Footer info -->
+              <div class="q-mt-xl text-caption text-grey-6 opacity-60">
+                {{ app.name }} v{{ app.version }} • {{ app.copyright }}
+              </div>
+            </div>
+          </Transition>
         </div>
       </div>
     </Transition>
@@ -129,6 +144,8 @@ import { appName, retryIntervalSeconds } from 'config/app.conf'
 
 import { useProgramStore } from './stores/program'
 import { useUiStore } from './stores/ui'
+
+import app from '../package.json'
 
 const programStore = useProgramStore()
 const uiStore = useUiStore()
@@ -208,52 +225,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-.icon-box {
-  width: 24px;
-}
-
-.opacity-50 {
-  opacity: 0.5;
-}
-
-.transition-colors {
-  transition:
-    color 0.3s ease,
-    font-weight 0.3s ease;
-}
-
-.loading-container {
-  max-width: 400px;
-  margin: 0 auto;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.loading-list {
-  position: relative;
-}
-
-/* Transitions */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s ease;
-  pointer-events: none !important;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
 .splash-overlay {
   position: fixed;
   top: 0;
@@ -261,27 +232,126 @@ onUnmounted(() => {
   width: 100vw;
   height: 100vh;
   z-index: 5000;
-  background: var(--body-bg, #f7f2f0);
-}
-
-.body--dark .splash-overlay {
-  background: #0d0807;
-}
-
-#main-content {
-  position: relative;
-  z-index: 1;
+  background: var(--bg-body);
+  transition: background 0.5s ease;
 }
 
 .splash-content {
-  width: 420px;
-  max-width: 90vw;
-  padding: 0 16px;
+  width: 440px;
+  max-width: 92vw;
+  padding: 0 var(--spacing-md, 16px);
 }
 
-@for $i from 0 through 20 {
-  .delay-#{$i} {
-    animation-delay: #{$i * 0.1}s;
+/* Brand Section */
+.brand-name {
+  font-family: var(--font-ui);
+  color: var(--brand-primary);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.brand-slogan {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+/* Cards (Glassmorphism) */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+
+  &.error-card {
+    border-top: 4px solid var(--q-negative);
   }
+}
+
+.loading-container {
+  width: 100%;
+}
+
+/* Loading Items */
+.loading-item {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.is-past {
+    opacity: 0.4;
+    filter: grayscale(1);
+    transform: scale(0.98);
+  }
+
+  &.is-current {
+    transform: scale(1.02);
+    .loading-text {
+      font-weight: 700;
+      color: var(--brand-primary);
+    }
+  }
+}
+
+.status-indicator {
+  width: 28px;
+  height: 28px;
+}
+
+/* Animations */
+.pulse-gentle {
+  animation: pulse-gentle-animation 4s ease-in-out infinite;
+}
+
+@keyframes pulse-gentle-animation {
+  0%,
+  100% {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* List Transitions */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.letter-spacing-1 {
+  letter-spacing: 1px;
+}
+
+.bg-surface-variant {
+  background: var(--bg-surface-variant);
 }
 </style>
