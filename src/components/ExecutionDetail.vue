@@ -1,7 +1,7 @@
 <template>
   <q-scroll-observer @scroll="onScroll" />
 
-  <q-expansion-item popup :default-opened="id === lastId" @show="onExpand">
+  <q-expansion-item v-model="isExpanded" popup @show="onExpand">
     <template #header>
       <q-item-section v-if="icon" avatar>
         <q-avatar>
@@ -106,6 +106,7 @@ const { lastId, isRunningCommand } = storeToRefs(executionsStore)
 const scrollInfo = ref({})
 const showError = ref(false)
 const terminalRef = ref(null)
+const isExpanded = ref(props.id === lastId.value)
 
 let terminal = null
 let fitAddon = null
@@ -199,8 +200,6 @@ const disposeTerminal = () => {
   }
 }
 
-const isDefaultOpened = computed(() => props.id === lastId.value)
-
 const onExpand = () => {
   if (!isLegacyHtml.value) {
     nextTick(() => {
@@ -209,13 +208,25 @@ const onExpand = () => {
   }
 }
 
-// Create terminal on mount if this is the default-opened item
+// Collapse non-current items when a new execution starts
+watch(
+  () => lastId.value,
+  (newLastId) => {
+    if (props.id !== newLastId) {
+      isExpanded.value = false
+    } else {
+      isExpanded.value = true
+    }
+  },
+)
+
+// Create terminal on mount if this item is expanded
 onMounted(() => {
-  if (isDefaultOpened.value && !isLegacyHtml.value) {
+  if (isExpanded.value && !isLegacyHtml.value) {
     // Allow the animation to complete and the container to get dimensions
     setTimeout(() => {
       createTerminal()
-    }, 100)
+    }, 150)
   }
 })
 
@@ -223,15 +234,24 @@ onMounted(() => {
 watch(
   () => props.text,
   (newText) => {
-    if (isLegacyHtml.value) return
+    if (isLegacyHtml.value || !newText) return
 
-    if (terminal && newText.length > writtenLength) {
+    // If terminal doesn't exist yet, try to create it now
+    if (!terminal && terminalRef.value) {
+      createTerminal()
+      // createTerminal writes props.text and sets writtenLength,
+      // so no further action is needed for this chunk
+    } else if (terminal && newText.length > writtenLength) {
       const chunk = newText.slice(writtenLength)
       terminal.write(chunk)
       writtenLength = newText.length
     }
 
-    // Auto-scroll logic
+    // Auto-scroll: terminal internal scroll + page scroll
+    if (terminal && isCurrentlyRunning.value) {
+      terminal.scrollToBottom()
+    }
+
     const elem = document.getElementById('main')
     if (
       !('position' in scrollInfo.value) ||
@@ -265,7 +285,6 @@ const cancelCommand = () => {
 .legacy-container {
   min-height: 200px;
   background: #1e1e2e;
-  border-radius: 0 0 8px 8px;
 }
 
 .terminal-container {

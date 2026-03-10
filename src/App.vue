@@ -8,7 +8,7 @@
         :style="{ pointerEvents: isLoading ? 'auto' : 'none' }"
       >
         <div class="row justify-center items-center content-center full-height">
-          <div class="col-10 col-sm-6 col-md-4 text-center">
+          <div class="text-center splash-content">
             <div class="q-mb-xl">
               <img
                 id="logo"
@@ -271,6 +271,12 @@ onUnmounted(() => {
 #main-content {
   position: relative;
   z-index: 1;
+}
+
+.splash-content {
+  width: 420px;
+  max-width: 90vw;
+  padding: 0 16px;
 }
 
 @for $i from 0 through 20 {

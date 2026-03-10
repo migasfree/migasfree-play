@@ -1,9 +1,9 @@
 <template>
   <q-list v-if="Object.keys(items).length > 0" class="q-mx-sm q-my-lg">
     <ExecutionDetail
-      v-for="(item, name, index) in items"
+      v-for="(item, name) in items"
       :id="name"
-      :key="index"
+      :key="name"
       :command="item.command"
       :text="item.text"
       :error="item.error || ''"
