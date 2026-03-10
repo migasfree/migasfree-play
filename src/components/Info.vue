@@ -247,38 +247,104 @@
         </div>
       </div>
 
-      <!-- Right Column: Identity -->
+      <!-- Right Column: Identity Label -->
       <div class="col-12 col-md-4">
         <div class="sticky-top">
-          <q-card flat bordered class="info-card print-card">
-            <q-card-section class="text-center">
-              <div class="q-pa-md q-mb-md">
-                <qrcode-vue :value="qrCode" :size="140" level="L" />
+          <div class="label-container flex flex-center">
+            <!-- The Actual Label (80x50mm optimized) -->
+            <div id="printable-label" class="physical-label shadow-10">
+              <div
+                class="label-header row no-wrap items-center justify-between q-px-md q-py-sm"
+              >
+                <div class="row no-wrap items-center">
+                  <img
+                    alt="Migasfree logo"
+                    src="img/migasfree-play.svg"
+                    class="q-mr-sm label-logo"
+                  />
+                  <div class="column">
+                    <div
+                      class="text-subtitle2 text-weight-bolder label-brand-text line-height-1"
+                    >
+                      migasfree
+                    </div>
+                    <div
+                      class="label-subtitle uppercase letter-spacing-1 text-weight-bold text-grey-7"
+                    >
+                      {{ $gettext('Identification') }}
+                    </div>
+                  </div>
+                </div>
+                <qrcode-vue :value="qrCode" :size="80" level="L" />
               </div>
 
-              <div class="text-h6 text-weight-bold q-mb-xs text-primary">
-                {{ name }}
+              <q-separator class="opacity-10" />
+
+              <div class="label-body q-px-md q-py-sm">
+                <div class="row items-baseline no-wrap q-mb-xs">
+                  <div
+                    class="text-subtitle1 text-weight-bolder tracking-tight ellipsis q-mr-sm"
+                  >
+                    {{ name }}
+                  </div>
+                  <div class="text-caption text-grey-7 text-no-wrap">
+                    {{ computerId }}
+                  </div>
+                </div>
+
+                <div class="q-mb-xs">
+                  <div class="label-overline text-grey-6">UUID</div>
+                  <div class="label-uuid text-weight-bold text-mono">
+                    {{ uuid }}
+                  </div>
+                </div>
+
+                <div class="row no-wrap items-center">
+                  <q-icon
+                    name="mdi-server-network"
+                    size="12px"
+                    color="grey-7"
+                    class="q-mr-xs"
+                  />
+                  <div class="label-server text-weight-medium text-grey-8">
+                    {{ host }}
+                  </div>
+                </div>
               </div>
-              <div class="text-subtitle2 text-grey-8">{{ computerId }}</div>
 
-              <q-separator class="q-my-md" />
-
-              <div class="text-body2 text-grey-8 q-mb-xs">{{ uuid }}</div>
-              <div class="text-body2 text-grey-8 q-mb-xs">{{ host }}</div>
-              <div class="text-body2 text-grey-8">{{ helpdesk }}</div>
-
-              <div class="q-mt-lg print-hide">
-                <q-btn
-                  outline
-                  color="primary"
-                  :label="$gettext('Print Label')"
-                  icon="mdi-printer"
-                  class="full-width"
-                  @click="printLabel"
-                />
+              <div
+                class="label-footer q-px-md q-py-xs bg-grey-1 text-center border-top"
+              >
+                <div class="label-helpdesk text-weight-bold text-grey-8">
+                  {{ helpdesk }}
+                </div>
               </div>
-            </q-card-section>
-          </q-card>
+            </div>
+          </div>
+
+          <!-- Hint & Print Button -->
+          <div class="text-center q-mt-lg print-hide">
+            <q-btn
+              outline
+              color="primary"
+              :label="$gettext('Print Label')"
+              icon="mdi-printer"
+              class="q-mb-md"
+              @click="printLabel"
+            />
+            <div class="opacity-60 flex flex-center">
+              <q-icon
+                name="mdi-information-outline"
+                size="xs"
+                class="q-mr-xs"
+              />
+              <span class="text-caption">
+                {{
+                  $gettext('Label size optimized for 80x50mm thermal printers.')
+                }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -286,21 +352,59 @@
   <Teleport to="body">
     <div class="print-container hidden-print">
       <div class="print-card-content">
-        <div class="text-center">
-          <div class="q-pa-md q-mb-md">
-            <qrcode-vue :value="qrCode" :size="200" level="L" render-as="svg" />
+        <div class="row no-wrap items-center justify-between q-px-md q-py-sm">
+          <div class="row no-wrap items-center">
+            <img
+              alt="Migasfree logo"
+              src="img/migasfree-play.svg"
+              class="q-mr-sm"
+              width="36"
+              height="36"
+            />
+            <div class="column">
+              <div class="text-subtitle2 text-weight-bolder text-black">
+                migasfree
+              </div>
+              <div
+                class="label-subtitle uppercase letter-spacing-1 text-weight-bold text-grey-7"
+              >
+                {{ $gettext('Identification') }}
+              </div>
+            </div>
+          </div>
+          <qrcode-vue :value="qrCode" :size="100" level="L" render-as="svg" />
+        </div>
+
+        <hr class="print-separator" />
+
+        <div class="q-px-md q-py-sm">
+          <div class="row items-baseline no-wrap q-mb-xs">
+            <span class="text-subtitle1 text-weight-bolder text-black q-mr-sm">
+              {{ name }}
+            </span>
+            <span class="text-caption text-grey-8">{{ computerId }}</span>
           </div>
 
-          <div class="text-h5 text-weight-bold q-mb-sm text-black">
-            {{ name }}
+          <div class="q-mb-xs">
+            <div class="label-overline text-grey-8">UUID</div>
+            <div class="label-uuid text-weight-bold text-black">
+              {{ uuid }}
+            </div>
           </div>
-          <div class="text-h6 text-grey-9 q-mb-md">{{ computerId }}</div>
 
-          <hr class="print-separator" />
+          <div class="row no-wrap items-center">
+            <span class="label-server text-weight-medium text-grey-9">
+              {{ host }}
+            </span>
+          </div>
+        </div>
 
-          <div class="text-body1 text-black q-mb-xs">{{ uuid }}</div>
-          <div class="text-body1 text-black q-mb-xs">{{ host }}</div>
-          <div class="text-body1 text-black">{{ helpdesk }}</div>
+        <hr class="print-separator" />
+
+        <div class="text-center q-py-xs q-px-md">
+          <span class="label-helpdesk text-weight-bold text-black">
+            {{ helpdesk }}
+          </span>
         </div>
       </div>
     </div>
@@ -500,6 +604,75 @@ const inventoryText = computed(() => {
   background: rgba(0, 0, 0, 0.03);
 }
 
+/* === Physical Label (80x50mm optimized) === */
+.physical-label {
+  width: 320px;
+  background: white;
+  color: #1a1210;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: var(--font-ui);
+  transition: all 0.3s ease;
+}
+
+.label-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.label-brand-text {
+  color: var(--brand-primary);
+}
+
+.label-subtitle {
+  font-size: 9px;
+  line-height: 1;
+}
+
+.label-overline {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.label-uuid {
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.label-server {
+  font-size: 11px;
+}
+
+.label-helpdesk {
+  font-size: 12px;
+}
+
+.letter-spacing-1 {
+  letter-spacing: 1.5px;
+}
+
+.tracking-tight {
+  letter-spacing: -0.5px;
+}
+
+.line-height-1 {
+  line-height: 1;
+}
+
+.border-top {
+  border-top: 1px dashed #e0e0e0;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
 /* Dark Mode Adjustments */
 .body--dark .info-card {
   border-color: rgba(255, 255, 255, 0.1);
@@ -513,10 +686,29 @@ const inventoryText = computed(() => {
   background: rgba(255, 255, 255, 0.05) !important;
 }
 
-.body--dark .text-grey-7,
+.body--dark .physical-label {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.body--dark .label-brand-text {
+  color: var(--q-accent);
+}
+
+.body--dark .border-top {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .label-footer {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
 .body--dark .text-grey-6,
+.body--dark .text-grey-7,
 .body--dark .text-grey-8 {
-  color: #bbb !important;
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
 /* Default state: hidden */
@@ -547,16 +739,15 @@ const inventoryText = computed(() => {
 
   .print-card-content {
     border: 2px solid #000;
-    padding: 40px;
+    padding: 20px;
     border-radius: 12px;
-    width: 80%;
-    max-width: 500px;
+    width: 320px;
   }
 
   .print-separator {
     border: 0;
-    border-top: 1px solid #000;
-    margin: 20px 0;
+    border-top: 1px dashed #ccc;
+    margin: 12px 0;
   }
 }
 </style>
