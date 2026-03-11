@@ -4,6 +4,23 @@
       <q-header class="glass-header print-hide">
         <q-toolbar>
           <q-btn
+            ref="sync"
+            unelevated
+            round
+            icon="mdi-play"
+            size="18px"
+            class="q-mr-md sync-btn-primary"
+            color="primary"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
+            @click="synchronize"
+          >
+            <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
+            <template #loading>
+              <q-spinner color="white" />
+            </template>
+          </q-btn>
+          <q-btn
             v-if="showComputerLink"
             stretch
             flat
@@ -40,29 +57,10 @@
       <q-page-container id="main">
         <router-view />
 
-        <q-page-sticky
-          class="print-hide"
-          position="bottom-right"
-          :offset="[18, 18]"
-        >
-          <q-btn
-            ref="sync"
-            fab
-            icon="mdi-play"
-            color="primary"
-            :loading="isRunningCommand"
-            :disabled="isRunningCommand"
-            class="sync-btn"
-            @click="synchronize"
-          >
-            <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
-          </q-btn>
-        </q-page-sticky>
-
         <q-page-scroller
           position="bottom-right"
           reverse
-          :offset="[18, 100]"
+          :offset="[18, 18]"
           :scroll-offset="0"
           class="print-hide"
         >
@@ -71,7 +69,7 @@
 
         <q-page-scroller
           position="bottom-right"
-          :offset="[18, 100]"
+          :offset="[18, 18]"
           :scroll-offset="300"
           class="print-hide"
         >
@@ -160,33 +158,34 @@ onMounted(async () => {
 })
 </script>
 
-<style>
+<style lang="scss">
 @media print {
   .print-hide {
     display: none !important;
   }
 }
 
-/* Animated Sync Button */
-@keyframes pulse-sync {
-  0% {
-    box-shadow: 0 0 0 0 rgba(var(--q-primary-rgb), 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(var(--q-primary-rgb), 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(var(--q-primary-rgb), 0);
+.sync-btn-primary {
+  background: rgba(var(--q-primary-rgb), 0.8) !important;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    background: var(--q-primary) !important;
+    box-shadow: 0 4px 15px rgba(var(--q-primary-rgb), 0.4);
   }
 }
 
-.sync-btn {
-  animation: pulse-sync 2s infinite;
-  transition: transform 0.2s ease-in-out;
-}
+.body--dark .sync-btn-primary {
+  background: rgba(var(--q-accent-rgb), 0.2) !important;
+  color: var(--q-accent) !important;
+  border-color: rgba(var(--q-accent-rgb), 0.3);
 
-.sync-btn:hover {
-  animation: none;
-  transform: scale(1.08);
+  &:hover {
+    background: rgba(var(--q-accent-rgb), 0.3) !important;
+    box-shadow: 0 4px 15px rgba(var(--q-accent-rgb), 0.2);
+  }
 }
 </style>
