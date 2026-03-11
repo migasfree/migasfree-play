@@ -81,9 +81,9 @@ describe('Menu Component', () => {
     expect(buttons.length).toBe(6)
   })
 
-  it('disables button for current route', () => {
+  it('highlights button for current route', () => {
     const appsBtn = wrapper.findAll('.gt-xs button')[0] // First is Apps
-    expect(appsBtn.attributes('disabled')).toBeDefined()
+    expect(appsBtn.attributes('class')).toContain('active-menu-btn')
   })
 
   it('navigates when button clicked', async () => {

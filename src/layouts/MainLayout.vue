@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-layout view="lHh Lpr lFf">
-      <q-header elevated class="print-hide">
+      <q-header class="glass-header print-hide">
         <q-toolbar>
           <q-btn
             v-if="showComputerLink"
@@ -52,6 +52,7 @@
             color="primary"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
+            class="sync-btn"
             @click="synchronize"
           >
             <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
@@ -164,5 +165,28 @@ onMounted(async () => {
   .print-hide {
     display: none !important;
   }
+}
+
+/* Animated Sync Button */
+@keyframes pulse-sync {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--q-primary-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--q-primary-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--q-primary-rgb), 0);
+  }
+}
+
+.sync-btn {
+  animation: pulse-sync 2s infinite;
+  transition: transform 0.2s ease-in-out;
+}
+
+.sync-btn:hover {
+  animation: none;
+  transform: scale(1.08);
 }
 </style>

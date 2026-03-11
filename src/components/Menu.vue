@@ -8,8 +8,11 @@
         round
         :icon="item.icon"
         size="lg"
-        class="q-mx-xs"
-        :disable="!item.external && $route.name === item.route"
+        class="q-mx-xs menu-btn"
+        :color="$route.name === item.route ? 'primary' : 'grey-7'"
+        :class="{
+          'active-menu-btn': !item.external && $route.name === item.route,
+        }"
         v-bind="item.external ? { target: '_blank', href: item.href } : {}"
         @click="!item.external && $router.push({ name: item.route })"
       >
@@ -28,8 +31,10 @@
       <q-list bordered separator>
         <template v-for="item in menuItems" :key="item.route">
           <q-item
-            v-if="item.show && (item.external || $route.name !== item.route)"
+            v-if="item.show"
             clickable
+            :active="!item.external && $route.name === item.route"
+            active-class="text-primary text-weight-bold bg-primary-light"
             v-bind="
               item.external
                 ? { tag: 'a', target: '_blank', href: item.href }
@@ -118,3 +123,29 @@ const menuItems = computed(() => [
   },
 ])
 </script>
+
+<style lang="scss" scoped>
+.menu-btn {
+  transition: all 0.3s ease;
+}
+
+.active-menu-btn {
+  background: rgba(var(--q-primary-rgb), 0.1) !important;
+  color: var(--q-primary) !important;
+  transform: translateY(-2px);
+}
+
+.body--dark .active-menu-btn {
+  background: rgba(var(--q-accent-rgb), 0.15) !important;
+  color: var(--q-accent) !important;
+}
+
+.bg-primary-light {
+  background: rgba(var(--q-primary-rgb), 0.1) !important;
+}
+
+.body--dark .bg-primary-light {
+  background: rgba(var(--q-accent-rgb), 0.15) !important;
+  color: var(--q-accent) !important;
+}
+</style>
