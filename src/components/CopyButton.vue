@@ -7,6 +7,7 @@
     :dense="dense"
     :round="round"
     :disabled="disabled"
+    :aria-label="tooltip"
     @click.stop="copy"
   >
     <q-tooltip>{{ tooltip }}</q-tooltip>

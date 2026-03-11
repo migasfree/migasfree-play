@@ -3,7 +3,6 @@
     <q-input
       v-model="usernameModel"
       filled
-      autofocus
       lazy-rules
       :label="$gettext('User')"
       :rules="[(val) => !!val || $gettext('* Required')]"

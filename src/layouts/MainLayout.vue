@@ -57,7 +57,7 @@
         </q-toolbar>
       </q-header>
 
-      <q-page-container id="main">
+      <q-page-container id="main" tabindex="-1">
         <router-view />
 
         <q-page-scroller

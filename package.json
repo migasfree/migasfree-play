@@ -31,6 +31,7 @@
     "axios": "1.13.5",
     "compare-versions": "6.1.1",
     "dayjs": "1.11.19",
+    "eslint-plugin-vuejs-accessibility": "2.5.0",
     "pinia": "3.0.4",
     "python-shell": "5.0.0",
     "qrcode.vue": "3.6.0",

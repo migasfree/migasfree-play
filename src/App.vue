@@ -15,13 +15,20 @@
               class="pulse-gentle q-mb-md"
               src="img/migasfree-play.svg"
               width="160"
+              :alt="$gettext('migasfree logo')"
             />
             <div class="row items-center justify-center brand-text-group">
               <span class="text-h4 text-weight-bold brand-name q-mr-sm"
                 >migasfree</span
               >
               <div class="brand-slogan text-subtitle1 text-grey-7">
-                <q-icon name="mdi-heart" color="negative" size="xs" /> change
+                <q-icon
+                  name="mdi-heart"
+                  color="negative"
+                  size="xs"
+                  :aria-label="$gettext('Love')"
+                />
+                {{ $gettext('change') }}
               </div>
             </div>
           </div>

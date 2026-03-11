@@ -4,7 +4,12 @@
     <div class="row q-col-gutter-md q-mb-xl justify-center print-hide">
       <div class="col-12 text-center">
         <div class="row items-center justify-center q-gutter-x-lg">
-          <img width="80" src="img/migasfree-play.svg" class="app-logo-img" />
+          <img
+            width="80"
+            src="img/migasfree-play.svg"
+            class="app-logo-img"
+            :alt="$gettext('migasfree logo')"
+          />
           <div class="text-left">
             <h1 class="text-h4 text-weight-bolder q-my-none app-title">
               {{ app.name }}
@@ -34,10 +39,10 @@
           <div class="col-12 col-sm-6">
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
-                <div class="text-overline text-primary q-mb-sm section-header">
+                <h2 class="text-overline text-primary q-mb-sm section-header">
                   <q-icon name="mdi-sync" size="14px" class="q-mr-xs" />
                   {{ $gettext('Synchronization') }}
-                </div>
+                </h2>
                 <q-list dense>
                   <InfoItem icon="mdi-account" :label="user" class="q-py-xs" />
                   <InfoItem icon="mdi-calendar-check" class="q-py-xs">
@@ -52,14 +57,14 @@
           <div class="col-12 col-sm-6">
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
-                <div class="text-overline text-primary q-mb-sm section-header">
+                <h2 class="text-overline text-primary q-mb-sm section-header">
                   <q-icon
                     name="mdi-server-network"
                     size="14px"
                     class="q-mr-xs"
                   />
                   {{ $gettext('Migasfree Data') }}
-                </div>
+                </h2>
                 <q-list dense>
                   <InfoItem
                     icon="mdi-server"
@@ -102,10 +107,10 @@
           <div v-if="'product' in data" class="col-12 col-sm-6">
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
-                <div class="text-overline text-primary q-mb-sm section-header">
+                <h2 class="text-overline text-primary q-mb-sm section-header">
                   <q-icon name="mdi-chip" size="14px" class="q-mr-xs" />
                   {{ $gettext('Hardware') }}
-                </div>
+                </h2>
                 <q-list dense>
                   <InfoItem
                     :icon="productIcon"
@@ -132,10 +137,10 @@
           <div v-if="'mac_address' in data" class="col-12 col-sm-6">
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
-                <div class="text-overline text-primary q-mb-sm section-header">
+                <h2 class="text-overline text-primary q-mb-sm section-header">
                   <q-icon name="mdi-ethernet" size="14px" class="q-mr-xs" />
                   {{ $gettext('Network Data') }}
-                </div>
+                </h2>
                 <q-list dense>
                   <InfoItem
                     icon="mdi-domain"
@@ -162,7 +167,9 @@
             <q-card unelevated class="glass-card">
               <q-card-section class="q-pa-md">
                 <div class="row items-center justify-between q-mb-md">
-                  <div class="text-overline text-primary section-header">
+                  <h2
+                    class="text-overline text-primary section-header q-ma-none"
+                  >
                     <q-icon
                       name="mdi-package-variant"
                       size="14px"
@@ -182,7 +189,7 @@
                         {{ inventory.length }}
                       </template>
                     </q-badge>
-                  </div>
+                  </h2>
 
                   <div class="row q-gutter-x-sm items-center">
                     <q-input
@@ -191,6 +198,7 @@
                       dense
                       filled
                       class="search-input"
+                      :aria-label="$gettext('Search software inventory')"
                     >
                       <template #prepend>
                         <q-icon name="mdi-magnify" size="xs" />
