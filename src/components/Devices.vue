@@ -2,7 +2,7 @@
   <DeviceFilter />
 
   <template v-if="filteredDevices.length > 0">
-    <div class="row">
+    <div class="row q-col-gutter-md q-mb-md">
       <DeviceDetail
         v-for="item in paginatedItems"
         :id="item.name"
