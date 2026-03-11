@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-6 col-sm-6 col-xs-12">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
     <q-card unelevated class="glass-card device-card">
       <q-card-section horizontal class="q-pa-md items-center">
         <q-card-section class="col q-pa-none">

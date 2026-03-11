@@ -33,7 +33,7 @@ export const tokenApiv4 = {
 
 export const minimumClientVersion = '4.20'
 
-export const resultsPerPage = 10
+export const resultsPerPage = 24
 
 export const retryIntervalSeconds = 10
 
