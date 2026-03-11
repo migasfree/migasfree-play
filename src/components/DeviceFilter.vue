@@ -9,6 +9,7 @@
           filled
           class="filter-input"
           :placeholder="$gettext('Search in name, model or manufacturer')"
+          :aria-label="$gettext('Search in name, model or manufacturer')"
           clearable
           @update:model-value="devicesStore.filterDevices"
         >

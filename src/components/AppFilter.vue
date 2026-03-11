@@ -9,6 +9,7 @@
           filled
           class="filter-input"
           :placeholder="$gettext('Search in name or description')"
+          :aria-label="$gettext('Search in name or description')"
           clearable
           autofocus
           @update:model-value="appsStore.filterApps"

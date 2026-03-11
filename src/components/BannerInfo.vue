@@ -1,5 +1,5 @@
 <template>
-  <div :class="['banner', `banner--${type}`]">
+  <div :class="['banner', `banner--${type}`]" role="alert">
     <q-icon :name="resolvedIcon" class="banner-icon" />
     <div class="banner-message">
       <slot>{{ message }}</slot>

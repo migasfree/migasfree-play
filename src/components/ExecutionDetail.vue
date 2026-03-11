@@ -14,12 +14,12 @@
 
       <q-item-section>
         <q-item-label>
-          <div
-            class="execution-title text-primary letter-spacing-1 col ellipsis"
+          <h4
+            class="execution-title text-primary letter-spacing-1 col ellipsis q-ma-none"
           >
             {{ command }}
             <q-tooltip>{{ command }}</q-tooltip>
-          </div>
+          </h4>
         </q-item-label>
         <q-item-label
           caption
@@ -37,6 +37,7 @@
             color="primary"
             size="24px"
             class="q-mr-sm"
+            aria-live="polite"
           />
 
           <q-btn
@@ -47,6 +48,7 @@
             icon="mdi-stop"
             color="negative"
             class="action-btn"
+            :aria-label="$gettext('Cancel execution')"
             @click.stop="cancelCommand"
           >
             <q-tooltip>{{ $gettext('Cancel execution') }}</q-tooltip>
@@ -60,6 +62,7 @@
             icon="mdi-alert-circle"
             color="negative"
             class="action-btn"
+            :aria-label="$gettext('Show error details')"
             @click.stop="showError = true"
           >
             <q-tooltip>{{ $gettext('Show error details') }}</q-tooltip>
