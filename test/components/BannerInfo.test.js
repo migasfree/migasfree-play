@@ -6,13 +6,13 @@ describe('BannerInfo Component', () => {
   const globalConfig = {
     global: {
       stubs: {
-        'q-banner': {
-          template:
-            '<div class="q-banner"><slot name="avatar" /><slot /></div>',
-        },
         'q-icon': {
           template: '<i class="q-icon" :class="name" />',
           props: ['name'],
+        },
+        'q-btn': {
+          template:
+            '<button class="q-btn" @click="$emit(\'click\')"><slot /></button>',
         },
       },
     },
@@ -29,7 +29,7 @@ describe('BannerInfo Component', () => {
     expect(wrapper.text()).toContain('Test Message')
   })
 
-  it('should render icon in avatar slot', () => {
+  it('should render default info icon', () => {
     const wrapper = mount(BannerInfo, {
       props: {
         message: 'Test',
@@ -39,7 +39,46 @@ describe('BannerInfo Component', () => {
 
     expect(wrapper.find('.q-icon').exists()).toBe(true)
     expect(wrapper.find('.q-icon').attributes('class')).toContain(
-      'mdi-information-outline',
+      'mdi-information',
     )
+  })
+
+  it('should render specific type icon', () => {
+    const wrapper = mount(BannerInfo, {
+      props: {
+        message: 'Test',
+        type: 'critical',
+      },
+      ...globalConfig,
+    })
+
+    expect(wrapper.find('.q-icon').attributes('class')).toContain(
+      'mdi-alert-circle-outline',
+    )
+  })
+
+  it('should show close button when closable', () => {
+    const wrapper = mount(BannerInfo, {
+      props: {
+        message: 'Test',
+        closable: true,
+      },
+      ...globalConfig,
+    })
+
+    expect(wrapper.find('.q-btn').exists()).toBe(true)
+  })
+
+  it('should emit close event when close button is clicked', async () => {
+    const wrapper = mount(BannerInfo, {
+      props: {
+        message: 'Test',
+        closable: true,
+      },
+      ...globalConfig,
+    })
+
+    await wrapper.find('.q-btn').trigger('click')
+    expect(wrapper.emitted()).toHaveProperty('close')
   })
 })

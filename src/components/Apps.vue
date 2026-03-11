@@ -24,7 +24,7 @@
     />
   </template>
 
-  <BannerInfo v-else :message="$gettext('There are not items to show.')" />
+  <BannerInfo v-else :message="$gettext('There are no items to show.')" />
 
   <Login :value="showLogin" @closed="showLogin = !showLogin" />
 </template>

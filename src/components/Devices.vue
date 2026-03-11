@@ -23,7 +23,7 @@
     />
   </template>
 
-  <BannerInfo v-else :message="$gettext('There are not items to show.')" />
+  <BannerInfo v-else :message="$gettext('There are no items to show.')" />
 </template>
 
 <script setup>
