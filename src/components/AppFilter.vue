@@ -41,11 +41,7 @@
           v-model="onlyInstalledApps"
           dense
           class="filter-toggle"
-          :label="
-            onlyInstalledApps
-              ? $gettext('View All Apps')
-              : $gettext('View Installed Apps')
-          "
+          :label="$gettext('View installed apps only')"
           checked-icon="mdi-check-circle"
           unchecked-icon="mdi-apps"
           size="md"

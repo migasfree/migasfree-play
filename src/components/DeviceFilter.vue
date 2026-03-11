@@ -24,11 +24,7 @@
           v-model="onlyAssignedDevices"
           dense
           class="filter-toggle"
-          :label="
-            onlyAssignedDevices
-              ? $gettext('View All available')
-              : $gettext('View Assigned Devices')
-          "
+          :label="$gettext('View assigned devices only')"
           checked-icon="mdi-check-circle"
           unchecked-icon="mdi-printer-settings"
           size="md"

@@ -1,49 +1,60 @@
 <template>
   <FilterCard>
-    <p v-if="preferencesStore.showLanguage">
-      <q-select
-        v-model="language"
-        :label="$gettext('Language')"
-        :options="availableLocales"
-        option-value="id"
-        option-label="name"
-        @update:model-value="setLanguage"
-      />
-    </p>
+    <div class="row q-col-gutter-lg items-center">
+      <!-- Language Selection -->
+      <div v-if="preferencesStore.showLanguage" class="col-12 col-md-4">
+        <q-select
+          v-model="language"
+          dense
+          filled
+          class="preference-input"
+          :label="$gettext('Language')"
+          :options="availableLocales"
+          option-value="id"
+          option-label="name"
+          @update:model-value="setLanguage"
+        >
+          <template #prepend>
+            <q-icon name="mdi-translate" size="xs" />
+          </template>
+        </q-select>
+      </div>
 
-    <p>
-      <q-toggle
-        v-model="preferencesStore.showSyncDetails"
-        :label="
-          preferencesStore.showSyncDetails
-            ? $gettext('Not show details when synchronizing')
-            : $gettext('Show details when synchronizing')
-        "
-        checked-icon="mdi-eye"
-        unchecked-icon="mdi-eye-off"
-        size="xl"
-        :false-value="false"
-        :true-value="true"
-        @update:model-value="preferencesStore.savePreferences"
-      />
-    </p>
+      <!-- Sync Details Toggle -->
+      <div class="col-12 col-sm-6 col-md-4 flex items-center">
+        <q-toggle
+          v-model="preferencesStore.showSyncDetails"
+          dense
+          class="preference-toggle"
+          :label="$gettext('Show synchronization details')"
+          checked-icon="mdi-eye"
+          unchecked-icon="mdi-eye-off"
+          size="md"
+          :false-value="false"
+          :true-value="true"
+          @update:model-value="preferencesStore.savePreferences"
+        />
+      </div>
 
-    <p v-if="preferencesStore.showDarkMode">
-      <q-toggle
-        v-model="preferencesStore.darkMode"
-        :label="
-          preferencesStore.darkMode
-            ? $gettext('Switch to Light mode')
-            : $gettext('Switch to Dark mode')
-        "
-        checked-icon="nights_stay"
-        unchecked-icon="wb_sunny"
-        size="xl"
-        :false-value="false"
-        :true-value="true"
-        @update:model-value="preferencesStore.savePreferences"
-      />
-    </p>
+      <!-- Dark Mode Toggle -->
+      <div
+        v-if="preferencesStore.showDarkMode"
+        class="col-12 col-sm-6 col-md-4 flex items-center"
+      >
+        <q-toggle
+          v-model="preferencesStore.darkMode"
+          dense
+          class="preference-toggle"
+          :label="$gettext('Dark mode')"
+          checked-icon="mdi-weather-night"
+          unchecked-icon="mdi-weather-sunny"
+          size="md"
+          :false-value="false"
+          :true-value="true"
+          @update:model-value="preferencesStore.savePreferences"
+        />
+      </div>
+    </div>
   </FilterCard>
 </template>
 
