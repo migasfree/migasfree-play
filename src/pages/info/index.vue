@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Info')"
-      icon="info"
+      icon="mdi-information"
       class="print-hide"
       :show-count="false"
       :loading="isUpdating"
