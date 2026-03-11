@@ -1,79 +1,112 @@
 <template>
   <FilterCard v-if="options.length > 0 || tags.length > 0">
-    <p>
-      <q-select
-        v-model="tags"
-        :label="$gettext('Tags')"
-        multiple
-        clearable
-        use-input
-        input-debounce="0"
-        :options="options"
-        @filter="filterTags"
-        @update:model-value="updateTags"
-        @clear="resetTags"
-      >
-        <template #selected-item="scope">
-          <q-chip
-            outline
-            square
-            removable
-            dense
-            color="primary"
-            class="q-pa-md"
-            icon="mdi-tag"
-            :tabindex="scope.tabindex"
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt }}
-          </q-chip>
-        </template>
-      </q-select>
-    </p>
+    <div class="row q-col-gutter-md items-center">
+      <!-- Tags Selection -->
+      <div class="col-12">
+        <q-select
+          v-model="tags"
+          dense
+          filled
+          multiple
+          use-input
+          clearable
+          input-debounce="0"
+          class="tags-selector"
+          :label="$gettext('Assigned Tags')"
+          :placeholder="$gettext('Add or search tags...')"
+          :options="options"
+          @filter="filterTags"
+          @update:model-value="updateTags"
+          @clear="resetTags"
+        >
+          <template #selected-item="scope">
+            <q-chip
+              removable
+              dense
+              class="tag-chip text-weight-medium"
+              icon="mdi-tag"
+              color="primary"
+              text-color="white"
+              :tabindex="scope.tabindex"
+              @remove="scope.removeAtIndex(scope.index)"
+            >
+              {{ scope.opt }}
+            </q-chip>
+          </template>
+        </q-select>
+      </div>
+    </div>
 
     <template #actions>
-      <q-btn
-        v-if="!userIsPrivileged"
-        class="q-ma-md q-px-sm"
-        color="orange"
-        size="lg"
-        icon="mdi-wizard-hat"
-        @click="openLogin"
+      <div
+        class="row q-gutter-x-sm q-pa-md items-center justify-end full-width"
       >
-        <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
-      </q-btn>
+        <!-- Help/Info Button (Optional enhancement) -->
+        <q-btn
+          flat
+          round
+          dense
+          color="grey-7"
+          icon="mdi-information-outline"
+          class="action-btn"
+        >
+          <q-tooltip>{{
+            $gettext(
+              'Tags allow you to classify this computer to receive specific software or belong to logical management groups.',
+            )
+          }}</q-tooltip>
+        </q-btn>
 
-      <q-btn
-        v-if="userIsPrivileged"
-        text-color="primary"
-        class="q-ma-md q-px-sm"
-        icon="mdi-comment-processing"
-        size="lg"
-        :loading="isRunningCommand"
-        :disabled="isRunningCommand"
-        @click="communicate"
-        ><q-tooltip>{{
-          $gettext('Communicate tags to the server')
-        }}</q-tooltip></q-btn
-      >
+        <q-separator vertical inset class="q-mx-sm action-separator" />
 
-      <q-btn
-        v-if="userIsPrivileged"
-        color="primary"
-        class="q-px-sm"
-        icon="mdi-cog-transfer"
-        size="lg"
-        :loading="isRunningCommand"
-        :disabled="isRunningCommand"
-        @click="setTags"
-        ><q-tooltip>{{ $gettext('Set tags at the server') }}</q-tooltip></q-btn
-      >
+        <q-btn
+          v-if="!userIsPrivileged"
+          unelevated
+          color="warning"
+          class="action-btn q-px-md"
+          icon="mdi-wizard-hat"
+          :label="$gettext('Unlock Management')"
+          @click="openLogin"
+        >
+          <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
+        </q-btn>
+
+        <template v-else>
+          <q-btn
+            flat
+            color="primary"
+            class="action-btn q-px-md"
+            icon="mdi-comment-processing"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
+            :label="$gettext('Communicate')"
+            @click="communicate"
+          >
+            <q-tooltip>{{
+              $gettext('Communicate tags to the server')
+            }}</q-tooltip>
+          </q-btn>
+
+          <q-btn
+            unelevated
+            color="primary"
+            class="action-btn q-px-md"
+            icon="mdi-cog-transfer"
+            :loading="isRunningCommand"
+            :disabled="isRunningCommand"
+            :label="$gettext('Set Tags')"
+            @click="setTags"
+          >
+            <q-tooltip>{{ $gettext('Set tags at the server') }}</q-tooltip>
+          </q-btn>
+        </template>
+      </div>
     </template>
   </FilterCard>
 
-  <div v-else class="row">
-    <div class="col">
-      <BannerInfo :message="$gettext('There are not items to show.')" />
+  <div v-else class="row q-col-gutter-md">
+    <div class="col-12">
+      <BannerInfo :message="$gettext('There are no tags available to show.')" />
     </div>
   </div>
 
@@ -183,3 +216,25 @@ onMounted(() => {
   tags.value = assigned.value
 })
 </script>
+
+<style lang="scss" scoped>
+.tags-selector {
+  transition: all 0.3s ease;
+}
+
+.tag-chip {
+  height: 28px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.action-separator {
+  height: 24px;
+}
+</style>

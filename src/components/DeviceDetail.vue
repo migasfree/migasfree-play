@@ -32,7 +32,7 @@
         </q-card-section>
       </q-card-section>
 
-      <q-separator color="border" style="opacity: 0.5" />
+      <q-separator color="border" class="card-separator" />
 
       <q-card-section class="q-pa-none">
         <q-list separator class="logical-devices-list">
@@ -282,5 +282,9 @@ const removeDevice = (item) => {
   .logical-icon-bg {
     background: rgba(255, 255, 255, 0.05);
   }
+}
+
+.card-separator {
+  opacity: 0.5;
 }
 </style>
