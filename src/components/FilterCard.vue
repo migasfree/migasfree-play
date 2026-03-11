@@ -1,12 +1,16 @@
 <template>
-  <div class="row">
-    <div class="col">
-      <q-card class="q-mx-sm q-my-lg" bordered>
-        <q-card-section>
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <q-card unelevated class="glass-card filter-card q-mb-md">
+        <q-card-section class="q-pa-md">
           <slot />
         </q-card-section>
 
-        <q-card-actions v-if="$slots.actions" align="right">
+        <q-card-actions
+          v-if="$slots.actions"
+          align="right"
+          class="q-px-md q-pb-md"
+        >
           <slot name="actions" />
         </q-card-actions>
       </q-card>

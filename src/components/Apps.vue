@@ -2,7 +2,7 @@
   <AppFilter />
 
   <template v-if="filteredApps.length > 0">
-    <div class="row">
+    <div class="row q-col-gutter-md q-mb-md">
       <AppDetail
         v-for="item in paginatedItems"
         :key="item.id"

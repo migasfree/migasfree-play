@@ -55,6 +55,6 @@ describe('FilterCard Component', () => {
     })
 
     expect(wrapper.find('.row').exists()).toBe(true)
-    expect(wrapper.find('.col').exists()).toBe(true)
+    expect(wrapper.find('.col-12').exists()).toBe(true)
   })
 })

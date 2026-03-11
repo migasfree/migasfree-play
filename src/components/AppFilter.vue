@@ -1,44 +1,60 @@
 <template>
   <FilterCard>
-    <p>
-      <q-input
-        v-model="searchApp"
-        :placeholder="$gettext('Search in name or description')"
-        clearable
-        autofocus
-        @update:model-value="appsStore.filterApps"
-        ><template #prepend><q-icon name="mdi-magnify" /></template
-      ></q-input>
-    </p>
+    <div class="row q-col-gutter-md items-center">
+      <!-- Search Input -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <q-input
+          v-model="searchApp"
+          dense
+          filled
+          class="filter-input"
+          :placeholder="$gettext('Search in name or description')"
+          clearable
+          autofocus
+          @update:model-value="appsStore.filterApps"
+        >
+          <template #prepend>
+            <q-icon name="mdi-magnify" size="xs" />
+          </template>
+        </q-input>
+      </div>
 
-    <p>
-      <q-select
-        v-model="selectedCategory"
-        :label="$gettext('Category')"
-        :options="categories"
-        option-value="id"
-        option-label="name"
-        clearable
-        @update:model-value="appsStore.filterApps"
-      />
-    </p>
+      <!-- Category Select -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <q-select
+          v-model="selectedCategory"
+          dense
+          filled
+          class="filter-input"
+          :label="$gettext('Category')"
+          :options="categories"
+          option-value="id"
+          option-label="name"
+          clearable
+          @update:model-value="appsStore.filterApps"
+        />
+      </div>
 
-    <p>
-      <q-toggle
-        v-model="onlyInstalledApps"
-        :label="
-          onlyInstalledApps
-            ? $gettext('View All Apps')
-            : $gettext('View Installed Apps')
-        "
-        checked-icon="mdi-download"
-        unchecked-icon="mdi-select-all"
-        size="xl"
-        :false-value="false"
-        :true-value="true"
-        @update:model-value="appsStore.filterApps"
-      />
-    </p>
+      <!-- Toggle -->
+      <div class="col-12 col-md-4 flex justify-end items-center">
+        <q-toggle
+          v-model="onlyInstalledApps"
+          dense
+          class="filter-toggle"
+          :label="
+            onlyInstalledApps
+              ? $gettext('View All Apps')
+              : $gettext('View Installed Apps')
+          "
+          checked-icon="mdi-check-circle"
+          unchecked-icon="mdi-apps"
+          size="md"
+          :false-value="false"
+          :true-value="true"
+          @update:model-value="appsStore.filterApps"
+        />
+      </div>
+    </div>
   </FilterCard>
 </template>
 

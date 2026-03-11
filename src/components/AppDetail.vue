@@ -1,49 +1,61 @@
 <template>
-  <div class="col-md-6 col-sm-6 col-xs-12 q-pa-sm">
-    <q-card bordered>
-      <q-card-section horizontal>
-        <q-card-section class="col-8">
-          <div class="text-h5">
-            {{ name }}
-          </div>
-          <div class="text-caption text-muted">
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <q-card unelevated class="glass-card app-card">
+      <q-card-section horizontal class="q-pa-md items-center">
+        <q-card-section class="col q-pa-none">
+          <div class="text-overline text-grey-7 category-label">
             {{ category }}
           </div>
-          <q-rating :model-value="props.score" color="primary" readonly />
+          <div class="text-subtitle1 text-weight-bolder app-name">
+            {{ name }}
+          </div>
+          <div class="q-mt-xs">
+            <q-rating
+              :model-value="props.score"
+              color="primary"
+              size="18px"
+              readonly
+            />
+          </div>
         </q-card-section>
 
-        <q-card-section class="col-4 text-right">
-          <q-img
-            :src="icon"
-            width="72px"
-            height="72px"
-            :placeholder-src="defaultIcon"
-            fit="contain"
-          >
-            <template #error>
-              <q-img :src="defaultIcon" fit="contain" />
-            </template>
-          </q-img>
+        <q-card-section class="col-auto q-pa-none">
+          <div class="app-icon-wrapper flex flex-center">
+            <q-img
+              :src="icon"
+              class="app-icon"
+              :placeholder-src="defaultIcon"
+              fit="contain"
+            >
+              <template #error>
+                <q-img :src="defaultIcon" fit="contain" />
+              </template>
+            </q-img>
+          </div>
         </q-card-section>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section class="q-px-md q-py-sm">
         <template v-if="moreInfo">
-          <q-expansion-item :label="truncatedDescription">
-            <template #default>
-              <q-card v-if="moreInfo" class="q-pa-md">
+          <q-expansion-item
+            dense
+            header-class="text-body2 text-muted q-pa-none description-toggle"
+            :label="truncatedDescription"
+          >
+            <q-card flat class="bg-surface-variant q-mt-sm">
+              <q-card-section class="text-body2 q-pa-md">
                 <q-markdown :src="moreInfo" no-link no-linkify></q-markdown>
-              </q-card>
-            </template>
+              </q-card-section>
+            </q-card>
           </q-expansion-item>
         </template>
-        <div v-else class="text-muted text-body2">
+        <div v-else class="text-muted text-body2 truncated-text">
           {{ truncatedDescription }}
         </div>
       </q-card-section>
 
-      <q-card-actions class="q-gutter-md">
-        <div class="row items-center q-gutter-x-sm">
+      <q-card-actions class="q-px-md q-pb-md row items-center justify-between">
+        <div class="row q-gutter-x-sm">
           <q-btn
             v-if="isInstallable"
             flat
@@ -51,6 +63,7 @@
             dense
             color="positive"
             icon="mdi-download"
+            class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
             @click="installApp(props.name, props.packages)"
@@ -67,6 +80,7 @@
             dense
             color="negative"
             icon="mdi-delete"
+            class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
             @click="removeApp(props.name, props.packages)"
@@ -81,8 +95,9 @@
             flat
             round
             dense
-            color="orange"
+            color="orange-10"
             icon="mdi-wizard-hat"
+            class="action-btn"
             @click="$emit('openlogin')"
           >
             <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
@@ -93,24 +108,27 @@
             flat
             round
             dense
-            color="brown"
+            color="brown-8"
             icon="mdi-lock"
+            class="action-btn"
           >
             <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
           </q-btn>
-
-          <Transition name="bounce">
-            <q-chip
-              v-if="isInstalled"
-              color="positive"
-              icon="mdi-check-circle"
-              outline
-              dense
-            >
-              {{ $gettext('Installed') }}
-            </q-chip>
-          </Transition>
         </div>
+
+        <Transition name="bounce">
+          <q-chip
+            v-if="isInstalled"
+            color="positive"
+            icon="mdi-check-circle"
+            class="text-weight-bold"
+            outline
+            dense
+            size="12px"
+          >
+            {{ $gettext('Installed') }}
+          </q-chip>
+        </Transition>
       </q-card-actions>
     </q-card>
   </div>
@@ -254,3 +272,65 @@ const removeApp = (name, packages) => {
   })
 }
 </script>
+
+<style lang="scss" scoped>
+.app-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-card:hover {
+  border-color: var(--brand-primary) !important;
+}
+
+.category-label {
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.app-name {
+  line-height: 1.2;
+}
+
+.app-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  padding: 8px;
+}
+
+.app-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.description-toggle {
+  min-height: auto;
+  line-height: 1.4;
+}
+
+.truncated-text {
+  min-height: 40px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.action-btn {
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.body--dark {
+  .app-card:hover {
+    border-color: var(--q-accent) !important;
+  }
+  .app-icon-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+</style>
