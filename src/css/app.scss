@@ -40,9 +40,13 @@
   --q-warning: #a16207;
   --q-info: #1e40af;
 
-  /* Toolbar */
-  /* --app-bar-bg: #431407;
-  --app-bar-on-bg: #fefce8;*/
+  /* Semantic Colors in RGB for glass effects */
+  --q-positive-rgb: 22, 101, 52;
+  --q-negative-rgb: 220, 38, 38;
+  --q-warning-rgb: 161, 98, 7;
+  --q-info-rgb: 30, 64, 175;
+  --q-primary-rgb: 67, 20, 7;
+  --q-accent-rgb: 254, 218, 0;
 }
 
 .body--dark {
@@ -50,11 +54,18 @@
   --q-secondary: #fefce8;
   --q-accent: #feda00;
 
-  /* High Contrast Semantics for Dark Mode */
   --q-positive: #4ade80;
   --q-negative: #f87171;
   --q-warning: #fbbf24;
   --q-info: #38bdf8;
+
+  /* Semantic Colors in RGB for glass effects (Dark Mode) */
+  --q-positive-rgb: 74, 222, 128;
+  --q-negative-rgb: 248, 113, 113;
+  --q-warning-rgb: 251, 191, 36;
+  --q-info-rgb: 56, 189, 248;
+  --q-primary-rgb: 254, 252, 232;
+  --q-accent-rgb: 254, 218, 0;
 
   --surface: rgba(30, 30, 30, 0.5);
   --border: rgba(255, 255, 255, 0.1);
@@ -399,4 +410,83 @@ h6,
 
 .text-muted {
   color: var(--neutral-500) !important;
+}
+
+/* =========================================
+   NOTIFICATIONS (GLASSMORPHISM)
+   ========================================= */
+
+.q-notification {
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 12px 20px !important;
+  min-height: 56px !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+
+  /* Standard variants overrides */
+  &.bg-positive {
+    background: rgba(var(--q-positive-rgb), 0.85) !important;
+    border-color: rgba(var(--q-positive-rgb), 0.3) !important;
+  }
+  &.bg-negative {
+    background: rgba(var(--q-negative-rgb), 0.85) !important;
+    border-color: rgba(var(--q-negative-rgb), 0.3) !important;
+  }
+  &.bg-warning {
+    background: rgba(var(--q-warning-rgb), 0.85) !important;
+    border-color: rgba(var(--q-warning-rgb), 0.3) !important;
+    color: #431407 !important;
+    .q-icon {
+      color: #431407 !important;
+    }
+  }
+  &.bg-info {
+    background: rgba(var(--q-info-rgb), 0.85) !important;
+    border-color: rgba(var(--q-info-rgb), 0.3) !important;
+  }
+  &.bg-primary {
+    background: rgba(var(--q-primary-rgb), 0.85) !important;
+    border-color: rgba(var(--q-primary-rgb), 0.3) !important;
+  }
+  &.bg-accent {
+    background: rgba(var(--q-accent-rgb), 0.85) !important;
+    border-color: rgba(var(--q-accent-rgb), 0.3) !important;
+    color: #431407 !important;
+  }
+
+  /* Success/Error icons sizing */
+  .q-icon {
+    font-size: 24px !important;
+    opacity: 0.9;
+  }
+
+  .q-notification__message {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 2px 0;
+  }
+
+  .q-notification__actions {
+    .q-btn {
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      font-size: 0.75rem !important;
+    }
+  }
+}
+
+.body--dark .q-notification {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+
+  &.bg-warning {
+    color: #0d0807 !important;
+    .q-icon {
+      color: #0d0807 !important;
+    }
+  }
 }

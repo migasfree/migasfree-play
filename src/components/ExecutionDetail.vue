@@ -101,15 +101,25 @@
           {{ $gettext('Execution Error') }}
         </div>
         <q-space />
-        <q-btn
-          v-close-popup
-          icon="mdi-close"
-          flat
-          round
-          dense
-          color="grey-7"
-          class="action-btn"
-        />
+        <div class="row items-center q-gutter-x-sm">
+          <CopyButton
+            :text="errorPlainText"
+            flat
+            round
+            dense
+            color="negative"
+            class="action-btn"
+          />
+          <q-btn
+            v-close-popup
+            icon="mdi-close"
+            flat
+            round
+            dense
+            color="grey-7"
+            class="action-btn"
+          />
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-md">
@@ -383,6 +393,17 @@ const cancelCommand = () => {
 .error-container {
   background: rgba(var(--q-negative-rgb), 0.05);
   border: 1px solid rgba(var(--q-negative-rgb), 0.1);
+  max-height: 60vh;
+  overflow-y: auto;
+
+  /* Custom scrollbar for error container */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(var(--q-negative-rgb), 0.2);
+    border-radius: 10px;
+  }
 }
 
 .error-pre {
