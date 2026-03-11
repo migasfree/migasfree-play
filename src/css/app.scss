@@ -388,3 +388,15 @@ h6,
 .body--dark .panel:not(.no-hover):hover {
   border-color: var(--q-accent) !important;
 }
+
+.line-height-1 {
+  line-height: 1 !important;
+}
+
+.letter-spacing-1 {
+  letter-spacing: 0.05em !important;
+}
+
+.text-muted {
+  color: var(--neutral-500) !important;
+}

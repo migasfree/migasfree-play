@@ -6,6 +6,7 @@
     :size="size"
     :dense="dense"
     :round="round"
+    :disabled="disabled"
     @click.stop="copy"
   >
     <q-tooltip>{{ tooltip }}</q-tooltip>
@@ -24,6 +25,7 @@ const props = defineProps({
   size: { type: String, default: 'md' },
   dense: { type: Boolean, default: false },
   round: { type: Boolean, default: false },
+  disabled: { type: Boolean, default: false },
   tooltip: { type: String, default: '' },
 })
 

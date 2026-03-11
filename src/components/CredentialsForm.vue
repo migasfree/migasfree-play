@@ -1,48 +1,44 @@
 <template>
-  <div>
-    <p>
-      <q-input
-        v-model="usernameModel"
-        autofocus
-        lazy-rules
-        :rules="[(val) => !!val || $gettext('* Required')]"
-      >
-        <template #label>
-          {{ $gettext('User') }}
-        </template>
+  <div class="q-gutter-y-md">
+    <q-input
+      v-model="usernameModel"
+      filled
+      autofocus
+      lazy-rules
+      :label="$gettext('User')"
+      :rules="[(val) => !!val || $gettext('* Required')]"
+    >
+      <template #prepend>
+        <q-icon name="mdi-account-outline" class="q-mr-xs" />
+      </template>
+    </q-input>
 
-        <template #prepend>
-          <q-icon name="mdi-account" />
-        </template>
-      </q-input>
-    </p>
+    <q-input
+      id="password"
+      v-model="passwordModel"
+      filled
+      lazy-rules
+      :label="$gettext('Password')"
+      :rules="[(val) => !!val || $gettext('* Required')]"
+      :type="showPassword ? 'text' : 'password'"
+      @keyup.enter="$emit('submit')"
+    >
+      <template #prepend>
+        <q-icon name="mdi-lock-outline" class="q-mr-xs" />
+      </template>
 
-    <p>
-      <q-input
-        id="password"
-        v-model="passwordModel"
-        lazy-rules
-        :rules="[(val) => !!val || $gettext('* Required')]"
-        :type="showPassword ? 'text' : 'password'"
-        @keyup.enter="$emit('submit')"
-      >
-        <template #label>
-          {{ $gettext('Password') }}
-        </template>
-
-        <template #prepend>
-          <q-icon name="mdi-lock" />
-        </template>
-
-        <template #append>
-          <q-icon
-            :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            class="cursor-pointer"
-            @click="showPassword = !showPassword"
-          />
-        </template>
-      </q-input>
-    </p>
+      <template #append>
+        <q-icon
+          :name="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+          class="cursor-pointer icon-btn-hover"
+          @click="showPassword = !showPassword"
+        >
+          <q-tooltip>{{
+            showPassword ? $gettext('Hide') : $gettext('Show')
+          }}</q-tooltip>
+        </q-icon>
+      </template>
+    </q-input>
   </div>
 </template>
 
@@ -68,3 +64,15 @@ const passwordModel = computed({
   set: (val) => emit('update:password', val),
 })
 </script>
+
+<style scoped>
+.icon-btn-hover {
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+  &:hover {
+    transform: scale(1.1);
+    color: var(--brand-primary);
+  }
+}
+</style>

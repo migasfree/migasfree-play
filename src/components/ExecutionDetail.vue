@@ -2,38 +2,43 @@
   <q-scroll-observer @scroll="onScroll" />
 
   <q-expansion-item
+    ref="expansionRef"
     v-model="isExpanded"
     class="glass-card execution-item q-mb-md overflow-hidden"
     @show="onExpand"
   >
     <template #header>
-      <q-item-section v-if="icon" avatar>
+      <q-item-section v-if="icon" avatar class="self-center">
         <q-icon :name="icon" size="28px" color="primary" />
       </q-item-section>
 
       <q-item-section>
-        <div class="row items-center no-wrap">
+        <q-item-label>
           <div
-            class="execution-title text-primary letter-spacing-1 line-height-1 q-mb-xs full-width ellipsis"
+            class="execution-title text-primary letter-spacing-1 col ellipsis"
           >
             {{ command }}
             <q-tooltip>{{ command }}</q-tooltip>
           </div>
+        </q-item-label>
+        <q-item-label
+          caption
+          class="text-muted flex items-center q-gutter-x-xs q-mt-xs"
+        >
+          <q-icon name="mdi-clock-outline" size="14px" />
+          <DateView :value="id" />
+        </q-item-label>
+      </q-item-section>
+
+      <q-item-section side class="self-center">
+        <div class="row items-center q-gutter-x-sm no-wrap">
           <q-spinner-dots
             v-if="isCurrentlyRunning"
             color="primary"
             size="24px"
-            class="q-ml-sm self-center"
+            class="q-mr-sm"
           />
-        </div>
-        <div class="text-caption text-muted flex items-center q-gutter-x-xs">
-          <q-icon name="mdi-clock-outline" size="14px" />
-          <DateView :value="id" />
-        </div>
-      </q-item-section>
 
-      <q-item-section side>
-        <div class="row items-center q-gutter-x-xs">
           <q-btn
             v-if="isCurrentlyRunning"
             flat
@@ -60,7 +65,14 @@
             <q-tooltip>{{ $gettext('Show error details') }}</q-tooltip>
           </q-btn>
 
-          <CopyButton :text="textToCopy" flat round dense class="action-btn" />
+          <CopyButton
+            v-if="!isCurrentlyRunning"
+            :text="textToCopy"
+            flat
+            round
+            dense
+            class="action-btn"
+          />
         </div>
       </q-item-section>
     </template>
@@ -140,6 +152,7 @@ const { lastId, isRunningCommand } = storeToRefs(executionsStore)
 const scrollInfo = ref({})
 const showError = ref(false)
 const terminalRef = ref(null)
+const expansionRef = ref(null)
 const isExpanded = ref(props.id === lastId.value)
 
 let terminal = null
@@ -234,12 +247,27 @@ const disposeTerminal = () => {
   }
 }
 
+const scrollToBottom = () => {
+  if (isCurrentlyRunning.value && isExpanded.value) {
+    nextTick(() => {
+      // Small timeout to wait for expansion animation to start/finish
+      setTimeout(() => {
+        expansionRef.value?.$el.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+        })
+      }, 250)
+    })
+  }
+}
+
 const onExpand = () => {
   if (!isLegacyHtml.value) {
     nextTick(() => {
       createTerminal()
     })
   }
+  scrollToBottom()
 }
 
 // Collapse non-current items when a new execution starts
@@ -250,6 +278,8 @@ watch(
       isExpanded.value = false
     } else {
       isExpanded.value = true
+      // Execution started, wait for expansion and scroll
+      scrollToBottom()
     }
   },
 )
@@ -260,6 +290,7 @@ onMounted(() => {
     // Allow the animation to complete and the container to get dimensions
     setTimeout(() => {
       createTerminal()
+      scrollToBottom()
     }, 150)
   }
 })
