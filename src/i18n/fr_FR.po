@@ -12,127 +12,138 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Generated-By: easygettext\n"
 
-#: src/App.vue:34
-msgid "Impossible to continue."
-msgstr "Impossible de continuer."
+#: src/App.vue:45
+msgid "Impossible to synchronize with the server."
+msgstr "Impossible de synchroniser avec le serveur."
 
-#: src/App.vue:38
+#: src/App.vue:54
+msgid "Network Failure"
+msgstr "Échec du réseau"
+
+#: src/App.vue:58
 msgid "Automatic retry in %{ count } second..."
 msgid_plural "Automatic retry in %{ count } seconds..."
 msgstr[0] "Réessai automatique dans %{ count } seconde..."
 msgstr[1] "Réessai automatique dans %{ count } secondes..."
 
-#: src/App.vue:55
+#: src/App.vue:77
 msgid "Retry now"
 msgstr "Réessayer maintenant"
 
-#: src/components/AppDetail.vue:55 src/components/DeviceDetail.vue:110
+#: src/components/AppDetail.vue:72 src/components/DeviceDetail.vue:126
 msgid "Install"
 msgstr "Installer"
 
-#: src/components/AppDetail.vue:71 src/components/DeviceDetail.vue:96
+#: src/components/AppDetail.vue:89 src/components/DeviceDetail.vue:111
 msgid "Uninstall"
 msgstr "Désinstaller"
 
-#: src/components/AppDetail.vue:86 src/components/Tags.vue:43
+#: src/components/AppDetail.vue:103 src/components/Tags.vue:71
 msgid "Manage with privileges"
 msgstr "Gérer avec des privilèges"
 
-#: src/components/AppDetail.vue:97
+#: src/components/AppDetail.vue:115
 msgid "Locked"
 msgstr "Verrouillé"
 
-#: src/components/AppDetail.vue:109
+#: src/components/AppDetail.vue:129
 msgid "Installed"
 msgstr "Installé"
 
-#: src/components/AppDetail.vue:230
+#: src/components/AppDetail.vue:234
 msgid "Installing %{name}"
 msgstr "Installation de %{name}"
 
-#: src/components/AppDetail.vue:260
+#: src/components/AppDetail.vue:264
 msgid "Uninstalling %{name}"
 msgstr "Désinstallation de %{name}"
 
-#: src/components/AppFilter.vue:6
+#: src/components/AppFilter.vue:11
 msgid "Search in name or description"
 msgstr "Rechercher par nom ou description"
 
-#: src/components/AppFilter.vue:17
+#: src/components/AppFilter.vue:29
 msgid "Category"
 msgstr "Catégorie"
 
-#: src/components/AppFilter.vue:31
-msgid "View All Apps"
-msgstr "Voir toutes les applications"
-
-#: src/components/AppFilter.vue:32
-msgid "View Installed Apps"
-msgstr "Voir les applications installées"
+#: src/components/AppFilter.vue:44
+msgid "View installed apps only"
+msgstr "Voir uniquement les applications installées"
 
 #: src/components/Apps.vue:27 src/components/Devices.vue:26
-#: src/components/Executions.vue:14 src/components/Tags.vue:76
-msgid "There are not items to show."
+#: src/components/Executions.vue:14
+msgid "There are no items to show."
 msgstr "Aucun élément à afficher."
 
-#: src/components/CopyButton.vue:37
+#: src/components/CopyButton.vue:39
 msgid "Copy"
 msgstr "Copier"
 
-#: src/components/CopyButton.vue:43
+#: src/components/CopyButton.vue:45
 msgid "Text copied to clipboard"
 msgstr "Texte copié dans le presse-papiers"
 
-#: src/components/CopyButton.vue:49
+#: src/components/CopyButton.vue:51
 msgid "Failed to copy text"
 msgstr "Échec de la copie du texte"
 
-#: src/components/CredentialsForm.vue:8 src/components/CredentialsForm.vue:25
-msgid "* Required"
-msgstr "* Obligatoire"
-
-#: src/components/CredentialsForm.vue:11
+#: src/components/CredentialsForm.vue:8
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/components/CredentialsForm.vue:30
+#: src/components/CredentialsForm.vue:9 src/components/CredentialsForm.vue:22
+msgid "* Required"
+msgstr "* Obligatoire"
+
+#: src/components/CredentialsForm.vue:21
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/components/DeviceDetail.vue:53
+#: src/components/CredentialsForm.vue:37
+msgid "Hide"
+msgstr "Masquer"
+
+#: src/components/CredentialsForm.vue:37
+msgid "Show"
+msgstr "Afficher"
+
+#: src/components/DeviceDetail.vue:65
 msgid "Default"
 msgstr "Défaut"
 
-#: src/components/DeviceDetail.vue:69
+#: src/components/DeviceDetail.vue:82
 msgid "Assigned"
 msgstr "Attribué"
 
-#: src/components/DeviceDetail.vue:81
+#: src/components/DeviceDetail.vue:94
 msgid "Policy"
 msgstr "Directive"
 
-#: src/components/DeviceFilter.vue:6
-msgid "Search in name or model or manufacturer"
+#: src/components/DeviceFilter.vue:11
+msgid "Search in name, model or manufacturer"
 msgstr "Rechercher par nom, modèle ou fabricant"
 
-#: src/components/DeviceFilter.vue:18
-msgid "View All available"
-msgstr "Voir tous les disponibles"
+#: src/components/DeviceFilter.vue:27
+msgid "View assigned devices only"
+msgstr "Voir uniquement les périphériques attribués"
 
-#: src/components/DeviceFilter.vue:19
-msgid "View Assigned Devices"
-msgstr "Voir les périphériques attribués"
+#: src/components/ExecutionDetail.vue:52
+msgid "Cancel execution"
+msgstr "Annuler l'exécution"
 
-#: src/components/ExecutionDetail.vue:34 src/components/Login.vue:23
-#: src/components/Register.vue:21
-msgid "Cancel"
-msgstr "Annuler"
+#: src/components/ExecutionDetail.vue:65
+msgid "Show error details"
+msgstr "Afficher les détails de l'erreur"
+
+#: src/components/ExecutionDetail.vue:101
+msgid "Execution Error"
+msgstr "Erreur d'exécution"
 
 #: src/components/Info.vue:39 src/layouts/MainLayout.vue:144
 msgid "Synchronization"
 msgstr "Synchronisation"
 
-#: src/components/Info.vue:59
+#: src/components/Info.vue:61
 msgid "Migasfree Data"
 msgstr "Données Migasfree"
 
@@ -140,63 +151,75 @@ msgstr "Données Migasfree"
 msgid "Hardware"
 msgstr "Matériel"
 
-#: src/components/Info.vue:139
+#: src/components/Info.vue:137
 msgid "Network Data"
 msgstr "Données Réseau"
 
-#: src/components/Info.vue:175
+#: src/components/Info.vue:171
 msgid "Software Inventory"
 msgstr "Inventaire Logiciel"
 
-#: src/components/Info.vue:189
+#: src/components/Info.vue:190
 msgid "Search..."
 msgstr "Rechercher..."
 
-#: src/components/Info.vue:236
+#: src/components/Info.vue:241
 msgid "No results found"
 msgstr "Aucun résultat trouvé"
 
-#: src/components/Info.vue:243
-msgid "results"
-msgstr "résultats"
+#: src/components/Info.vue:276 src/components/Info.vue:373
+msgid "Identification"
+msgstr "Identification"
 
-#: src/components/Info.vue:275
+#: src/components/Info.vue:332
 msgid "Print Label"
 msgstr "Imprimer l'étiquette"
 
-#: src/components/Info.vue:368
+#: src/components/Info.vue:345
+msgid "Label size optimized for 80x50mm thermal printers."
+msgstr "Taille d'étiquette optimisée pour les imprimantes thermiques 80x50mm."
+
+#: src/components/Info.vue:473
 msgid "disks"
 msgstr "disques"
 
-#: src/components/Info.vue:426
+#: src/components/Info.vue:531
 msgid "Available"
 msgstr "Disponible"
 
-#: src/components/Info.vue:427
+#: src/components/Info.vue:532
 msgid "In repair"
 msgstr "En réparation"
 
-#: src/components/Info.vue:428
+#: src/components/Info.vue:533
 msgid "Reserved"
 msgstr "Réservé"
 
-#: src/components/Info.vue:429
+#: src/components/Info.vue:534
 msgid "Intended"
 msgstr "Attribué"
 
-#: src/components/Info.vue:430
+#: src/components/Info.vue:535
 msgid "Unsubscribed"
 msgstr "Désinscrit"
 
-#: src/components/Info.vue:433
+#: src/components/Info.vue:538
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: src/components/Login.vue:6
+#: src/components/Login.vue:9
+msgid "Authentication"
+msgstr "Authentification"
+
+#: src/components/Login.vue:12
 msgid "User with privileges on the computer"
 msgstr "Utilisateur avec des privilèges sur l'ordinateur"
 
-#: src/components/Login.vue:31
+#: src/components/Login.vue:30 src/components/Register.vue:56
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/components/Login.vue:40
 msgid "Login"
 msgstr "Connexion"
 
@@ -205,18 +228,17 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/Menu.vue:78 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:36 src/stores/program.js:157
+#: src/pages/apps/index.vue:36 src/stores/program.js:143
 msgid "Apps"
 msgstr "Applications"
 
 #: src/components/Menu.vue:84 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:47 src/stores/program.js:185
+#: src/pages/devices/index.vue:47 src/stores/program.js:168
 msgid "Devices"
 msgstr "Périphériques"
 
-#: src/components/Menu.vue:90 src/components/Tags.vue:6
-#: src/pages/tags/index.vue:4 src/pages/tags/index.vue:31
-#: src/stores/program.js:196
+#: src/components/Menu.vue:90 src/pages/tags/index.vue:4
+#: src/pages/tags/index.vue:31 src/stores/program.js:179
 msgid "Tags"
 msgstr "Étiquettes"
 
@@ -243,27 +265,23 @@ msgstr "Aide"
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: src/components/Preferences.vue:6
+#: src/components/Preferences.vue:11
 msgid "Language"
 msgstr "Langue"
 
-#: src/components/Preferences.vue:19
-msgid "Not show details when synchronizing"
-msgstr "Ne pas afficher les détails lors de la synchronisation"
+#: src/components/Preferences.vue:29
+msgid "Show synchronization details"
+msgstr "Afficher les détails de la synchronisation"
 
-#: src/components/Preferences.vue:20
-msgid "Show details when synchronizing"
-msgstr "Afficher les détails lors de la synchronisation"
+#: src/components/Preferences.vue:48
+msgid "Dark mode"
+msgstr "Mode sombre"
 
-#: src/components/Preferences.vue:36
-msgid "Switch to Light mode"
-msgstr "Passer en mode clair"
+#: src/components/Register.vue:9
+msgid "Server Registration"
+msgstr "Inscription au serveur"
 
-#: src/components/Preferences.vue:37
-msgid "Switch to Dark mode"
-msgstr "Passer en mode sombre"
-
-#: src/components/Register.vue:6
+#: src/components/Register.vue:17
 msgid ""
 "Review config data. If is not correct, cancel register and modify migasfree-"
 "client file config."
@@ -272,37 +290,63 @@ msgstr ""
 "annulez l'inscription et modifiez le fichier de configuration migasfree-"
 "client."
 
-#: src/components/Register.vue:29
+#: src/components/Register.vue:40
 msgid "User with sufficient privileges on the server"
 msgstr "Utilisateur avec des privilèges suffisants sur le serveur"
 
-#: src/components/Register.vue:47
+#: src/components/Register.vue:66
 msgid "Register"
 msgstr "Enregistrer"
 
-#: src/components/Tags.vue:56
+#: src/components/Tags.vue:15
+msgid "Assigned Tags"
+msgstr "Étiquettes attribuées"
+
+#: src/components/Tags.vue:16
+msgid "Add or search tags..."
+msgstr "Ajouter ou rechercher des étiquettes..."
+
+#: src/components/Tags.vue:54
+msgid ""
+"Tags allow you to classify this computer to receive specific software or "
+"belong to logical management groups."
+msgstr "Les étiquettes vous permettent de classer cet ordinateur pour recevoir des logiciels spécifiques ou appartenir à des groupes de gestion logique."
+
+#: src/components/Tags.vue:68
+msgid "Unlock Management"
+msgstr "Déverrouiller la gestion"
+
+#: src/components/Tags.vue:82
+msgid "Communicate"
+msgstr "Communiquer"
+
+#: src/components/Tags.vue:86
 msgid "Communicate tags to the server"
 msgstr "Communiquer les étiquettes au serveur"
 
-#: src/components/Tags.vue:69
+#: src/components/Tags.vue:97 src/components/Tags.vue:186
+msgid "Set Tags"
+msgstr "Définir les étiquettes"
+
+#: src/components/Tags.vue:100
 msgid "Set tags at the server"
 msgstr "Définir les étiquettes sur le serveur"
 
-#: src/components/Tags.vue:127
+#: src/components/Tags.vue:109
+msgid "There are no tags available to show."
+msgstr "Aucune étiquette disponible à afficher."
+
+#: src/components/Tags.vue:160
 msgid "Communicating..."
 msgstr "Communication en cours..."
 
-#: src/components/Tags.vue:137
+#: src/components/Tags.vue:170
 msgid "Communicate Tags"
 msgstr "Communiquer les étiquettes"
 
-#: src/components/Tags.vue:143
+#: src/components/Tags.vue:176
 msgid "Setting Tags..."
 msgstr "Définition des étiquettes..."
-
-#: src/components/Tags.vue:153
-msgid "Set Tags"
-msgstr "Définir les étiquettes"
 
 #: src/layouts/MainLayout.vue:17
 msgid "View Computer"
@@ -324,72 +368,88 @@ msgstr "Synchronisation en cours..."
 msgid "Client does not manage devices"
 msgstr "Le client ne gère pas les périphériques"
 
-#: src/stores/auth.js:134
+#: src/stores/auth.js:122
 msgid "User with privileges"
 msgstr "Utilisateur avec privilèges"
 
-#: src/stores/auth.js:136
+#: src/stores/auth.js:124
 msgid "User without privileges"
 msgstr "Utilisateur sans privilèges"
 
-#: src/stores/computer.js:155
+#: src/stores/computer.js:157
 msgid "There was a problem with registration"
 msgstr "Un problème est survenu lors de l'inscription"
 
-#: src/stores/computer.js:160
+#: src/stores/computer.js:162
 msgid "Registered Computer!"
 msgstr "Ordinateur enregistré !"
 
-#: src/stores/executions.js:110
+#: src/stores/executions.js:51
 msgid "Synchronization finished"
 msgstr "Synchronisation terminée"
 
-#: src/stores/executions.js:123
+#: src/stores/executions.js:64
 msgid "Please wait, other process is running!!!"
 msgstr "Veuillez patienter, un autre processus est en cours d'exécution !"
 
-#: src/stores/executions.js:276
+#: src/stores/executions.js:209
 msgid "Command cancelled"
 msgstr "Commande annulée"
 
-#: src/stores/program.js:81
+#: src/stores/program.js:78
 msgid "Server"
 msgstr "Serveur"
 
-#: src/stores/program.js:108
+#: src/stores/program.js:94
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 "Les identifiants ne sont pas valides. Vérifiez les paramètres de "
 "l'application."
 
-#: src/stores/program.js:115 src/stores/ui.js:30 src/stores/ui.js:61
+#: src/stores/program.js:100 src/stores/ui.js:30 src/stores/ui.js:61
 msgid "There is no connection to the server"
 msgstr "Il n'y a pas de connexion au serveur"
 
-#: src/stores/program.js:121
-#, fuzzy
+#: src/stores/program.js:105
 msgid "Failed to obtain token"
-msgstr "Échec de la copie du texte"
+msgstr "Échec de l'obtention du jeton"
 
-#: src/stores/program.js:131
+#: src/stores/program.js:113
 msgid "Token validation failed"
 msgstr "La validation du jeton a échoué"
 
-#: src/stores/program.js:138
+#: src/stores/program.js:121
 msgid "Computer"
 msgstr "Ordinateur"
 
-#: src/stores/program.js:162
-msgid "Categories"
-msgstr "Catégories"
-
-#: src/stores/program.js:170
+#: src/stores/program.js:148
 msgid "Packages"
 msgstr "Paquets"
 
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Cette application nécessite au moins Migasfree Client %{version}"
+
+#~ msgid "View All Apps"
+#~ msgstr "Voir toutes les applications"
+
+#~ msgid "View All available"
+#~ msgstr "Voir tous les disponibles"
+
+#~ msgid "results"
+#~ msgstr "résultats"
+
+#~ msgid "Not show details when synchronizing"
+#~ msgstr "Ne pas afficher les détails lors de la synchronisation"
+
+#~ msgid "Show details when synchronizing"
+#~ msgstr "Afficher les détails lors de la synchronisation"
+
+#~ msgid "Switch to Light mode"
+#~ msgstr "Passer en mode clair"
+
+#~ msgid "Categories"
+#~ msgstr "Catégories"
 
 #~ msgid "Loading data"
 #~ msgstr "Chargement des données"
@@ -399,9 +459,6 @@ msgstr "Cette application nécessite au moins Migasfree Client %{version}"
 
 #~ msgid "Last synchronization"
 #~ msgstr "Dernière synchronisation"
-
-#~ msgid "Identification"
-#~ msgstr "Identification"
 
 #~ msgid "Print Identification"
 #~ msgstr "Imprimer l'identification"
