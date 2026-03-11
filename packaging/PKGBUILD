@@ -1,7 +1,7 @@
 # Maintainer: Jose Antonio Chavarría <jachavar@gmail.com>
 
 pkgname=migasfree-play
-pkgver=5.11
+pkgver=5.12
 pkgrel=0
 pkgdesc='GUI for migasfree client'
 arch=('x86_64')

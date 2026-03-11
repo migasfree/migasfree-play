@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.11
+Version:       5.12
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
@@ -43,6 +43,15 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Wed, 11 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.12-0
+- feat(ui): complete redesign aligned with migasfree-frontend
+- feat(ui): implement glassmorphism and premium aesthetics
+- feat(ui): integrate xterm.js for professional terminal output
+- feat(ui): redesign computer label for 80x50mm thermal printers
+- feat(ux): add copy to clipboard in error dialog and terminal
+- fix(ui): improve scroll behavior and auto-scrolling during executions
+- style(ui): improve notifications and dialog aesthetics with glassmorphism
+
 * Tue, 10 Feb 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
 - feat: upgraded several components (node >= 22.12)
 - fix: avoid multiple crontab writing

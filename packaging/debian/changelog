@@ -1,3 +1,15 @@
+migasfree-play (5.12.0) unstable; urgency=low
+
+  * feat(ui): complete redesign aligned with migasfree-frontend
+  * feat(ui): implement glassmorphism and premium aesthetics
+  * feat(ui): integrate xterm.js for professional terminal output
+  * feat(ui): redesign computer label for 80x50mm thermal printers
+  * feat(ux): add copy to clipboard in error dialog and terminal
+  * fix(ui): improve scroll behavior and auto-scrolling during executions
+  * style(ui): improve notifications and dialog aesthetics with glassmorphism
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 11 Mar 2026 09:55:00 +0100
+
 migasfree-play (5.11.0) unstable; urgency=low
 
   * feat: upgraded several components (node >= 22.12)
