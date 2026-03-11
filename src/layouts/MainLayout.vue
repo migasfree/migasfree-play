@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a href="#main" class="skip-link">{{ $gettext('Skip to content') }}</a>
     <q-layout view="lHh Lpr lFf">
       <q-header class="glass-header print-hide">
         <q-toolbar>
@@ -13,6 +14,7 @@
             color="primary"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
+            :aria-label="$gettext('Synchronize Computer')"
             @click="synchronize"
           >
             <q-tooltip>{{ $gettext('Synchronize Computer') }}</q-tooltip>
@@ -42,6 +44,7 @@
             v-if="!cid"
             color="warning"
             icon="mdi-server-plus"
+            :aria-label="$gettext('Register Computer on the Server')"
             @click="openRegister"
             ><q-tooltip>{{
               $gettext('Register Computer on the Server')
@@ -162,6 +165,23 @@ onMounted(async () => {
 @media print {
   .print-hide {
     display: none !important;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--brand-primary);
+  color: white;
+  padding: 8px;
+  z-index: 9999;
+  text-decoration: none;
+  border-radius: 0 0 5px 0;
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 0;
   }
 }
 

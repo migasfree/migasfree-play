@@ -1,8 +1,14 @@
 <template>
-  <q-dialog v-model="showing" persistent backdrop-filter="blur(12px)">
+  <q-dialog
+    v-model="showing"
+    persistent
+    backdrop-filter="blur(12px)"
+    aria-labelledby="auth-title"
+  >
     <q-card class="glass-card auth-card">
       <q-card-section class="q-pb-none">
         <div
+          id="auth-title"
           class="text-h6 text-primary letter-spacing-1 uppercase line-height-1"
         >
           <q-icon name="mdi-shield-lock-outline" size="24px" class="q-mr-sm" />
@@ -34,7 +40,7 @@
           v-close-popup
           unelevated
           icon="mdi-login"
-          color="positive"
+          color="primary"
           class="action-btn"
           :disabled="!isValid"
           :label="$gettext('Login')"

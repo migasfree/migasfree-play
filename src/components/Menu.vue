@@ -13,6 +13,7 @@
         :class="{
           'active-menu-btn': !item.external && $route.name === item.route,
         }"
+        :aria-label="item.label"
         v-bind="item.external ? { target: '_blank', href: item.href } : {}"
         @click="!item.external && $router.push({ name: item.route })"
       >
@@ -23,7 +24,7 @@
 
   <!-- Mobile dropdown menu -->
   <div class="lt-sm">
-    <q-btn-dropdown flat stretch>
+    <q-btn-dropdown flat stretch :aria-label="$gettext('Menu')">
       <template #label>
         <q-icon name="mdi-menu" size="lg" />
         <q-tooltip>{{ $gettext('Menu') }}</q-tooltip>

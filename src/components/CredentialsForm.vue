@@ -28,15 +28,21 @@
       </template>
 
       <template #append>
-        <q-icon
-          :name="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-          class="cursor-pointer icon-btn-hover"
+        <q-btn
+          flat
+          round
+          dense
+          :icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+          class="icon-btn-hover"
+          :aria-label="
+            showPassword ? $gettext('Hide password') : $gettext('Show password')
+          "
           @click="showPassword = !showPassword"
         >
           <q-tooltip>{{
             showPassword ? $gettext('Hide') : $gettext('Show')
           }}</q-tooltip>
-        </q-icon>
+        </q-btn>
       </template>
     </q-input>
   </div>

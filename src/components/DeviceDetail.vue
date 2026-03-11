@@ -6,10 +6,12 @@
           <div class="text-overline text-grey-7 device-id-label ellipsis">
             {{ id }} {{ alternativeName ? `(${alternativeName})` : '' }}
           </div>
-          <div class="text-subtitle1 text-weight-bolder device-name ellipsis">
+          <h3
+            class="text-subtitle1 text-weight-bolder device-name ellipsis q-ma-none"
+          >
             {{ name }}
             <q-tooltip>{{ name }}</q-tooltip>
-          </div>
+          </h3>
           <div v-if="description" class="text-caption text-muted q-mt-xs">
             <q-icon name="mdi-map-marker" size="14px" /> {{ description }}
           </div>
@@ -106,6 +108,7 @@
                     class="action-btn"
                     :loading="isRunningCommand"
                     :disabled="isRunningCommand"
+                    :aria-label="$gettext('Uninstall logical device')"
                     @click="removeDevice(item)"
                   >
                     <q-tooltip>{{ $gettext('Uninstall') }}</q-tooltip>
@@ -121,6 +124,7 @@
                     class="action-btn"
                     :loading="isRunningCommand"
                     :disabled="isRunningCommand"
+                    :aria-label="$gettext('Install logical device')"
                     @click="installDevice(item)"
                   >
                     <q-tooltip>{{ $gettext('Install') }}</q-tooltip>

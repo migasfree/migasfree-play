@@ -6,15 +6,20 @@
           <div class="text-overline text-grey-7 category-label">
             {{ category }}
           </div>
-          <div class="text-subtitle1 text-weight-bolder app-name">
+          <h3 class="text-subtitle1 text-weight-bolder app-name q-ma-none">
             {{ name }}
-          </div>
+          </h3>
           <div class="q-mt-xs">
             <q-rating
               :model-value="props.score"
               color="primary"
               size="18px"
               readonly
+              :aria-label="
+                interpolate($gettext('Score: %{score} out of 5 stars'), {
+                  score: props.score,
+                })
+              "
             />
           </div>
         </q-card-section>
@@ -26,6 +31,7 @@
               class="app-icon"
               :placeholder-src="defaultIcon"
               fit="contain"
+              :alt="interpolate($gettext('%{name} icon'), { name: props.name })"
             >
               <template #error>
                 <q-img :src="defaultIcon" fit="contain" />
@@ -66,6 +72,9 @@
             class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
+            :aria-label="
+              interpolate($gettext('Install %{name}'), { name: props.name })
+            "
             @click="installApp(props.name, props.packages)"
           >
             <q-tooltip>
@@ -83,6 +92,9 @@
             class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
+            :aria-label="
+              interpolate($gettext('Uninstall %{name}'), { name: props.name })
+            "
             @click="removeApp(props.name, props.packages)"
           >
             <q-tooltip>
