@@ -4,6 +4,7 @@
       :title="$gettext('Devices')"
       icon="mdi-printer"
       :count="filteredDevices.length"
+      :total-count="devices.length"
       :show-count="manageDevices"
       :show-sync="manageDevices"
       :loading="isUpdating"
@@ -40,7 +41,7 @@ const { $gettext } = useGettext()
 const devicesStore = useDevicesStore()
 const programStore = useProgramStore()
 
-const { filteredDevices } = storeToRefs(devicesStore)
+const { devices, filteredDevices } = storeToRefs(devicesStore)
 
 const manageDevices = programStore.manageDevices
 

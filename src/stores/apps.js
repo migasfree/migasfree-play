@@ -101,6 +101,7 @@ export const useAppsStore = defineStore('apps', () => {
   }
 
   return {
+    apps,
     filteredApps,
     getAppsPackages,
     loadApps,

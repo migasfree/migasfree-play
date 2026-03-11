@@ -4,6 +4,7 @@
       :title="$gettext('Apps')"
       icon="mdi-apps"
       :count="filteredApps.length"
+      :total-count="apps.length"
       :loading="isUpdating"
       @sync="sync"
     >
@@ -31,7 +32,7 @@ const { $gettext } = useGettext()
 const appsStore = useAppsStore()
 const filtersStore = useFiltersStore()
 
-const { filteredApps } = storeToRefs(appsStore)
+const { apps, filteredApps } = storeToRefs(appsStore)
 
 useMeta({ title: $gettext('Apps') })
 
