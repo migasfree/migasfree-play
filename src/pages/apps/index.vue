@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Apps')"
-      icon="apps"
+      icon="mdi-apps"
       :count="filteredApps.length"
       :loading="isUpdating"
       @sync="sync"

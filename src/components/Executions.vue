@@ -1,5 +1,5 @@
 <template>
-  <q-list v-if="Object.keys(items).length > 0" class="q-mx-sm q-my-lg">
+  <div v-if="Object.keys(items).length > 0" class="q-py-md">
     <ExecutionDetail
       v-for="(item, name) in items"
       :id="name"
@@ -9,9 +9,9 @@
       :error="item.error || ''"
       :icon="item.icon || ''"
     />
-  </q-list>
+  </div>
 
-  <BannerInfo v-else :message="$gettext('There are not items to show.')" />
+  <BannerInfo v-else :message="$gettext('There are no items to show.')" />
 </template>
 
 <script setup>

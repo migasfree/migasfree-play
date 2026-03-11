@@ -2,7 +2,7 @@
   <q-page id="main" padding>
     <PageLayout
       :title="$gettext('Details')"
-      icon="mdi-list-status"
+      icon="mdi-script-text-outline"
       :count="count"
       :show-sync="false"
     >

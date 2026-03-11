@@ -1,55 +1,73 @@
 <template>
   <q-scroll-observer @scroll="onScroll" />
 
-  <q-expansion-item v-model="isExpanded" popup @show="onExpand">
+  <q-expansion-item
+    v-model="isExpanded"
+    class="glass-card execution-item q-mb-md overflow-hidden"
+    @show="onExpand"
+  >
     <template #header>
       <q-item-section v-if="icon" avatar>
-        <q-avatar>
-          <q-icon :name="icon" size="lg" />
-        </q-avatar>
+        <q-icon :name="icon" size="28px" color="primary" />
       </q-item-section>
 
       <q-item-section>
-        <div class="row items-center">
-          {{ command }}
+        <div class="row items-center no-wrap">
+          <div
+            class="execution-title text-primary letter-spacing-1 line-height-1 q-mb-xs full-width ellipsis"
+          >
+            {{ command }}
+            <q-tooltip>{{ command }}</q-tooltip>
+          </div>
           <q-spinner-dots
             v-if="isCurrentlyRunning"
             color="primary"
-            size="20px"
-            class="q-ml-sm"
+            size="24px"
+            class="q-ml-sm self-center"
           />
         </div>
-        <div class="text-caption text-muted"><DateView :value="id" /></div>
+        <div class="text-caption text-muted flex items-center q-gutter-x-xs">
+          <q-icon name="mdi-clock-outline" size="14px" />
+          <DateView :value="id" />
+        </div>
       </q-item-section>
 
       <q-item-section side>
-        <div class="row items-center">
+        <div class="row items-center q-gutter-x-xs">
           <q-btn
             v-if="isCurrentlyRunning"
             flat
+            round
+            dense
             icon="mdi-stop"
             color="negative"
+            class="action-btn"
             @click.stop="cancelCommand"
           >
-            <q-tooltip>{{ $gettext('Cancel') }}</q-tooltip>
+            <q-tooltip>{{ $gettext('Cancel execution') }}</q-tooltip>
           </q-btn>
 
           <q-btn
             v-if="error"
             flat
-            icon="mdi-bug"
+            round
+            dense
+            icon="mdi-alert-circle"
             color="negative"
+            class="action-btn"
             @click.stop="showError = true"
-          />
+          >
+            <q-tooltip>{{ $gettext('Show error details') }}</q-tooltip>
+          </q-btn>
 
-          <CopyButton :text="textToCopy" />
+          <CopyButton :text="textToCopy" flat round dense class="action-btn" />
         </div>
       </q-item-section>
     </template>
 
-    <q-separator />
+    <q-separator class="card-separator" />
 
-    <q-card>
+    <q-card unelevated class="bg-transparent">
       <q-card-section class="terminal-wrapper">
         <!-- Legacy HTML fallback for old persisted executions -->
         <div
@@ -63,15 +81,31 @@
     </q-card>
   </q-expansion-item>
 
-  <q-dialog v-model="showError" full-width>
-    <q-card>
+  <q-dialog v-model="showError" backdrop-filter="blur(4px)">
+    <q-card class="glass-card error-dialog" style="min-width: 80vw">
       <q-card-section class="row items-center q-pb-none">
+        <div class="text-overline text-negative">
+          <q-icon name="mdi-bug" size="xs" class="q-mr-xs" />
+          {{ $gettext('Execution Error') }}
+        </div>
         <q-space />
-        <q-btn v-close-popup icon="close" flat round dense />
+        <q-btn
+          v-close-popup
+          icon="mdi-close"
+          flat
+          round
+          dense
+          color="grey-7"
+          class="action-btn"
+        />
       </q-card-section>
 
-      <q-card-section>
-        <pre class="text-mono error-pre">{{ errorPlainText }}</pre>
+      <q-card-section class="q-pt-md">
+        <div
+          class="error-container q-pa-md rounded-borders bg-negative-transparent"
+        >
+          <pre class="text-mono error-pre">{{ errorPlainText }}</pre>
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -247,18 +281,9 @@ watch(
       writtenLength = newText.length
     }
 
-    // Auto-scroll: terminal internal scroll + page scroll
+    // Auto-scroll: terminal internal scroll
     if (terminal && isCurrentlyRunning.value) {
       terminal.scrollToBottom()
-    }
-
-    const elem = document.getElementById('main')
-    if (
-      !('position' in scrollInfo.value) ||
-      (scrollInfo.value.direction === 'down' &&
-        scrollInfo.value.position.top - elem.scrollHeight < 150)
-    ) {
-      window.scrollTo(0, elem.scrollHeight)
     }
   },
 )
@@ -276,33 +301,57 @@ const cancelCommand = () => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.execution-item {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+
+  &:hover {
+    border-color: var(--brand-primary);
+  }
+}
+
+.execution-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .terminal-wrapper {
   padding: 0 !important;
 }
 
 .terminal-container,
 .legacy-container {
-  min-height: 200px;
+  height: 600px;
   background: #1e1e2e;
 }
 
 .terminal-container {
-  padding: 8px;
+  padding: 12px;
 }
 
 .legacy-container {
-  max-height: 400px;
   overflow-y: auto;
   color: #cdd6f4;
   white-space: pre-wrap;
   word-break: break-all;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .terminal-container :deep(.xterm) {
   padding: 4px;
+}
+
+.error-dialog {
+  overflow: hidden;
+}
+
+.error-container {
+  background: rgba(var(--q-negative-rgb), 0.05);
+  border: 1px solid rgba(var(--q-negative-rgb), 0.1);
 }
 
 .error-pre {
@@ -310,5 +359,38 @@ const cancelCommand = () => {
   word-break: break-all;
   margin: 0;
   font-size: 13px;
+  line-height: 1.5;
+}
+
+.action-btn {
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.letter-spacing-1 {
+  letter-spacing: 0.05em;
+}
+
+.card-separator {
+  opacity: 0.1;
+}
+
+/* Dark Mode */
+.body--dark {
+  .execution-item {
+    border-color: rgba(255, 255, 255, 0.1);
+    &:hover {
+      border-color: var(--q-primary);
+    }
+  }
+
+  .card-separator {
+    opacity: 0.05;
+  }
 }
 </style>

@@ -74,7 +74,7 @@ const {
 const menuItems = computed(() => [
   {
     route: 'apps',
-    icon: 'apps',
+    icon: 'mdi-apps',
     label: $gettext('Apps'),
     show: showApps.value,
   },
@@ -92,13 +92,13 @@ const menuItems = computed(() => [
   },
   {
     route: 'details',
-    icon: 'mdi-list-status',
+    icon: 'mdi-script-text-outline',
     label: $gettext('Details'),
     show: showDetails.value,
   },
   {
     route: 'info',
-    icon: 'info',
+    icon: 'mdi-information',
     label: $gettext('Info'),
     show: showInfo.value,
   },
@@ -110,7 +110,7 @@ const menuItems = computed(() => [
   },
   {
     route: 'help',
-    icon: 'help',
+    icon: 'mdi-help-circle-outline',
     label: $gettext('Help'),
     show: showHelp.value,
     external: true,
