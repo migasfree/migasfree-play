@@ -128,7 +128,7 @@
 
               <!-- Footer info -->
               <div class="q-mt-xl text-caption text-grey-6 opacity-60">
-                {{ app.name }} v{{ app.version }} • {{ app.copyright }}
+                {{ app.name }} {{ app.version }} • {{ app.copyright }}
               </div>
             </div>
           </Transition>
