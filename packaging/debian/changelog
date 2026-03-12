@@ -5,10 +5,15 @@ migasfree-play (5.12.0) unstable; urgency=low
   * feat(ui): integrate xterm.js for professional terminal output
   * feat(ui): redesign computer label for 80x50mm thermal printers
   * feat(ux): add copy to clipboard in error dialog and terminal
+  * feat(sync): implement headless trigger to allow background synchronization from secondary instances
+  * feat(a11y): implement Phase 2 of accessibility audit (WCAG 2.1 compliance)
+  * feat(i18n): complete translations for ES, FR, CA, EU, and GL
   * fix(ui): improve scroll behavior and auto-scrolling during executions
+  * fix(sync): resolve race conditions and JSON parsing errors during store initialization
   * style(ui): improve notifications and dialog aesthetics with glassmorphism
+  * refactor: improve server info retrieval for better v4/v5 compatibility
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 11 Mar 2026 09:55:00 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 12 Mar 2026 14:45:00 +0100
 
 migasfree-play (5.11.0) unstable; urgency=low
 
@@ -37,125 +42,10 @@ migasfree-play (5.11.0) unstable; urgency=low
   * feat: added debug file
   * fix: getLogicalDevice url
   * fix: possible devices duplication (v4)
-  * refactor(auth): separate token management into single-responsibility
-    functions
+  * refactor(auth): separate token management into single-responsibility functions
   * refactor(program): optimize auth flow to validate before requesting
   * feat(ui): redesign app splash screen with timeline and error card
   * feat(ui): redesign identity card and implement dedicated print view
   * fix(token): implement robust ssl ca discovery and crash handling
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Tue, 10 Feb 2026 11:35:45 +0100
-
-migasfree-play (5.10.0) unstable; urgency=low
-
-  * fix: app initial values
-  * fix: window height (when < 800)
-  * fix: replaced sleep function by waitForServer (loop)
-  * feat: upgraded several components (node >= 20.19)
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 05 Sep 2025 08:46:47 +0200
-
-migasfree-play (5.9.0) unstable; urgency=low
-
-  * feat: added nsis and msi properties
-  * fix: added 'ignore-certificate-errors' to electron app to avoid
-    ERR_CERT_AUTHORITY_INVALID
-  * fix: notifyInfo icon
-  * fix: removed core-js component (build issue)
-  * feat: Quasar upgraded to 2.17 (node >= 18)
-  * feat: one icon to rule them all
-  * feat: added search feature in software inventory
-  * feat: added icons to toggle buttons to improve UX
-  * feat: upgraded vue3-gettext component
-  * feat: added page scroller
-  * refactor: device info
-  * feat: added /manage-devices endpoint
-  * refactor: changed notifyInfo properties
-  * feat: added BannerInfo component
-  * fix: changed electron-packager by @electron/packager
-  * fix: added resolutions key to avoid express errors after build project
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 30 Jan 2025 09:14:47 +0100
-
-migasfree-play (5.8.0) unstable; urgency=low
-
-  * feat: call computerId after sync if operation has launched autoregister
-  * feat: added notify info after sync command
-  * feat: tag actions must be executed with privileged user
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 03 Jun 2024 10:27:47 +0200
-
-migasfree-play (5.7.0) unstable; urgency=low
-
-  * feat: improved readibility in replaceColors function (spaces and tabs at the
-    beginning of the lines)
-  * feat: show execution error if exists
-  * fix: only execute actions if has been set in preferences (init function)
-  * feat: added trimEndSpaces function
-  * feat: starts minimized with sync argument
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 15 Jan 2024 11:30:47 +0100
-
-migasfree-play (5.6.0) unstable; urgency=low
-
-  * feat: added packages in install and uninstall tooltips
-  * fix: verify if server has been configured
-  * feat: added natural scroll down thanks to scroll observer component
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 03 Nov 2023 12:04:47 +0100
-
-migasfree-play (5.5.0) unstable; urgency=low
-
-  * feat: minimum node version to 14
-  * feat: upgraded several components
-  * fix: id route
-  * feat: added register route
-  * feat: added register component
-  * refactor: increased max rateLimit
-  * feat: updated translations
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Tue, 20 Jun 2023 12:15:47 +0200
-
-migasfree-play (5.4.0) unstable; urgency=low
-
-  * feat: added software inventory info
-  * feat: updated translations
-  * feat: upgraded several components
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Tue, 16 May 2023 09:25:47 +0200
-
-migasfree-play (5.3.0) unstable; urgency=low
-
-  * feat: added update preferences action
-  * feat(design): changed project icon
-  * feat: combine multiple arguments in any order (sync and debug)
-  * feat: upgraded several components
-  * feat(i18n): added Name and Comment entries in ca, eu and gl
-  * fix: set env process too in python shell options (if not, fails in windows)
-  * fix: changed browserslist (to build in windows)
-  * fix: ensure synchronization execution every 24 hours
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 21 Apr 2023 09:33:47 +0200
-
-migasfree-play (5.2.0) unstable; urgency=low
-
-  * fix: redirect to details page if no show apps setting
-  * feat(settings): added MFP_EXECUTIONS_LIMIT (5 by default)
-  * fix: usage of Reflect.ownkeys in addExecution function
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 30 Mar 2023 12:15:47 +0200
-
-migasfree-play (5.1.0) unstable; urgency=low
-
-  * fix: stopApp value false at the begining
-  * feat: added retry button if app stopped
-  * fix: launch express sever before mainWindow
-  * fix: await launch express app
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 24 Mar 2023 11:47:47 +0100
-
-migasfree-play (5.0.0) unstable; urgency=low
-
-  * App rewritten in Vue and Quasar frameworks.
-
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 20 Mar 2023 13:48:47 +0100
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 11 Mar 2026 09:55:00 +0100

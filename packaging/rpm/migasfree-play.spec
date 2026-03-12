@@ -43,14 +43,19 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Wed, 11 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.12-0
+* Thu, 12 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.12-0
 - feat(ui): complete redesign aligned with migasfree-frontend
 - feat(ui): implement glassmorphism and premium aesthetics
 - feat(ui): integrate xterm.js for professional terminal output
 - feat(ui): redesign computer label for 80x50mm thermal printers
 - feat(ux): add copy to clipboard in error dialog and terminal
+- feat(sync): implement headless trigger to allow background synchronization from secondary instances
+- feat(a11y): implement Phase 2 of accessibility audit (WCAG 2.1 compliance)
+- feat(i18n): complete translations for ES, FR, CA, EU, and GL
 - fix(ui): improve scroll behavior and auto-scrolling during executions
+- fix(sync): resolve race conditions and JSON parsing errors during store initialization
 - style(ui): improve notifications and dialog aesthetics with glassmorphism
+- refactor: improve server info retrieval for better v4/v5 compatibility
 
 * Tue, 10 Feb 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.11-0
 - feat: upgraded several components (node >= 22.12)
