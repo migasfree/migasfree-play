@@ -27,19 +27,20 @@ migasfree-play/
 
 ## 📡 IPC Channels
 
-| Channel                       | Type   | Description                            |
-| ----------------------------- | ------ | -------------------------------------- |
-| `app:get-env-config`          | invoke | Get MFP\_\* environment variables      |
-| `app:get-platform`            | invoke | Get OS platform (linux/win32)          |
-| `app:get-sync-after-start`    | invoke | Check if --sync-after-start is enabled |
-| `app:set-can-exit`            | send   | Toggle window close prevention         |
-| `window:show`                 | invoke | Force show the application window      |
-| `preferences:read`            | invoke | Read `settings.json` file              |
-| `preferences:write`           | invoke | Write to `settings.json` file          |
-| `preferences:get-server-info` | invoke | Get server URL from migasfree-client   |
-| `token:request`               | invoke | Get authentication token from server   |
-| `command:spawn`               | send   | Execute `migasfree` system command     |
-| `command:kill`                | send   | Terminate running command process      |
+| Channel                       | Type    | Description                                                  |
+| ----------------------------- | ------- | ------------------------------------------------------------ |
+| `app:get-env-config`          | invoke  | Get MFP\_\* environment variables                            |
+| `app:get-platform`            | invoke  | Get OS platform (linux/win32)                                |
+| `app:get-sync-after-start`    | invoke  | Check if synchronization on startup is requested             |
+| `app:set-can-exit`            | send    | Toggle window close prevention                               |
+| `app:trigger-sync`            | receive | Listen for synchronization requests from secondary instances |
+| `window:show`                 | invoke  | Force show the application window                            |
+| `preferences:read`            | invoke  | Read `settings.json` file                                    |
+| `preferences:write`           | invoke  | Write to `settings.json` file                                |
+| `preferences:get-server-info` | invoke  | Get server URL from migasfree-client                         |
+| `token:request`               | invoke  | Get authentication token from server                         |
+| `command:spawn`               | send    | Execute `migasfree` system command                           |
+| `command:kill`                | send    | Terminate running command process                            |
 
 ## 🔐 Environment Variables
 
@@ -89,11 +90,11 @@ makepkg
 
 ## 🚀 Production Usage
 
-| Mode           | Command                     |
-| -------------- | --------------------------- |
-| Normal         | `sudo migasfree-play`       |
-| Immediate Sync | `sudo migasfree-play sync`  |
-| Debug Mode     | `sudo migasfree-play debug` |
+| Mode           | Command                     | Description                                                     |
+| -------------- | --------------------------- | --------------------------------------------------------------- |
+| Normal         | `sudo migasfree-play`       | Standard graphical launch                                       |
+| Immediate Sync | `sudo migasfree-play sync`  | Syncs and minimizes (or triggers sync in already open instance) |
+| Debug Mode     | `sudo migasfree-play debug` | Run with logs and devtools enabled                              |
 
 ## ⚙️ Settings Schema
 
