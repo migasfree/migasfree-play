@@ -568,12 +568,24 @@ const inventoryText = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+/* Text Utilities */
 .max-width-600 {
   max-width: 600px;
 }
-
 .line-height-1-6 {
   line-height: 1.6;
+}
+.line-height-1 {
+  line-height: 1;
+}
+.letter-spacing-1 {
+  letter-spacing: 1.5px;
+}
+.tracking-tight {
+  letter-spacing: -0.5px;
+}
+.uppercase {
+  text-transform: uppercase;
 }
 
 .section-header {
@@ -652,8 +664,6 @@ const inventoryText = computed(() => {
 .label-logo-bg {
   width: 48px;
   height: 48px;
-  background: #f8f9fa;
-  border-radius: 10px;
   padding: 8px;
 }
 
@@ -693,7 +703,8 @@ const inventoryText = computed(() => {
   word-break: break-all;
 }
 
-.label-server {
+.label-server,
+.label-helpdesk {
   font-size: 13px;
 }
 
@@ -702,33 +713,8 @@ const inventoryText = computed(() => {
   border-top: 1px solid #f0f0f0;
 }
 
-.label-helpdesk {
-  font-size: 13px;
-}
-
-.letter-spacing-1 {
-  letter-spacing: 1.5px;
-}
-
-.tracking-tight {
-  letter-spacing: -0.5px;
-}
-
-.line-height-1 {
-  line-height: 1;
-}
-
-.uppercase {
-  text-transform: uppercase;
-}
-
 /* Dark Mode Adjustments */
 .body--dark {
-  .app-logo-container {
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  }
-
   .inventory-container {
     background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.05);
@@ -741,14 +727,6 @@ const inventoryText = computed(() => {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
   }
 
-  .label-logo-bg {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .qr-label-container {
-    background: white; /* QR needs white background for scanning */
-  }
-
   .label-divider {
     border-top-color: rgba(255, 255, 255, 0.1);
   }
@@ -756,10 +734,6 @@ const inventoryText = computed(() => {
   .label-footer {
     background: rgba(0, 0, 0, 0.2);
     border-top-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .text-white {
-    color: #ffffff;
   }
 }
 
