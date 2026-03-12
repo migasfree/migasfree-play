@@ -71,19 +71,21 @@ export default function registerPreferencesHandlers() {
 
     const code = `
 import json
-from migasfree_client import settings
-from migasfree_client.utils import (
-    get_config, get_hardware_uuid,
-    get_mfc_project, get_mfc_computer_name,
-    get_graphic_pid, get_graphic_user
-)
+from migasfree_client.command import MigasFreeCommand
+from migasfree_client.utils import get_hardware_uuid, get_graphic_pid, get_graphic_user
 
-graphic_pid, graphic_process = get_graphic_pid()
+mfc = MigasFreeCommand()
+graphic_pid, _ = get_graphic_pid()
+
+server = mfc.migas_server or 'localhost'
+if mfc.migas_port:
+    server = f"{server}:{mfc.migas_port}"
+
 ret = {
-    'server': get_config(settings.CONF_FILE, 'client').get('server', 'localhost'),
+    'server': server,
     'uuid': get_hardware_uuid(),
-    'project': get_mfc_project(),
-    'computer_name': get_mfc_computer_name(),
+    'project': mfc.migas_project,
+    'computer_name': mfc.migas_computer_name,
     'user': get_graphic_user(graphic_pid)
 }
 print(json.dumps(ret))`

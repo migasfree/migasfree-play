@@ -136,7 +136,7 @@
       </div>
     </Transition>
 
-    <div v-show="!isLoading" id="main-content">
+    <div v-if="!isLoading" id="main-content">
       <router-view />
     </div>
   </div>

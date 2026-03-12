@@ -56,9 +56,28 @@ const pythonExecute = async (code, args = []) => {
       results = await PythonShell.runString(code, options)
     }
 
-    const result = results.filter((line) => line.trim()).pop()
+    const filtered = results.map((line) => line.trim()).filter((line) => line)
+    if (filtered.length === 0) return ''
 
-    if (debug) console.log(result)
+    // Try to reconstruct JSON if it was split across lines
+    let combined = ''
+    for (let i = 0; i < filtered.length; i++) {
+      combined += filtered[i]
+      if (combined.startsWith('{') && combined.endsWith('}')) {
+        try {
+          JSON.parse(combined)
+          if (debug)
+            console.log('[python-utils] JSON reconstructed successfully')
+          return combined
+        } catch {
+          // Continue joining lines
+        }
+      }
+    }
+
+    // Fallback to the last non-empty line for simple strings (http, True, etc)
+    const result = filtered.pop()
+    if (debug) console.log('[python-utils] Result:', result)
     return result
   } catch (error) {
     if (debug) console.error(error)
