@@ -180,9 +180,12 @@ then
     fi
 
     # Cron every 24 hours
-    _FILE="/tmp/migasfree-sync.txt"
+    _FILE=$(mktemp /tmp/migasfree-sync.XXXXXXXX)
     _TASK="sudo /usr/bin/migasfree-play sync"
     _TIME=$(date "+%M %H")
+
+    # Ensure temp file is removed on exit
+    trap 'rm -f "$_FILE"' EXIT
 
     if [ "$XDG_SESSION_TYPE" = "wayland" ]
     then
@@ -198,7 +201,6 @@ then
     fi
 
     crontab "$_FILE"
-    rm "$_FILE"
 
     flock -u 200
     exec 200>&-
