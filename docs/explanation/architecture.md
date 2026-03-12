@@ -2,7 +2,7 @@
 
 This document explains the high-level design and concepts behind **Migasfree Play**.
 
-> **Note**: For a developer setup guide, see [ONBOARDING.md](ONBOARDING.md). For a technical reference of IPC channels and variables, see [REFERENCE.md](REFERENCE.md).
+> **Note**: For a developer setup guide, see [Developer Onboarding](../tutorials/onboarding.md). For a technical reference of IPC channels and variables, see [Technical Reference](../reference/technical.md).
 
 ---
 
@@ -23,7 +23,7 @@ flowchart TB
 
         subgraph Stores["Pinia Stores"]
             PROGRAM[program]
-            StoresList[...14 other stores]
+            StoresList[...Other modules]
         end
     end
 
@@ -48,17 +48,18 @@ Instead of a single monolithic state, the application uses **modular Pinia store
 
 The application follows a strict parallel initialization flow to ensure data consistency:
 
-1. Environment Configuration & Preferences.
-2. Client Information & Version discovery.
-3. Authentication Token verification.
-4. Parallel loading of Apps, Devices, and Packages.
+1. **Environment & Preferences**: Load environment variables and user settings.
+2. **Client Identification**: Discover Migasfree Client version and server protocol.
+3. **Authentication**: Secure Token verification or request.
+4. **Computer Identity**: Retrieve CID (Computer ID) and system characteristics.
+5. **Parallel Loading**: Asset loading of Apps, Devices, Tags, and Packages.
 
 ## 📡 Secure IPC Bridge
 
 To ensure security, the renderer process has **zero access** to Node.js APIs. Communication with the system is handled through a secure `contextBridge` in `electron-preload.js`, which exposes a limited and sanitized API to the Vue application.
 
-For more details on the specific channels available, see the [Reference Guide](REFERENCE.md#ipc-channels).
+For more details on the specific channels available, see the [Technical Reference](../reference/technical.md#ipc-channels).
 
 ---
 
-_Back to [README.md](../README.md)_
+_Back to [README.md](../../README.md)_

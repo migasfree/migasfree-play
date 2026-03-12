@@ -2,7 +2,7 @@
 
 This tutorial guides you through setting up your development environment and running **migasfree-play** for the first time.
 
-> **Note**: For a deep dive into how it works, see [ARCHITECTURE.md](ARCHITECTURE.md). For technical details, see [REFERENCE.md](REFERENCE.md).
+> **Note**: For a deep dive into how it works, see [Architecture Explanation](../explanation/architecture.md). For technical details, see [Technical Reference](../reference/technical.md).
 
 ---
 
@@ -45,4 +45,4 @@ yarn test
 
 ---
 
-_Back to [README.md](../README.md)_
+_Back to [README.md](../../README.md)_

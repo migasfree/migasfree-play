@@ -2,7 +2,7 @@
 
 This document provides step-by-step instructions for common user tasks in **Migasfree Play**.
 
-> **Note**: For a description of the icons and UI elements, see [REFERENCE.md](REFERENCE.md). If you encounter errors, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+> **Note**: For a description of the icons and UI elements, see [Technical Reference](../reference/technical.md). If you encounter errors, see [Troubleshooting Guide](troubleshooting.md).
 
 ---
 
@@ -37,4 +37,4 @@ Synchronization ensures your computer has the latest configuration and security 
 
 ---
 
-_Back to [README.md](../README.md)_
+_Back to [README.md](../../README.md)_

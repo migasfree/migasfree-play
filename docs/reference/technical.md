@@ -27,13 +27,19 @@ migasfree-play/
 
 ## 📡 IPC Channels
 
-| Channel                    | Type   | Description                |
-| -------------------------- | ------ | -------------------------- |
-| `app:get-sync-after-start` | invoke | Get sync-on-start flag     |
-| `app:get-platform`         | invoke | Get platform (linux/win32) |
-| `app:get-env-config`       | invoke | Get environment config     |
-| `command:spawn`            | send   | Execute system command     |
-| `command:kill`             | send   | Terminate running command  |
+| Channel                       | Type   | Description                            |
+| ----------------------------- | ------ | -------------------------------------- |
+| `app:get-env-config`          | invoke | Get MFP\_\* environment variables      |
+| `app:get-platform`            | invoke | Get OS platform (linux/win32)          |
+| `app:get-sync-after-start`    | invoke | Check if --sync-after-start is enabled |
+| `app:set-can-exit`            | send   | Toggle window close prevention         |
+| `window:show`                 | invoke | Force show the application window      |
+| `preferences:read`            | invoke | Read `settings.json` file              |
+| `preferences:write`           | invoke | Write to `settings.json` file          |
+| `preferences:get-server-info` | invoke | Get server URL from migasfree-client   |
+| `token:request`               | invoke | Get authentication token from server   |
+| `command:spawn`               | send   | Execute `migasfree` system command     |
+| `command:kill`                | send   | Terminate running command process      |
 
 ## 🔐 Environment Variables
 
@@ -42,7 +48,7 @@ migasfree-play/
 | `MFP_USER`             | Username for server authentication | `migasfree-play` |
 | `MFP_PASSWORD`         | Password for server authentication | `migasfree-play` |
 | `MFP_EXECUTIONS_LIMIT` | Concurrent executions limit (int)  | `5`              |
-| `MFP_QUASAR_PORT`      | Dev server port                    | `9999`           |
+| `MFP_QUASAR_PORT`      | Dev server port (Development only) | `9999`           |
 
 ## 🧭 UI Navigation Icons
 
@@ -91,7 +97,7 @@ makepkg
 
 ## ⚙️ Settings Schema
 
-File location: `/root/.migasfree-play/settings.json`
+File location: `~/.migasfree-play/settings.json` (usually `/root/.migasfree-play/` when running with sudo)
 
 | Key                 | Description                      | Type    |
 | ------------------- | -------------------------------- | ------- |
@@ -111,4 +117,4 @@ File location: `/root/.migasfree-play/settings.json`
 
 ---
 
-_Back to [README.md](../README.md)_
+_Back to [README.md](../../README.md)_

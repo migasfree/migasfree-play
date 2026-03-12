@@ -35,12 +35,12 @@ Desktop application for the [Migasfree](https://github.com/migasfree) ecosystem.
 
 The documentation is organized using the **Diátaxis** framework:
 
-| Quadrant          | Purpose                           | Links                                                                        |
-| :---------------- | :-------------------------------- | :--------------------------------------------------------------------------- |
-| **Tutorials**     | Learning-oriented (Step-by-step)  | [Developer Onboarding](docs/ONBOARDING.md)                                   |
-| **How-to Guides** | Task-oriented (Recipes)           | [User Guide](docs/USER_GUIDE.md), [Troubleshooting](docs/TROUBLESHOOTING.md) |
-| **Explanation**   | Understanding-oriented (Concepts) | [Architecture](docs/ARCHITECTURE.md)                                         |
-| **Reference**     | Information-oriented (Facts)      | [Technical Reference](docs/REFERENCE.md)                                     |
+| Quadrant          | Purpose                           | Links                                                                                                                                     |
+| :---------------- | :-------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tutorials**     | Learning-oriented (Step-by-step)  | [Developer Onboarding](docs/tutorials/onboarding.md)                                                                                      |
+| **How-to Guides** | Task-oriented (Recipes)           | [User Guide](docs/how-to/user-guide.md), [Troubleshooting](docs/how-to/troubleshooting.md), [Accessibility](docs/how-to/accessibility.md) |
+| **Explanation**   | Understanding-oriented (Concepts) | [Architecture](docs/explanation/architecture.md)                                                                                          |
+| **Reference**     | Information-oriented (Facts)      | [Technical Reference](docs/reference/technical.md)                                                                                        |
 
 ---
 
@@ -67,7 +67,7 @@ yarn install
 sudo yarn dev
 ```
 
-For more details on commands and environment configuration, see the [Reference Guide](docs/REFERENCE.md).
+For more details on commands and environment configuration, see the [Reference Guide](docs/reference/technical.md).
 
 ---
 
@@ -75,7 +75,7 @@ For more details on commands and environment configuration, see the [Reference G
 
 Migasfree Play uses environment variables for secure configuration. By default, it uses insecure credentials which **must** be changed in production.
 
-See [Reference: Environment Variables](docs/REFERENCE.md#🔐-environment-variables) for instructions.
+See [Reference: Environment Variables](docs/reference/technical.md#🔐-environment-variables) for instructions.
 
 ## License
 
