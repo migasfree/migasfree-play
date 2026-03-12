@@ -31,7 +31,7 @@
               class="app-icon"
               :placeholder-src="defaultIcon"
               fit="contain"
-              :alt="interpolate($gettext('%{name} icon'), { name: props.name })"
+              :alt="$gettext('app icon')"
             >
               <template #error>
                 <q-img :src="defaultIcon" fit="contain" />
@@ -72,9 +72,7 @@
             class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
-            :aria-label="
-              interpolate($gettext('Install %{name}'), { name: props.name })
-            "
+            :aria-label="$gettext('Install App')"
             @click="installApp(props.name, props.packages)"
           >
             <q-tooltip>
@@ -92,9 +90,7 @@
             class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
-            :aria-label="
-              interpolate($gettext('Uninstall %{name}'), { name: props.name })
-            "
+            :aria-label="$gettext('Uninstall App')"
             @click="removeApp(props.name, props.packages)"
           >
             <q-tooltip>

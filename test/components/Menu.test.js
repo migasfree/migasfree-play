@@ -75,26 +75,26 @@ describe('Menu Component', () => {
 
   it('renders visible menu items', () => {
     // Desktop view
-    const buttons = wrapper.findAll('.gt-xs button')
+    const buttons = wrapper.findAll('.menu-desktop button')
     // Apps, Devices, Details, Info, Preferences, Help = 6 visible
     // Tags is hidden
     expect(buttons.length).toBe(6)
   })
 
   it('highlights button for current route', () => {
-    const appsBtn = wrapper.findAll('.gt-xs button')[0] // First is Apps
+    const appsBtn = wrapper.findAll('.menu-desktop button')[0] // First is Apps
     expect(appsBtn.attributes('class')).toContain('active-menu-btn')
   })
 
   it('navigates when button clicked', async () => {
-    const devicesBtn = wrapper.findAll('.gt-xs button')[1] // Devices
+    const devicesBtn = wrapper.findAll('.menu-desktop button')[1] // Devices
     await devicesBtn.trigger('click')
 
     expect(routerPush).toHaveBeenCalledWith({ name: 'devices' })
   })
 
   it('handles external links correctly', () => {
-    const helpBtn = wrapper.findAll('.gt-xs button')[5] // Help is last
+    const helpBtn = wrapper.findAll('.menu-desktop button')[5] // Help is last
     expect(helpBtn.attributes('target')).toBe('_blank')
     expect(helpBtn.attributes('href')).toBe('http://help.url')
   })
@@ -103,7 +103,7 @@ describe('Menu Component', () => {
     preferencesStore.showTags = true
     await wrapper.vm.$nextTick()
 
-    const buttons = wrapper.findAll('.gt-xs button')
+    const buttons = wrapper.findAll('.menu-desktop button')
     expect(buttons.length).toBe(7) // Tags now visible
   })
 
@@ -146,7 +146,7 @@ describe('Menu Component', () => {
       },
     })
 
-    const buttons = wrapperHelp.findAll('.gt-xs button')
+    const buttons = wrapperHelp.findAll('.menu-desktop button')
     // Find by href since type='a' was removed
     const helpBtn = buttons.find(
       (btn) => btn.attributes('href') === 'http://help.url',

@@ -1,6 +1,6 @@
 <template>
   <!-- Desktop menu -->
-  <div class="gt-xs">
+  <div class="menu-desktop">
     <template v-for="item in menuItems" :key="item.route">
       <q-btn
         v-if="item.show"
@@ -23,7 +23,7 @@
   </div>
 
   <!-- Mobile dropdown menu -->
-  <div class="lt-sm">
+  <div class="menu-mobile">
     <q-btn-dropdown flat stretch :aria-label="$gettext('Menu')">
       <template #label>
         <q-icon name="mdi-menu" size="lg" />
@@ -128,6 +128,20 @@ const menuItems = computed(() => [
 <style lang="scss" scoped>
 .menu-btn {
   transition: all 0.3s ease;
+}
+
+.menu-desktop {
+  display: none;
+  @media (min-width: 721px) {
+    display: flex;
+  }
+}
+
+.menu-mobile {
+  display: block;
+  @media (min-width: 721px) {
+    display: none;
+  }
 }
 
 .active-menu-btn {

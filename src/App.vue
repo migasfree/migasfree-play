@@ -26,9 +26,9 @@
                   name="mdi-heart"
                   color="negative"
                   size="xs"
-                  :aria-label="$gettext('Love')"
+                  aria-label="loves"
                 />
-                {{ $gettext('change') }}
+                change
               </div>
             </div>
           </div>
