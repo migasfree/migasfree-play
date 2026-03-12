@@ -45,7 +45,7 @@
             class="q-py-sm"
           >
             <q-item-section avatar>
-              <div class="logical-icon-bg flex flex-center">
+              <div class="logical-icon flex flex-center">
                 <q-icon
                   name="mdi-format-list-bulleted-type"
                   size="20px"
@@ -257,9 +257,7 @@ const removeDevice = (item) => {
   height: 64px;
 }
 
-.logical-icon-bg {
-  background: var(--neutral-100);
-  border-radius: 8px;
+.logical-icon {
   width: 36px;
   height: 36px;
 }
@@ -281,9 +279,6 @@ const removeDevice = (item) => {
     border-color: var(--q-accent) !important;
   }
   .device-icon-wrapper {
-    background: rgba(255, 255, 255, 0.05);
-  }
-  .logical-icon-bg {
     background: rgba(255, 255, 255, 0.05);
   }
 }
