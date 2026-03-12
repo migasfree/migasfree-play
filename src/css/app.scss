@@ -355,6 +355,27 @@ h6,
   box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.12);
 }
 
+/* --- Tooltips (Glassmorphism) --- */
+.q-tooltip {
+  background: rgba(var(--brand-primary-rgb), 0.95) !important;
+  color: #fff !important;
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.body--dark .q-tooltip {
+  background: rgba(15, 23, 42, 0.9) !important;
+  color: var(--q-accent) !important;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
 /* --- Badges --- */
 .q-badge {
   border-radius: 8px !important;
