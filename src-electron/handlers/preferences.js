@@ -76,10 +76,7 @@ from migasfree_client.utils import get_hardware_uuid, get_graphic_pid, get_graph
 
 mfc = MigasFreeCommand()
 graphic_pid, _ = get_graphic_pid()
-
 server = mfc.migas_server or 'localhost'
-if mfc.migas_port:
-    server = f"{server}:{mfc.migas_port}"
 
 ret = {
     'server': server,
