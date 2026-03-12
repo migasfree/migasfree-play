@@ -25,6 +25,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   toggleMaximize: () => ipcRenderer.invoke('window:toggle-maximize'),
   close: () => ipcRenderer.invoke('window:close'),
 
+  onTriggerSync: (callback) => {
+    const listener = () => callback()
+    ipcRenderer.on('app:trigger-sync', listener)
+    return () => ipcRenderer.removeListener('app:trigger-sync', listener)
+  },
+
   // Domain APIs
   packages: {
     getAvailable: (version) =>

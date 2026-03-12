@@ -291,11 +291,15 @@ if (!gotTheLock) {
   console.log('Another instance is running. Exiting...')
   app.quit()
 } else {
-  app.on('second-instance', () => {
+  app.on('second-instance', (event, commandLine) => {
     // Someone tried to run a second instance, we should focus our window
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore()
       mainWindow.focus()
+
+      if (commandLine.includes('sync')) {
+        mainWindow.webContents.send('app:trigger-sync')
+      }
     }
   })
 

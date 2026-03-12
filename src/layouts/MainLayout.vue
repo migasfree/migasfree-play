@@ -158,6 +158,14 @@ onMounted(async () => {
   }
 
   setInterval(synchronize, 24 * 60 * 60 * 1000)
+
+  if (window.electronAPI.onTriggerSync) {
+    window.electronAPI.onTriggerSync(() => {
+      if (!isRunningCommand.value) {
+        synchronize()
+      }
+    })
+  }
 })
 </script>
 
