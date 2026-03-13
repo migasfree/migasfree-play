@@ -6,10 +6,11 @@
         <q-toolbar>
           <q-btn
             ref="sync"
-            unelevated
+            flat
             round
             icon="mdi-play"
-            size="18px"
+            size="16px"
+            padding="8px"
             class="q-mr-md sync-btn-primary"
             color="primary"
             :loading="isRunningCommand"
@@ -197,23 +198,25 @@ onMounted(async () => {
   background: rgba(var(--q-primary-rgb), 0.8) !important;
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white !important;
   transition: all 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
     background: var(--q-primary) !important;
     box-shadow: 0 4px 15px rgba(var(--q-primary-rgb), 0.4);
+    color: white !important;
   }
 }
 
 .body--dark .sync-btn-primary {
-  background: rgba(var(--q-accent-rgb), 0.2) !important;
+  background: rgba(var(--q-accent-rgb), 0.15) !important;
   color: var(--q-accent) !important;
-  border-color: rgba(var(--q-accent-rgb), 0.3);
+  border-color: rgba(var(--q-accent-rgb), 0.2);
 
   &:hover {
-    background: rgba(var(--q-accent-rgb), 0.3) !important;
-    box-shadow: 0 4px 15px rgba(var(--q-accent-rgb), 0.2);
+    background: rgba(var(--q-accent-rgb), 0.25) !important;
+    box-shadow: 0 4px 15px rgba(var(--q-accent-rgb), 0.1);
   }
 }
 </style>

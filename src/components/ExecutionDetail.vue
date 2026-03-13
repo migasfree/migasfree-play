@@ -18,7 +18,6 @@
             class="execution-title text-primary letter-spacing-1 col ellipsis q-ma-none"
           >
             {{ command }}
-            <q-tooltip>{{ command }}</q-tooltip>
           </h4>
         </q-item-label>
         <q-item-label
@@ -99,8 +98,10 @@
   <q-dialog v-model="showError" backdrop-filter="blur(4px)">
     <q-card class="glass-card error-dialog" style="min-width: 80vw">
       <q-card-section class="row items-center q-pb-none">
-        <div class="text-overline text-negative">
-          <q-icon name="mdi-bug" size="xs" class="q-mr-xs" />
+        <div
+          class="text-subtitle1 text-negative text-weight-bolder flex items-center"
+        >
+          <q-icon name="mdi-bug" size="24px" class="q-mr-sm" />
           {{ $gettext('Execution Error') }}
         </div>
         <q-space />
@@ -357,7 +358,7 @@ const cancelCommand = () => {
 }
 
 .execution-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
 }

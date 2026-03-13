@@ -41,7 +41,7 @@
         </q-card-section>
       </q-card-section>
 
-      <q-card-section class="q-px-md q-py-sm">
+      <q-card-section class="q-px-md q-py-sm col">
         <template v-if="moreInfo">
           <q-expansion-item
             dense

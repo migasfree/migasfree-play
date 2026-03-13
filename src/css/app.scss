@@ -96,12 +96,17 @@
   /* High Contrast for Yellow Elements */
   .bg-primary,
   .bg-accent,
+  .bg-warning,
   .q-btn.bg-primary,
   .q-btn.bg-accent,
+  .q-btn.bg-warning,
   .q-badge.bg-primary,
   .q-badge.bg-accent,
+  .q-badge.bg-warning,
   .q-chip.bg-primary,
-  .q-chip.bg-accent {
+  .q-chip.bg-accent,
+  .q-chip.bg-warning,
+  .q-toggle__inner--truthy .q-icon {
     color: #431407 !important;
   }
 }

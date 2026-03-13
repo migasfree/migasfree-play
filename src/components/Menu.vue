@@ -7,7 +7,8 @@
         flat
         round
         :icon="item.icon"
-        size="lg"
+        size="16px"
+        padding="8px"
         class="q-mx-xs menu-btn"
         :color="$route.name === item.route ? 'primary' : 'grey-7'"
         :class="{
@@ -132,14 +133,14 @@ const menuItems = computed(() => [
 
 .menu-desktop {
   display: none;
-  @media (min-width: 721px) {
+  @media (min-width: 651px) {
     display: flex;
   }
 }
 
 .menu-mobile {
   display: block;
-  @media (min-width: 721px) {
+  @media (min-width: 651px) {
     display: none;
   }
 }
@@ -147,7 +148,6 @@ const menuItems = computed(() => [
 .active-menu-btn {
   background: rgba(var(--q-primary-rgb), 0.1) !important;
   color: var(--q-primary) !important;
-  transform: translateY(-2px);
 }
 
 .body--dark .active-menu-btn {
