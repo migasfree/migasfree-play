@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Info')"
-      icon="mdi-information"
+      :icon="appIcon('info')"
       class="print-hide"
       :show-count="false"
       :loading="isUpdating"
@@ -25,6 +25,7 @@ import PageLayout from 'components/PageLayout'
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
 import { usePageSync } from 'src/composables/usePageSync'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 

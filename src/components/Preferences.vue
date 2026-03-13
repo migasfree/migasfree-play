@@ -15,7 +15,7 @@
           @update:model-value="setLanguage"
         >
           <template #prepend>
-            <q-icon name="mdi-translate" size="xs" />
+            <q-icon :name="appIcon('language')" size="xs" />
           </template>
         </q-select>
       </div>
@@ -27,8 +27,8 @@
           dense
           class="preference-toggle"
           :label="$gettext('Show synchronization details')"
-          checked-icon="mdi-eye"
-          unchecked-icon="mdi-eye-off"
+          :checked-icon="appIcon('show')"
+          :unchecked-icon="appIcon('hide')"
           size="md"
           :false-value="false"
           :true-value="true"
@@ -46,8 +46,8 @@
           dense
           class="preference-toggle"
           :label="$gettext('Dark mode')"
-          checked-icon="mdi-weather-night"
-          unchecked-icon="mdi-weather-sunny"
+          :checked-icon="appIcon('dark')"
+          :unchecked-icon="appIcon('light')"
           size="md"
           :false-value="false"
           :true-value="true"
@@ -65,6 +65,7 @@ import { useGettext } from 'vue3-gettext'
 import FilterCard from 'components/FilterCard'
 
 import { usePreferencesStore } from 'src/stores/preferences'
+import { appIcon } from 'src/composables/element'
 
 const i18n = useGettext()
 const preferencesStore = usePreferencesStore()

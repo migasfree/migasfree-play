@@ -11,7 +11,7 @@
           id="auth-title"
           class="text-h6 text-primary letter-spacing-1 uppercase line-height-1"
         >
-          <q-icon name="mdi-shield-lock-outline" size="24px" class="q-mr-sm" />
+          <q-icon :name="appIcon('auth')" size="24px" class="q-mr-sm" />
           {{ $gettext('Authentication') }}
         </div>
         <div class="text-caption text-muted q-mt-xs">
@@ -39,7 +39,7 @@
         <q-btn
           v-close-popup
           unelevated
-          icon="mdi-login"
+          :icon="appIcon('login')"
           color="primary"
           class="action-btn"
           :disabled="!isValid"
@@ -57,6 +57,7 @@ import { ref, computed, watch } from 'vue'
 import CredentialsForm from 'components/CredentialsForm'
 
 import { useProgramStore } from 'src/stores/program'
+import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
   value: {

@@ -23,7 +23,7 @@
 
       <q-btn
         v-if="props.showSync"
-        icon="mdi-sync"
+        :icon="appIcon('sync')"
         round
         flat
         color="primary"
@@ -47,6 +47,7 @@
 
 <script setup>
 import { useGettext } from 'vue3-gettext'
+import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
   title: { type: String, required: true },

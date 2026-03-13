@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Tags')"
-      icon="mdi-tag"
+      :icon="appIcon('tags')"
       :show-count="false"
       :loading="isUpdating"
       @sync="sync"
@@ -23,6 +23,7 @@ import Tags from 'components/Tags'
 
 import { useTagsStore } from 'src/stores/tags'
 import { usePageSync } from 'src/composables/usePageSync'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 

@@ -2,7 +2,7 @@
   <q-page id="main" padding>
     <PageLayout
       :title="$gettext('Details')"
-      icon="mdi-script-text-outline"
+      :icon="appIcon('details')"
       :count="count"
       :show-sync="false"
     >
@@ -23,6 +23,7 @@ import Executions from 'components/Executions'
 import PageLayout from 'components/PageLayout'
 
 import { useExecutionsStore } from 'src/stores/executions'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 

@@ -68,7 +68,7 @@
             round
             dense
             color="positive"
-            icon="mdi-download"
+            :icon="appIcon('install')"
             class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
@@ -86,7 +86,7 @@
             round
             dense
             color="negative"
-            icon="mdi-delete"
+            :icon="appIcon('uninstall')"
             class="action-btn"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
@@ -104,7 +104,7 @@
             round
             dense
             color="orange-10"
-            icon="mdi-wizard-hat"
+            :icon="appIcon('unlock')"
             class="action-btn"
             @click="$emit('openlogin')"
           >
@@ -117,7 +117,7 @@
             round
             dense
             color="brown-8"
-            icon="mdi-lock"
+            :icon="appIcon('lock')"
             class="action-btn"
           >
             <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
@@ -128,7 +128,7 @@
           <q-chip
             v-if="isInstalled"
             color="positive"
-            icon="mdi-check-circle"
+            :icon="appIcon('success')"
             class="text-weight-bold"
             outline
             dense
@@ -152,6 +152,7 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
+import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
   icon: { type: String, required: true },
@@ -246,7 +247,7 @@ const installApp = (name, packages) => {
   executionsStore.run({
     cmd,
     text: message,
-    icon: 'mdi-download',
+    icon: appIcon('install'),
   })
 }
 
@@ -276,7 +277,7 @@ const removeApp = (name, packages) => {
   executionsStore.run({
     cmd,
     text: message,
-    icon: 'mdi-delete',
+    icon: appIcon('uninstall'),
   })
 }
 </script>

@@ -21,7 +21,9 @@
           <div class="device-icon-wrapper flex flex-center">
             <q-icon
               :name="
-                connection === 'TCP' ? 'mdi-printer-pos-network' : 'mdi-printer'
+                connection === 'TCP'
+                  ? 'mdi-printer-pos-network'
+                  : techIcon('printer')
               "
               size="40px"
               color="primary"
@@ -46,11 +48,7 @@
           >
             <q-item-section avatar>
               <div class="logical-icon flex flex-center">
-                <q-icon
-                  name="mdi-format-list-bulleted-type"
-                  size="20px"
-                  color="grey-6"
-                />
+                <q-icon :name="appIcon('menu')" size="20px" color="grey-6" />
               </div>
             </q-item-section>
 
@@ -63,7 +61,7 @@
                 caption
                 class="text-info-dark flex items-center q-gutter-x-xs"
               >
-                <q-icon name="mdi-star" size="14px" />
+                <q-icon :name="appIcon('star')" size="14px" />
                 <span>{{ $gettext('Default') }}</span>
               </q-item-label>
             </q-item-section>
@@ -75,7 +73,7 @@
                   <q-chip
                     v-if="isAssigned(item)"
                     color="positive"
-                    icon="mdi-check-circle"
+                    :icon="appIcon('success')"
                     class="text-weight-bold"
                     outline
                     dense
@@ -88,7 +86,7 @@
                 <q-chip
                   v-if="isInflicted(item)"
                   color="info"
-                  icon="mdi-link-variant"
+                  :icon="appIcon('link')"
                   class="text-weight-bold"
                   dense
                   size="12px"
@@ -104,7 +102,7 @@
                     round
                     dense
                     color="negative"
-                    icon="mdi-delete"
+                    :icon="appIcon('uninstall')"
                     class="action-btn"
                     :loading="isRunningCommand"
                     :disabled="isRunningCommand"
@@ -120,7 +118,7 @@
                     round
                     dense
                     color="positive"
-                    icon="mdi-download"
+                    :icon="appIcon('install')"
                     class="action-btn"
                     :loading="isRunningCommand"
                     :disabled="isRunningCommand"
@@ -148,6 +146,7 @@ import { useDevicesStore } from 'src/stores/devices'
 import { useExecutionsStore } from 'src/stores/executions'
 import { useFiltersStore } from 'src/stores/filters'
 import { useProgramStore } from 'src/stores/program'
+import { appIcon, techIcon } from 'src/composables/element'
 
 const props = defineProps({
   name: { type: String, required: true },

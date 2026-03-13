@@ -24,7 +24,7 @@
           caption
           class="text-muted flex items-center q-gutter-x-xs q-mt-xs"
         >
-          <q-icon name="mdi-clock-outline" size="14px" />
+          <q-icon :name="appIcon('clock')" size="14px" />
           <DateView :value="id" />
         </q-item-label>
       </q-item-section>
@@ -44,7 +44,7 @@
             flat
             round
             dense
-            icon="mdi-stop"
+            :icon="appIcon('stop')"
             color="negative"
             class="action-btn"
             :aria-label="$gettext('Cancel execution')"
@@ -58,7 +58,7 @@
             flat
             round
             dense
-            icon="mdi-alert-circle"
+            :icon="appIcon('error')"
             color="negative"
             class="action-btn"
             :aria-label="$gettext('Show error details')"
@@ -101,7 +101,7 @@
         <div
           class="text-subtitle1 text-negative text-weight-bolder flex items-center"
         >
-          <q-icon name="mdi-bug" size="24px" class="q-mr-sm" />
+          <q-icon :name="appIcon('bug')" size="24px" class="q-mr-sm" />
           {{ $gettext('Execution Error') }}
         </div>
         <q-space />
@@ -116,7 +116,7 @@
           />
           <q-btn
             v-close-popup
-            icon="mdi-close"
+            :icon="appIcon('close')"
             flat
             round
             dense
@@ -149,6 +149,7 @@ import CopyButton from 'components/CopyButton'
 import DateView from 'components/DateView'
 
 import { useExecutionsStore } from 'src/stores/executions'
+import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
   id: { type: String, required: true },

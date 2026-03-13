@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Apps')"
-      icon="mdi-apps"
+      :icon="appIcon('apps')"
       :count="filteredApps.length"
       :total-count="apps.length"
       :loading="isUpdating"
@@ -26,6 +26,7 @@ import PageLayout from 'components/PageLayout'
 import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'
 import { usePageSync } from 'src/composables/usePageSync'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 

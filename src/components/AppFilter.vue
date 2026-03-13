@@ -14,7 +14,7 @@
           @update:model-value="appsStore.filterApps"
         >
           <template #prepend>
-            <q-icon name="mdi-magnify" size="xs" />
+            <q-icon :name="appIcon('search')" size="xs" />
           </template>
         </q-input>
       </div>
@@ -42,8 +42,8 @@
           dense
           class="filter-toggle"
           :label="$gettext('View installed apps only')"
-          checked-icon="mdi-check-circle"
-          unchecked-icon="mdi-apps"
+          :checked-icon="appIcon('installed')"
+          :unchecked-icon="appIcon('apps')"
           size="md"
           :false-value="false"
           :true-value="true"
@@ -58,6 +58,7 @@
 import { storeToRefs } from 'pinia'
 
 import FilterCard from 'components/FilterCard'
+import { appIcon } from 'src/composables/element'
 
 import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'

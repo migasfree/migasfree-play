@@ -5,7 +5,7 @@
         <div
           class="text-h6 text-primary letter-spacing-1 uppercase line-height-1"
         >
-          <q-icon name="mdi-server-plus" size="24px" class="q-mr-sm" />
+          <q-icon :name="appIcon('register')" size="24px" class="q-mr-sm" />
           {{ $gettext('Server Registration') }}
         </div>
       </q-card-section>
@@ -26,11 +26,15 @@
             <q-card flat bordered class="bg-surface-variant q-pa-sm">
               <div class="row items-center q-gutter-x-md">
                 <InfoItem
-                  icon="mdi-server"
+                  :icon="appIcon('server')"
                   :label="`${host} (${serverVersion})`"
                   class="col"
                 />
-                <InfoItem icon="mdi-sitemap" :label="project" class="col" />
+                <InfoItem
+                  :icon="modelIcon('projects')"
+                  :label="project"
+                  class="col"
+                />
               </div>
             </q-card>
           </div>
@@ -59,7 +63,7 @@
         <q-btn
           v-close-popup
           unelevated
-          icon="mdi-server-plus"
+          :icon="appIcon('register')"
           color="positive"
           class="action-btn"
           :disabled="!isValid"
@@ -81,6 +85,7 @@ import InfoItem from 'components/InfoItem'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useProgramStore } from 'src/stores/program'
+import { appIcon, modelIcon } from 'src/composables/element'
 
 const props = defineProps({
   value: {

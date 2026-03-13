@@ -19,10 +19,11 @@ import { ref, computed } from 'vue'
 import { copyToClipboard } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 import { useUiStore } from 'src/stores/ui'
+import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
   text: { type: String, required: true },
-  icon: { type: String, default: 'mdi-content-copy' },
+  icon: { type: String, default: appIcon('copy') },
   size: { type: String, default: 'md' },
   dense: { type: Boolean, default: false },
   round: { type: Boolean, default: false },
@@ -35,7 +36,9 @@ const uiStore = useUiStore()
 
 const copied = ref(false)
 
-const currentIcon = computed(() => (copied.value ? 'mdi-check' : props.icon))
+const currentIcon = computed(() =>
+  copied.value ? appIcon('check') : props.icon,
+)
 const currentColor = computed(() => (copied.value ? 'positive' : 'primary'))
 const tooltip = computed(() => props.tooltip || $gettext('Copy'))
 

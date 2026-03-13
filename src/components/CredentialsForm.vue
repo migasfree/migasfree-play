@@ -8,7 +8,7 @@
       :rules="[(val) => !!val || $gettext('* Required')]"
     >
       <template #prepend>
-        <q-icon name="mdi-account-outline" class="q-mr-xs" />
+        <q-icon :name="appIcon('user')" class="q-mr-xs" />
       </template>
     </q-input>
 
@@ -23,7 +23,7 @@
       @keyup.enter="$emit('submit')"
     >
       <template #prepend>
-        <q-icon name="mdi-lock-outline" class="q-mr-xs" />
+        <q-icon :name="appIcon('lock_outline')" class="q-mr-xs" />
       </template>
 
       <template #append>
@@ -31,7 +31,7 @@
           flat
           round
           dense
-          :icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+          :icon="showPassword ? appIcon('show') : appIcon('hide')"
           class="icon-btn-hover"
           :aria-label="
             showPassword ? $gettext('Hide password') : $gettext('Show password')
@@ -49,6 +49,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
   username: { type: String, default: '' },

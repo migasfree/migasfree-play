@@ -8,7 +8,7 @@
             ref="sync"
             flat
             round
-            icon="mdi-play"
+            :icon="appIcon('synchronize')"
             size="16px"
             padding="8px"
             class="q-mr-md sync-btn-primary"
@@ -44,7 +44,7 @@
           <q-btn
             v-if="!cid"
             color="warning"
-            icon="mdi-server-plus"
+            :icon="appIcon('register')"
             :aria-label="$gettext('Register Computer on the Server')"
             @click="openRegister"
             ><q-tooltip>{{
@@ -68,7 +68,7 @@
           :scroll-offset="0"
           class="print-hide"
         >
-          <q-btn fab icon="mdi-chevron-down" color="primary" />
+          <q-btn fab :icon="appIcon('down')" color="primary" />
         </q-page-scroller>
 
         <q-page-scroller
@@ -77,7 +77,7 @@
           :scroll-offset="300"
           class="print-hide"
         >
-          <q-btn fab icon="mdi-chevron-up" color="primary" />
+          <q-btn fab :icon="appIcon('up')" color="primary" />
         </q-page-scroller>
       </q-page-container>
     </q-layout>
@@ -97,6 +97,7 @@ import { appName } from 'config/app.conf'
 import Menu from 'components/Menu'
 import Register from 'components/Register'
 
+import { appIcon } from 'src/composables/element'
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePreferencesStore } from 'src/stores/preferences'
@@ -145,7 +146,7 @@ const synchronize = () => {
   executionsStore.run({
     cmd,
     text: $gettext('Synchronization'),
-    icon: 'mdi-sync',
+    icon: appIcon('sync'),
   })
 }
 

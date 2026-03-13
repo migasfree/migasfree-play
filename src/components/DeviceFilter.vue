@@ -14,7 +14,7 @@
           @update:model-value="devicesStore.filterDevices"
         >
           <template #prepend>
-            <q-icon name="mdi-magnify" size="xs" />
+            <q-icon :name="appIcon('search')" size="xs" />
           </template>
         </q-input>
       </div>
@@ -26,8 +26,8 @@
           dense
           class="filter-toggle"
           :label="$gettext('View assigned devices only')"
-          checked-icon="mdi-check-circle"
-          unchecked-icon="mdi-printer-settings"
+          :checked-icon="appIcon('success')"
+          :unchecked-icon="appIcon('devices_settings')"
           size="md"
           :false-value="false"
           :true-value="true"
@@ -42,6 +42,7 @@
 import { storeToRefs } from 'pinia'
 
 import FilterCard from 'components/FilterCard'
+import { appIcon } from 'src/composables/element'
 
 import { useDevicesStore } from 'src/stores/devices'
 import { useFiltersStore } from 'src/stores/filters'

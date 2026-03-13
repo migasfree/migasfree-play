@@ -23,7 +23,7 @@
               >
               <div class="brand-slogan text-subtitle1 text-grey-7">
                 <q-icon
-                  name="mdi-heart"
+                  :name="appIcon('heart')"
                   color="negative"
                   size="xs"
                   aria-label="loves"
@@ -40,7 +40,7 @@
               <q-card flat class="glass-card error-card">
                 <q-card-section class="q-pa-xl">
                   <q-icon
-                    name="mdi-alert-octagon-outline"
+                    :name="appIcon('warning')"
                     color="negative"
                     size="64px"
                     class="q-mb-lg"
@@ -82,7 +82,7 @@
                     color="primary"
                     padding="12px 32px"
                     :label="$gettext('Retry now')"
-                    icon="mdi-reload"
+                    :icon="appIcon('retry')"
                     class="text-weight-bold"
                     @click="retry"
                   />
@@ -112,7 +112,7 @@
                         <q-icon
                           v-if="index < loadingData.length - 1"
                           color="positive"
-                          name="mdi-check-bold"
+                          :name="appIcon('success')"
                           size="14px"
                           class="animated zoomIn"
                         />
@@ -151,6 +151,7 @@ import { appName, retryIntervalSeconds } from 'config/app.conf'
 
 import { useProgramStore } from './stores/program'
 import { useUiStore } from './stores/ui'
+import { appIcon } from './composables/element'
 
 import app from '../package.json'
 

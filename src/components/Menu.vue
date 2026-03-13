@@ -27,7 +27,7 @@
   <div class="menu-mobile">
     <q-btn-dropdown flat stretch :aria-label="$gettext('Menu')">
       <template #label>
-        <q-icon name="mdi-menu" size="lg" />
+        <q-icon :name="appIcon('menu')" size="lg" />
         <q-tooltip>{{ $gettext('Menu') }}</q-tooltip>
       </template>
       <q-list bordered separator>
@@ -64,6 +64,7 @@ import { useGettext } from 'vue3-gettext'
 import { urlHelp } from 'config/app.conf'
 
 import { usePreferencesStore } from 'src/stores/preferences'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 
@@ -81,43 +82,43 @@ const {
 const menuItems = computed(() => [
   {
     route: 'apps',
-    icon: 'mdi-apps',
+    icon: appIcon('apps'),
     label: $gettext('Apps'),
     show: showApps.value,
   },
   {
     route: 'devices',
-    icon: 'mdi-printer',
+    icon: appIcon('devices'),
     label: $gettext('Devices'),
     show: showDevices.value,
   },
   {
     route: 'tags',
-    icon: 'mdi-tag',
+    icon: appIcon('tags'),
     label: $gettext('Tags'),
     show: showTags.value,
   },
   {
     route: 'details',
-    icon: 'mdi-script-text-outline',
+    icon: appIcon('details'),
     label: $gettext('Details'),
     show: showDetails.value,
   },
   {
     route: 'info',
-    icon: 'mdi-information',
+    icon: appIcon('info'),
     label: $gettext('Info'),
     show: showInfo.value,
   },
   {
     route: 'preferences',
-    icon: 'mdi-cog',
+    icon: appIcon('preferences'),
     label: $gettext('Preferences'),
     show: showPreferences.value,
   },
   {
     route: 'help',
-    icon: 'mdi-help-circle-outline',
+    icon: appIcon('help'),
     label: $gettext('Help'),
     show: showHelp.value,
     external: true,

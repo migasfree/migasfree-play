@@ -11,7 +11,7 @@
             :alt="$gettext('migasfree logo')"
           />
           <div class="text-left">
-            <h1 class="text-h4 text-weight-bolder q-my-none app-title">
+            <h1 class="text-h4 text-weight-bolder q-my-none">
               {{ app.name }}
             </h1>
             <div class="text-subtitle2 text-muted q-mt-xs">
@@ -40,12 +40,16 @@
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
                 <h2 class="text-overline text-primary q-mb-sm section-header">
-                  <q-icon name="mdi-sync" size="14px" class="q-mr-xs" />
+                  <q-icon :name="appIcon('sync')" size="14px" class="q-mr-xs" />
                   {{ $gettext('Synchronization') }}
                 </h2>
                 <q-list dense>
-                  <InfoItem icon="mdi-account" :label="user" class="q-py-xs" />
-                  <InfoItem icon="mdi-calendar-check" class="q-py-xs">
+                  <InfoItem
+                    :icon="appIcon('user')"
+                    :label="user"
+                    class="q-py-xs"
+                  />
+                  <InfoItem :icon="appIcon('clock')" class="q-py-xs">
                     <DateView :value="syncEndDate" />
                   </InfoItem>
                 </q-list>
@@ -59,7 +63,7 @@
               <q-card-section class="q-pa-md">
                 <h2 class="text-overline text-primary q-mb-sm section-header">
                   <q-icon
-                    name="mdi-server-network"
+                    :name="techIcon('network')"
                     size="14px"
                     class="q-mr-xs"
                   />
@@ -67,29 +71,29 @@
                 </h2>
                 <q-list dense>
                   <InfoItem
-                    icon="mdi-server"
+                    :icon="appIcon('server')"
                     :label="`${host} (${serverVersion})`"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-desktop-classic"
+                    :icon="techIcon('computer')"
                     :label="client"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-bank"
+                    :icon="appIcon('organization')"
                     :label="organization"
                     :show="!!organization"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-sitemap"
+                    :icon="modelIcon('projects')"
                     :label="project"
                     :show="!!project"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-pound"
+                    :icon="appIcon('cid')"
                     :label="computerId"
                     class="q-py-xs"
                   />
@@ -108,7 +112,7 @@
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
                 <h2 class="text-overline text-primary q-mb-sm section-header">
-                  <q-icon name="mdi-chip" size="14px" class="q-mr-xs" />
+                  <q-icon :name="techIcon('cpu')" size="14px" class="q-mr-xs" />
                   {{ $gettext('Hardware') }}
                 </h2>
                 <q-list dense>
@@ -119,12 +123,12 @@
                   />
                   <InfoItem :icon="cpuIcon" :label="data.cpu" class="q-py-xs" />
                   <InfoItem
-                    icon="mdi-memory"
+                    :icon="techIcon('ram')"
                     :label="computerRam"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-harddisk"
+                    :icon="techIcon('disk')"
                     :label="computerStorage"
                     class="q-py-xs"
                   />
@@ -138,22 +142,26 @@
             <q-card unelevated class="glass-card card-stretch">
               <q-card-section class="q-pa-md">
                 <h2 class="text-overline text-primary q-mb-sm section-header">
-                  <q-icon name="mdi-ethernet" size="14px" class="q-mr-xs" />
+                  <q-icon
+                    :name="techIcon('network')"
+                    size="14px"
+                    class="q-mr-xs"
+                  />
                   {{ $gettext('Network Data') }}
                 </h2>
                 <q-list dense>
                   <InfoItem
-                    icon="mdi-domain"
+                    :icon="appIcon('domain')"
                     :label="data.fqdn || name"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-ip-network"
+                    :icon="techIcon('ip')"
                     :label="networkLabel"
                     class="q-py-xs"
                   />
                   <InfoItem
-                    icon="mdi-swap-vertical"
+                    :icon="techIcon('mac')"
                     :label="computerMac"
                     class="q-py-xs"
                   />
@@ -171,7 +179,7 @@
                     class="text-overline text-primary section-header q-ma-none"
                   >
                     <q-icon
-                      name="mdi-package-variant"
+                      :name="appIcon('software')"
                       size="14px"
                       class="q-mr-xs"
                     />
@@ -201,11 +209,11 @@
                       :aria-label="$gettext('Search software inventory')"
                     >
                       <template #prepend>
-                        <q-icon name="mdi-magnify" size="xs" />
+                        <q-icon :name="appIcon('search')" size="xs" />
                       </template>
                       <template v-if="search" #append>
                         <q-icon
-                          name="mdi-close"
+                          :name="appIcon('close')"
                           size="xs"
                           class="cursor-pointer"
                           @click="search = ''"
@@ -242,7 +250,7 @@
                     class="text-center text-muted q-py-lg"
                   >
                     <q-icon
-                      name="mdi-magnify-close"
+                      :name="appIcon('search_off')"
                       size="md"
                       class="q-mb-sm opacity-40"
                     />
@@ -295,7 +303,7 @@
               <section class="label-body q-px-md q-py-md">
                 <div class="row items-baseline no-wrap q-mb-md">
                   <div
-                    class="text-h6 text-weight-bolder tracking-tight ellipsis q-mr-sm line-height-1"
+                    class="text-h6 text-weight-bolder ellipsis q-mr-sm line-height-1"
                   >
                     {{ name }}
                   </div>
@@ -313,7 +321,7 @@
 
                 <div class="row no-wrap items-center">
                   <q-icon
-                    name="mdi-server-network"
+                    :name="techIcon('network')"
                     size="14px"
                     color="primary"
                     class="q-mr-sm"
@@ -338,13 +346,13 @@
               unelevated
               color="primary"
               :label="$gettext('Print Label')"
-              icon="mdi-printer"
+              :icon="techIcon('printer')"
               class="q-mb-md action-btn"
               @click="printLabel"
             />
             <div class="opacity-60 flex flex-center">
               <q-icon
-                name="mdi-information-outline"
+                :name="appIcon('info_outline')"
                 size="14px"
                 class="q-mr-xs"
               />
@@ -434,11 +442,21 @@ import InfoItem from 'components/InfoItem'
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
+import {
+  appIcon,
+  techIcon,
+  elementIcon,
+  productIcon as getProductIcon,
+  cpuIcon as getCpuIcon,
+  modelIcon,
+  useElement,
+} from 'src/composables/element'
 
 import app from '../../package.json'
 
 const { $gettext } = useGettext()
 
+const { computerStatus } = useElement()
 const computerStore = useComputerStore()
 const packagesStore = usePackagesStore()
 const programStore = useProgramStore()
@@ -505,46 +523,13 @@ const networkLabel = computed(() => {
 
 const computerId = computed(() => `CID-${cid.value ?? '?'}`)
 
-const productIcon = computed(() => {
-  const icons = {
-    desktop: 'mdi-desktop-tower-monitor',
-    laptop: 'mdi-laptop',
-    virtual: 'mdi-cube-outline',
-    docker: 'mdi-docker',
-  }
+const productIcon = computed(() => getProductIcon(data.value.product_system))
 
-  return icons[data.value.product_system] ?? icons['desktop']
-})
+const cpuIcon = computed(() => getCpuIcon(data.value.architecture))
 
-const cpuIcon = computed(() => {
-  const arch = data.value.architecture
+const statusIcon = computed(() => elementIcon(data.value.status))
 
-  return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-cpu-64-bit'
-})
-
-const statusIcon = computed(() => {
-  const iconMap = {
-    available: 'mdi-cart',
-    'in repair': 'mdi-wrench',
-    reserved: 'mdi-lock-alert',
-    intended: 'mdi-heart-pulse',
-    unsubscribed: 'mdi-recycle-variant',
-  }
-
-  return iconMap[data.value.status] ?? 'mdi-crosshairs-question'
-})
-
-const statusText = computed(() => {
-  const map = {
-    available: $gettext('Available'),
-    'in repair': $gettext('In repair'),
-    reserved: $gettext('Reserved'),
-    intended: $gettext('Intended'),
-    unsubscribed: $gettext('Unsubscribed'),
-  }
-
-  return map[data.value.status] ?? $gettext('Unknown')
-})
+const statusText = computed(() => computerStatus(data.value.status))
 
 const qrCode = computed(() =>
   JSON.stringify({
@@ -572,18 +557,19 @@ const inventoryText = computed(() => {
 .max-width-600 {
   max-width: 600px;
 }
+
 .line-height-1-6 {
   line-height: 1.6;
 }
+
 .line-height-1 {
   line-height: 1;
 }
+
 .letter-spacing-1 {
   letter-spacing: 1.5px;
 }
-.tracking-tight {
-  letter-spacing: -0.5px;
-}
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -602,10 +588,6 @@ const inventoryText = computed(() => {
 .app-logo-img {
   width: 80px;
   height: auto;
-}
-
-.app-title {
-  letter-spacing: -0.02em;
 }
 
 .inventory-container {

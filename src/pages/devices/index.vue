@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Devices')"
-      icon="mdi-printer"
+      :icon="appIcon('devices')"
       :count="filteredDevices.length"
       :total-count="devices.length"
       :show-count="manageDevices"
@@ -35,6 +35,7 @@ import PageLayout from 'components/PageLayout'
 import { useDevicesStore } from 'src/stores/devices'
 import { useProgramStore } from 'src/stores/program'
 import { usePageSync } from 'src/composables/usePageSync'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 

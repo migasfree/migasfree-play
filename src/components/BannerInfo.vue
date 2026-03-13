@@ -9,7 +9,7 @@
       flat
       round
       dense
-      icon="mdi-close"
+      :icon="appIcon('close')"
       size="sm"
       class="q-ml-sm"
       @click="$emit('close')"
@@ -19,6 +19,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { appIcon } from 'src/composables/element'
 
 defineOptions({ name: 'BannerInfo' })
 
@@ -36,14 +37,14 @@ const props = defineProps({
 defineEmits(['close'])
 
 const DEFAULT_ICONS = {
-  info: 'mdi-information',
-  success: 'mdi-check-circle-outline',
-  warning: 'mdi-alert-outline',
-  critical: 'mdi-alert-circle-outline',
+  info: appIcon('info'),
+  success: appIcon('success'),
+  warning: appIcon('warning'),
+  critical: appIcon('error'),
 }
 
 const resolvedIcon = computed(
-  () => props.icon || DEFAULT_ICONS[props.type] || 'mdi-information',
+  () => props.icon || DEFAULT_ICONS[props.type] || appIcon('info'),
 )
 </script>
 

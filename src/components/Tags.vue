@@ -24,7 +24,7 @@
               removable
               dense
               class="tag-chip text-weight-medium"
-              icon="mdi-tag"
+              :icon="appIcon('tags')"
               color="primary"
               text-color="white"
               :tabindex="scope.tabindex"
@@ -47,7 +47,7 @@
           round
           dense
           color="grey-7"
-          icon="mdi-information-outline"
+          :icon="appIcon('info_outline')"
           class="action-btn"
         >
           <q-tooltip>{{
@@ -64,7 +64,7 @@
           unelevated
           color="warning"
           class="action-btn q-px-md"
-          icon="mdi-wizard-hat"
+          :icon="appIcon('unlock')"
           :label="$gettext('Unlock Management')"
           @click="openLogin"
         >
@@ -126,6 +126,7 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { useProgramStore } from 'src/stores/program'
 import { useTagsStore } from 'src/stores/tags'
 import { useUiStore } from 'src/stores/ui'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 
@@ -168,7 +169,7 @@ const communicate = () => {
   executionsStore.run({
     cmd,
     text: $gettext('Communicate Tags'),
-    icon: 'mdi-comment-processing',
+    icon: appIcon('communicate'),
   })
 }
 
@@ -184,7 +185,7 @@ const setTags = () => {
   executionsStore.run({
     cmd,
     text: $gettext('Set Tags'),
-    icon: 'mdi-cog-transfer',
+    icon: appIcon('set-tags'),
   })
 }
 

@@ -2,7 +2,7 @@
   <q-page padding>
     <PageLayout
       :title="$gettext('Preferences')"
-      icon="mdi-cog"
+      :icon="appIcon('preferences')"
       :show-count="false"
       :loading="isUpdating"
       @sync="sync"
@@ -23,6 +23,7 @@ import Preferences from 'components/Preferences'
 
 import { usePreferencesStore } from 'src/stores/preferences'
 import { usePageSync } from 'src/composables/usePageSync'
+import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 
