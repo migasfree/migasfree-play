@@ -80,6 +80,7 @@
             :icon="appIcon('down')"
             color="primary"
             class="glass-fab"
+            :aria-label="$gettext('Scroll to bottom')"
             @click.stop.prevent="triggerScrollJump('#bottom')"
           />
         </q-page-scroller>
@@ -95,6 +96,7 @@
             :icon="appIcon('up')"
             color="primary"
             class="glass-fab"
+            :aria-label="$gettext('Scroll to top')"
             @click.stop.prevent="triggerScrollJump('#main')"
           />
         </q-page-scroller>

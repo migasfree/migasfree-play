@@ -44,6 +44,7 @@
                     color="negative"
                     size="64px"
                     class="q-mb-lg"
+                    aria-hidden="true"
                   />
                   <div class="text-h5 text-weight-bolder q-mb-sm">
                     {{ status }}
@@ -93,7 +94,7 @@
             <!-- Loading Progress -->
             <div v-else key="progress" class="loading-progress">
               <div class="loading-container glass-card q-pa-lg">
-                <div class="loading-list">
+                <div class="loading-list" aria-live="polite">
                   <TransitionGroup name="list">
                     <div
                       v-for="(item, index) in loadingData"
@@ -115,6 +116,7 @@
                           :name="appIcon('success')"
                           size="14px"
                           class="animated zoomIn"
+                          aria-hidden="true"
                         />
                         <q-spinner-dots v-else color="primary" size="20px" />
                       </div>
@@ -136,9 +138,9 @@
       </div>
     </Transition>
 
-    <div v-if="!isLoading" id="main-content">
+    <main v-if="!isLoading" id="main-content">
       <router-view />
-    </div>
+    </main>
   </div>
 </template>
 

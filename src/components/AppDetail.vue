@@ -31,7 +31,7 @@
               class="app-icon"
               :placeholder-src="defaultIcon"
               fit="contain"
-              :alt="$gettext('app icon')"
+              :alt="interpolate($gettext('%{name} icon'), { name })"
             >
               <template #error>
                 <q-img :src="defaultIcon" fit="contain" />
@@ -47,6 +47,9 @@
             dense
             header-class="text-body2 text-muted q-pa-none description-toggle"
             :label="truncatedDescription"
+            :header-aria-label="
+              interpolate($gettext('Read more about %{name}'), { name })
+            "
           >
             <q-card flat class="bg-surface-variant q-mt-sm">
               <q-card-section class="text-body2 q-pa-md">

@@ -31,6 +31,14 @@
               <q-tooltip>
                 {{ connection }} <span v-if="ip">({{ ip }})</span>
               </q-tooltip>
+              <div class="sr-only">
+                {{
+                  interpolate($gettext('Connection: %{type} %{ip}'), {
+                    type: connection,
+                    ip: ip ? `(${ip})` : '',
+                  })
+                }}
+              </div>
             </q-icon>
           </div>
         </q-card-section>
@@ -140,6 +148,7 @@
 <script setup>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useGettext } from 'vue3-gettext'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useDevicesStore } from 'src/stores/devices'
@@ -157,6 +166,8 @@ const props = defineProps({
   ip: { type: String, required: false, default: '' },
   logical: { type: Array, required: false, default: () => [] },
 })
+
+const { $gettext, interpolate } = useGettext()
 
 const computerStore = useComputerStore()
 const devicesStore = useDevicesStore()

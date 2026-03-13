@@ -2,12 +2,12 @@
   <q-dialog v-model="showing" persistent backdrop-filter="blur(12px)">
     <q-card class="glass-card register-card">
       <q-card-section class="q-pb-none">
-        <div
-          class="text-h6 text-primary letter-spacing-1 uppercase line-height-1"
+        <h2
+          class="text-h6 text-primary letter-spacing-1 uppercase line-height-1 q-ma-none"
         >
           <q-icon :name="appIcon('register')" size="24px" class="q-mr-sm" />
           {{ $gettext('Server Registration') }}
-        </div>
+        </h2>
       </q-card-section>
 
       <BannerInfo

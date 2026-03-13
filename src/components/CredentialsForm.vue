@@ -8,7 +8,7 @@
       :rules="[(val) => !!val || $gettext('* Required')]"
     >
       <template #prepend>
-        <q-icon :name="appIcon('user')" class="q-mr-xs" />
+        <q-icon :name="appIcon('user')" class="q-mr-xs" aria-hidden="true" />
       </template>
     </q-input>
 
@@ -23,7 +23,11 @@
       @keyup.enter="$emit('submit')"
     >
       <template #prepend>
-        <q-icon :name="appIcon('lock_outline')" class="q-mr-xs" />
+        <q-icon
+          :name="appIcon('lock_outline')"
+          class="q-mr-xs"
+          aria-hidden="true"
+        />
       </template>
 
       <template #append>
