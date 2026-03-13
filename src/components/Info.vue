@@ -313,7 +313,9 @@
                 </div>
 
                 <div class="q-mb-md">
-                  <div class="label-overline-small text-grey-6">UUID</div>
+                  <div class="label-overline-small text-grey-6">
+                    {{ $gettext('UUID') }}
+                  </div>
                   <div class="label-uuid text-weight-bold text-mono">
                     {{ uuid }}
                   </div>
@@ -404,7 +406,7 @@
           </div>
 
           <div class="q-mb-xs">
-            <div class="label-overline text-grey-8">UUID</div>
+            <div class="label-overline text-grey-8">{{ $gettext('UUID') }}</div>
             <div class="label-uuid text-weight-bold text-black">
               {{ uuid }}
             </div>
