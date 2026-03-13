@@ -11,8 +11,15 @@ export const useUiStore = defineStore('ui', () => {
   const isUpdating = ref(false)
 
   const scrollToElement = (element) => {
-    const target = getScrollTarget(element)
-    const offset = element.offsetTop
+    let el = element
+    if (typeof element === 'string') {
+      el = document.querySelector(element)
+    }
+
+    if (!el) return
+
+    const target = getScrollTarget(el)
+    const offset = el.offsetTop
     const duration = 1000
 
     setVerticalScrollPosition(target, offset, duration)

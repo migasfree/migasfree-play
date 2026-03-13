@@ -7,7 +7,7 @@ import { resultsPerPage } from 'config/app.conf'
  * @param {Ref} items - Reactive reference to the full list of items
  * @returns {Object} - { paginatedItems, pageChanged }
  */
-export function usePagination(items) {
+export function usePagination(items, scrollTarget = '#main') {
   const uiStore = useUiStore()
   const paginatedItems = ref(items.value.slice(0, resultsPerPage))
 
@@ -17,10 +17,9 @@ export function usePagination(items) {
 
     paginatedItems.value = items.value.slice(start, end)
 
-    if (shouldScroll) {
+    if (shouldScroll && scrollTarget) {
       setTimeout(() => {
-        const el = document.getElementById('main')
-        if (el) uiStore.scrollToElement(el)
+        uiStore.scrollToElement(scrollTarget)
       }, 250)
     }
   }
