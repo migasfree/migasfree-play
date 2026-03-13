@@ -19,10 +19,19 @@ export const useUiStore = defineStore('ui', () => {
     if (!el) return
 
     const target = getScrollTarget(el)
-    const offset = el.offsetTop
-    const duration = 1000
+    const targetScroll = el.offsetTop - 70 // Offset for glass header
 
-    setVerticalScrollPosition(target, offset, duration)
+    // Use native smooth scroll for better performance (GPU accelerated)
+    // and to avoid [Violation] warnings in the main thread during heavy transitions.
+    if (target.scrollTo) {
+      target.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth',
+      })
+    } else {
+      // Fallback to Quasar utility if native scrollTo is not available
+      setVerticalScrollPosition(target, targetScroll, 500)
+    }
   }
 
   const getMessageFromError = (error) => {

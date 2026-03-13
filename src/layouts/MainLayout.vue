@@ -58,17 +58,30 @@
         </q-toolbar>
       </q-header>
 
-      <q-page-container id="main" tabindex="-1">
-        <router-view />
+      <q-page-container
+        id="main"
+        :class="{ 'page-transitioning': isFiltering }"
+        tabindex="-1"
+      >
+        <div :class="{ 'jump-fade-animation': isJumpScrolled }">
+          <router-view />
+        </div>
+        <div id="bottom" class="q-py-xs"></div>
 
         <q-page-scroller
           position="bottom-right"
           reverse
           :offset="[18, 18]"
-          :scroll-offset="0"
+          :scroll-offset="300"
           class="print-hide"
         >
-          <q-btn fab :icon="appIcon('down')" color="primary" />
+          <q-btn
+            fab
+            :icon="appIcon('down')"
+            color="primary"
+            class="glass-fab"
+            @click.stop.prevent="triggerScrollJump('#bottom')"
+          />
         </q-page-scroller>
 
         <q-page-scroller
@@ -77,7 +90,13 @@
           :scroll-offset="300"
           class="print-hide"
         >
-          <q-btn fab :icon="appIcon('up')" color="primary" />
+          <q-btn
+            fab
+            :icon="appIcon('up')"
+            color="primary"
+            class="glass-fab"
+            @click.stop.prevent="triggerScrollJump('#main')"
+          />
         </q-page-scroller>
       </q-page-container>
     </q-layout>
@@ -115,6 +134,17 @@ const executionsStore = useExecutionsStore()
 const preferencesStore = usePreferencesStore()
 const programStore = useProgramStore()
 const uiStore = useUiStore()
+const { isUpdating: isFiltering } = storeToRefs(uiStore)
+
+const isJumpScrolled = ref(false)
+
+const triggerScrollJump = (target) => {
+  isJumpScrolled.value = true
+  uiStore.scrollToElement(target)
+  setTimeout(() => {
+    isJumpScrolled.value = false
+  }, 800)
+}
 
 const { cid, name, link } = storeToRefs(computerStore)
 const { isRunningCommand } = storeToRefs(executionsStore)
@@ -218,6 +248,18 @@ onMounted(async () => {
   &:hover {
     background: rgba(var(--q-accent-rgb), 0.25) !important;
     box-shadow: 0 4px 15px rgba(var(--q-accent-rgb), 0.1);
+  }
+}
+
+.glass-fab {
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
   }
 }
 </style>

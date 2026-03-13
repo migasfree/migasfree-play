@@ -10,6 +10,9 @@ vi.mock('config/app.conf', () => ({
 describe('Pagination Component', () => {
   const globalConfig = {
     global: {
+      mocks: {
+        $gettext: (msg) => msg,
+      },
       stubs: {
         'q-pagination': {
           template:

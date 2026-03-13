@@ -2,20 +2,22 @@
   <AppFilter />
 
   <template v-if="filteredApps.length > 0">
-    <div class="row q-col-gutter-md q-mb-md">
-      <AppDetail
-        v-for="item in paginatedItems"
-        :key="item.id"
-        :icon="item.icon || ''"
-        :name="item.name"
-        :category="item.category.name"
-        :score="item.score"
-        :description="item.description"
-        :packages="item.packages_to_install"
-        :level="item.level.id"
-        @openlogin="openLogin"
-      />
-    </div>
+    <Transition name="fade-page" mode="out-in">
+      <div :key="currentPage" class="row q-col-gutter-md q-mb-md">
+        <AppDetail
+          v-for="item in paginatedItems"
+          :key="item.id"
+          :icon="item.icon || ''"
+          :name="item.name"
+          :category="item.category.name"
+          :score="item.score"
+          :description="item.description"
+          :packages="item.packages_to_install"
+          :level="item.level.id"
+          @openlogin="openLogin"
+        />
+      </div>
+    </Transition>
 
     <Pagination
       class="justify-center"
@@ -47,7 +49,7 @@ const appsStore = useAppsStore()
 const { filteredApps } = storeToRefs(appsStore)
 const showLogin = ref(false)
 
-const { paginatedItems, pageChanged } = usePagination(filteredApps)
+const { paginatedItems, pageChanged, currentPage } = usePagination(filteredApps)
 
 const openLogin = () => {
   showLogin.value = true

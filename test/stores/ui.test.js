@@ -5,7 +5,7 @@ import { useUiStore } from 'src/stores/ui'
 // Mock Quasar
 vi.mock('quasar', () => ({
   scroll: {
-    getScrollTarget: vi.fn(),
+    getScrollTarget: vi.fn().mockReturnValue({ scrollTop: 0 }),
     setVerticalScrollPosition: vi.fn(),
   },
   Notify: {

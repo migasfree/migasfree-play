@@ -5,22 +5,27 @@ import { resultsPerPage } from 'config/app.conf'
 /**
  * Composable for handling pagination with scroll-to-top behavior
  * @param {Ref} items - Reactive reference to the full list of items
- * @returns {Object} - { paginatedItems, pageChanged }
+ * @param {String} scrollTarget - CSS selector for the scroll target
+ * @returns {Object} - { paginatedItems, pageChanged, currentPage }
  */
 export function usePagination(items, scrollTarget = '#main') {
   const uiStore = useUiStore()
+  const currentPage = ref(1)
   const paginatedItems = ref(items.value.slice(0, resultsPerPage))
 
-  const pageChanged = (currentPage = 1, shouldScroll = true) => {
-    const start = (currentPage - 1) * resultsPerPage
+  const pageChanged = (page = 1, shouldScroll = true) => {
+    currentPage.value = page
+    const start = (currentPage.value - 1) * resultsPerPage
     const end = start + resultsPerPage
 
     paginatedItems.value = items.value.slice(start, end)
 
     if (shouldScroll && scrollTarget) {
+      // Use a slightly larger delay to avoid main-thread saturation
+      // between the transition start and the render phase.
       setTimeout(() => {
         uiStore.scrollToElement(scrollTarget)
-      }, 250)
+      }, 150)
     }
   }
 
@@ -28,5 +33,5 @@ export function usePagination(items, scrollTarget = '#main') {
     pageChanged(1, false)
   })
 
-  return { paginatedItems, pageChanged }
+  return { paginatedItems, pageChanged, currentPage }
 }
