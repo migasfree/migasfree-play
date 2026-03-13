@@ -69,7 +69,7 @@
             dense
             color="positive"
             :icon="appIcon('install')"
-            class="action-btn"
+            class="action-hover"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
             :aria-label="$gettext('Install App')"
@@ -87,7 +87,7 @@
             dense
             color="negative"
             :icon="appIcon('uninstall')"
-            class="action-btn"
+            class="action-hover"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
             :aria-label="$gettext('Uninstall App')"
@@ -105,7 +105,7 @@
             dense
             color="orange-10"
             :icon="appIcon('unlock')"
-            class="action-btn"
+            class="action-hover"
             @click="$emit('openlogin')"
           >
             <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
@@ -118,7 +118,7 @@
             dense
             color="brown-8"
             :icon="appIcon('lock')"
-            class="action-btn"
+            class="action-hover"
           >
             <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
           </q-btn>
@@ -152,6 +152,7 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { usePackagesStore } from 'src/stores/packages'
 import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
+import { useCommand } from 'src/composables/useCommand'
 import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
@@ -176,9 +177,10 @@ const uiStore = useUiStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { availableSet, installedSet } = storeToRefs(packagesStore)
-const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
+const { userIsPrivileged } = storeToRefs(programStore)
 
 const { platform } = storeToRefs(computerStore)
+const { buildMigasfreeCommand } = useCommand()
 
 const truncatedDescription = computed(() => props.description.split('\n')[0])
 
@@ -219,21 +221,7 @@ const defaultIcon = computed(() => 'img/migasfree-play.svg')
 const installApp = (name, packages) => {
   if (!packages?.length) return
 
-  const cmd = {
-    command: 'migasfree',
-    args: [],
-    input: '',
-    env: {},
-  }
-
-  if (clientVersion.value.startsWith('4.')) {
-    // Legacy: migasfree --install --package=p1 p2 ...
-    // Splitting logic: --package=p1 is one arg, p2... are subsequent args
-    cmd.args = ['--install', `--package=${packages[0]}`, ...packages.slice(1)]
-  } else {
-    // Modern: migasfree install p1 p2 ...
-    cmd.args = ['install', ...packages]
-  }
+  const cmd = buildMigasfreeCommand('install', packages)
 
   if (platform.value === 'linux') {
     cmd.input = 'y\n'
@@ -252,18 +240,7 @@ const installApp = (name, packages) => {
 }
 
 const removeApp = (name, packages) => {
-  const cmd = {
-    command: 'migasfree',
-    args: [],
-    input: '',
-    env: {},
-  }
-
-  if (clientVersion.value.startsWith('4.')) {
-    cmd.args = ['--remove', `--package=${packages[0]}`, ...packages.slice(1)]
-  } else {
-    cmd.args = ['purge', ...packages]
-  }
+  const cmd = buildMigasfreeCommand('remove', packages)
 
   if (platform.value === 'linux') {
     cmd.input = 'y\n'
@@ -287,10 +264,6 @@ const removeApp = (name, packages) => {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.app-card:hover {
-  border-color: var(--brand-primary) !important;
 }
 
 .category-label {
@@ -327,17 +300,7 @@ const removeApp = (name, packages) => {
   overflow: hidden;
 }
 
-.action-btn {
-  transition: transform 0.2s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
 .body--dark {
-  .app-card:hover {
-    border-color: var(--q-accent) !important;
-  }
   .app-icon-wrapper {
     background: rgba(255, 255, 255, 0.05);
   }

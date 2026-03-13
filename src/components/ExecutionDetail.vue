@@ -46,7 +46,7 @@
             dense
             :icon="appIcon('stop')"
             color="negative"
-            class="action-btn"
+            class="action-hover"
             :aria-label="$gettext('Cancel execution')"
             @click.stop="cancelCommand"
           >
@@ -60,7 +60,7 @@
             dense
             :icon="appIcon('error')"
             color="negative"
-            class="action-btn"
+            class="action-hover"
             :aria-label="$gettext('Show error details')"
             @click.stop="showError = true"
           >
@@ -73,7 +73,7 @@
             flat
             round
             dense
-            class="action-btn"
+            class="action-hover"
           />
         </div>
       </q-item-section>
@@ -112,7 +112,7 @@
             round
             dense
             color="negative"
-            class="action-btn"
+            class="action-hover"
           />
           <q-btn
             v-close-popup
@@ -121,7 +121,7 @@
             round
             dense
             color="grey-7"
-            class="action-btn"
+            class="action-hover"
           />
         </div>
       </q-card-section>
@@ -352,10 +352,6 @@ const cancelCommand = () => {
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
-
-  &:hover {
-    border-color: var(--brand-primary);
-  }
 }
 
 .execution-title {
@@ -419,16 +415,6 @@ const cancelCommand = () => {
   line-height: 1.5;
 }
 
-.action-btn {
-  transition: transform 0.2s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 .letter-spacing-1 {
   letter-spacing: 0.05em;
 }
@@ -441,9 +427,6 @@ const cancelCommand = () => {
 .body--dark {
   .execution-item {
     border-color: rgba(255, 255, 255, 0.1);
-    &:hover {
-      border-color: var(--q-primary);
-    }
   }
 
   .card-separator {

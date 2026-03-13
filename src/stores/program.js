@@ -29,6 +29,8 @@ export const useProgramStore = defineStore('program', () => {
     initialUrl,
     clientVersion,
     serverVersion,
+    isLegacyClient,
+    isLegacyServer,
     organization,
     manageDevices,
   } = storeToRefs(serverStore)
@@ -124,7 +126,7 @@ export const useProgramStore = defineStore('program', () => {
     await Promise.all([
       computerStore.computerNetwork(),
       (async () => {
-        if (!serverVersion.value.startsWith('4.')) {
+        if (!isLegacyServer.value) {
           await computerStore.computerLabel()
         }
       })(),
@@ -206,6 +208,8 @@ export const useProgramStore = defineStore('program', () => {
     host,
     clientVersion,
     serverVersion,
+    isLegacyClient,
+    isLegacyServer,
     organization,
     manageDevices,
     status,

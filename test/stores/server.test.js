@@ -62,6 +62,30 @@ describe('Server Store', () => {
       const store = useServerStore()
       expect(store.clientVersion).toBe('0')
     })
+
+    it('identifies legacy client (v4)', () => {
+      const store = useServerStore()
+      store.clientVersion = '4.20'
+      expect(store.isLegacyClient).toBe(true)
+    })
+
+    it('identifies modern client (v5)', () => {
+      const store = useServerStore()
+      store.clientVersion = '5.0'
+      expect(store.isLegacyClient).toBe(false)
+    })
+
+    it('identifies legacy server (v4)', () => {
+      const store = useServerStore()
+      store.serverVersion = '4.1'
+      expect(store.isLegacyServer).toBe(true)
+    })
+
+    it('identifies modern server (v5)', () => {
+      const store = useServerStore()
+      store.serverVersion = '5.5'
+      expect(store.isLegacyServer).toBe(false)
+    })
   })
 
   describe('clientInfo()', () => {

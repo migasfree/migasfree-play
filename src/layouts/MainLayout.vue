@@ -120,8 +120,8 @@ import { appIcon } from 'src/composables/element'
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePreferencesStore } from 'src/stores/preferences'
-import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
+import { useCommand } from 'src/composables/useCommand'
 
 const showRegister = ref(false)
 
@@ -132,7 +132,6 @@ const { $gettext } = useGettext()
 const computerStore = useComputerStore()
 const executionsStore = useExecutionsStore()
 const preferencesStore = usePreferencesStore()
-const programStore = useProgramStore()
 const uiStore = useUiStore()
 const { isUpdating: isFiltering } = storeToRefs(uiStore)
 
@@ -150,7 +149,8 @@ const { cid, name, link } = storeToRefs(computerStore)
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { showApps, showSyncDetails, showComputerLink } =
   storeToRefs(preferencesStore)
-const { clientVersion } = storeToRefs(programStore)
+
+const { buildMigasfreeCommand } = useCommand()
 
 useMeta({ titleTemplate: (title) => `${title} | ${appName}` })
 
@@ -168,10 +168,7 @@ const synchronize = () => {
   if (showSyncDetails.value && route.name !== 'details')
     router.push({ name: 'details' })
 
-  const cmd = {
-    command: 'migasfree',
-    args: clientVersion.value.startsWith('4.') ? ['--update'] : ['sync'],
-  }
+  const cmd = buildMigasfreeCommand('sync')
 
   executionsStore.run({
     cmd,

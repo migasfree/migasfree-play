@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
@@ -28,11 +28,10 @@ export const useComputerStore = defineStore('computer', () => {
   const uiStore = useUiStore()
   const serverStore = useServerStore()
   const programStore = useProgramStore()
-  const { clientVersion, protocol, host, initialUrl, token, serverVersion } =
-    storeToRefs(programStore)
-
   const tokenGet = async (url) => {
-    return await api.get(url, { headers: { Authorization: token.value } })
+    return await api.get(url, {
+      headers: { Authorization: programStore.token },
+    })
   }
 
   const computerInfo = async () => {
@@ -63,15 +62,18 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerId = async () => {
-    const url = `${protocol.value}://${host.value}/get_computer_info/?uuid=${uuid.value}`
+    const url = `${programStore.protocol}://${programStore.host}/get_computer_info/?uuid=${uuid.value}`
 
     try {
-      if (clientVersion.value.startsWith('4.')) {
+      if (programStore.isLegacyClient) {
         const { data } = await api.get(url)
         cid.value = data.id
         helpdesk.value = data.helpdesk
       } else {
-        cid.value = await window.electronAPI.computer.getId()
+        const fetchedId = await window.electronAPI.computer.getId()
+        if (fetchedId) {
+          cid.value = fetchedId
+        }
       }
 
       setComputerLink()
@@ -85,7 +87,7 @@ export const useComputerStore = defineStore('computer', () => {
 
     try {
       const { data } = await tokenGet(
-        `${initialUrl.value.token}${tokenApi.computer}${cid.value}/label/`,
+        `${programStore.initialUrl.token}${tokenApi.computer}${cid.value}/label/`,
       )
       helpdesk.value = data.helpdesk
     } catch (error) {
@@ -98,7 +100,7 @@ export const useComputerStore = defineStore('computer', () => {
 
     try {
       const response = await tokenGet(
-        `${initialUrl.value.token}${tokenApi.computer}${cid.value}/`,
+        `${programStore.initialUrl.token}${tokenApi.computer}${cid.value}/`,
       )
       data.value = response.data
     } catch (error) {
@@ -111,7 +113,7 @@ export const useComputerStore = defineStore('computer', () => {
 
     try {
       const { data } = await tokenGet(
-        `${initialUrl.value.token}${tokenApi.cidAttribute}${cid.value}`,
+        `${programStore.initialUrl.token}${tokenApi.cidAttribute}${cid.value}`,
       )
 
       if (data.count === 1) attribute.value = data.results[0].id
@@ -121,35 +123,17 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const setComputerLink = () => {
-    link.value = serverVersion.value.startsWith('4.')
-      ? `${protocol.value}://${host.value}/admin/server/computer/${cid.value}/change/`
-      : `${protocol.value}://${host.value}/computers/results/${cid.value}/`
+    link.value = programStore.isLegacyServer
+      ? `${programStore.protocol}://${programStore.host}/admin/server/computer/${cid.value}/change/`
+      : `${programStore.protocol}://${programStore.host}/computers/results/${cid.value}/`
   }
 
   const registerComputer = async ({ user, password }) => {
     try {
-      await window.electronAPI.computer.register(
-        user,
-        password,
-        clientVersion.value,
-      )
-      // The updated handler returns void on success, or throws error
-      // But let's check what register returns in our handler
-      // It returns result of python script.
-      // The python script returns 0 on error (in original logic)?
-      // Original logic: if (data === 0) -> problem.
-      // New handler returns output of python script.
-      // Let's assume new handler behaves similarly but let's double check handler return.
-
-      // Wait, my handler for register:
-      // const result = await pythonExecute(...)
-      // return result
-
-      // So I should treat it same way.
       const result = await window.electronAPI.computer.register(
         user,
         password,
-        clientVersion.value,
+        programStore.clientVersion,
       )
 
       if (result === 0 || result === '0') {
@@ -160,7 +144,7 @@ export const useComputerStore = defineStore('computer', () => {
       }
 
       uiStore.notifySuccess(gettext.$gettext('Registered Computer!'))
-      computerId()
+      await computerId()
     } catch (error) {
       uiStore.notifyError(error)
     }

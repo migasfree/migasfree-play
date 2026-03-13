@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { compareVersions } from 'compare-versions'
 
@@ -108,12 +108,17 @@ export const useServerStore = defineStore('server', () => {
     initialUrl.value.token = `${initialUrl.value.baseDomain}${tokenApi.prefix}`
   }
 
+  const isLegacyClient = computed(() => clientVersion.value.startsWith('4.'))
+  const isLegacyServer = computed(() => serverVersion.value.startsWith('4.'))
+
   return {
     protocol,
     host,
     initialUrl,
     clientVersion,
     serverVersion,
+    isLegacyClient,
+    isLegacyServer,
     organization,
     manageDevices,
     systemInfo,

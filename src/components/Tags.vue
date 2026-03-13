@@ -48,7 +48,7 @@
           dense
           color="grey-7"
           :icon="appIcon('info_outline')"
-          class="action-btn"
+          class="action-hover"
         >
           <q-tooltip>{{
             $gettext(
@@ -63,7 +63,7 @@
           v-if="!userIsPrivileged"
           unelevated
           color="warning"
-          class="action-btn q-px-md"
+          class="action-hover q-px-md"
           :icon="appIcon('unlock')"
           :label="$gettext('Unlock Management')"
           @click="openLogin"
@@ -75,7 +75,7 @@
           <q-btn
             flat
             color="primary"
-            class="action-btn q-px-md"
+            class="action-hover q-px-md"
             icon="mdi-comment-processing"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
@@ -90,7 +90,7 @@
           <q-btn
             unelevated
             color="primary"
-            class="action-btn q-px-md"
+            class="action-hover q-px-md"
             icon="mdi-cog-transfer"
             :loading="isRunningCommand"
             :disabled="isRunningCommand"
@@ -126,6 +126,7 @@ import { useExecutionsStore } from 'src/stores/executions'
 import { useProgramStore } from 'src/stores/program'
 import { useTagsStore } from 'src/stores/tags'
 import { useUiStore } from 'src/stores/ui'
+import { useCommand } from 'src/composables/useCommand'
 import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
@@ -137,7 +138,9 @@ const uiStore = useUiStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { available, assigned } = storeToRefs(tagsStore)
-const { clientVersion, userIsPrivileged } = storeToRefs(programStore)
+const { userIsPrivileged } = storeToRefs(programStore)
+
+const { buildMigasfreeCommand } = useCommand()
 
 const tags = ref([])
 const options = ref([])
@@ -160,11 +163,7 @@ const updateTags = () => {
 const communicate = () => {
   uiStore.notifyInfo($gettext('Communicating...'))
 
-  let cmd = `migasfree --quiet tags --communicate ${tags.value.join(' ')}`
-  if (clientVersion.value.startsWith('4.')) {
-    const tagArg = tags.value.length ? tags.value.join(' ') : '""'
-    cmd = `migasfree-tags --communicate ${tagArg}`
-  }
+  const cmd = buildMigasfreeCommand('tags-communicate', tags.value)
 
   executionsStore.run({
     cmd,
@@ -176,11 +175,7 @@ const communicate = () => {
 const setTags = () => {
   uiStore.notifyInfo($gettext('Setting Tags...'))
 
-  let cmd = `migasfree --quiet tags --set ${tags.value.join(' ')}`
-  if (clientVersion.value.startsWith('4.')) {
-    const tagArg = tags.value.length ? tags.value.join(' ') : '""'
-    cmd = `migasfree-tags --set ${tagArg}`
-  }
+  const cmd = buildMigasfreeCommand('tags-set', tags.value)
 
   executionsStore.run({
     cmd,
@@ -227,12 +222,6 @@ onMounted(() => {
   height: 28px;
   font-size: 0.85rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.action-btn {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .action-separator {

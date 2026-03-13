@@ -23,12 +23,14 @@ vi.mock('boot/gettext', () => ({
   },
 }))
 
-vi.mock('src/stores/computer', () => ({
-  useComputerStore: () => ({
+vi.mock('src/stores/computer', () => {
+  const store = {
+    cid: 0,
     computerId: vi.fn(),
     computerData: vi.fn(),
-  }),
-}))
+  }
+  return { useComputerStore: () => store }
+})
 
 vi.mock('src/stores/packages', () => ({
   usePackagesStore: () => ({

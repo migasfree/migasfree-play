@@ -266,20 +266,6 @@ onUnmounted(() => {
   opacity: 0.8;
 }
 
-/* Cards (Glassmorphism) */
-.glass-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
-  overflow: hidden;
-
-  &.error-card {
-    border-top: 4px solid var(--q-negative);
-  }
-}
-
 .loading-container {
   width: 100%;
 }
@@ -323,32 +309,6 @@ onUnmounted(() => {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* List Transitions */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
 }
 
 .uppercase {

@@ -103,7 +103,7 @@
                     dense
                     color="negative"
                     :icon="appIcon('uninstall')"
-                    class="action-btn"
+                    class="action-hover"
                     :loading="isRunningCommand"
                     :disabled="isRunningCommand"
                     :aria-label="$gettext('Uninstall logical device')"
@@ -119,7 +119,7 @@
                     dense
                     color="positive"
                     :icon="appIcon('install')"
-                    class="action-btn"
+                    class="action-hover"
                     :loading="isRunningCommand"
                     :disabled="isRunningCommand"
                     :aria-label="$gettext('Install logical device')"
@@ -145,7 +145,7 @@ import { useComputerStore } from 'src/stores/computer'
 import { useDevicesStore } from 'src/stores/devices'
 import { useExecutionsStore } from 'src/stores/executions'
 import { useFiltersStore } from 'src/stores/filters'
-import { useProgramStore } from 'src/stores/program'
+import { useCommand } from 'src/composables/useCommand'
 import { appIcon, techIcon } from 'src/composables/element'
 
 const props = defineProps({
@@ -162,9 +162,9 @@ const computerStore = useComputerStore()
 const devicesStore = useDevicesStore()
 const executionsStore = useExecutionsStore()
 const filtersStore = useFiltersStore()
-const programStore = useProgramStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
+const { isLegacyServer } = useCommand()
 
 const logical = computed(() => JSON.parse(JSON.stringify(props.logical)))
 
@@ -175,7 +175,7 @@ const visibleLogicalDevices = computed(() => {
 })
 
 const capabilityName = (item) => {
-  return programStore.serverVersion.startsWith('4.')
+  return isLegacyServer.value
     ? item.alternative_feature_name || item.feature.name
     : item.alternative_capability_name || item.capability.name
 }
@@ -197,7 +197,7 @@ const isPredetermined = (item) => {
 }
 
 const installDevice = (item) => {
-  const attributes = programStore.serverVersion.startsWith('4.')
+  const attributes = isLegacyServer.value
     ? [...item.attributes]
     : item.attributes.map((attr) => attr.id)
 
@@ -215,7 +215,7 @@ const installDevice = (item) => {
 }
 
 const removeDevice = (item) => {
-  let attributes = programStore.serverVersion.startsWith('4.')
+  let attributes = isLegacyServer.value
     ? [...item.attributes]
     : item.attributes.map((attr) => attr.id)
 
@@ -236,10 +236,6 @@ const removeDevice = (item) => {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.device-card:hover {
-  border-color: var(--brand-primary) !important;
 }
 
 .device-id-label {
@@ -266,17 +262,7 @@ const removeDevice = (item) => {
   font-weight: 500;
 }
 
-.action-btn {
-  transition: transform 0.2s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
 .body--dark {
-  .device-card:hover {
-    border-color: var(--q-accent) !important;
-  }
   .device-icon-wrapper {
     background: rgba(255, 255, 255, 0.05);
   }
