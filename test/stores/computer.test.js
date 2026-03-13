@@ -43,10 +43,12 @@ vi.mock('src/stores/program', async () => {
   return { useProgramStore: () => state }
 })
 
+const mockNotifyError = vi.fn()
+const mockNotifySuccess = vi.fn()
 vi.mock('src/stores/ui', () => ({
   useUiStore: () => ({
-    notifyError: vi.fn(),
-    notifySuccess: vi.fn(),
+    notifyError: mockNotifyError,
+    notifySuccess: mockNotifySuccess,
   }),
 }))
 
@@ -298,8 +300,52 @@ describe('Computer Store', () => {
       const store = useComputerStore()
       await store.registerComputer({ user: 'admin', password: 'wrong' })
 
-      // notifyError should be called (via uiStore mock)
+      expect(mockNotifyError).toHaveBeenCalled()
       expect(store.cid).toBe(0)
+    })
+
+    it('shows error if registration throws exception', async () => {
+      window.electronAPI.computer.register.mockRejectedValue(
+        new Error('Network error'),
+      )
+
+      const store = useComputerStore()
+      await store.registerComputer({ user: 'admin', password: 'password' })
+
+      expect(mockNotifyError).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Network error' }),
+      )
+    })
+  })
+
+  describe('Error Handling Edge Cases', () => {
+    it('notifies error when computerInfo fails', async () => {
+      window.electronAPI.preferences.getServerInfo.mockRejectedValue(
+        new Error('IPC Fail'),
+      )
+      const store = useComputerStore()
+      await store.computerInfo()
+
+      expect(mockNotifyError).toHaveBeenCalled()
+    })
+
+    it('notifies error when computerData API fails', async () => {
+      api.get.mockRejectedValue(new Error('API 500'))
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerData()
+
+      expect(mockNotifyError).toHaveBeenCalled()
+    })
+
+    it('gracefully handles empty results in computerAttribute', async () => {
+      api.get.mockResolvedValue({ data: { count: 0, results: [] } })
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerAttribute()
+
+      expect(store.attribute).toBe(0)
+      // No error notification expected for empty result
     })
   })
 })

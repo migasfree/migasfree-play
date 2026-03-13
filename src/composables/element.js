@@ -136,7 +136,8 @@ export const elementIcon = (status) => {
  * @returns {string} Material Design Icon class name
  */
 export const productIcon = (productSystem) => {
-  return PRODUCT_ICONS[productSystem] ?? PRODUCT_ICONS['desktop']
+  if (productSystem in PRODUCT_ICONS) return PRODUCT_ICONS[productSystem]
+  return ''
 }
 
 /**
@@ -145,7 +146,15 @@ export const productIcon = (productSystem) => {
  * @returns {string} Material Design Icon class name
  */
 export const cpuIcon = (arch) => {
-  return [32, 64].includes(arch) ? `mdi-cpu-${arch}-bit` : 'mdi-cpu-64-bit'
+  const archStr = String(arch).toLowerCase()
+  if (archStr.includes('64')) return 'mdi-cpu-64-bit'
+  if (
+    archStr.includes('32') ||
+    archStr.includes('386') ||
+    archStr.includes('686')
+  )
+    return 'mdi-cpu-32-bit'
+  return 'mdi-chip'
 }
 
 /**
