@@ -31,6 +31,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return () => ipcRenderer.removeListener('app:trigger-sync', listener)
   },
 
+  // --- Auto Update ---
+  onUpdateAvailable: (callback) =>
+    ipcRenderer.on('app:update-available', (_event, value) => callback(value)),
+  relaunchApp: () => ipcRenderer.send('app:relaunch'),
+  startUpdatePolling: () => ipcRenderer.send('app:start-update-polling'),
+  stopUpdatePolling: () => ipcRenderer.send('app:stop-update-polling'),
+
   // Domain APIs
   packages: {
     getAvailable: (version) =>

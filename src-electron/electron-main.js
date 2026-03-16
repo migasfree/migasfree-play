@@ -12,7 +12,14 @@ import {
   screen,
   ipcMain,
 } from 'electron'
-import { unlinkSync, appendFileSync, chmodSync } from 'fs'
+import {
+  unlinkSync,
+  appendFileSync,
+  chmodSync,
+  statSync,
+  existsSync,
+  writeFileSync,
+} from 'node:fs'
 
 import { envDefaults } from '../src/config/app.conf.js'
 import registerPackagesHandlers from './handlers/packages.js'
@@ -140,6 +147,14 @@ ipcMain.handle('window:close', (event) => {
     win.hide()
     win.close()
   }
+})
+
+// IPC Handlers - Auto Update
+ipcMain.on('app:relaunch', () => {
+  console.log('[AutoUpdate] Restarting application by user request...')
+  app.canExit = true
+  app.relaunch()
+  app.quit()
 })
 
 // IPC Handlers - Command Execution
@@ -285,6 +300,9 @@ async function createWindow() {
   })
 
   Menu.setApplicationMenu(null)
+
+  // Start the IPC bindings for Auto-Update events
+  setupAutoUpdateIPC(mainWindow)
 }
 
 if (!gotTheLock) {
@@ -319,5 +337,90 @@ if (!gotTheLock) {
 
   app.on('before-quit', () => {
     // No explicit cleanup needed
+  })
+}
+
+let updateNotified = false
+let updatePollingInterval = null
+let updateTimeout = null
+let lastMtime = 0
+
+/**
+ * Setup a watcher on the application executable or ASAR bundle.
+ * If the package manager updates the app in background, we notify the Renderer
+ * to show a "Restart Required" prompt.
+ */
+function setupAutoUpdateIPC(win) {
+  let appPath = app.getAppPath()
+
+  // In development, watch a dummy file
+  if (process.env.DEV) {
+    appPath = path.join(os.tmpdir(), 'migasfree-play-update.dummy')
+    if (!existsSync(appPath)) {
+      try {
+        writeFileSync(appPath, 'dummy content')
+      } catch (e) {
+        console.error(`[AutoUpdate] Error creating dummy file: ${e.message}`)
+      }
+    }
+  }
+
+  const pollFile = () => {
+    if (updateNotified) return
+
+    try {
+      if (existsSync(appPath)) {
+        const currentMtime = statSync(appPath).mtimeMs
+        if (lastMtime > 0 && currentMtime > lastMtime) {
+          updateNotified = true
+          console.log(
+            `[AutoUpdate] Detected background update at ${appPath}. Notifying UI...`,
+          )
+          if (win && !win.isDestroyed()) {
+            win.webContents.send('app:update-available')
+          }
+        }
+        lastMtime = currentMtime
+      }
+    } catch (err) {
+      console.error(`[AutoUpdate] Polling failed: ${err.message}`)
+    }
+  }
+
+  ipcMain.on('app:start-update-polling', () => {
+    if (updateNotified) return
+    console.log('[AutoUpdate] Starting FS polling...')
+
+    // Reset tail timeout if it was cooling down
+    if (updateTimeout) {
+      clearTimeout(updateTimeout)
+      updateTimeout = null
+    }
+
+    try {
+      if (existsSync(appPath)) lastMtime = statSync(appPath).mtimeMs
+    } catch {
+      // Ignore if file is briefly missing during update
+    }
+
+    // Ensure we don't spawn multiple intervals
+    if (!updatePollingInterval) {
+      updatePollingInterval = setInterval(pollFile, 2000)
+    }
+  })
+
+  ipcMain.on('app:stop-update-polling', () => {
+    console.log(
+      '[AutoUpdate] Stopping FS polling in 60 seconds (cooldown tail)...',
+    )
+
+    // Keep surveying for a minute after the task finished to catch the pkg manager trailing moves
+    updateTimeout = setTimeout(() => {
+      if (updatePollingInterval) {
+        console.log('[AutoUpdate] FS polling officially stopped.')
+        clearInterval(updatePollingInterval)
+        updatePollingInterval = null
+      }
+    }, 60000)
   })
 }

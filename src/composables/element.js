@@ -43,6 +43,8 @@ export const APP_ICON = {
   cid: 'mdi-pound',
   domain: 'mdi-domain',
   search_off: 'mdi-magnify-close',
+  update: 'mdi-cloud-download',
+  restart: 'mdi-restart',
 
   // Status & Feedback
   success: 'mdi-check-circle-outline',

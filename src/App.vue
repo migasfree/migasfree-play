@@ -5,7 +5,7 @@
         v-if="isLoading"
         key="loading"
         class="splash-overlay flex flex-center"
-        :style="{ pointerEvents: isLoading ? 'auto' : 'none' }"
+        :class="isLoading ? 'pointer-events-auto' : 'pointer-events-none'"
       >
         <div class="splash-content text-center">
           <!-- Logo & Brand Section -->
@@ -141,11 +141,62 @@
     <main v-if="!isLoading" id="main-content">
       <router-view />
     </main>
+
+    <!-- Auto-Update Restart Dialog -->
+    <q-dialog
+      v-model="showUpdateDialog"
+      persistent
+      maximized
+      transition-show="fade"
+      transition-hide="fade"
+      role="alertdialog"
+      aria-labelledby="update-dialog-title"
+      aria-describedby="update-dialog-desc"
+    >
+      <q-card class="bg-primary text-white flex flex-center">
+        <q-card-section class="text-center q-pa-xl">
+          <q-icon
+            :name="appIcon('update')"
+            size="80px"
+            class="q-mb-md opacity-80"
+            aria-hidden="true"
+          />
+          <div
+            id="update-dialog-title"
+            class="text-h4 text-weight-bold q-mb-md"
+          >
+            {{ $gettext('Update Available') }}
+          </div>
+          <p
+            id="update-dialog-desc"
+            class="text-h6 text-weight-light opacity-80 q-mb-xl update-dialog-text"
+          >
+            {{
+              $gettext(
+                'The application has been automatically updated in the background. Please restart to apply the changes safely.',
+              )
+            }}
+          </p>
+          <q-btn
+            unelevated
+            rounded
+            color="white"
+            text-color="primary"
+            size="lg"
+            padding="12px 40px"
+            :icon="appIcon('restart')"
+            :label="$gettext('Restart Now')"
+            class="text-weight-bold shadow-4"
+            @click="restartApp"
+          />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMeta, useQuasar } from 'quasar'
 
@@ -153,12 +204,14 @@ import { appName, retryIntervalSeconds } from 'config/app.conf'
 
 import { useProgramStore } from './stores/program'
 import { useUiStore } from './stores/ui'
+import { useExecutionsStore } from './stores/executions'
 import { appIcon } from './composables/element'
 
 import app from '../package.json'
 
 const programStore = useProgramStore()
 const uiStore = useUiStore()
+const executionsStore = useExecutionsStore()
 const $q = useQuasar()
 
 const loadedData = ref([])
@@ -170,6 +223,30 @@ let countdownIntervalId = null
 
 const { appIsStopped, status } = storeToRefs(programStore)
 const { isLoading } = storeToRefs(uiStore)
+const { isRunningCommand } = storeToRefs(executionsStore)
+
+// Update State
+const updateAvailable = ref(false)
+const showUpdateDialog = ref(false)
+let removeUpdateListener = null
+
+const isBusy = computed(() => isRunningCommand.value || isLoading.value)
+
+const restartApp = () => {
+  if (window.electronAPI) {
+    window.electronAPI.relaunchApp()
+  }
+}
+
+const checkUpdateAndShow = () => {
+  if (updateAvailable.value && !isBusy.value && !showUpdateDialog.value) {
+    showUpdateDialog.value = true
+  }
+}
+
+watch(isBusy, () => {
+  checkUpdateAndShow()
+})
 
 $q.dark.set($q.localStorage.getItem('darkMode') || false)
 
@@ -226,11 +303,32 @@ watch(appIsStopped, (stopped) => {
 })
 
 onMounted(async () => {
+  if (window.electronAPI) {
+    removeUpdateListener = window.electronAPI.onUpdateAvailable(() => {
+      updateAvailable.value = true
+      checkUpdateAndShow()
+    })
+
+    // Bind polling lifecycle to the execution runs
+    watch(
+      isRunningCommand,
+      (running) => {
+        if (running) {
+          window.electronAPI.startUpdatePolling()
+        } else {
+          window.electronAPI.stopUpdatePolling()
+        }
+      },
+      { immediate: true }, // trigger immediately to check initial state
+    )
+  }
+
   await programStore.init()
 })
 
 onUnmounted(() => {
   clearRetryTimers()
+  if (removeUpdateListener) removeUpdateListener()
 })
 </script>
 
@@ -323,5 +421,19 @@ onUnmounted(() => {
 
 .bg-surface-variant {
   background: var(--bg-surface-variant);
+}
+
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+.update-dialog-text {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

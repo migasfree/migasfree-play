@@ -34,6 +34,10 @@ migasfree-play/
 | `app:get-sync-after-start`    | invoke  | Check if synchronization on startup is requested             |
 | `app:set-can-exit`            | send    | Toggle window close prevention                               |
 | `app:trigger-sync`            | receive | Listen for synchronization requests from secondary instances |
+| `app:start-update-polling`    | receive | Start tracking FS changes for background app updates         |
+| `app:stop-update-polling`     | receive | Stop tracking FS changes after a 60-second cooldown tail     |
+| `app:update-available`        | send    | Notify renderer that a background update occurred            |
+| `app:relaunch`                | receive | Restart the application safely                               |
 | `window:show`                 | invoke  | Force show the application window                            |
 | `preferences:read`            | invoke  | Read `settings.json` file                                    |
 | `preferences:write`           | invoke  | Write to `settings.json` file                                |
