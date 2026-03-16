@@ -34,6 +34,22 @@ msgstr[1] "Reintento automático en %{ count } segundos..."
 msgid "Retry now"
 msgstr "Tentalo de novo agora"
 
+#: src/App.vue:161
+msgid "Update Available"
+msgstr "Actualización Dispoñible"
+
+#: src/App.vue:168
+msgid ""
+"The application has been automatically updated in the background. Please "
+"restart to apply the changes safely."
+msgstr ""
+"A aplicación actualizouse automaticamente en segundo plano. Por favor, "
+"reinicie para aplicar os cambios con seguridade."
+
+#: src/App.vue:181
+msgid "Restart Now"
+msgstr "Reiniciar Agora"
+
 #: src/components/AppDetail.vue:19
 msgid "Score: %{score} out of 5 stars"
 msgstr "Puntuación: %{score} de 5 estrelas"
