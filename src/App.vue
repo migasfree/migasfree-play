@@ -113,7 +113,7 @@
                         <q-icon
                           v-if="index < loadingData.length - 1"
                           color="positive"
-                          :name="appIcon('success')"
+                          :name="appIcon('check')"
                           size="14px"
                           class="animated zoomIn"
                           aria-hidden="true"
