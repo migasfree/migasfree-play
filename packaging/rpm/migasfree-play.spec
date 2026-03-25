@@ -43,6 +43,11 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Wed, 25 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.13-0
+- feat(auto-update): implement event-driven background update detection
+- feat(i18n): add translations for the updated restart dialog in ES, FR, GL, CA, and EU
+- fix(packaging): remove 'set -e' from wrapper script to prevent silent failures in cron environments
+
 * Mon, 16 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.12-0
 - feat(ui): complete redesign aligned with migasfree-frontend
 - feat(ui): implement glassmorphism and premium aesthetics

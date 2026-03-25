@@ -1,3 +1,11 @@
+migasfree-play (5.13.0) unstable; urgency=low
+
+  * feat(auto-update): implement event-driven background update detection
+  * feat(i18n): add translations for the updated restart dialog in ES, FR, GL, CA, and EU
+  * fix(packaging): remove 'set -e' from wrapper script to prevent silent failures in cron environments
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 25 Mar 2026 12:26:00 +0100
+
 migasfree-play (5.12.0) unstable; urgency=low
 
   * feat(ui): complete redesign aligned with migasfree-frontend
