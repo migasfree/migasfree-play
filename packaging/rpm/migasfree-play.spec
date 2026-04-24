@@ -1,6 +1,6 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.12
+Version:       5.13
 Release:       0
 Summary:       GUI for migasfree client
 License:       GPLv3
