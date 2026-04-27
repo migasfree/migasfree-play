@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import { api } from 'boot/axios'
@@ -51,6 +51,8 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerNetwork = async () => {
+    if (!isRegistered.value) return
+
     try {
       const data = await window.electronAPI.computer.getNetwork()
       mask.value = data.mask
@@ -71,9 +73,7 @@ export const useComputerStore = defineStore('computer', () => {
         helpdesk.value = data.helpdesk
       } else {
         const fetchedId = await window.electronAPI.computer.getId()
-        if (fetchedId) {
-          cid.value = fetchedId
-        }
+        cid.value = fetchedId || '0'
       }
 
       setComputerLink()
@@ -83,7 +83,7 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerLabel = async () => {
-    if (!cid.value) return
+    if (!isRegistered.value) return
 
     try {
       const { data } = await tokenGet(
@@ -96,7 +96,7 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerData = async () => {
-    if (!cid.value) return
+    if (!isRegistered.value) return
 
     try {
       const response = await tokenGet(
@@ -109,7 +109,7 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerAttribute = async () => {
-    if (!cid.value) return
+    if (!isRegistered.value) return
 
     try {
       const { data } = await tokenGet(
@@ -150,10 +150,15 @@ export const useComputerStore = defineStore('computer', () => {
     }
   }
 
+  const isRegistered = computed(
+    () => !!cid.value && cid.value !== '0' && cid.value !== 0,
+  )
+
   return {
     name,
     uuid,
     cid,
+    isRegistered,
     project,
     user,
     link,

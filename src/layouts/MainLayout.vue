@@ -41,17 +41,6 @@
             }}<q-tooltip>{{ computerText }}</q-tooltip></q-toolbar-title
           >
 
-          <q-btn
-            v-if="!cid"
-            color="warning"
-            :icon="appIcon('register')"
-            :aria-label="$gettext('Register Computer on the Server')"
-            @click="openRegister"
-            ><q-tooltip>{{
-              $gettext('Register Computer on the Server')
-            }}</q-tooltip></q-btn
-          >
-
           <q-space />
 
           <Menu />
@@ -63,6 +52,29 @@
         :class="{ 'page-transitioning': isFiltering }"
         tabindex="-1"
       >
+        <!-- Registration Banner -->
+        <q-banner
+          v-if="!isRegistered"
+          class="bg-warning text-white q-py-sm q-px-lg text-weight-bold shadow-4"
+        >
+          <template #avatar>
+            <q-icon :name="appIcon('register')" size="sm" />
+          </template>
+          {{
+            $gettext(
+              'This computer is not registered on the server. Please register to access all features.',
+            )
+          }}
+          <template #action>
+            <q-btn
+              flat
+              color="white"
+              :label="$gettext('Register Now')"
+              class="text-weight-bolder"
+              @click="openRegister"
+            />
+          </template>
+        </q-banner>
         <div :class="{ 'jump-fade-animation': isJumpScrolled }">
           <router-view />
         </div>
@@ -147,7 +159,7 @@ const triggerScrollJump = (target) => {
   }, 800)
 }
 
-const { cid, name, link } = storeToRefs(computerStore)
+const { cid, name, link, isRegistered } = storeToRefs(computerStore)
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { showApps, showSyncDetails, showComputerLink } =
   storeToRefs(preferencesStore)

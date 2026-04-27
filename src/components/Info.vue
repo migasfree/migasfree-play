@@ -96,7 +96,20 @@
                     :icon="appIcon('cid')"
                     :label="computerId"
                     class="q-py-xs"
-                  />
+                  >
+                    <template v-if="!isRegistered" #append>
+                      <q-icon
+                        :name="appIcon('warning')"
+                        color="warning"
+                        size="xs"
+                        class="q-ml-sm cursor-pointer"
+                      >
+                        <q-tooltip>
+                          {{ $gettext('Computer not registered') }}
+                        </q-tooltip>
+                      </q-icon>
+                    </template>
+                  </InfoItem>
                   <InfoItem
                     :icon="statusIcon"
                     :label="statusText"
@@ -465,8 +478,19 @@ const programStore = useProgramStore()
 
 const search = ref('')
 
-const { cid, data, user, mask, network, project, name, uuid, helpdesk, ip } =
-  storeToRefs(computerStore)
+const {
+  cid,
+  data,
+  user,
+  mask,
+  network,
+  project,
+  name,
+  uuid,
+  helpdesk,
+  ip,
+  isRegistered,
+} = storeToRefs(computerStore)
 const { inventory } = storeToRefs(packagesStore)
 
 const host = programStore.host
