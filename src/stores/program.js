@@ -139,49 +139,51 @@ export const useProgramStore = defineStore('program', () => {
 
     heavyPromises.push(executionsStore.getExecutions())
 
-    heavyPromises.push(
-      (async () => {
-        if (preferencesStore.showApps) {
-          setStatus(gettext.$gettext('Apps'))
-          await appsStore.loadApps()
-          await filtersStore.setCategories()
-        }
-
-        setStatus(gettext.$gettext('Packages'))
-        await Promise.all([
-          packagesStore.setAvailablePackages(),
-          packagesStore.setInstalledPackages(),
-          packagesStore.setInventory(),
-        ])
-
-        // Force Set pre-computation (Performance Fix)
-        packagesStore.availableSet.size
-        packagesStore.installedSet.size
-
-        if (preferencesStore.showApps) {
-          appsStore.filterApps()
-        }
-      })(),
-    )
-
-    if (preferencesStore.showDevices) {
+    if (computerStore.isRegistered) {
       heavyPromises.push(
         (async () => {
-          setStatus(gettext.$gettext('Devices'))
-          await devicesStore.computerDevices()
-          await devicesStore.getAvailableDevices()
-          await devicesStore.getFeaturesDevices()
-        })(),
-      )
-    }
+          if (preferencesStore.showApps) {
+            setStatus(gettext.$gettext('Apps'))
+            await appsStore.loadApps()
+            await filtersStore.setCategories()
+          }
 
-    if (preferencesStore.showTags) {
-      heavyPromises.push(
-        (async () => {
-          setStatus(gettext.$gettext('Tags'))
-          await tagsStore.getTags()
+          setStatus(gettext.$gettext('Packages'))
+          await Promise.all([
+            packagesStore.setAvailablePackages(),
+            packagesStore.setInstalledPackages(),
+            packagesStore.setInventory(),
+          ])
+
+          // Force Set pre-computation (Performance Fix)
+          packagesStore.availableSet.size
+          packagesStore.installedSet.size
+
+          if (preferencesStore.showApps) {
+            appsStore.filterApps()
+          }
         })(),
       )
+
+      if (preferencesStore.showDevices) {
+        heavyPromises.push(
+          (async () => {
+            setStatus(gettext.$gettext('Devices'))
+            await devicesStore.computerDevices()
+            await devicesStore.getAvailableDevices()
+            await devicesStore.getFeaturesDevices()
+          })(),
+        )
+      }
+
+      if (preferencesStore.showTags) {
+        heavyPromises.push(
+          (async () => {
+            setStatus(gettext.$gettext('Tags'))
+            await tagsStore.getTags()
+          })(),
+        )
+      }
     }
 
     await Promise.all(heavyPromises)

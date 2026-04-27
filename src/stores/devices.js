@@ -48,7 +48,7 @@ export const useDevicesStore = defineStore('devices', () => {
   const computerDevices = async () => {
     devices.value = []
 
-    if (!cid.value) return
+    if (!computerStore.isRegistered) return
 
     try {
       const { data } = await tokenRequest(
@@ -74,7 +74,7 @@ export const useDevicesStore = defineStore('devices', () => {
 
   // today is forbidden use this method
   const setDefaultLogicalDevice = async (logicalId) => {
-    if (!cid.value) return
+    if (!computerStore.isRegistered) return
 
     try {
       await tokenRequest(
@@ -89,7 +89,7 @@ export const useDevicesStore = defineStore('devices', () => {
   }
 
   const getAvailableDevices = async () => {
-    if (!cid.value) return
+    if (!computerStore.isRegistered) return
 
     try {
       const response = await tokenRequest(

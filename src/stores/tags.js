@@ -11,14 +11,13 @@ export const useTagsStore = defineStore('tags', () => {
   const programStore = useProgramStore()
   const uiStore = useUiStore()
 
-  const { cid } = storeToRefs(computerStore)
   const { clientVersion } = storeToRefs(programStore)
 
   const available = ref([])
   const assigned = ref([])
 
   const getTags = async () => {
-    if (!cid.value) return
+    if (!computerStore.isRegistered) return
 
     try {
       const data = await window.electronAPI.tags.get(clientVersion.value)
