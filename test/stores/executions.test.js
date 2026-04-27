@@ -26,8 +26,15 @@ vi.mock('boot/gettext', () => ({
 vi.mock('src/stores/computer', () => {
   const store = {
     cid: 0,
+    get isRegistered() {
+      return !!this.cid && this.cid !== '0'
+    },
     computerId: vi.fn(),
     computerData: vi.fn(),
+    computerNetwork: vi.fn(),
+    computerLabel: vi.fn(),
+    computerAttribute: vi.fn(),
+    registerComputer: vi.fn(),
   }
   return { useComputerStore: () => store }
 })

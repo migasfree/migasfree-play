@@ -137,6 +137,7 @@ describe('Computer Store', () => {
       window.electronAPI.computer.getNetwork.mockResolvedValue(mockData)
 
       const store = useComputerStore()
+      store.cid = 123
       await store.computerNetwork()
 
       expect(window.electronAPI.computer.getNetwork).toHaveBeenCalled()

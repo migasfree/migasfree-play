@@ -21,12 +21,28 @@ vi.mock('config/app.conf', () => ({
 }))
 
 vi.mock('src/stores/computer', async () => {
-  const { ref } = await import('vue')
-  const state = {
-    cid: ref('computer-123'),
-    project: ref('migasfree'),
+  const { ref, computed } = await import('vue')
+  const cid = ref(123)
+  const project = ref('migasfree')
+  const isRegisteredComp = computed(
+    () => !!cid.value && cid.value !== '0' && cid.value !== 0,
+  )
+  const store = {
+    cid,
+    project,
+    get isRegistered() {
+      return isRegisteredComp.value
+    },
+    computerId: vi.fn(),
+    computerData: vi.fn(),
+    computerNetwork: vi.fn(),
+    computerLabel: vi.fn(),
+    computerAttribute: vi.fn(),
+    registerComputer: vi.fn(),
   }
-  return { useComputerStore: () => state }
+  return {
+    useComputerStore: () => store,
+  }
 })
 
 vi.mock('src/stores/program', async () => {

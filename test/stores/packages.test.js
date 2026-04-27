@@ -11,6 +11,31 @@ vi.mock('src/stores/program', async () => {
   return { useProgramStore: () => state }
 })
 
+vi.mock('src/stores/computer', async () => {
+  const { ref, computed } = await import('vue')
+  const cid = ref(123)
+  const project = ref('migasfree')
+  const isRegisteredComp = computed(
+    () => !!cid.value && cid.value !== '0' && cid.value !== 0,
+  )
+  const store = {
+    cid,
+    project,
+    get isRegistered() {
+      return isRegisteredComp.value
+    },
+    computerId: vi.fn(),
+    computerData: vi.fn(),
+    computerNetwork: vi.fn(),
+    computerLabel: vi.fn(),
+    computerAttribute: vi.fn(),
+    registerComputer: vi.fn(),
+  }
+  return {
+    useComputerStore: () => store,
+  }
+})
+
 vi.mock('src/stores/apps', async () => {
   const { ref } = await import('vue')
   const packagesRef = ref(['firefox', 'vlc'])
@@ -79,7 +104,7 @@ describe('Packages Store', () => {
       const store = usePackagesStore()
       await store.setAvailablePackages()
 
-      expect(store.available).toBeUndefined()
+      expect(store.available).toEqual([])
     })
   })
 
@@ -106,7 +131,7 @@ describe('Packages Store', () => {
       const store = usePackagesStore()
       await store.setInstalledPackages()
 
-      expect(store.installed).toBeUndefined()
+      expect(store.installed).toEqual([])
     })
   })
 

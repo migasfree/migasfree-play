@@ -48,6 +48,10 @@ vi.mock('src/stores/apps', () => ({
 }))
 vi.mock('src/stores/computer', () => ({
   useComputerStore: () => ({
+    cid: 123,
+    get isRegistered() {
+      return !!this.cid && this.cid !== '0'
+    },
     computerInfo: vi.fn(),
     computerId: vi.fn(),
     computerNetwork: vi.fn(),

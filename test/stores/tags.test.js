@@ -3,11 +3,28 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useTagsStore } from 'src/stores/tags'
 
 vi.mock('src/stores/computer', async () => {
-  const { ref } = await import('vue')
-  const state = {
-    cid: ref(123),
+  const { ref, computed } = await import('vue')
+  const cid = ref(123)
+  const project = ref('migasfree')
+  const isRegisteredComp = computed(
+    () => !!cid.value && cid.value !== '0' && cid.value !== 0,
+  )
+  const store = {
+    cid,
+    project,
+    get isRegistered() {
+      return isRegisteredComp.value
+    },
+    computerId: vi.fn(),
+    computerData: vi.fn(),
+    computerNetwork: vi.fn(),
+    computerLabel: vi.fn(),
+    computerAttribute: vi.fn(),
+    registerComputer: vi.fn(),
   }
-  return { useComputerStore: () => state }
+  return {
+    useComputerStore: () => store,
+  }
 })
 
 vi.mock('src/stores/program', async () => {
