@@ -129,11 +129,12 @@ fi
 while true
 do
     _STATUS=$(curl --write-out '%{http_code}' --silent --output /dev/null "$_SERVER") || :
-    if [ "$_STATUS" = "200" ] || [ "$_STATUS" = "302" ]
-    then
-        echo "Connection established with the server."
-        break
-    fi
+    case "$_STATUS" in
+        200|301|302|401|403)
+            echo "Connection established with the server."
+            break
+        ;;
+    esac
 
     echo "Trying to connect to the server $_SERVER. Unexpected status code $_STATUS."
     sleep 1
