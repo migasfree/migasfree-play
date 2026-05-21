@@ -26,6 +26,15 @@
         >
           <q-icon :name="appIcon('clock')" size="14px" />
           <DateView :value="id" />
+          <q-badge
+            v-if="cancelled"
+            color="warning"
+            outline
+            class="q-ml-sm text-weight-bold flex items-center"
+          >
+            <q-icon :name="appIcon('warning')" size="12px" class="q-mr-xs" />
+            {{ $gettext('Cancelled manually') }}
+          </q-badge>
         </q-item-label>
       </q-item-section>
 
@@ -66,6 +75,16 @@
           >
             <q-tooltip>{{ $gettext('Show error details') }}</q-tooltip>
           </q-btn>
+
+          <q-icon
+            v-if="cancelled"
+            :name="appIcon('warning')"
+            color="warning"
+            size="22px"
+            class="q-mr-sm"
+          >
+            <q-tooltip>{{ $gettext('Cancelled manually') }}</q-tooltip>
+          </q-icon>
 
           <CopyButton
             v-if="!isCurrentlyRunning"
@@ -144,11 +163,13 @@ import { useGettext } from 'vue3-gettext'
 import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
+import { copyToClipboard } from 'quasar'
 
 import CopyButton from 'components/CopyButton'
 import DateView from 'components/DateView'
 
 import { useExecutionsStore } from 'src/stores/executions'
+import { useUiStore } from 'src/stores/ui'
 import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
@@ -157,6 +178,7 @@ const props = defineProps({
   text: { type: String, required: false, default: '' },
   error: { type: String, required: false, default: '' },
   icon: { type: String, required: false, default: '' },
+  cancelled: { type: Boolean, required: false, default: false },
 })
 
 const { $gettext } = useGettext()
@@ -188,6 +210,22 @@ const textToCopy = computed(() =>
 )
 
 const errorPlainText = computed(() => executionsStore.stripAnsi(props.error))
+
+const handleContextMenu = (e) => {
+  if (terminal && terminal.hasSelection()) {
+    e.preventDefault()
+    const selectedText = terminal.getSelection()
+    copyToClipboard(selectedText)
+      .then(() => {
+        const uiStore = useUiStore()
+        uiStore.notifySuccess($gettext('Selection copied to clipboard'))
+      })
+      .catch(() => {
+        const uiStore = useUiStore()
+        uiStore.notifyError($gettext('Failed to copy text'))
+      })
+  }
+}
 
 const createTerminal = () => {
   if (terminal || !terminalRef.value) return
@@ -237,6 +275,34 @@ const createTerminal = () => {
   })
   resizeObserver.observe(terminalRef.value)
 
+  // Handle keyboard shortcuts (Ctrl+C / Cmd+C) inside xterm
+  terminal.attachCustomKeyEventHandler((arg) => {
+    if (arg.type === 'keydown') {
+      const isCopy = (arg.ctrlKey || arg.metaKey) && arg.key === 'c'
+      if (isCopy) {
+        if (terminal.hasSelection()) {
+          const selectedText = terminal.getSelection()
+          copyToClipboard(selectedText)
+            .then(() => {
+              const uiStore = useUiStore()
+              uiStore.notifySuccess($gettext('Selection copied to clipboard'))
+            })
+            .catch(() => {
+              const uiStore = useUiStore()
+              uiStore.notifyError($gettext('Failed to copy text'))
+            })
+          return false // Avoid default action or propagation in terminal
+        }
+      }
+    }
+    return true
+  })
+
+  // Handle right-click copy on selection
+  if (terminalRef.value) {
+    terminalRef.value.addEventListener('contextmenu', handleContextMenu)
+  }
+
   // Write existing text (for restored executions)
   if (props.text) {
     terminal.write(props.text, () => {
@@ -250,6 +316,9 @@ const createTerminal = () => {
 }
 
 const disposeTerminal = () => {
+  if (terminalRef.value) {
+    terminalRef.value.removeEventListener('contextmenu', handleContextMenu)
+  }
   if (resizeObserver) {
     resizeObserver.disconnect()
     resizeObserver = null

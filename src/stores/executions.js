@@ -202,11 +202,15 @@ export const useExecutionsStore = defineStore('executions', () => {
     error.value = ''
   }
 
-  const cancelCurrentCommand = () => {
+  const cancelCurrentCommand = async () => {
     if (currentCommandId && isRunningCommand.value) {
       window.electronAPI.killCommand(currentCommandId)
+      if (items.value[lastId.value]) {
+        items.value[lastId.value].cancelled = true
+      }
       appendExecutionText('\n[Command cancelled by user]\n')
       uiStore.notifyInfo(gettext.$gettext('Command cancelled'))
+      await setExecutions()
       finishedCmd()
       window.electronAPI.removeCommandListeners(currentCommandId)
       currentCommandId = null

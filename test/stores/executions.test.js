@@ -142,7 +142,7 @@ describe('Executions Store', () => {
     expect(store.items[store.lastId].error).toContain('Error: 1 fail')
   })
 
-  it('cancels running command', () => {
+  it('cancels running command', async () => {
     const store = useExecutionsStore()
     const commandId = '12345' // numeric string
     vi.spyOn(Date, 'now').mockReturnValue(Number(commandId))
@@ -151,12 +151,14 @@ describe('Executions Store', () => {
 
     expect(store.isRunningCommand).toBe(true)
 
-    store.cancelCurrentCommand()
+    await store.cancelCurrentCommand()
 
     expect(window.electronAPI.killCommand).toHaveBeenCalledWith(commandId)
     expect(store.items[store.lastId].text).toContain(
       '[Command cancelled by user]',
     )
+    expect(store.items[store.lastId].cancelled).toBe(true)
+    expect(window.electronAPI.executions.write).toHaveBeenCalled()
     expect(store.isRunningCommand).toBe(false)
   })
 

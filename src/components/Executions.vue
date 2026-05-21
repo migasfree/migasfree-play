@@ -8,6 +8,7 @@
       :text="item.text"
       :error="item.error || ''"
       :icon="item.icon || ''"
+      :cancelled="item.cancelled || false"
     />
   </div>
 

@@ -24,6 +24,7 @@ global.window.electronAPI = {
   onCommandStderr: vi.fn().mockReturnValue(() => {}),
   onCommandExit: vi.fn().mockReturnValue(() => {}),
   removeCommandListeners: vi.fn(),
+  log: vi.fn(),
 
   // Nested APIs
   preferences: {
