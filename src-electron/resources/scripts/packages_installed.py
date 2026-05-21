@@ -4,14 +4,6 @@ from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 
-# Legacy check: if not legacy (default), select PMS.
-# Logic derived from original code: v4 used mfc directly, v5 calls pms_selection
-# We can pass a flag --legacy
-is_legacy = '--legacy' in sys.argv
-
-if not is_legacy:
-    mfc.pms_selection()
-
 installed = []
 packages = []
 

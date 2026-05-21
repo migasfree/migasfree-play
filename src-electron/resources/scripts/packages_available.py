@@ -1,6 +1,5 @@
 import json
-from migasfree_client.sync import MigasFreeSync
+from migasfree_client.client import MigasFreeClient
 
-mfs = MigasFreeSync()
-mfs.pms_selection()
-print(json.dumps(mfs.pms.available_packages()))
+mfc = MigasFreeClient()
+print(json.dumps(mfc.pms.available_packages()))

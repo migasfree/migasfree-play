@@ -83,8 +83,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   user: {
-    check: (username, password) =>
-      ipcRenderer.invoke('user:check', { username, password }),
+    check: (username, password, version) =>
+      ipcRenderer.invoke('user:check', { username, password, version }),
   },
 
   // Command Execution

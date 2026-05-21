@@ -5,6 +5,7 @@ import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 
 import { useUiStore } from './ui.js'
+import { useProgramStore } from './program.js'
 
 import { tokenAuth, checkTokenApi } from 'config/app.conf'
 
@@ -115,7 +116,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   const checkUser = async ({ username, password }) => {
     try {
-      const data = await window.electronAPI.user.check(username, password)
+      const programStore = useProgramStore()
+      const data = await window.electronAPI.user.check(
+        username,
+        password,
+        programStore.clientVersion,
+      )
 
       if (data.is_privileged) {
         user.value.isPrivileged = true

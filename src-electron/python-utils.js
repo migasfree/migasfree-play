@@ -1,8 +1,11 @@
 /* eslint no-undef: "off" */
 import os from 'os'
 import path from 'path'
-import { execSync } from 'child_process'
+import { execSync, execFile } from 'child_process'
+import { promisify } from 'util'
 import { PythonShell } from 'python-shell'
+
+const execFileAsync = promisify(execFile)
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
@@ -46,6 +49,27 @@ const pythonShellOptions = {
   encoding: 'utf8',
 }
 
+const cliExecute = async (args = []) => {
+  const pythonPath = getPython()
+  const allArgs = ['-m', 'migasfree_client', ...args]
+
+  if (debug) {
+    console.log(
+      `[python-utils] Executing CLI: ${pythonPath} ${allArgs.join(' ')}`,
+    )
+  }
+
+  try {
+    const { stdout } = await execFileAsync(pythonPath, allArgs)
+    return stdout.trim()
+  } catch (error) {
+    if (debug) {
+      console.error(`[python-utils] CLI Execution failed:`, error)
+    }
+    throw error
+  }
+}
+
 const pythonExecute = async (code, args = []) => {
   try {
     const options = { ...pythonShellOptions, args }
@@ -85,4 +109,4 @@ const pythonExecute = async (code, args = []) => {
   }
 }
 
-export { debug, pythonExecute, getScriptsPath }
+export { debug, pythonExecute, cliExecute, getScriptsPath }

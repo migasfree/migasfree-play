@@ -60,6 +60,15 @@ To ensure security, the renderer process has **zero access** to Node.js APIs. Co
 
 For more details on the specific channels available, see the [Technical Reference](../reference/technical.md#ipc-channels).
 
+## ⚙️ Hybrid Command Execution Strategy (v4 vs v5 Client)
+
+To maintain complete backward compatibility while optimizing performance and security for modern setups, the backend employs a hybrid execution strategy based on the detected `migasfree-client` version:
+
+- **Legacy Client (v4.x)**: Electron delegates operations to the legacy Python script handlers (e.g., `packages_available.py`, `packages_installed.py`, `packages_inventory.py`, `user_check.py`) using the `pythonExecute` bridge.
+- **Modern Client (v5.x+)**: Electron communicates directly and securely with the native `migasfree` CLI via the `cliExecute` bridge, bypassing intermediate script wrappers entirely.
+
+This execution is secured by running processes directly with argument arrays (via Node's `execFile`) to completely eliminate command injection vectors. All modern CLI queries utilize explicit, self-documenting option names (e.g., `--quiet`, `--available`, `--installed`, `--check`, `--user`, `--pwd`) for clarity and maintainability.
+
 ---
 
 _Back to [README.md](../../README.md)_
