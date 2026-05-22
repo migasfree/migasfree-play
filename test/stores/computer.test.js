@@ -85,6 +85,9 @@ describe('Computer Store', () => {
       network: '',
     })
     window.electronAPI.computer.getId.mockResolvedValue(0)
+    window.electronAPI.computer.getLabel = vi
+      .fn()
+      .mockResolvedValue({ helpdesk: '' })
     window.electronAPI.computer.register.mockResolvedValue(1)
   })
 
@@ -216,7 +219,11 @@ describe('Computer Store', () => {
       expect(api.get).not.toHaveBeenCalled()
     })
 
-    it('fetches helpdesk label', async () => {
+    it('fetches helpdesk label via API for legacy clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+
       api.get.mockResolvedValue({ data: { helpdesk: 'HD-99999' } })
 
       const store = useComputerStore()
@@ -228,6 +235,19 @@ describe('Computer Store', () => {
         { headers: { Authorization: 'Token abc123' } },
       )
       expect(store.helpdesk).toBe('HD-99999')
+    })
+
+    it('fetches helpdesk label via IPC for v5 clients', async () => {
+      window.electronAPI.computer.getLabel.mockResolvedValue({
+        helpdesk: 'HD-IPC',
+      })
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerLabel()
+
+      expect(window.electronAPI.computer.getLabel).toHaveBeenCalled()
+      expect(store.helpdesk).toBe('HD-IPC')
     })
   })
 

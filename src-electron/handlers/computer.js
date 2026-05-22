@@ -1,10 +1,26 @@
 import { ipcMain } from 'electron'
-import { pythonExecute, debug } from '../python-utils.js'
+import { pythonExecute, cliExecute, debug } from '../python-utils.js'
 
 /**
  * Registers IPC handlers related to computer information and registration.
  */
 export default function registerComputerHandlers() {
+  /**
+   * Retrieves the Migasfree computer label info.
+   * @returns {Promise<Object>} The computer label data.
+   */
+  ipcMain.handle('computer:get-label', async () => {
+    if (debug) console.log('[ipc] Getting computer label...')
+
+    try {
+      const result = await cliExecute(['--quiet', 'info', '--json'])
+      return JSON.parse(result)
+    } catch (error) {
+      if (debug) console.error(error)
+      throw new Error('Label info unavailable')
+    }
+  })
+
   /**
    * Retrieves the Migasfree computer ID.
    * @returns {Promise<string>} The computer ID or '0' if unavailable.
