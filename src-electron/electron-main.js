@@ -181,7 +181,30 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
     env: { ...process.env, ...env },
   })
 
-  runningProcesses.set(id, subprocess)
+  // Set safety timeout (30 minutes max) in Main Process to survive Renderer reloads
+  const timeoutId = setTimeout(
+    () => {
+      console.error(
+        `[Process Timeout] Process ${id} exceeded max time. Killing...`,
+      )
+      const proc = runningProcesses.get(id)
+      if (proc && proc.subprocess) {
+        proc.subprocess.kill('SIGKILL')
+      }
+      runningProcesses.delete(id)
+
+      if (!event.sender.isDestroyed()) {
+        event.sender.send(
+          `command:stderr:${id}`,
+          '\n[Command timeout - forced cleanup]\n',
+        )
+        event.sender.send(`command:exit:${id}`, 1)
+      }
+    },
+    30 * 60 * 1000,
+  )
+
+  runningProcesses.set(id, { subprocess, timeoutId })
 
   // Write input to stdin if provided (e.g., "y\n" for confirmation)
   if (input) {
@@ -202,14 +225,22 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
   })
 
   subprocess.on('exit', (code) => {
-    runningProcesses.delete(id)
+    const proc = runningProcesses.get(id)
+    if (proc) {
+      clearTimeout(proc.timeoutId)
+      runningProcesses.delete(id)
+    }
     if (!event.sender.isDestroyed()) {
       event.sender.send(`command:exit:${id}`, code)
     }
   })
 
   subprocess.on('error', (err) => {
-    runningProcesses.delete(id)
+    const proc = runningProcesses.get(id)
+    if (proc) {
+      clearTimeout(proc.timeoutId)
+      runningProcesses.delete(id)
+    }
     if (!event.sender.isDestroyed()) {
       event.sender.send(`command:stderr:${id}`, err.message)
       event.sender.send(`command:exit:${id}`, 1)
@@ -218,9 +249,10 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
 })
 
 ipcMain.on('command:kill', (_, { id }) => {
-  const subprocess = runningProcesses.get(id)
-  if (subprocess) {
-    subprocess.kill('SIGTERM')
+  const proc = runningProcesses.get(id)
+  if (proc) {
+    clearTimeout(proc.timeoutId)
+    proc.subprocess.kill('SIGTERM')
     runningProcesses.delete(id)
   }
 })

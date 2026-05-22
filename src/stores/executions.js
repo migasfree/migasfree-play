@@ -88,21 +88,6 @@ export const useExecutionsStore = defineStore('executions', () => {
 
       addExecution({ command: text, icon })
 
-      // Safety timeout (30 minutes max) to prevent stuck state
-      const timeoutId = setTimeout(
-        () => {
-          if (isRunningCommand.value && currentCommandId === commandId) {
-            console.error('Command timeout reached, forcing cleanup')
-            appendExecutionText('\n[Command timeout - forced cleanup]\n')
-            window.electronAPI.killCommand(commandId)
-            window.electronAPI.removeCommandListeners(commandId)
-            finishedCmd()
-            currentCommandId = null
-          }
-        },
-        30 * 60 * 1000,
-      ) // 30 minutes
-
       // Set up listeners BEFORE spawning to avoid race condition
       window.electronAPI.onCommandStdout(commandId, (data) => {
         appendExecutionText(data)
@@ -116,9 +101,6 @@ export const useExecutionsStore = defineStore('executions', () => {
       window.electronAPI.onCommandExit(commandId, async (code) => {
         // Capture minimized state BEFORE any potential window.show() calls
         const minimized = await window.electronAPI.isMinimized()
-
-        // Clear the safety timeout
-        clearTimeout(timeoutId)
 
         if (code !== 0) {
           const message = `Error: ${code} ${typeof cmd === 'string' ? cmd : JSON.stringify(cmd)}`
