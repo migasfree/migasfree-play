@@ -30,13 +30,11 @@
               :src="icon"
               class="app-icon"
               :placeholder-src="defaultIcon"
+              :error-src="defaultIcon"
               fit="contain"
+              no-spinner
               :alt="interpolate($gettext('%{name} icon'), { name })"
-            >
-              <template #error>
-                <q-img :src="defaultIcon" fit="contain" />
-              </template>
-            </q-img>
+            />
           </div>
         </q-card-section>
       </q-card-section>
