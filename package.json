@@ -16,7 +16,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "gettext:extract": "vue-gettext-extract",
+    "gettext:extract": "node scripts/i18n-metadata.js && vue-gettext-extract",
     "gettext:compile": "vue-gettext-compile",
     "dev": "quasar dev -m electron -- --no-sandbox --disable-gpu-sandbox",
     "build": "quasar build -m electron -- --no-sandbox --disable-gpu-sandbox",

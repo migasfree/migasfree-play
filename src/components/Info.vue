@@ -22,7 +22,7 @@
         <p
           class="text-body1 text-muted q-mt-lg q-mb-none max-width-600 q-mx-auto line-height-1-6"
         >
-          {{ app.description }}
+          {{ $gettext(app.description) }}
         </p>
         <div class="text-center q-mt-md text-caption text-muted print-hide">
           {{ app.copyright }} • {{ app.author }}

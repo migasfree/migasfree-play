@@ -34,11 +34,11 @@ msgstr[1] "Réessai automatique dans %{ count } secondes..."
 msgid "Retry now"
 msgstr "Réessayer maintenant"
 
-#: src/App.vue:161
+#: src/App.vue:168
 msgid "Update Available"
 msgstr "Mise à Jour Disponible"
 
-#: src/App.vue:168
+#: src/App.vue:175
 msgid ""
 "The application has been automatically updated in the background. Please "
 "restart to apply the changes safely."
@@ -46,7 +46,7 @@ msgstr ""
 "L'application a été automatiquement mise à jour en arrière-plan. Veuillez "
 "redémarrer pour appliquer les modifications en toute sécurité."
 
-#: src/App.vue:181
+#: src/App.vue:188
 msgid "Restart Now"
 msgstr "Redémarrer Maintenant"
 
@@ -111,7 +111,7 @@ msgid "View installed apps only"
 msgstr "Voir uniquement les applications installées"
 
 #: src/components/Apps.vue:29 src/components/Devices.vue:26
-#: src/components/Executions.vue:14
+#: src/components/Executions.vue:15
 msgid "There are no items to show."
 msgstr "Aucun élément à afficher."
 
@@ -123,7 +123,8 @@ msgstr "Copier"
 msgid "Text copied to clipboard"
 msgstr "Texte copié dans le presse-papiers"
 
-#: src/components/CopyButton.vue:55
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:225
+#: src/components/ExecutionDetail.vue:292
 msgid "Failed to copy text"
 msgstr "Échec de la copie du texte"
 
@@ -187,19 +188,29 @@ msgstr "Rechercher par nom, modèle ou fabricant"
 msgid "View assigned devices only"
 msgstr "Voir uniquement les périphériques attribués"
 
-#: src/components/ExecutionDetail.vue:50 src/components/ExecutionDetail.vue:53
+#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:86
+msgid "Cancelled manually"
+msgstr ""
+
+#: src/components/ExecutionDetail.vue:59 src/components/ExecutionDetail.vue:62
 msgid "Cancel execution"
 msgstr "Annuler l'exécution"
 
-#: src/components/ExecutionDetail.vue:64 src/components/ExecutionDetail.vue:67
+#: src/components/ExecutionDetail.vue:73 src/components/ExecutionDetail.vue:76
 msgid "Show error details"
 msgstr "Afficher les détails de l'erreur"
 
-#: src/components/ExecutionDetail.vue:105
+#: src/components/ExecutionDetail.vue:124
 msgid "Execution Error"
 msgstr "Erreur d'exécution"
 
-#: src/components/Info.vue:44 src/layouts/MainLayout.vue:177
+#: src/components/ExecutionDetail.vue:221
+#: src/components/ExecutionDetail.vue:288
+#, fuzzy
+msgid "Selection copied to clipboard"
+msgstr "Texte copié dans le presse-papiers"
+
+#: src/components/Info.vue:44 src/layouts/MainLayout.vue:189
 msgid "Synchronization"
 msgstr "Synchronisation"
 
@@ -207,47 +218,51 @@ msgstr "Synchronisation"
 msgid "Migasfree Data"
 msgstr "Données Migasfree"
 
-#: src/components/Info.vue:116
+#: src/components/Info.vue:108
+msgid "Computer not registered"
+msgstr ""
+
+#: src/components/Info.vue:129
 msgid "Hardware"
 msgstr "Matériel"
 
-#: src/components/Info.vue:150
+#: src/components/Info.vue:163
 msgid "Network Data"
 msgstr "Données Réseau"
 
-#: src/components/Info.vue:186
+#: src/components/Info.vue:199
 msgid "Software Inventory"
 msgstr "Inventaire Logiciel"
 
-#: src/components/Info.vue:205
+#: src/components/Info.vue:218
 msgid "Search..."
 msgstr "Rechercher..."
 
-#: src/components/Info.vue:209
+#: src/components/Info.vue:222
 msgid "Search software inventory"
 msgstr "Rechercher dans l'inventaire logiciel"
 
-#: src/components/Info.vue:257
+#: src/components/Info.vue:270
 msgid "No results found"
 msgstr "Aucun résultat trouvé"
 
-#: src/components/Info.vue:292 src/components/Info.vue:391
+#: src/components/Info.vue:305 src/components/Info.vue:404
 msgid "Identification"
 msgstr "Identification"
 
-#: src/components/Info.vue:317 src/components/Info.vue:409
+#: src/components/Info.vue:330 src/components/Info.vue:422
 msgid "UUID"
 msgstr "UUID"
 
-#: src/components/Info.vue:350
+#: src/components/Info.vue:363
 msgid "Print Label"
 msgstr "Imprimer l'étiquette"
 
-#: src/components/Info.vue:363
+#: src/components/Info.vue:376
 msgid "Label size optimized for 80x50mm thermal printers."
 msgstr "Taille d'étiquette optimisée pour les imprimantes thermiques 80x50mm."
 
-#: src/components/Info.vue:501
+#: src/components/Info.vue:525
 msgid "disks"
 msgstr "disques"
 
@@ -272,17 +287,17 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38 src/stores/program.js:145
+#: src/pages/apps/index.vue:38 src/stores/program.js:134
 msgid "Apps"
 msgstr "Applications"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49 src/stores/program.js:170
+#: src/pages/devices/index.vue:49 src/stores/program.js:159
 msgid "Devices"
 msgstr "Périphériques"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32 src/stores/program.js:181
+#: src/pages/tags/index.vue:32 src/stores/program.js:170
 msgid "Tags"
 msgstr "Étiquettes"
 
@@ -297,7 +312,7 @@ msgid "Info"
 msgstr "Informations"
 
 #: src/components/Menu.vue:116 src/pages/preferences/index.vue:4
-#: src/pages/preferences/index.vue:32 src/stores/program.js:61
+#: src/pages/preferences/index.vue:32 src/stores/program.js:49
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -394,29 +409,37 @@ msgstr "Communiquer les étiquettes"
 msgid "Setting Tags..."
 msgstr "Définition des étiquettes..."
 
-#: src/composables/element.js:179
+#: src/composables/element.js:181
 msgid "Available"
 msgstr "Disponible"
 
-#: src/composables/element.js:180
+#: src/composables/element.js:182
 msgid "In repair"
 msgstr "En réparation"
 
-#: src/composables/element.js:181
+#: src/composables/element.js:183
 msgid "Reserved"
 msgstr "Réservé"
 
-#: src/composables/element.js:182
+#: src/composables/element.js:184
 msgid "Intended"
 msgstr "Attribué"
 
-#: src/composables/element.js:183
+#: src/composables/element.js:185
 msgid "Unsubscribed"
 msgstr "Désinscrit"
 
-#: src/composables/element.js:186
+#: src/composables/element.js:188
 msgid "Unknown"
 msgstr "Inconnu"
+
+#: src/i18n/package-metadata.js:6
+msgid ""
+"Desktop graphical interface for Migasfree. Enables end-users to securely "
+"manage software catalogs, devices, and client synchronization."
+msgstr ""
+"Interface graphique de bureau pour Migasfree. Permet aux utilisateurs de gérer "
+"en toute sécurité les catalogues de logiciels, les périphériques et la synchronisation des clients."
 
 #: src/layouts/MainLayout.vue:3
 msgid "Skip to content"
@@ -430,19 +453,26 @@ msgstr "Synchroniser l'ordinateur"
 msgid "View Computer"
 msgstr "Voir l'ordinateur"
 
-#: src/layouts/MainLayout.vue:48 src/layouts/MainLayout.vue:51
-msgid "Register Computer on the Server"
-msgstr "Enregistrer l'ordinateur sur le serveur"
+#: src/layouts/MainLayout.vue:64
+msgid ""
+"This computer is not registered on the server. Please register to access all "
+"features."
+msgstr ""
 
-#: src/layouts/MainLayout.vue:83
+#: src/layouts/MainLayout.vue:72
+#, fuzzy
+msgid "Register Now"
+msgstr "Enregistrer"
+
+#: src/layouts/MainLayout.vue:95
 msgid "Scroll to bottom"
 msgstr "Faire défiler vers le bas"
 
-#: src/layouts/MainLayout.vue:99
+#: src/layouts/MainLayout.vue:111
 msgid "Scroll to top"
 msgstr "Faire défiler vers le haut"
 
-#: src/layouts/MainLayout.vue:168
+#: src/layouts/MainLayout.vue:180
 msgid "Synchronizing..."
 msgstr "Synchronisation en cours..."
 
@@ -450,11 +480,11 @@ msgstr "Synchronisation en cours..."
 msgid "Client does not manage devices"
 msgstr "Le client ne gère pas les périphériques"
 
-#: src/stores/auth.js:122
+#: src/stores/auth.js:128
 msgid "User with privileges"
 msgstr "Utilisateur avec privilèges"
 
-#: src/stores/auth.js:124
+#: src/stores/auth.js:130
 msgid "User without privileges"
 msgstr "Utilisateur sans privilèges"
 
@@ -474,43 +504,46 @@ msgstr "Synchronisation terminée"
 msgid "Please wait, other process is running!!!"
 msgstr "Veuillez patienter, un autre processus est en cours d'exécution !"
 
-#: src/stores/executions.js:209
+#: src/stores/executions.js:194
 msgid "Command cancelled"
 msgstr "Commande annulée"
 
-#: src/stores/program.js:80
+#: src/stores/program.js:68
 msgid "Server"
 msgstr "Serveur"
 
-#: src/stores/program.js:96
+#: src/stores/program.js:84
 msgid "Credentials are not valid. Review app settings."
 msgstr ""
 "Les identifiants ne sont pas valides. Vérifiez les paramètres de "
 "l'application."
 
-#: src/stores/program.js:102 src/stores/ui.js:46 src/stores/ui.js:77
+#: src/stores/program.js:90 src/stores/ui.js:46 src/stores/ui.js:77
 msgid "There is no connection to the server"
 msgstr "Il n'y a pas de connexion au serveur"
 
-#: src/stores/program.js:107
+#: src/stores/program.js:95
 msgid "Failed to obtain token"
 msgstr "Échec de l'obtention du jeton"
 
-#: src/stores/program.js:115
+#: src/stores/program.js:103
 msgid "Token validation failed"
 msgstr "La validation du jeton a échoué"
 
-#: src/stores/program.js:123
+#: src/stores/program.js:111
 msgid "Computer"
 msgstr "Ordinateur"
 
-#: src/stores/program.js:150
+#: src/stores/program.js:139
 msgid "Packages"
 msgstr "Paquets"
 
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Cette application nécessite au moins Migasfree Client %{version}"
+
+#~ msgid "Register Computer on the Server"
+#~ msgstr "Enregistrer l'ordinateur sur le serveur"
 
 #~ msgid "View All Apps"
 #~ msgstr "Voir toutes les applications"

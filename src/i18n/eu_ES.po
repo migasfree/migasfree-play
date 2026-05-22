@@ -34,11 +34,11 @@ msgstr[1] "Berrsaiakera automatikoa %{ count } segundo barru..."
 msgid "Retry now"
 msgstr "Saiatu berriro orain"
 
-#: src/App.vue:161
+#: src/App.vue:168
 msgid "Update Available"
 msgstr "Eguneratzea Eskuragarri"
 
-#: src/App.vue:168
+#: src/App.vue:175
 msgid ""
 "The application has been automatically updated in the background. Please "
 "restart to apply the changes safely."
@@ -46,7 +46,7 @@ msgstr ""
 "Aplikazioa automatikoki eguneratu da bigarren planoan. Mesedez, berrabiarazi "
 "aldaketak modu seguruan aplikatzeko."
 
-#: src/App.vue:181
+#: src/App.vue:188
 msgid "Restart Now"
 msgstr "Berrabiarazi Orain"
 
@@ -111,7 +111,7 @@ msgid "View installed apps only"
 msgstr "Ikusi instalatutako aplikazioak soilik"
 
 #: src/components/Apps.vue:29 src/components/Devices.vue:26
-#: src/components/Executions.vue:14
+#: src/components/Executions.vue:15
 msgid "There are no items to show."
 msgstr "Ez dago erakusteko elementurik."
 
@@ -123,7 +123,8 @@ msgstr "Kopiatu"
 msgid "Text copied to clipboard"
 msgstr "Testua arbelean kopiatu da"
 
-#: src/components/CopyButton.vue:55
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:225
+#: src/components/ExecutionDetail.vue:292
 msgid "Failed to copy text"
 msgstr "Huts egin du testua kopiatzean"
 
@@ -187,19 +188,29 @@ msgstr "Bilatu izena, modeloa edo fabrikatzailea"
 msgid "View assigned devices only"
 msgstr "Ikusi esleitutako gailuak soilik"
 
-#: src/components/ExecutionDetail.vue:50 src/components/ExecutionDetail.vue:53
+#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:86
+msgid "Cancelled manually"
+msgstr ""
+
+#: src/components/ExecutionDetail.vue:59 src/components/ExecutionDetail.vue:62
 msgid "Cancel execution"
 msgstr "Bertan behera utzi exekuzioa"
 
-#: src/components/ExecutionDetail.vue:64 src/components/ExecutionDetail.vue:67
+#: src/components/ExecutionDetail.vue:73 src/components/ExecutionDetail.vue:76
 msgid "Show error details"
 msgstr "Ikusi errorearen xehetasunak"
 
-#: src/components/ExecutionDetail.vue:105
+#: src/components/ExecutionDetail.vue:124
 msgid "Execution Error"
 msgstr "Exekuzio errorea"
 
-#: src/components/Info.vue:44 src/layouts/MainLayout.vue:177
+#: src/components/ExecutionDetail.vue:221
+#: src/components/ExecutionDetail.vue:288
+#, fuzzy
+msgid "Selection copied to clipboard"
+msgstr "Testua arbelean kopiatu da"
+
+#: src/components/Info.vue:44 src/layouts/MainLayout.vue:189
 msgid "Synchronization"
 msgstr "Sinkronizazioa"
 
@@ -207,47 +218,51 @@ msgstr "Sinkronizazioa"
 msgid "Migasfree Data"
 msgstr "Migasfree Datuak"
 
-#: src/components/Info.vue:116
+#: src/components/Info.vue:108
+msgid "Computer not registered"
+msgstr ""
+
+#: src/components/Info.vue:129
 msgid "Hardware"
 msgstr "Hardwarea"
 
-#: src/components/Info.vue:150
+#: src/components/Info.vue:163
 msgid "Network Data"
 msgstr "Sareko Datuak"
 
-#: src/components/Info.vue:186
+#: src/components/Info.vue:199
 msgid "Software Inventory"
 msgstr "Software Inbentarioa"
 
-#: src/components/Info.vue:205
+#: src/components/Info.vue:218
 msgid "Search..."
 msgstr "Bilatu..."
 
-#: src/components/Info.vue:209
+#: src/components/Info.vue:222
 msgid "Search software inventory"
 msgstr "Bilatu software inbentarioan"
 
-#: src/components/Info.vue:257
+#: src/components/Info.vue:270
 msgid "No results found"
 msgstr "Ez da emaitzarik aurkitu"
 
-#: src/components/Info.vue:292 src/components/Info.vue:391
+#: src/components/Info.vue:305 src/components/Info.vue:404
 msgid "Identification"
 msgstr "Identifikazioa"
 
-#: src/components/Info.vue:317 src/components/Info.vue:409
+#: src/components/Info.vue:330 src/components/Info.vue:422
 msgid "UUID"
 msgstr "UUID"
 
-#: src/components/Info.vue:350
+#: src/components/Info.vue:363
 msgid "Print Label"
 msgstr "Inprimatu Etiketa"
 
-#: src/components/Info.vue:363
+#: src/components/Info.vue:376
 msgid "Label size optimized for 80x50mm thermal printers."
 msgstr "Etiketa-tamaina 80x50mm-ko inprimagailu termikoetarako optimizatuta."
 
-#: src/components/Info.vue:501
+#: src/components/Info.vue:525
 msgid "disks"
 msgstr "diskoak"
 
@@ -272,17 +287,17 @@ msgid "Menu"
 msgstr "Menua"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38 src/stores/program.js:145
+#: src/pages/apps/index.vue:38 src/stores/program.js:134
 msgid "Apps"
 msgstr "Aplikazioak"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49 src/stores/program.js:170
+#: src/pages/devices/index.vue:49 src/stores/program.js:159
 msgid "Devices"
 msgstr "Gailuak"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32 src/stores/program.js:181
+#: src/pages/tags/index.vue:32 src/stores/program.js:170
 msgid "Tags"
 msgstr "Etiketak"
 
@@ -297,7 +312,7 @@ msgid "Info"
 msgstr "Informazioa"
 
 #: src/components/Menu.vue:116 src/pages/preferences/index.vue:4
-#: src/pages/preferences/index.vue:32 src/stores/program.js:61
+#: src/pages/preferences/index.vue:32 src/stores/program.js:49
 msgid "Preferences"
 msgstr "Hobespenak"
 
@@ -393,29 +408,37 @@ msgstr "Etiketak komunikatu"
 msgid "Setting Tags..."
 msgstr "Etiketak ezartzea..."
 
-#: src/composables/element.js:179
+#: src/composables/element.js:181
 msgid "Available"
 msgstr "Eskuragarri"
 
-#: src/composables/element.js:180
+#: src/composables/element.js:182
 msgid "In repair"
 msgstr "Konponketan"
 
-#: src/composables/element.js:181
+#: src/composables/element.js:183
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
-#: src/composables/element.js:182
+#: src/composables/element.js:184
 msgid "Intended"
 msgstr "Asmoa"
 
-#: src/composables/element.js:183
+#: src/composables/element.js:185
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
-#: src/composables/element.js:186
+#: src/composables/element.js:188
 msgid "Unknown"
 msgstr "Ezezaguna"
+
+#: src/i18n/package-metadata.js:6
+msgid ""
+"Desktop graphical interface for Migasfree. Enables end-users to securely "
+"manage software catalogs, devices, and client synchronization."
+msgstr ""
+"Migasfreerentzako mahaigaineko interfaze grafikoa. Erabiltzaileei software "
+"katalogoak, gailuak eta bezeroen sinkronizazioa modu seguruan kudeatzeko aukera ematen die."
 
 #: src/layouts/MainLayout.vue:3
 msgid "Skip to content"
@@ -429,19 +452,26 @@ msgstr "Ordenagailua sinkronizatu"
 msgid "View Computer"
 msgstr "Ikusi Ordenagailua"
 
-#: src/layouts/MainLayout.vue:48 src/layouts/MainLayout.vue:51
-msgid "Register Computer on the Server"
-msgstr "Erregistratu ordenagailua zerbitzarian"
+#: src/layouts/MainLayout.vue:64
+msgid ""
+"This computer is not registered on the server. Please register to access all "
+"features."
+msgstr ""
 
-#: src/layouts/MainLayout.vue:83
+#: src/layouts/MainLayout.vue:72
+#, fuzzy
+msgid "Register Now"
+msgstr "Izena eman"
+
+#: src/layouts/MainLayout.vue:95
 msgid "Scroll to bottom"
 msgstr "Joan behera"
 
-#: src/layouts/MainLayout.vue:99
+#: src/layouts/MainLayout.vue:111
 msgid "Scroll to top"
 msgstr "Joan gora"
 
-#: src/layouts/MainLayout.vue:168
+#: src/layouts/MainLayout.vue:180
 msgid "Synchronizing..."
 msgstr "Sinkronizatzen..."
 
@@ -449,11 +479,11 @@ msgstr "Sinkronizatzen..."
 msgid "Client does not manage devices"
 msgstr "Bezeroak ez ditu gailuak kudeatzen"
 
-#: src/stores/auth.js:122
+#: src/stores/auth.js:128
 msgid "User with privileges"
 msgstr "Pribilegioko erabiltzailea"
 
-#: src/stores/auth.js:124
+#: src/stores/auth.js:130
 msgid "User without privileges"
 msgstr "Pribilegiorik gabeko erabiltzailea"
 
@@ -473,41 +503,44 @@ msgstr "Sinkronizazioa amaitu da"
 msgid "Please wait, other process is running!!!"
 msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 
-#: src/stores/executions.js:209
+#: src/stores/executions.js:194
 msgid "Command cancelled"
 msgstr "Komandoa bertan behera utzi da"
 
-#: src/stores/program.js:80
+#: src/stores/program.js:68
 msgid "Server"
 msgstr "Zerbitzaria"
 
-#: src/stores/program.js:96
+#: src/stores/program.js:84
 msgid "Credentials are not valid. Review app settings."
 msgstr "Kredentzialak ez dira baliozkoak. Berrikusi aplikazioaren ezarpenak."
 
-#: src/stores/program.js:102 src/stores/ui.js:46 src/stores/ui.js:77
+#: src/stores/program.js:90 src/stores/ui.js:46 src/stores/ui.js:77
 msgid "There is no connection to the server"
 msgstr "Ez dago zerbitzariarekin konexiorik"
 
-#: src/stores/program.js:107
+#: src/stores/program.js:95
 msgid "Failed to obtain token"
 msgstr "Ezin izan da tokena lortu"
 
-#: src/stores/program.js:115
+#: src/stores/program.js:103
 msgid "Token validation failed"
 msgstr "Tokenaren baliozkotzeak huts egin du"
 
-#: src/stores/program.js:123
+#: src/stores/program.js:111
 msgid "Computer"
 msgstr "Ordenagailua"
 
-#: src/stores/program.js:150
+#: src/stores/program.js:139
 msgid "Packages"
 msgstr "Paketeak"
 
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
+
+#~ msgid "Register Computer on the Server"
+#~ msgstr "Erregistratu ordenagailua zerbitzarian"
 
 #~ msgid "View All Apps"
 #~ msgstr "Ikusi aplikazio guztiak"
