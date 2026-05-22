@@ -261,7 +261,11 @@ describe('Computer Store', () => {
       expect(api.get).not.toHaveBeenCalled()
     })
 
-    it('fetches computer data', async () => {
+    it('fetches computer data via API for legacy clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+
       const mockData = {
         sync_end_date: '2026-01-11T10:00:00Z',
         status: 'productive',
@@ -276,6 +280,25 @@ describe('Computer Store', () => {
         'https://migasfree.example.com/api/v1/token/computers/123/',
         { headers: { Authorization: 'Token abc123' } },
       )
+      expect(store.data).toEqual(mockData)
+    })
+
+    it('fetches computer data via IPC for v5 clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '5.0'
+
+      const mockData = {
+        sync_end_date: '2026-01-11T10:00:00Z',
+        status: 'productive',
+      }
+      window.electronAPI.computer.getLabel.mockResolvedValue(mockData)
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerData()
+
+      expect(window.electronAPI.computer.getLabel).toHaveBeenCalled()
       expect(store.data).toEqual(mockData)
     })
   })
@@ -383,7 +406,26 @@ describe('Computer Store', () => {
     })
 
     it('notifies error when computerData API fails', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+
       api.get.mockRejectedValue(new Error('API 500'))
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerData()
+
+      expect(mockNotifyError).toHaveBeenCalled()
+    })
+
+    it('notifies error when computerData IPC fails for v5 clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '5.0'
+
+      window.electronAPI.computer.getLabel.mockRejectedValue(
+        new Error('IPC Fail'),
+      )
       const store = useComputerStore()
       store.cid = 123
       await store.computerData()

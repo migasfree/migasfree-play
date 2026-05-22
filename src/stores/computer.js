@@ -104,10 +104,15 @@ export const useComputerStore = defineStore('computer', () => {
     if (!isRegistered.value) return
 
     try {
-      const response = await tokenGet(
-        `${serverStore.initialUrl.token}${tokenApi.computer}${cid.value}/`,
-      )
-      data.value = response.data
+      if (serverStore.isLegacyClient) {
+        const response = await tokenGet(
+          `${serverStore.initialUrl.token}${tokenApi.computer}${cid.value}/`,
+        )
+        data.value = response.data
+      } else {
+        const fetchedData = await window.electronAPI.computer.getLabel()
+        data.value = fetchedData
+      }
     } catch (error) {
       uiStore.notifyError(error)
     }
