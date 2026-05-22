@@ -5,19 +5,22 @@ import { api } from 'boot/axios'
 
 import { tokenApi } from 'config/app.conf'
 
+import { useAuthStore } from './auth.js'
 import { useComputerStore } from './computer.js'
 import { useFiltersStore } from './filters.js'
-import { useProgramStore } from './program.js'
+import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 
 export const useDevicesStore = defineStore('devices', () => {
   const uiStore = useUiStore()
+  const authStore = useAuthStore()
   const computerStore = useComputerStore()
-  const programStore = useProgramStore()
   const filtersStore = useFiltersStore()
+  const serverStore = useServerStore()
 
   const { cid } = storeToRefs(computerStore)
-  const { initialUrl, token, serverVersion } = storeToRefs(programStore)
+  const { token } = storeToRefs(authStore)
+  const { initialUrl, serverVersion } = storeToRefs(serverStore)
   const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
 
   const devices = ref([])

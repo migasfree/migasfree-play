@@ -153,7 +153,7 @@ import { useGettext } from 'vue3-gettext'
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePackagesStore } from 'src/stores/packages'
-import { useProgramStore } from 'src/stores/program'
+import { useAuthStore } from 'src/stores/auth'
 import { useUiStore } from 'src/stores/ui'
 import { useCommand } from 'src/composables/useCommand'
 import { appIcon } from 'src/composables/element'
@@ -175,12 +175,12 @@ const { $gettext, interpolate } = useGettext()
 const computerStore = useComputerStore()
 const executionsStore = useExecutionsStore()
 const packagesStore = usePackagesStore()
-const programStore = useProgramStore()
+const authStore = useAuthStore()
 const uiStore = useUiStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { availableSet, installedSet } = storeToRefs(packagesStore)
-const { userIsPrivileged } = storeToRefs(programStore)
+const { userIsPrivileged } = storeToRefs(authStore)
 
 const { platform } = storeToRefs(computerStore)
 const { buildMigasfreeCommand } = useCommand()

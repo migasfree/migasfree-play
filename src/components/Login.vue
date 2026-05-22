@@ -56,7 +56,7 @@ import { ref, computed, watch } from 'vue'
 
 import CredentialsForm from 'components/CredentialsForm'
 
-import { useProgramStore } from 'src/stores/program'
+import { useAuthStore } from 'src/stores/auth'
 import { appIcon } from 'src/composables/element'
 
 const props = defineProps({
@@ -68,7 +68,7 @@ const props = defineProps({
 
 const emit = defineEmits(['closed'])
 
-const programStore = useProgramStore()
+const authStore = useAuthStore()
 
 const username = ref('')
 const password = ref('')
@@ -78,7 +78,7 @@ const isValid = computed(() => username.value !== '' && password.value !== '')
 
 const login = () => {
   if (username.value && password.value) {
-    programStore.checkUser({
+    authStore.checkUser({
       username: username.value,
       password: password.value,
     })

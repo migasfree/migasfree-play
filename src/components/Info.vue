@@ -456,7 +456,7 @@ import InfoItem from 'components/InfoItem'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'
-import { useProgramStore } from 'src/stores/program'
+import { useServerStore } from 'src/stores/server'
 import {
   appIcon,
   techIcon,
@@ -474,7 +474,7 @@ const { $gettext } = useGettext()
 const { computerStatus } = useElement()
 const computerStore = useComputerStore()
 const packagesStore = usePackagesStore()
-const programStore = useProgramStore()
+const serverStore = useServerStore()
 
 const search = ref('')
 
@@ -493,10 +493,10 @@ const {
 } = storeToRefs(computerStore)
 const { inventory } = storeToRefs(packagesStore)
 
-const host = programStore.host
-const serverVersion = programStore.serverVersion
-const organization = programStore.organization
-const client = programStore.clientVersion
+const host = serverStore.host
+const serverVersion = serverStore.serverVersion
+const organization = serverStore.organization
+const client = serverStore.clientVersion
 
 const bytesToGigas = (value) => {
   return (value / 1024 / 1024 / 1024).toFixed(1)
@@ -561,7 +561,7 @@ const qrCode = computed(() =>
   JSON.stringify({
     model: 'computer',
     id: cid.value,
-    server: programStore.host,
+    server: serverStore.host,
   }),
 )
 

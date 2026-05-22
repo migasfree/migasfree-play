@@ -27,12 +27,12 @@ vi.mock('src/stores/computer', async () => {
   }
 })
 
-vi.mock('src/stores/program', async () => {
+vi.mock('src/stores/server', async () => {
   const { ref } = await import('vue')
   const state = {
     clientVersion: ref('5.0'),
   }
-  return { useProgramStore: () => state }
+  return { useServerStore: () => state }
 })
 
 vi.mock('src/stores/ui', () => ({

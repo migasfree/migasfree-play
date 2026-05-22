@@ -84,7 +84,7 @@ import CredentialsForm from 'components/CredentialsForm'
 import InfoItem from 'components/InfoItem'
 
 import { useComputerStore } from 'src/stores/computer'
-import { useProgramStore } from 'src/stores/program'
+import { useServerStore } from 'src/stores/server'
 import { appIcon, modelIcon } from 'src/composables/element'
 
 const props = defineProps({
@@ -97,7 +97,7 @@ const props = defineProps({
 const emit = defineEmits(['closed'])
 
 const computerStore = useComputerStore()
-const programStore = useProgramStore()
+const serverStore = useServerStore()
 
 const username = ref('')
 const password = ref('')
@@ -105,8 +105,8 @@ const showing = ref(props.value)
 
 const { project } = storeToRefs(computerStore)
 
-const host = programStore.host
-const serverVersion = programStore.serverVersion
+const host = serverStore.host
+const serverVersion = serverStore.serverVersion
 
 const isValid = computed(() => {
   const user = username.value?.trim() ?? ''

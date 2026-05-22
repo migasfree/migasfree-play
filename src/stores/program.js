@@ -1,39 +1,12 @@
 import { ref, computed } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 
 import { gettext } from 'boot/gettext'
 
-import { useAppsStore } from './apps.js'
-import { useAuthStore } from './auth.js'
-import { useComputerStore } from './computer.js'
-import { useDevicesStore } from './devices.js'
-import { useEnvConfigStore } from './envConfig.js'
-import { useExecutionsStore } from './executions.js'
-import { useFiltersStore } from './filters.js'
-import { usePackagesStore } from './packages.js'
-import { usePreferencesStore } from './preferences.js'
-import { useServerStore } from './server.js'
-import { useTagsStore } from './tags.js'
 import { useUiStore } from './ui.js'
 
 export const useProgramStore = defineStore('program', () => {
   const uiStore = useUiStore()
-  const authStore = useAuthStore()
-  const serverStore = useServerStore()
-
-  // Re-export refs from auth and server stores for backward compatibility
-  const { token, isTokenChecked, userIsPrivileged } = storeToRefs(authStore)
-  const {
-    protocol,
-    host,
-    initialUrl,
-    clientVersion,
-    serverVersion,
-    isLegacyClient,
-    isLegacyServer,
-    organization,
-    manageDevices,
-  } = storeToRefs(serverStore)
 
   // Own state
   const status = ref('')
@@ -42,7 +15,21 @@ export const useProgramStore = defineStore('program', () => {
   const appIsStopped = computed(() => stopApp.value)
 
   const init = async () => {
+    // Lazy imports to avoid circular dependencies at module level
+    const { useAppsStore } = await import('./apps.js')
+    const { useAuthStore } = await import('./auth.js')
+    const { useComputerStore } = await import('./computer.js')
+    const { useDevicesStore } = await import('./devices.js')
+    const { useEnvConfigStore } = await import('./envConfig.js')
+    const { useExecutionsStore } = await import('./executions.js')
+    const { useFiltersStore } = await import('./filters.js')
+    const { usePackagesStore } = await import('./packages.js')
+    const { usePreferencesStore } = await import('./preferences.js')
+    const { useServerStore } = await import('./server.js')
+    const { useTagsStore } = await import('./tags.js')
+
     const appsStore = useAppsStore()
+    const authStore = useAuthStore()
     const computerStore = useComputerStore()
     const devicesStore = useDevicesStore()
     const envConfigStore = useEnvConfigStore()
@@ -50,6 +37,7 @@ export const useProgramStore = defineStore('program', () => {
     const filtersStore = useFiltersStore()
     const packagesStore = usePackagesStore()
     const preferencesStore = usePreferencesStore()
+    const serverStore = useServerStore()
     const tagsStore = useTagsStore()
 
     stopApp.value = false
@@ -76,7 +64,7 @@ export const useProgramStore = defineStore('program', () => {
     serverStore.setInitialUrl()
 
     // Authentication Setup
-    authStore.setServerInfo(protocol.value, host.value)
+    authStore.setServerInfo(serverStore.protocol, serverStore.host)
     setStatus(gettext.$gettext('Server'))
 
     await Promise.all([
@@ -126,7 +114,7 @@ export const useProgramStore = defineStore('program', () => {
     await Promise.all([
       computerStore.computerNetwork(),
       (async () => {
-        if (!isLegacyServer.value) {
+        if (!serverStore.isLegacyServer) {
           await computerStore.computerLabel()
         }
       })(),
@@ -151,7 +139,7 @@ export const useProgramStore = defineStore('program', () => {
           setStatus(gettext.$gettext('Packages'))
           await Promise.all([
             packagesStore.setAvailablePackages(),
-            packagesStore.setInstalledPackages(),
+            packagesStore.setInstalledPackages(appsStore.getAppsPackages),
             packagesStore.setInventory(),
           ])
 
@@ -201,19 +189,6 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   return {
-    token,
-    isTokenChecked,
-    userIsPrivileged,
-    checkUser: authStore.checkUser,
-    initialUrl,
-    protocol,
-    host,
-    clientVersion,
-    serverVersion,
-    isLegacyClient,
-    isLegacyServer,
-    organization,
-    manageDevices,
     status,
     appIsStopped,
     init,

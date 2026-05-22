@@ -129,10 +129,16 @@ describe('Program Store', () => {
 
     await store.init()
 
-    expect(store.clientVersion).toBe('5.0.0')
-    expect(store.protocol).toBe('http')
-    expect(store.host).toBe('migasfree.org')
-    expect(store.token).toBe('Token valid-token')
+    // Import the real stores to verify state was set correctly
+    const { useServerStore } = await import('src/stores/server')
+    const { useAuthStore } = await import('src/stores/auth')
+    const serverStore = useServerStore()
+    const authStore = useAuthStore()
+
+    expect(serverStore.clientVersion).toBe('5.0.0')
+    expect(serverStore.protocol).toBe('http')
+    expect(serverStore.host).toBe('migasfree.org')
+    expect(authStore.token).toBe('Token valid-token')
   })
 
   it('init() stops app if client version is too low', async () => {

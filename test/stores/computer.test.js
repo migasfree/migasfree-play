@@ -30,23 +30,28 @@ vi.mock('src/stores/envConfig', async () => ({
   }),
 }))
 
-vi.mock('src/stores/program', async () => {
+vi.mock('src/stores/auth', async () => {
+  const { reactive } = await import('vue')
+  const state = reactive({
+    token: 'Token abc123',
+  })
+  return { useAuthStore: () => state }
+})
+
+vi.mock('src/stores/server', async () => {
   const { ref, computed, reactive } = await import('vue')
   const clientVersion = ref('5.0')
   const serverVersion = ref('5.0')
-  const store = reactive({
+  const state = reactive({
     clientVersion,
     serverVersion,
     protocol: 'https',
     host: 'migasfree.example.com',
     initialUrl: { token: 'https://migasfree.example.com/api/v1/token' },
-    token: 'Token abc123',
     isLegacyClient: computed(() => clientVersion.value.startsWith('4.')),
     isLegacyServer: computed(() => serverVersion.value.startsWith('4.')),
   })
-  return {
-    useProgramStore: () => store,
-  }
+  return { useServerStore: () => state }
 })
 
 const mockNotifyError = vi.fn()
@@ -62,11 +67,11 @@ describe('Computer Store', () => {
   beforeEach(async () => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
-    // Reset clientVersion to 5.0 for each test
-    const { useProgramStore } = await import('src/stores/program')
-    const programStore = useProgramStore()
-    programStore.clientVersion = '5.0'
-    programStore.serverVersion = '5.0'
+    // Reset versions for each test
+    const { useServerStore } = await import('src/stores/server')
+    const serverStore = useServerStore()
+    serverStore.clientVersion = '5.0'
+    serverStore.serverVersion = '5.0'
 
     // Mock default electronAPI responses
     window.electronAPI.preferences.getServerInfo.mockResolvedValue({
@@ -158,10 +163,10 @@ describe('Computer Store', () => {
     })
 
     it('fetches computer id for v4 client', async () => {
-      const { useProgramStore } = await import('src/stores/program')
-      const programStore = useProgramStore()
-      programStore.clientVersion = '4.20'
-      programStore.serverVersion = '4.20'
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+      serverStore.serverVersion = '4.20'
 
       const mockData = {
         id: 42,
@@ -177,16 +182,16 @@ describe('Computer Store', () => {
       expect(store.helpdesk).toBe('HD-12345')
 
       // Cleanup for next tests
-      programStore.clientVersion = '5.0'
-      programStore.serverVersion = '5.0'
+      serverStore.clientVersion = '5.0'
+      serverStore.serverVersion = '5.0'
     })
 
     it('sets computer link after getting id', async () => {
       // Set versions BEFORE using store to ensure computed properties work on fresh store
-      const { useProgramStore } = await import('src/stores/program')
-      const programStore = useProgramStore()
-      programStore.clientVersion = '5.0'
-      programStore.serverVersion = '5.0'
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '5.0'
+      serverStore.serverVersion = '5.0'
 
       window.electronAPI.computer.getId.mockResolvedValue(4242)
 

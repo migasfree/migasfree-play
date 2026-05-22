@@ -1,16 +1,16 @@
 import { ref, computed } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
-import { useProgramStore } from './program.js'
+import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 import { useComputerStore } from './computer.js'
 
 export const usePackagesStore = defineStore('packages', () => {
   const uiStore = useUiStore()
-  const programStore = useProgramStore()
+  const serverStore = useServerStore()
   const computerStore = useComputerStore()
 
-  const { clientVersion } = storeToRefs(programStore)
+  const { clientVersion } = storeToRefs(serverStore)
 
   const available = ref([])
   const installed = ref([])
@@ -44,18 +44,13 @@ export const usePackagesStore = defineStore('packages', () => {
     available.value = await fetchPackages('/packages/available/')
   }
 
-  const setInstalledPackages = async () => {
+  const setInstalledPackages = async (appsPackagesList = []) => {
     if (!computerStore.isRegistered) return
-
-    // Lazy import to avoid circular dependency with apps.js
-    const { useAppsStore } = await import('./apps.js')
-    const appsStore = useAppsStore()
-    const { getAppsPackages } = storeToRefs(appsStore)
 
     installed.value = await fetchPackages(
       '/packages/installed/',
       'post',
-      getAppsPackages.value,
+      appsPackagesList,
     )
   }
 

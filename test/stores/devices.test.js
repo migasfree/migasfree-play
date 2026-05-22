@@ -55,14 +55,25 @@ vi.mock('src/stores/filters', async () => {
   return { useFiltersStore: () => state }
 })
 
-vi.mock('src/stores/program', async () => {
+vi.mock('src/stores/auth', async () => {
   const { ref } = await import('vue')
   const state = {
-    initialUrl: ref({ token: 'https://api.example.com/api/v1/token' }),
     token: ref('Token xyz789'),
-    serverVersion: ref('5.0'),
   }
-  return { useProgramStore: () => state }
+  return { useAuthStore: () => state }
+})
+
+vi.mock('src/stores/server', async () => {
+  const { ref } = await import('vue')
+  const serverVersion = ref('5.0')
+  const state = {
+    initialUrl: ref({ token: 'https://api.example.com/api/v1/token' }),
+    serverVersion,
+    get isLegacyServer() {
+      return serverVersion.value.startsWith('4.')
+    },
+  }
+  return { useServerStore: () => state }
 })
 
 vi.mock('src/stores/ui', () => ({
@@ -382,9 +393,9 @@ describe('Devices Store', () => {
 
     it('parses data field as JSON for v4 server', async () => {
       // Change serverVersion to v4
-      const { useProgramStore } = await import('src/stores/program')
-      const programStore = useProgramStore()
-      programStore.serverVersion.value = '4.20'
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '4.20'
 
       const responseData = {
         id: 100,
@@ -401,7 +412,7 @@ describe('Devices Store', () => {
       expect(typeof result.data).toBe('object')
 
       // Reset serverVersion
-      programStore.serverVersion.value = '5.0'
+      serverStore.serverVersion.value = '5.0'
     })
 
     it('handles error and rethrows', async () => {

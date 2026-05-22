@@ -33,18 +33,18 @@ import Devices from 'components/Devices'
 import PageLayout from 'components/PageLayout'
 
 import { useDevicesStore } from 'src/stores/devices'
-import { useProgramStore } from 'src/stores/program'
+import { useServerStore } from 'src/stores/server'
 import { usePageSync } from 'src/composables/usePageSync'
 import { appIcon } from 'src/composables/element'
 
 const { $gettext } = useGettext()
 
 const devicesStore = useDevicesStore()
-const programStore = useProgramStore()
+const serverStore = useServerStore()
 
 const { devices, filteredDevices } = storeToRefs(devicesStore)
 
-const manageDevices = programStore.manageDevices
+const manageDevices = serverStore.manageDevices
 
 useMeta({ title: $gettext('Devices') })
 

@@ -123,7 +123,7 @@ import FilterCard from 'components/FilterCard'
 import Login from 'components/Login'
 
 import { useExecutionsStore } from 'src/stores/executions'
-import { useProgramStore } from 'src/stores/program'
+import { useAuthStore } from 'src/stores/auth'
 import { useTagsStore } from 'src/stores/tags'
 import { useUiStore } from 'src/stores/ui'
 import { useCommand } from 'src/composables/useCommand'
@@ -132,13 +132,13 @@ import { appIcon } from 'src/composables/element'
 const { $gettext } = useGettext()
 
 const executionsStore = useExecutionsStore()
-const programStore = useProgramStore()
+const authStore = useAuthStore()
 const tagsStore = useTagsStore()
 const uiStore = useUiStore()
 
 const { isRunningCommand } = storeToRefs(executionsStore)
 const { available, assigned } = storeToRefs(tagsStore)
-const { userIsPrivileged } = storeToRefs(programStore)
+const { userIsPrivileged } = storeToRefs(authStore)
 
 const { buildMigasfreeCommand } = useCommand()
 

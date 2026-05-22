@@ -3,7 +3,8 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
 
-import { useProgramStore } from './program.js'
+import { useAuthStore } from './auth.js'
+import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 
 import { tokenApi, tokenApiv4 } from 'config/app.conf'
@@ -17,10 +18,12 @@ export const useFiltersStore = defineStore('filters', () => {
   const onlyAssignedDevices = ref(false)
 
   const setCategories = async () => {
-    const programStore = useProgramStore()
+    const authStore = useAuthStore()
+    const serverStore = useServerStore()
     const uiStore = useUiStore()
 
-    const { initialUrl, token, serverVersion } = storeToRefs(programStore)
+    const { token } = storeToRefs(authStore)
+    const { initialUrl, serverVersion } = storeToRefs(serverStore)
 
     const base = `${initialUrl.value.token}`
     const url = serverVersion.value.startsWith('4.')

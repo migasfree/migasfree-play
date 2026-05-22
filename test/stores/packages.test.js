@@ -3,12 +3,16 @@ import { setActivePinia, createPinia } from 'pinia'
 import { usePackagesStore } from 'src/stores/packages'
 
 // Mock environment and dependencies
-vi.mock('src/stores/program', async () => {
+vi.mock('src/stores/server', async () => {
   const { ref } = await import('vue')
+  const clientVersion = ref('5.0')
   const state = {
-    clientVersion: ref('5.0'),
+    clientVersion,
+    get isLegacyClient() {
+      return clientVersion.value.startsWith('4.')
+    },
   }
-  return { useProgramStore: () => state }
+  return { useServerStore: () => state }
 })
 
 vi.mock('src/stores/computer', async () => {
@@ -33,16 +37,6 @@ vi.mock('src/stores/computer', async () => {
   }
   return {
     useComputerStore: () => store,
-  }
-})
-
-vi.mock('src/stores/apps', async () => {
-  const { ref } = await import('vue')
-  const packagesRef = ref(['firefox', 'vlc'])
-  return {
-    useAppsStore: () => ({
-      getAppsPackages: packagesRef,
-    }),
   }
 })
 
@@ -114,7 +108,7 @@ describe('Packages Store', () => {
       window.electronAPI.packages.getInstalled.mockResolvedValue(mockInstalled)
 
       const store = usePackagesStore()
-      await store.setInstalledPackages()
+      await store.setInstalledPackages(['firefox', 'vlc'])
 
       expect(window.electronAPI.packages.getInstalled).toHaveBeenCalledWith(
         ['firefox', 'vlc'],

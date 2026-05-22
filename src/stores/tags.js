@@ -3,15 +3,15 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { useComputerStore } from './computer.js'
 
-import { useProgramStore } from './program.js'
+import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 
 export const useTagsStore = defineStore('tags', () => {
   const computerStore = useComputerStore()
-  const programStore = useProgramStore()
+  const serverStore = useServerStore()
   const uiStore = useUiStore()
 
-  const { clientVersion } = storeToRefs(programStore)
+  const { clientVersion } = storeToRefs(serverStore)
 
   const available = ref([])
   const assigned = ref([])

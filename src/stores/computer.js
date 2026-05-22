@@ -3,9 +3,8 @@ import { defineStore } from 'pinia'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
+import { useAuthStore } from './auth.js'
 import { useServerStore } from './server.js'
-
-import { useProgramStore } from './program.js'
 import { useUiStore } from './ui.js'
 
 import { tokenApi } from 'config/app.conf'
@@ -26,11 +25,12 @@ export const useComputerStore = defineStore('computer', () => {
   const platform = ref('')
 
   const uiStore = useUiStore()
+  const authStore = useAuthStore()
   const serverStore = useServerStore()
-  const programStore = useProgramStore()
+
   const tokenGet = async (url) => {
     return await api.get(url, {
-      headers: { Authorization: programStore.token },
+      headers: { Authorization: authStore.token },
     })
   }
 
@@ -64,10 +64,10 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const computerId = async () => {
-    const url = `${programStore.protocol}://${programStore.host}/get_computer_info/?uuid=${uuid.value}`
+    const url = `${serverStore.protocol}://${serverStore.host}/get_computer_info/?uuid=${uuid.value}`
 
     try {
-      if (programStore.isLegacyClient) {
+      if (serverStore.isLegacyClient) {
         const { data } = await api.get(url)
         cid.value = data.id
         helpdesk.value = data.helpdesk
@@ -87,7 +87,7 @@ export const useComputerStore = defineStore('computer', () => {
 
     try {
       const { data } = await tokenGet(
-        `${programStore.initialUrl.token}${tokenApi.computer}${cid.value}/label/`,
+        `${serverStore.initialUrl.token}${tokenApi.computer}${cid.value}/label/`,
       )
       helpdesk.value = data.helpdesk
     } catch (error) {
@@ -100,7 +100,7 @@ export const useComputerStore = defineStore('computer', () => {
 
     try {
       const response = await tokenGet(
-        `${programStore.initialUrl.token}${tokenApi.computer}${cid.value}/`,
+        `${serverStore.initialUrl.token}${tokenApi.computer}${cid.value}/`,
       )
       data.value = response.data
     } catch (error) {
@@ -113,7 +113,7 @@ export const useComputerStore = defineStore('computer', () => {
 
     try {
       const { data } = await tokenGet(
-        `${programStore.initialUrl.token}${tokenApi.cidAttribute}${cid.value}`,
+        `${serverStore.initialUrl.token}${tokenApi.cidAttribute}${cid.value}`,
       )
 
       if (data.count === 1) attribute.value = data.results[0].id
@@ -123,9 +123,9 @@ export const useComputerStore = defineStore('computer', () => {
   }
 
   const setComputerLink = () => {
-    link.value = programStore.isLegacyServer
-      ? `${programStore.protocol}://${programStore.host}/admin/server/computer/${cid.value}/change/`
-      : `${programStore.protocol}://${programStore.host}/computers/results/${cid.value}/`
+    link.value = serverStore.isLegacyServer
+      ? `${serverStore.protocol}://${serverStore.host}/admin/server/computer/${cid.value}/change/`
+      : `${serverStore.protocol}://${serverStore.host}/computers/results/${cid.value}/`
   }
 
   const registerComputer = async ({ user, password }) => {
@@ -133,7 +133,7 @@ export const useComputerStore = defineStore('computer', () => {
       const result = await window.electronAPI.computer.register(
         user,
         password,
-        programStore.clientVersion,
+        serverStore.clientVersion,
       )
 
       if (result === 0 || result === '0') {

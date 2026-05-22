@@ -5,8 +5,9 @@ import { api } from 'boot/axios'
 
 import { useComputerStore } from './computer.js'
 import { useFiltersStore } from './filters.js'
+import { useAuthStore } from './auth.js'
 import { usePackagesStore } from './packages.js'
-import { useProgramStore } from './program.js'
+import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 
 import { tokenApi } from 'config/app.conf'
@@ -20,12 +21,14 @@ export const useAppsStore = defineStore('apps', () => {
   })
 
   const loadApps = async () => {
+    const authStore = useAuthStore()
     const computerStore = useComputerStore()
-    const programStore = useProgramStore()
+    const serverStore = useServerStore()
     const uiStore = useUiStore()
 
     const { cid, project } = storeToRefs(computerStore)
-    const { initialUrl, token } = storeToRefs(programStore)
+    const { initialUrl } = storeToRefs(serverStore)
+    const { token } = storeToRefs(authStore)
 
     if (!cid.value) return
 

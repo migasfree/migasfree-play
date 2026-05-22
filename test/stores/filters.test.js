@@ -13,14 +13,21 @@ vi.mock('config/app.conf', () => ({
   tokenApiv4: { categories: '/catalog/apps/categories/' },
 }))
 
-vi.mock('src/stores/program', async () => {
+vi.mock('src/stores/auth', async () => {
+  const { ref } = await import('vue')
+  const state = {
+    token: ref('valid-token'),
+  }
+  return { useAuthStore: () => state }
+})
+
+vi.mock('src/stores/server', async () => {
   const { ref } = await import('vue')
   const state = {
     initialUrl: ref({ token: 'http://api' }),
-    token: ref('valid-token'),
     serverVersion: ref('5.0'),
   }
-  return { useProgramStore: () => state }
+  return { useServerStore: () => state }
 })
 
 vi.mock('src/stores/ui', () => ({
@@ -89,9 +96,9 @@ describe('Filters Store', () => {
     })
 
     it('fetches and processes categories for v4 API', async () => {
-      const { useProgramStore } = await import('src/stores/program')
-      const programStore = useProgramStore()
-      programStore.serverVersion.value = '4.20'
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '4.20'
 
       const mockCategories = {
         1: 'Internet',
