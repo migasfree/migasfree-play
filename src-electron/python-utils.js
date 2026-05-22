@@ -60,7 +60,9 @@ const cliExecute = async (args = []) => {
   }
 
   try {
-    const { stdout } = await execFileAsync(pythonPath, allArgs)
+    const { stdout } = await execFileAsync(pythonPath, allArgs, {
+      maxBuffer: 1024 * 1024 * 50,
+    })
     return stdout.trim()
   } catch (error) {
     if (debug) {
