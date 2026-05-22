@@ -292,13 +292,13 @@ describe('Computer Store', () => {
         sync_end_date: '2026-01-11T10:00:00Z',
         status: 'productive',
       }
-      window.electronAPI.computer.getLabel.mockResolvedValue(mockData)
+      window.electronAPI.computer.getInfo.mockResolvedValue(mockData)
 
       const store = useComputerStore()
       store.cid = 123
       await store.computerData()
 
-      expect(window.electronAPI.computer.getLabel).toHaveBeenCalled()
+      expect(window.electronAPI.computer.getInfo).toHaveBeenCalled()
       expect(store.data).toEqual(mockData)
     })
   })
@@ -423,7 +423,7 @@ describe('Computer Store', () => {
       const serverStore = useServerStore()
       serverStore.clientVersion = '5.0'
 
-      window.electronAPI.computer.getLabel.mockRejectedValue(
+      window.electronAPI.computer.getInfo.mockRejectedValue(
         new Error('IPC Fail'),
       )
       const store = useComputerStore()

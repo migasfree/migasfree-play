@@ -110,7 +110,7 @@ export const useComputerStore = defineStore('computer', () => {
         )
         data.value = response.data
       } else {
-        const fetchedData = await window.electronAPI.computer.getLabel()
+        const fetchedData = await window.electronAPI.computer.getInfo()
         data.value = fetchedData
       }
     } catch (error) {

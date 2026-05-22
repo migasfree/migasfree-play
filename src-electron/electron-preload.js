@@ -62,6 +62,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   computer: {
     getId: () => ipcRenderer.invoke('computer:get-id'),
     getLabel: () => ipcRenderer.invoke('computer:get-label'),
+    getInfo: () => ipcRenderer.invoke('computer:get-info'),
     getNetwork: () => ipcRenderer.invoke('computer:get-network'),
     register: (user, password, version) =>
       ipcRenderer.invoke('computer:register', { user, password, version }),
