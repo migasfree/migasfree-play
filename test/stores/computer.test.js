@@ -236,19 +236,6 @@ describe('Computer Store', () => {
       )
       expect(store.helpdesk).toBe('HD-99999')
     })
-
-    it('fetches helpdesk label via IPC for v5 clients', async () => {
-      window.electronAPI.computer.getLabel.mockResolvedValue({
-        helpdesk: 'HD-IPC',
-      })
-
-      const store = useComputerStore()
-      store.cid = 123
-      await store.computerLabel()
-
-      expect(window.electronAPI.computer.getLabel).toHaveBeenCalled()
-      expect(store.helpdesk).toBe('HD-IPC')
-    })
   })
 
   describe('computerData()', () => {
@@ -291,6 +278,7 @@ describe('Computer Store', () => {
       const mockData = {
         sync_end_date: '2026-01-11T10:00:00Z',
         status: 'productive',
+        helpdesk: 'HD-100',
       }
       window.electronAPI.computer.getInfo.mockResolvedValue(mockData)
 
@@ -300,6 +288,7 @@ describe('Computer Store', () => {
 
       expect(window.electronAPI.computer.getInfo).toHaveBeenCalled()
       expect(store.data).toEqual(mockData)
+      expect(store.helpdesk).toBe('HD-100')
     })
   })
 

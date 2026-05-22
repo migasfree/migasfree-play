@@ -9,22 +9,6 @@ export default function registerComputerHandlers() {
    * Retrieves the Migasfree computer label info.
    * @returns {Promise<Object>} The computer label data.
    */
-  ipcMain.handle('computer:get-label', async () => {
-    if (debug) console.log('[ipc] Getting computer label...')
-
-    try {
-      const result = await cliExecute(['--quiet', 'label', '--json'])
-      return JSON.parse(result)
-    } catch (error) {
-      if (debug) console.error(error)
-      throw new Error('Label info unavailable')
-    }
-  })
-
-  /**
-   * Retrieves the Migasfree computer information.
-   * @returns {Promise<Object>} The computer info data.
-   */
   ipcMain.handle('computer:get-info', async () => {
     if (debug) console.log('[ipc] Getting computer info...')
 

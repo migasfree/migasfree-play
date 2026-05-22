@@ -91,9 +91,6 @@ export const useComputerStore = defineStore('computer', () => {
           `${serverStore.initialUrl.token}${tokenApi.computer}${cid.value}/label/`,
         )
         helpdesk.value = data.helpdesk
-      } else {
-        const data = await window.electronAPI.computer.getLabel()
-        helpdesk.value = data.helpdesk
       }
     } catch (error) {
       uiStore.notifyError(error)
@@ -112,6 +109,7 @@ export const useComputerStore = defineStore('computer', () => {
       } else {
         const fetchedData = await window.electronAPI.computer.getInfo()
         data.value = fetchedData
+        helpdesk.value = fetchedData.helpdesk
       }
     } catch (error) {
       uiStore.notifyError(error)
