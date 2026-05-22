@@ -2,7 +2,7 @@
   "name": "migasfree-play",
   "version": "5.14.0",
   "type": "module",
-  "description": "Migasfree Client desktop front-end. Allows install/uninstall available applications and devices.",
+  "description": "Desktop graphical interface for Migasfree. Enables end-users to securely manage software catalogs, devices, and client synchronization.",
   "productName": "migasfree-play",
   "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
   "license": "GPLv3",

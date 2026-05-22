@@ -1,8 +1,8 @@
 BuildArchitectures: x86_64
 Name:          migasfree-play
-Version:       5.13
+Version:       5.14
 Release:       0
-Summary:       GUI for migasfree client
+Summary:       Desktop graphical interface for Migasfree
 License:       GPLv3
 Packager:      Jose Antonio Chavarría
 Vendor:        migasfree team
@@ -12,7 +12,7 @@ Requires:      migasfree-client >= 4.20, sudo, bash, cronie, curl, util-linux, n
 BuildRoot:     %{_tmppath}/%{name}-%{version}
 
 %description
-migasfree play is a GUI for migasfree client
+Desktop graphical interface for Migasfree. Enables end-users to securely manage software catalogs, devices, and client synchronization.
 
 %prep
 %setup -q
@@ -43,6 +43,16 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
+* Fri, 22 May 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(executions): track manual cancellations and allow copy in terminal
+- feat(client): implement hybrid v4/v5 execution model
+- feat(ui): add registration banner and computer registration status
+- refactor(executions): migrate safety timeouts to main process
+- refactor(stores): eliminate circular dependencies and state re-exports
+- perf(stores): optimize data fetching and prevent redundant API calls
+- fix(packaging): allow 301, 401, 403 status codes on startup check
+- fix(deps): upgrade core dependencies
+
 * Wed, 25 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.13-0
 - feat(auto-update): implement event-driven background update detection
 - feat(i18n): add translations for the updated restart dialog in ES, FR, GL, CA, and EU

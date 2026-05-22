@@ -1,3 +1,16 @@
+migasfree-play (5.14.0) unstable; urgency=low
+
+  * feat(executions): track manual cancellations and allow copy in terminal
+  * feat(client): implement hybrid v4/v5 execution model
+  * feat(ui): add registration banner and computer registration status
+  * refactor(executions): migrate safety timeouts to main process
+  * refactor(stores): eliminate circular dependencies and state re-exports
+  * perf(stores): optimize data fetching and prevent redundant API calls
+  * fix(packaging): allow 301, 401, 403 status codes on startup check
+  * fix(deps): upgrade core dependencies
+
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 22 May 2026 09:41:00 +0200
+
 migasfree-play (5.13.0) unstable; urgency=low
 
   * feat(auto-update): implement event-driven background update detection
