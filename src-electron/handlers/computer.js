@@ -2,6 +2,34 @@ import { ipcMain } from 'electron'
 import { pythonExecute, cliExecute, debug } from '../python-utils.js'
 
 /**
+ * Robustly parses JSON from terminal outputs, ignoring leading/trailing noise
+ */
+const parseJsonSafe = (str) => {
+  if (!str) return null
+  const trimmed = str.trim()
+  const startBrace = trimmed.indexOf('{')
+  const startBracket = trimmed.indexOf('[')
+
+  let start = -1
+  let end = -1
+
+  if (startBrace !== -1 && (startBracket === -1 || startBrace < startBracket)) {
+    start = startBrace
+    end = trimmed.lastIndexOf('}')
+  } else if (startBracket !== -1) {
+    start = startBracket
+    end = trimmed.lastIndexOf(']')
+  }
+
+  if (start === -1 || end === -1 || end < start) {
+    throw new Error('No valid JSON structure found in output: ' + str)
+  }
+
+  const jsonString = trimmed.substring(start, end + 1)
+  return JSON.parse(jsonString)
+}
+
+/**
  * Registers IPC handlers related to computer information and registration.
  */
 export default function registerComputerHandlers() {
@@ -14,7 +42,7 @@ export default function registerComputerHandlers() {
 
     try {
       const result = await cliExecute(['--quiet', 'info', '--json'])
-      return JSON.parse(result)
+      return parseJsonSafe(result)
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Computer info unavailable')
@@ -55,10 +83,26 @@ print(MigasFreeCommand().get_computer_id())`
         '--cid',
         '--json',
       ])
-      return JSON.parse(result)
+      return parseJsonSafe(result)
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Computer attributes unavailable')
+    }
+  })
+
+  /**
+   * Retrieves the assigned attributes via safe client command.
+   * @returns {Promise<Object>} The assigned attributes.
+   */
+  ipcMain.handle('computer:get-assigned-attributes', async () => {
+    if (debug) console.log('[ipc] Getting computer assigned attributes...')
+
+    try {
+      const result = await cliExecute(['--quiet', 'attributes', '--json'])
+      return parseJsonSafe(result)
+    } catch (error) {
+      if (debug) console.error(error)
+      throw new Error('Computer assigned attributes unavailable')
     }
   })
 
@@ -83,7 +127,7 @@ print(json.dumps(ret))`
 
     try {
       const results = await pythonExecute(code)
-      return JSON.parse(results)
+      return parseJsonSafe(results)
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Network info unavailable')

@@ -58,6 +58,7 @@ vi.mock('src/stores/computer', () => ({
     computerLabel: vi.fn(),
     computerData: vi.fn(),
     computerAttribute: vi.fn(),
+    computerAssignedAttributes: vi.fn(),
   }),
 }))
 vi.mock('src/stores/devices', () => ({

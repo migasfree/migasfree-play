@@ -120,6 +120,7 @@ export const useProgramStore = defineStore('program', () => {
       })(),
       computerStore.computerData(),
       computerStore.computerAttribute(),
+      computerStore.computerAssignedAttributes(),
     ])
 
     // 2. Heavy Data loading (Parallel)

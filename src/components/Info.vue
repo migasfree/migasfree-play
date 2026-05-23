@@ -183,6 +183,125 @@
             </q-card>
           </div>
 
+          <!-- Assigned Attributes -->
+          <div v-if="assignedAttributes.length > 0" class="col-12">
+            <q-card unelevated class="glass-card">
+              <q-card-section class="q-pa-md">
+                <div class="row items-center justify-between q-mb-md">
+                  <h2
+                    class="text-overline text-primary section-header q-ma-none"
+                  >
+                    <q-icon name="mdi-pound" size="18px" class="q-mr-xs" />
+                    {{ $gettext('Assigned Attributes') }}
+                    <q-badge
+                      color="primary"
+                      transparent
+                      align="top"
+                      class="q-ml-sm text-weight-bold"
+                    >
+                      <template v-if="attrSearch">
+                        {{ filteredAttributes.length }} /
+                        {{ assignedAttributes.length }}
+                      </template>
+                      <template v-else>
+                        {{ assignedAttributes.length }}
+                      </template>
+                    </q-badge>
+                  </h2>
+
+                  <div class="row q-gutter-x-sm items-center">
+                    <q-input
+                      v-model="attrSearch"
+                      :placeholder="$gettext('Search...')"
+                      dense
+                      filled
+                      class="search-input"
+                      :aria-label="$gettext('Search assigned attributes')"
+                    >
+                      <template #prepend>
+                        <q-icon :name="appIcon('search')" size="xs" />
+                      </template>
+                      <template v-if="attrSearch" #append>
+                        <q-icon
+                          :name="appIcon('close')"
+                          size="xs"
+                          class="cursor-pointer"
+                          @click="attrSearch = ''"
+                        />
+                      </template>
+                    </q-input>
+                    <CopyButton
+                      :text="attributesText"
+                      flat
+                      size="sm"
+                      class="action-btn"
+                    />
+                  </div>
+                </div>
+
+                <div class="inventory-container rounded-borders q-pa-sm">
+                  <q-virtual-scroll
+                    class="attributes-scroll-list"
+                    :items="chunkedAttributes"
+                  >
+                    <template #default="{ item: rowAttrs }">
+                      <div class="row q-col-gutter-sm q-py-xs">
+                        <div
+                          v-for="attr in rowAttrs"
+                          :key="attr.id"
+                          class="col-12 col-sm-4 flex justify-start items-center q-py-xs"
+                        >
+                          <div
+                            v-if="attr.property_att?.prefix"
+                            class="attr-badge"
+                          >
+                            <span class="attr-prefix">{{
+                              attr.property_att.prefix
+                            }}</span>
+                            <span class="attr-value">{{ attr.value }}</span>
+                          </div>
+                          <div v-else class="attr-single-value">
+                            {{ attr.value }}
+                          </div>
+
+                          <!-- Geolocation marker with coordinates tooltip -->
+                          <q-icon
+                            v-if="
+                              attr.latitude !== null &&
+                              attr.latitude !== undefined &&
+                              attr.longitude !== null &&
+                              attr.longitude !== undefined
+                            "
+                            name="mdi-map-marker"
+                            color="negative"
+                            size="16px"
+                            class="q-ml-xs cursor-pointer animate-bounce"
+                          >
+                            <q-tooltip>
+                              {{ $gettext('Coordinates:') }}
+                              {{ attr.latitude }}, {{ attr.longitude }}
+                            </q-tooltip>
+                          </q-icon>
+                        </div>
+                      </div>
+                    </template>
+                  </q-virtual-scroll>
+                  <div
+                    v-if="filteredAttributes.length === 0"
+                    class="text-center text-muted q-py-lg"
+                  >
+                    <q-icon
+                      :name="appIcon('search_off')"
+                      size="md"
+                      class="q-mb-sm opacity-40"
+                    />
+                    <div>{{ $gettext('No results found') }}</div>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+
           <!-- Software Inventory (Full Width in Grid) -->
           <div v-if="inventory.length > 0" class="col-12">
             <q-card unelevated class="glass-card">
@@ -490,8 +609,36 @@ const {
   helpdesk,
   ip,
   isRegistered,
+  assignedAttributes,
 } = storeToRefs(computerStore)
 const { inventory } = storeToRefs(packagesStore)
+
+const attrSearch = ref('')
+
+const filteredAttributes = computed(() => {
+  const query = (attrSearch.value ?? '').toLowerCase()
+  if (!query) return assignedAttributes.value
+
+  return assignedAttributes.value.filter((attr) => {
+    const prefix = (attr.property_att?.prefix ?? '').toLowerCase()
+    const name = (attr.property_att?.name ?? '').toLowerCase()
+    const val = (attr.value ?? '').toLowerCase()
+    return prefix.includes(query) || name.includes(query) || val.includes(query)
+  })
+})
+
+const chunkedAttributes = computed(() => {
+  const chunks = []
+  const attrs = filteredAttributes.value
+  for (let i = 0; i < attrs.length; i += 3) {
+    chunks.push(attrs.slice(i, i + 3))
+  }
+  return chunks
+})
+
+const attributesText = computed(() => {
+  return JSON.stringify(filteredAttributes.value, null, 2)
+})
 
 const host = serverStore.host
 const serverVersion = serverStore.serverVersion
@@ -625,6 +772,53 @@ const inventoryText = computed(() => {
   height: 300px;
 }
 
+.attributes-scroll-list {
+  height: 250px;
+}
+
+.attr-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+}
+
+.mdi-map-marker {
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.25) translateY(-1px);
+  }
+}
+
+.attr-prefix {
+  background: #3d2419; /* Elegant Migasfree dark corporate brown */
+  color: white;
+  padding: 1px 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.attr-value {
+  background: rgba(0, 0, 0, 0.03);
+  color: #2c2c2c;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.attr-single-value {
+  background: rgba(0, 0, 0, 0.03);
+  color: #2c2c2c;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+}
+
 .inventory-item {
   border-radius: 4px;
   transition: background 0.2s ease;
@@ -742,6 +936,25 @@ const inventoryText = computed(() => {
   .label-footer {
     background: rgba(0, 0, 0, 0.2);
     border-top-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .attr-badge {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .attr-prefix {
+    background: #503123; /* slightly lighter for contrast in dark mode */
+  }
+
+  .attr-value {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e0e0e0;
+  }
+
+  .attr-single-value {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e0e0e0;
+    border-color: rgba(255, 255, 255, 0.1);
   }
 }
 

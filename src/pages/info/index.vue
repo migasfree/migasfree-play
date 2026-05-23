@@ -40,7 +40,10 @@ const { isUpdating, sync } = usePageSync(async () => {
     computerStore.computerNetwork(),
     computerStore.computerId(),
     computerStore.computerData(),
+  ])
+  await Promise.all([
     computerStore.computerAttribute(),
+    computerStore.computerAssignedAttributes(),
     packagesStore.setInventory(),
   ])
 })
