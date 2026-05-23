@@ -50,17 +50,14 @@ const pythonShellOptions = {
 }
 
 const cliExecute = async (args = []) => {
-  const pythonPath = getPython()
-  const allArgs = ['-m', 'migasfree_client', ...args]
+  const binary = os.platform() === 'win32' ? 'migasfree.exe' : 'migasfree'
 
   if (debug) {
-    console.log(
-      `[python-utils] Executing CLI: ${pythonPath} ${allArgs.join(' ')}`,
-    )
+    console.log(`[python-utils] Executing CLI: ${binary} ${args.join(' ')}`)
   }
 
   try {
-    const { stdout } = await execFileAsync(pythonPath, allArgs, {
+    const { stdout } = await execFileAsync(binary, args, {
       maxBuffer: 1024 * 1024 * 50,
     })
     return stdout.trim()

@@ -23,6 +23,7 @@ export const useComputerStore = defineStore('computer', () => {
   const data = ref({})
   const attribute = ref(0)
   const platform = ref('')
+  const assignedAttributes = ref([])
 
   const uiStore = useUiStore()
   const authStore = useAuthStore()
@@ -136,6 +137,26 @@ export const useComputerStore = defineStore('computer', () => {
     }
   }
 
+  const computerAssignedAttributes = async () => {
+    if (!isRegistered.value) return
+
+    try {
+      if (serverStore.isLegacyClient) {
+        assignedAttributes.value = []
+      } else {
+        const fetchedData =
+          await window.electronAPI.computer.getAssignedAttributes()
+        if (fetchedData && fetchedData.results) {
+          assignedAttributes.value = fetchedData.results
+        } else {
+          assignedAttributes.value = []
+        }
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  }
+
   const setComputerLink = () => {
     link.value = serverStore.isLegacyServer
       ? `${serverStore.protocol}://${serverStore.host}/admin/server/computer/${cid.value}/change/`
@@ -182,6 +203,7 @@ export const useComputerStore = defineStore('computer', () => {
     helpdesk,
     data,
     attribute,
+    assignedAttributes,
     platform,
     computerInfo,
     computerNetwork,
@@ -189,6 +211,7 @@ export const useComputerStore = defineStore('computer', () => {
     computerLabel,
     computerData,
     computerAttribute,
+    computerAssignedAttributes,
     registerComputer,
   }
 })

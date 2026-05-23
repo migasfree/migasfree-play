@@ -379,6 +379,68 @@ describe('Computer Store', () => {
     })
   })
 
+  describe('computerAssignedAttributes()', () => {
+    it('does nothing if not registered', async () => {
+      const store = useComputerStore()
+      store.cid = 0
+      await store.computerAssignedAttributes()
+      expect(
+        window.electronAPI.computer.getAssignedAttributes,
+      ).not.toHaveBeenCalled()
+      expect(store.assignedAttributes).toEqual([])
+    })
+
+    it('sets assignedAttributes to empty array for legacy clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerAssignedAttributes()
+
+      expect(store.assignedAttributes).toEqual([])
+
+      // Restore
+      serverStore.clientVersion = '5.0'
+    })
+
+    it('fetches and sets assignedAttributes via IPC for v5 clients', async () => {
+      const mockData = {
+        count: 2,
+        results: [
+          { id: 1, value: 'HQ', property_att: { name: 'ORG' } },
+          { id: 2, value: 'DEV', property_att: { name: 'DEPT' } },
+        ],
+      }
+      window.electronAPI.computer.getAssignedAttributes.mockResolvedValue(
+        mockData,
+      )
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerAssignedAttributes()
+
+      expect(
+        window.electronAPI.computer.getAssignedAttributes,
+      ).toHaveBeenCalled()
+      expect(store.assignedAttributes).toEqual(mockData.results)
+    })
+
+    it('handles empty or invalid results gracefully for v5 clients', async () => {
+      window.electronAPI.computer.getAssignedAttributes.mockResolvedValue(null)
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerAssignedAttributes()
+
+      expect(
+        window.electronAPI.computer.getAssignedAttributes,
+      ).toHaveBeenCalled()
+      expect(store.assignedAttributes).toEqual([])
+    })
+  })
+
   describe('registerComputer()', () => {
     beforeEach(() => {
       window.electronAPI.computer.register.mockResolvedValue(789)
