@@ -120,11 +120,17 @@ export const useComputerStore = defineStore('computer', () => {
     if (!isRegistered.value) return
 
     try {
-      const { data } = await tokenGet(
-        `${serverStore.initialUrl.token}${tokenApi.cidAttribute}${cid.value}`,
-      )
+      let data
+      if (serverStore.isLegacyClient) {
+        const response = await tokenGet(
+          `${serverStore.initialUrl.token}${tokenApi.cidAttribute}${cid.value}`,
+        )
+        data = response.data
+      } else {
+        data = await window.electronAPI.computer.getCidAttribute()
+      }
 
-      if (data.count === 1) attribute.value = data.results[0].id
+      if (data && data.count === 1) attribute.value = data.results[0].id
     } catch (error) {
       uiStore.notifyError(error)
     }

@@ -42,6 +42,27 @@ print(MigasFreeCommand().get_computer_id())`
   })
 
   /**
+   * Retrieves the CID attribute via safe client command.
+   * @returns {Promise<Object>} The CID attribute.
+   */
+  ipcMain.handle('computer:get-cid-attribute', async () => {
+    if (debug) console.log('[ipc] Getting computer attributes...')
+
+    try {
+      const result = await cliExecute([
+        '--quiet',
+        'attributes',
+        '--cid',
+        '--json',
+      ])
+      return JSON.parse(result)
+    } catch (error) {
+      if (debug) console.error(error)
+      throw new Error('Computer attributes unavailable')
+    }
+  })
+
+  /**
    * Retrieves network information (IP, mask, network CIDR).
    * @returns {Promise<Object>} Network information object.
    * @throws {Error} If network information is unavailable.

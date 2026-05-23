@@ -302,7 +302,11 @@ describe('Computer Store', () => {
       expect(api.get).not.toHaveBeenCalled()
     })
 
-    it('fetches and sets CID attribute', async () => {
+    it('fetches and sets CID attribute via API for legacy clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+
       const mockData = {
         count: 1,
         results: [{ id: 456 }],
@@ -318,9 +322,31 @@ describe('Computer Store', () => {
         { headers: { Authorization: 'Token abc123' } },
       )
       expect(store.attribute).toBe(456)
+
+      // Restore
+      serverStore.clientVersion = '5.0'
     })
 
-    it('does not set attribute if count is not 1', async () => {
+    it('fetches and sets CID attribute via IPC for v5 clients', async () => {
+      const mockData = {
+        count: 1,
+        results: [{ id: 789 }],
+      }
+      window.electronAPI.computer.getCidAttribute.mockResolvedValue(mockData)
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerAttribute()
+
+      expect(window.electronAPI.computer.getCidAttribute).toHaveBeenCalled()
+      expect(store.attribute).toBe(789)
+    })
+
+    it('does not set attribute if count is not 1 for legacy clients', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.clientVersion = '4.20'
+
       const mockData = {
         count: 0,
         results: [],
@@ -331,6 +357,24 @@ describe('Computer Store', () => {
       store.cid = 123
       await store.computerAttribute()
 
+      expect(store.attribute).toBe(0)
+
+      // Restore
+      serverStore.clientVersion = '5.0'
+    })
+
+    it('does not set attribute if count is not 1 for v5 clients', async () => {
+      const mockData = {
+        count: 0,
+        results: [],
+      }
+      window.electronAPI.computer.getCidAttribute.mockResolvedValue(mockData)
+
+      const store = useComputerStore()
+      store.cid = 123
+      await store.computerAttribute()
+
+      expect(window.electronAPI.computer.getCidAttribute).toHaveBeenCalled()
       expect(store.attribute).toBe(0)
     })
   })

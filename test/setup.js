@@ -48,6 +48,7 @@ global.window.electronAPI = {
     getId: vi.fn(),
     getLabel: vi.fn(),
     getInfo: vi.fn(),
+    getCidAttribute: vi.fn(),
     getNetwork: vi.fn(),
     register: vi.fn(),
   },
