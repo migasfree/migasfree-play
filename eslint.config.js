@@ -11,10 +11,13 @@ export default [
       'src-bex/www/*',
       'src-pwa/*',
       'src-electron/*',
+      'src/i18n/package-metadata.js',
       'babel.config.js',
       '.gitignore',
     ],
+  },
 
+  {
     languageOptions: {
       ecmaVersion: 'latest', // Allows for the parsing of modern ECMAScript features
       sourceType: 'module', // Allows for the use of imports

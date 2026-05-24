@@ -52,3 +52,4 @@ yarn-error.log*
 /coverage/*
 .agent/
 /src/i18n/package-metadata.js
+/docs/governance
