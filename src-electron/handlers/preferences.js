@@ -2,7 +2,7 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import { ipcMain } from 'electron'
-import { pythonExecute, debug } from '../python-utils.js'
+import { pythonExecute, cliExecute, debug } from '../python-utils.js'
 
 const SETTINGS_FILE = path.resolve(
   os.homedir(),
@@ -99,16 +99,12 @@ print(json.dumps(ret))`
   ipcMain.handle('preferences:get-client-info', async () => {
     if (debug) console.log('[ipc] Getting client info...')
 
-    const code = `
-import json
-from migasfree_client.utils import get_mfc_release
-
-ret = {'version': get_mfc_release()}
-print(json.dumps(ret))`
-
     try {
-      const results = await pythonExecute(code)
-      return JSON.parse(results)
+      const results = await cliExecute(['--quiet', 'version'])
+      const lines = results.trim().split('\n')
+      const version = lines[lines.length - 1].trim()
+
+      return { version: version || 'UNKNOWN' }
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Failed to fetch client info')
