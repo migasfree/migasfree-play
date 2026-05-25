@@ -1,5 +1,10 @@
 import { ipcMain } from 'electron'
-import { pythonExecute, cliExecute, debug } from '../python-utils.js'
+import {
+  pythonExecute,
+  cliExecute,
+  debug,
+  getClientVersion,
+} from '../python-utils.js'
 
 /**
  * Robustly parses JSON from terminal outputs, ignoring leading/trailing noise
@@ -110,7 +115,11 @@ export default function registerComputerHandlers() {
   ipcMain.handle('computer:get-network', async () => {
     if (debug) console.log('[ipc] Getting network info...')
 
-    const code = `
+    try {
+      const version = await getClientVersion()
+
+      if (version.startsWith('4.')) {
+        const code = `
 import json
 from migasfree_client.network import get_iface_net, get_iface_cidr, get_iface_mask, get_iface_address, get_ifname
 _ifname = get_ifname()
@@ -120,9 +129,11 @@ ret = {
     'ip_address': get_iface_address(_ifname)
 }
 print(json.dumps(ret))`
+        const results = await pythonExecute(code)
+        return parseJsonSafe(results)
+      }
 
-    try {
-      const results = await pythonExecute(code)
+      const results = await cliExecute(['--quiet', 'network', '--json'])
       return parseJsonSafe(results)
     } catch (error) {
       if (debug) console.error(error)
@@ -143,28 +154,30 @@ print(json.dumps(ret))`
     'computer:register',
     async (_, { user, password, version }) => {
       if (debug) console.log('[ipc] Registering Computer...')
-      // ... (rest of the function remains the same)
 
-      let code = `
-from migasfree_client.command import MigasFreeCommand
-
-mfc = MigasFreeCommand()
-mfc._init_command()
-mfc._save_sign_keys('${user}', '${password}')
-mfc._save_computer('${user}', '${password}')`
-
-      if (version.startsWith('4.'))
-        code = `
+      try {
+        if (version.startsWith('4.')) {
+          const code = `
 from migasfree_client.command import MigasFreeCommand
 
 mfc = MigasFreeCommand()
 mfc._save_sign_keys('${user}', '${password}')`
+          return await pythonExecute(code)
+        }
 
-      try {
-        return await pythonExecute(code)
+        // For v5, we use the non-interactive CLI flags
+        await cliExecute([
+          '--quiet',
+          'register',
+          '--user',
+          user,
+          '--pwd',
+          password,
+        ])
+        return '1' // Registration success equivalent
       } catch (error) {
         if (debug) console.error(error)
-        return '0'
+        return '0' // Failure equivalent
       }
     },
   )

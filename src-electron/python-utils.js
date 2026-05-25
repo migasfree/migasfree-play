@@ -108,4 +108,14 @@ const pythonExecute = async (code, args = []) => {
   }
 }
 
-export { debug, pythonExecute, cliExecute, getScriptsPath }
+const getClientVersion = async () => {
+  try {
+    const results = await cliExecute(['--quiet', 'version'])
+    const lines = results.trim().split('\n')
+    return lines[lines.length - 1].trim()
+  } catch (error) {
+    return '4.0' // safe fallback
+  }
+}
+
+export { debug, pythonExecute, cliExecute, getClientVersion, getScriptsPath }

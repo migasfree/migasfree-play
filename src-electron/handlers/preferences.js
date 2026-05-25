@@ -2,7 +2,12 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import { ipcMain } from 'electron'
-import { pythonExecute, cliExecute, debug } from '../python-utils.js'
+import {
+  pythonExecute,
+  cliExecute,
+  debug,
+  getClientVersion,
+} from '../python-utils.js'
 
 const SETTINGS_FILE = path.resolve(
   os.homedir(),
@@ -42,12 +47,6 @@ const readSettings = () => {
 const writeSettings = (content) => {
   fs.mkdirSync(path.dirname(SETTINGS_FILE), { recursive: true })
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(content, null, 2))
-}
-
-async function getClientVersion() {
-  const results = await cliExecute(['--quiet', 'version'])
-  const lines = results.trim().split('\n')
-  return lines[lines.length - 1].trim()
 }
 
 async function getConfInfo() {
