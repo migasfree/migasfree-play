@@ -2,7 +2,7 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import { ipcMain } from 'electron'
-import { pythonExecute, debug } from '../python-utils.js'
+import { pythonExecute, cliExecute, debug } from '../python-utils.js'
 
 const tokenFile = path.join(os.homedir(), '.migasfree-play', 'token')
 
@@ -49,8 +49,25 @@ export default function registerTokenHandlers() {
       let caPath = null
       let caContent = null
 
-      // 1. Try to get system CA via Python (migasfree-client v5)
-      const pythonCode = `
+      // 1. Try to get system CA via CLI (migasfree-client v5)
+      try {
+        const results = await cliExecute(['--quiet', 'conf', '--json'])
+        const lines = results.trim().split('\n')
+        const jsonLine = lines[lines.length - 1].trim()
+        const conf = JSON.parse(jsonLine)
+
+        if (conf.ca_file && fs.existsSync(conf.ca_file)) {
+          if (debug) console.log(`[ipc] Using System CA file: ${conf.ca_file}`)
+          caPath = conf.ca_file
+        }
+      } catch (error) {
+        if (debug)
+          console.log(
+            '[ipc] CLI conf failed (likely v4), falling back to Python execution',
+          )
+
+        // Fallback for v4
+        const pythonCode = `
 import os
 import sys
 
@@ -66,17 +83,17 @@ try:
         print(ca_file)
 except ImportError:
     pass
-except Exception as e:
-    print(str(e), file=sys.stderr)
 `
-      try {
-        const systemCaPath = await pythonExecute(pythonCode)
-        if (systemCaPath && fs.existsSync(systemCaPath)) {
-          if (debug) console.log(`[ipc] Using System CA file: ${systemCaPath}`)
-          caPath = systemCaPath
+        try {
+          const systemCaPath = await pythonExecute(pythonCode)
+          if (systemCaPath && fs.existsSync(systemCaPath.trim())) {
+            caPath = systemCaPath.trim()
+            if (debug) console.log(`[ipc] Using System CA file (v4): ${caPath}`)
+          }
+        } catch (err2) {
+          if (debug)
+            console.error('Failed to get System CA file via Python:', err2)
         }
-      } catch (error) {
-        if (debug) console.error('Failed to get System CA file:', error)
       }
 
       // 2. If no System CA, check Local User Cache & Server Discovery

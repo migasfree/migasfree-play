@@ -44,6 +44,19 @@ const writeSettings = (content) => {
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(content, null, 2))
 }
 
+async function getClientVersion() {
+  const results = await cliExecute(['--quiet', 'version'])
+  const lines = results.trim().split('\n')
+  return lines[lines.length - 1].trim()
+}
+
+async function getConfInfo() {
+  const results = await cliExecute(['--quiet', 'conf', '--json'])
+  const lines = results.trim().split('\n')
+  const jsonLine = lines[lines.length - 1].trim()
+  return JSON.parse(jsonLine)
+}
+
 export default function registerPreferencesHandlers() {
   ipcMain.handle('preferences:read', () => {
     if (debug) console.log('[ipc] Getting preferences...')
@@ -69,7 +82,11 @@ export default function registerPreferencesHandlers() {
   ipcMain.handle('preferences:get-server-info', async () => {
     if (debug) console.log('[ipc] Getting server info...')
 
-    const code = `
+    try {
+      const version = await getClientVersion()
+
+      if (version.startsWith('4.')) {
+        const code = `
 import json
 from migasfree_client.command import MigasFreeCommand
 from migasfree_client.utils import get_hardware_uuid, get_graphic_pid, get_graphic_user
@@ -86,10 +103,18 @@ ret = {
     'user': get_graphic_user(graphic_pid)
 }
 print(json.dumps(ret))`
+        const results = await pythonExecute(code)
+        return JSON.parse(results)
+      }
 
-    try {
-      const results = await pythonExecute(code)
-      return JSON.parse(results)
+      const conf = await getConfInfo()
+      return {
+        server: conf.server || 'localhost',
+        uuid: conf.uuid,
+        project: conf.project,
+        computer_name: conf.computer_name,
+        user: conf.user,
+      }
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Failed to fetch server info')
@@ -100,10 +125,7 @@ print(json.dumps(ret))`
     if (debug) console.log('[ipc] Getting client info...')
 
     try {
-      const results = await cliExecute(['--quiet', 'version'])
-      const lines = results.trim().split('\n')
-      const version = lines[lines.length - 1].trim()
-
+      const version = await getClientVersion()
       return { version: version || 'UNKNOWN' }
     } catch (error) {
       if (debug) console.error(error)
@@ -111,22 +133,23 @@ print(json.dumps(ret))`
     }
   })
 
-  ipcMain.handle('preferences:get-protocol', async (_, { version }) => {
+  ipcMain.handle('preferences:get-protocol', async (_, { version } = {}) => {
     if (debug) console.log('[ipc] Getting API protocol...')
 
-    let code = `
-from migasfree_client.command import MigasFreeCommand
-print(MigasFreeCommand().api_protocol())`
+    try {
+      const actualVersion = version || (await getClientVersion())
 
-    if (version?.startsWith('4.')) {
-      code = `
+      if (actualVersion.startsWith('4.')) {
+        const code = `
 from migasfree_client.command import MigasFreeCommand
 ssl_cert = MigasFreeCommand().migas_ssl_cert
 print('https' if ssl_cert else 'http')`
-    }
+        const results = await pythonExecute(code)
+        return results.trim()
+      }
 
-    try {
-      return await pythonExecute(code)
+      const conf = await getConfInfo()
+      return conf.api_protocol
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Failed to fetch protocol')
@@ -136,13 +159,23 @@ print('https' if ssl_cert else 'http')`
   ipcMain.handle('preferences:can-manage-devices', async () => {
     if (debug) console.log('[ipc] Getting manage devices setting...')
 
-    const code = `
+    try {
+      const version = await getClientVersion()
+
+      if (version.startsWith('4.')) {
+        const code = `
 from migasfree_client.command import MigasFreeCommand
 print(MigasFreeCommand().migas_manage_devices)`
+        const results = await pythonExecute(code)
+        return results.trim() === 'True'
+      }
 
-    try {
-      const results = await pythonExecute(code)
-      return results.trim() === 'True'
+      const conf = await getConfInfo()
+      return (
+        conf.manage_devices === true ||
+        conf.manage_devices === 'True' ||
+        conf.manage_devices === 'true'
+      )
     } catch (error) {
       if (debug) console.error(error)
       throw new Error('Failed to fetch device management flag')
