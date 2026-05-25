@@ -169,6 +169,7 @@ mfc._save_sign_keys('${user}', '${password}')`
         await cliExecute([
           '--quiet',
           'register',
+          '--assume-yes',
           '--user',
           user,
           '--pwd',
