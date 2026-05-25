@@ -96,6 +96,13 @@ describe('Devices Store', () => {
   beforeEach(async () => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    window.electronAPI = {
+      devices: {
+        getAssigned: vi.fn(),
+        getAvailable: vi.fn(),
+        getLogical: vi.fn(),
+      },
+    }
     // Reset cid to 123 for each test
     const { useComputerStore } = await import('src/stores/computer')
     const computerStore = useComputerStore()
@@ -132,23 +139,17 @@ describe('Devices Store', () => {
     })
 
     it('fetches assigned and inflicted devices', async () => {
-      api.get.mockImplementation((url) => {
-        if (url.includes('/devices/')) {
-          return Promise.resolve({ data: mockDevicesResponse })
-        }
-        if (url.includes('/devices/devices/')) {
-          return Promise.resolve({ data: mockDeviceData })
-        }
-        return Promise.resolve({ data: {} })
-      })
+      window.electronAPI.devices.getAssigned.mockResolvedValue(
+        mockDevicesResponse,
+      )
+      window.electronAPI.devices.getAvailable.mockResolvedValue([
+        mockDeviceData,
+      ])
 
       const store = useDevicesStore()
       await store.computerDevices()
 
-      expect(api.get).toHaveBeenCalledWith(
-        'https://api.example.com/api/v1/token/computers/123/devices/',
-        { headers: { Authorization: 'Token xyz789' } },
-      )
+      expect(window.electronAPI.devices.getAssigned).toHaveBeenCalled()
     })
   })
 
@@ -165,45 +166,38 @@ describe('Devices Store', () => {
     })
 
     it('fetches available devices', async () => {
-      const mockAvailable = {
-        results: [
-          {
-            id: 300,
-            model: { name: 'Canon Scanner', manufacturer: { name: 'Canon' } },
-            data: { NAME: 'Scanner' },
-          },
-        ],
-      }
+      const mockAvailable = [
+        {
+          id: 300,
+          model: { name: 'Canon Scanner', manufacturer: { name: 'Canon' } },
+          data: { NAME: 'Scanner' },
+        },
+      ]
 
-      api.get.mockResolvedValue({ data: mockAvailable })
+      window.electronAPI.devices.getAvailable.mockResolvedValue(mockAvailable)
 
       const store = useDevicesStore()
       await store.getAvailableDevices()
 
-      expect(api.get).toHaveBeenCalledWith(
-        expect.stringContaining('/devices/devices/available/?cid=123'),
-        { headers: { Authorization: 'Token xyz789' } },
-      )
+      expect(window.electronAPI.devices.getAvailable).toHaveBeenCalled()
       expect(store.devices[0]['x-type']).toBe('available')
     })
 
     it('does not add duplicate devices if already present', async () => {
-      const mockAvailable = {
-        results: [
-          {
-            id: 100, // Existing device
-            model: { name: 'Existing Legacy', manufacturer: { name: 'HP' } },
-            data: { NAME: 'Existing Legacy' },
-          },
-          {
-            id: 200, // New device
-            model: { name: 'New Scanner', manufacturer: { name: 'Canon' } },
-            data: { NAME: 'New Scanner' },
-          },
-        ],
-      }
+      const mockAvailable = [
+        {
+          id: 100, // Existing device
+          model: { name: 'Existing Legacy', manufacturer: { name: 'HP' } },
+          data: { NAME: 'Existing Legacy' },
+        },
+        {
+          id: 200, // New device
+          model: { name: 'New Scanner', manufacturer: { name: 'Canon' } },
+          data: { NAME: 'New Scanner' },
+        },
+      ]
 
-      api.get.mockResolvedValue({ data: mockAvailable })
+      window.electronAPI.devices.getAvailable.mockResolvedValue(mockAvailable)
 
       const store = useDevicesStore()
       // Simulate existing device
@@ -217,7 +211,7 @@ describe('Devices Store', () => {
 
       await store.getAvailableDevices()
 
-      expect(api.get).toHaveBeenCalled()
+      expect(window.electronAPI.devices.getAvailable).toHaveBeenCalled()
       // Should have 2 devices total (100 + 200), not 3
       expect(store.devices).toHaveLength(2)
 
@@ -379,15 +373,12 @@ describe('Devices Store', () => {
         name: 'Test Device',
         data: { NAME: 'Device 1' },
       }
-      api.get.mockResolvedValue({ data: responseData })
+      window.electronAPI.devices.getAvailable.mockResolvedValue([responseData])
 
       const store = useDevicesStore()
       const result = await store.getDeviceData(100)
 
-      expect(api.get).toHaveBeenCalledWith(
-        expect.stringContaining('/devices/devices/100/'),
-        expect.any(Object),
-      )
+      expect(window.electronAPI.devices.getAvailable).toHaveBeenCalled()
       expect(result).toEqual(responseData)
     })
 
@@ -417,7 +408,7 @@ describe('Devices Store', () => {
 
     it('handles error and rethrows', async () => {
       const error = new Error('Network error')
-      api.get.mockRejectedValue(error)
+      window.electronAPI.devices.getAvailable.mockRejectedValue(error)
 
       const store = useDevicesStore()
       await expect(store.getDeviceData(100)).rejects.toThrow('Network error')
@@ -426,14 +417,10 @@ describe('Devices Store', () => {
 
   describe('getFeaturesDevices()', () => {
     it('fetches logical devices for all devices', async () => {
-      api.get.mockResolvedValue({
-        data: {
-          results: [
-            { id: 10, capability: { name: 'Print' } },
-            { id: 11, capability: { name: 'Scan' } },
-          ],
-        },
-      })
+      window.electronAPI.devices.getLogical.mockResolvedValue([
+        { id: 10, capability: { name: 'Print' } },
+        { id: 11, capability: { name: 'Scan' } },
+      ])
 
       const store = useDevicesStore()
       store.devices = [
@@ -443,13 +430,13 @@ describe('Devices Store', () => {
 
       await store.getFeaturesDevices()
 
-      expect(api.get).toHaveBeenCalledTimes(2)
+      expect(window.electronAPI.devices.getLogical).toHaveBeenCalledTimes(2)
       expect(store.devices[0].logical).toBeDefined()
       expect(store.devices[1].logical).toBeDefined()
     })
 
     it('handles empty results', async () => {
-      api.get.mockResolvedValue({ data: { results: [] } })
+      window.electronAPI.devices.getLogical.mockResolvedValue([])
 
       const store = useDevicesStore()
       store.devices = [{ id: 1, model: { name: 'Printer' } }]

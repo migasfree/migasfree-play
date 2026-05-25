@@ -86,6 +86,20 @@ contextBridge.exposeInMainWorld('electronAPI', {
     get: (version) => ipcRenderer.invoke('tags:get', { version }),
   },
 
+  apps: {
+    getAvailable: (version) =>
+      ipcRenderer.invoke('apps:get-available', { version }),
+    getCategories: (version) =>
+      ipcRenderer.invoke('apps:get-categories', { version }),
+  },
+
+  devices: {
+    getAvailable: () => ipcRenderer.invoke('devices:get-available'),
+    getLogical: (deviceId) =>
+      ipcRenderer.invoke('devices:get-logical', { deviceId }),
+    getAssigned: () => ipcRenderer.invoke('devices:get-assigned'),
+  },
+
   user: {
     check: (username, password, version) =>
       ipcRenderer.invoke('user:check', { username, password, version }),

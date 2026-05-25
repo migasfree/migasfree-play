@@ -29,6 +29,8 @@ import registerTokenHandlers from './handlers/token.js'
 import registerExecutionsHandlers from './handlers/executions.js'
 import registerTagsHandlers from './handlers/tags.js'
 import registerUserHandlers from './handlers/user.js'
+import registerAppsHandlers from './handlers/apps.js'
+import registerDevicesHandlers from './handlers/devices.js'
 
 const platform = process.platform || os.platform()
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
@@ -42,6 +44,8 @@ registerTokenHandlers()
 registerExecutionsHandlers()
 registerTagsHandlers()
 registerUserHandlers()
+registerAppsHandlers()
+registerDevicesHandlers()
 
 app.canExit = true
 app.syncAfterStart = process.argv.includes('sync')

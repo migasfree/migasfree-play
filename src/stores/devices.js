@@ -54,10 +54,16 @@ export const useDevicesStore = defineStore('devices', () => {
     if (!computerStore.isRegistered) return
 
     try {
-      const { data } = await tokenRequest(
-        'get',
-        `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
-      )
+      let data
+      if (serverVersion.value.startsWith('4.')) {
+        const response = await tokenRequest(
+          'get',
+          `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
+        )
+        data = response.data
+      } else {
+        data = await window.electronAPI.devices.getAssigned()
+      }
 
       defaultLogicalDevice.value = data.default_logical_device
       assignedLogicalDevices.value = data.assigned_logical_devices_to_cid
@@ -95,12 +101,16 @@ export const useDevicesStore = defineStore('devices', () => {
     if (!computerStore.isRegistered) return
 
     try {
-      const response = await tokenRequest(
-        'get',
-        `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
-      )
-
-      let results = response.data.results
+      let results
+      if (serverVersion.value.startsWith('4.')) {
+        const response = await tokenRequest(
+          'get',
+          `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
+        )
+        results = response.data.results
+      } else {
+        results = await window.electronAPI.devices.getAvailable()
+      }
 
       if (serverVersion.value.startsWith('4.')) {
         results = results.map((item) => ({
@@ -131,14 +141,22 @@ export const useDevicesStore = defineStore('devices', () => {
 
   const getDeviceData = async (id) => {
     try {
-      const response = await tokenRequest(
-        'get',
-        `${initialUrl.value.token}${tokenApi.deviceData}${id}/`,
-      )
+      let itemData
+      if (serverVersion.value.startsWith('4.')) {
+        const response = await tokenRequest(
+          'get',
+          `${initialUrl.value.token}${tokenApi.deviceData}${id}/`,
+        )
+        itemData = response.data
+      } else {
+        const allAvailable = await window.electronAPI.devices.getAvailable()
+        itemData = allAvailable.find((d) => d.id === id)
+        if (!itemData) throw new Error('Device not found')
+      }
 
       const data = serverVersion.value.startsWith('4.')
-        ? { ...response.data, data: JSON.parse(response.data.data) }
-        : response.data
+        ? { ...itemData, data: JSON.parse(itemData.data) }
+        : itemData
 
       return data
     } catch (error) {
@@ -157,16 +175,17 @@ export const useDevicesStore = defineStore('devices', () => {
 
   const getLogicalDevice = async ({ id, index }) => {
     try {
-      let url = `${initialUrl.value.token}${tokenApi.logicalDevice}?device__id=${id}`
+      let results
+
       if (serverVersion.value.startsWith('4.')) {
-        url = `${initialUrl.value.token}${tokenApi.logicalDevice}available/?cid=${cid.value}&did=${id}`
+        const url = `${initialUrl.value.token}${tokenApi.logicalDevice}available/?cid=${cid.value}&did=${id}`
+        const { data } = await tokenRequest('get', url)
+        if (!data?.results?.length) return
+        results = data.results
+      } else {
+        results = await window.electronAPI.devices.getLogical(id)
+        if (!results?.length) return
       }
-
-      const { data } = await tokenRequest('get', url)
-
-      if (!data?.results?.length) return
-
-      let results = data.results
 
       // Deduplicate logical devices for v4 servers compatibility
       if (serverVersion.value.startsWith('4.')) {

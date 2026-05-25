@@ -27,19 +27,25 @@ export const useAppsStore = defineStore('apps', () => {
     const uiStore = useUiStore()
 
     const { cid, project } = storeToRefs(computerStore)
-    const { initialUrl } = storeToRefs(serverStore)
+    const { initialUrl, serverVersion } = storeToRefs(serverStore)
     const { token } = storeToRefs(authStore)
 
     if (!cid.value) return
 
     try {
-      const url = `${initialUrl.value.token}${tokenApi.apps}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`
-      const { data } = await api.get(url, {
-        headers: { Authorization: token.value },
-      })
+      let data
+      if (serverVersion.value.startsWith('4.')) {
+        const url = `${initialUrl.value.token}${tokenApi.apps}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`
+        const response = await api.get(url, {
+          headers: { Authorization: token.value },
+        })
+        data = response.data.results || response.data
+      } else {
+        data = await window.electronAPI.apps.getAvailable()
+      }
 
       setApps({
-        value: data.results,
+        value: data,
         project: project.value,
       })
       filterApps()

@@ -38,6 +38,11 @@ describe('Filters Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    window.electronAPI = {
+      apps: {
+        getCategories: vi.fn(),
+      },
+    }
   })
 
   describe('Initial State', () => {
@@ -74,21 +79,15 @@ describe('Filters Store', () => {
 
   describe('setCategories()', () => {
     it('fetches and processes categories for v5 API', async () => {
-      const mockCategories = {
-        results: [
-          { id: 1, name: 'Internet' },
-          { id: 2, name: 'Multimedia' },
-        ],
-      }
-
-      api.get.mockResolvedValue({ data: mockCategories })
+      window.electronAPI.apps.getCategories.mockResolvedValue([
+        { id: 1, name: 'Internet' },
+        { id: 2, name: 'Multimedia' },
+      ])
 
       const store = useFiltersStore()
       await store.setCategories()
 
-      expect(api.get).toHaveBeenCalledWith('http://api/catalog/categories/', {
-        headers: { Authorization: 'valid-token' },
-      })
+      expect(window.electronAPI.apps.getCategories).toHaveBeenCalled()
       expect(store.categories).toEqual([
         { id: 1, name: 'Internet' },
         { id: 2, name: 'Multimedia' },

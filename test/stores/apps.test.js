@@ -125,6 +125,12 @@ describe('Apps Store', () => {
     vi.clearAllMocks()
     api.get.mockResolvedValue({ data: { results: mockAppsData } })
 
+    window.electronAPI = {
+      apps: {
+        getAvailable: vi.fn().mockResolvedValue(mockAppsData),
+      },
+    }
+
     // Reset mock stores state
     const filters = useFiltersStore()
     filters.searchApp.value = ''

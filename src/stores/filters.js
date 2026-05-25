@@ -7,7 +7,7 @@ import { useAuthStore } from './auth.js'
 import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 
-import { tokenApi, tokenApiv4 } from 'config/app.conf'
+import { tokenApiv4 } from 'config/app.conf'
 
 export const useFiltersStore = defineStore('filters', () => {
   const categories = ref([])
@@ -25,21 +25,24 @@ export const useFiltersStore = defineStore('filters', () => {
     const { token } = storeToRefs(authStore)
     const { initialUrl, serverVersion } = storeToRefs(serverStore)
 
-    const base = `${initialUrl.value.token}`
-    const url = serverVersion.value.startsWith('4.')
-      ? `${base}${tokenApiv4.categories}`
-      : `${base}${tokenApi.categories}`
-
     try {
-      const { data } = await api.get(url, {
-        headers: { Authorization: token.value },
-      })
+      let data
+      if (serverVersion.value.startsWith('4.')) {
+        const base = `${initialUrl.value.token}`
+        const url = `${base}${tokenApiv4.categories}`
+        const response = await api.get(url, {
+          headers: { Authorization: token.value },
+        })
+        data = response.data
+      } else {
+        data = await window.electronAPI.apps.getCategories()
+      }
 
       categories.value = []
 
       const entries = serverVersion.value.startsWith('4.')
         ? Object.entries(data)
-        : Object.entries(data.results)
+        : Object.entries(data)
 
       entries.forEach(([key, val]) => {
         const id = serverVersion.value.startsWith('4.') ? Number(key) : val.id
