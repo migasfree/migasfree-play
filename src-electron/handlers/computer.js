@@ -56,13 +56,9 @@ export default function registerComputerHandlers() {
   ipcMain.handle('computer:get-id', async () => {
     if (debug) console.log('[ipc] Getting computer ID...')
 
-    const code = `
-from migasfree_client.command import MigasFreeCommand
-
-print(MigasFreeCommand().get_computer_id())`
-
     try {
-      return await pythonExecute(code)
+      const result = await cliExecute(['--quiet', 'info', 'id'])
+      return result ? result.trim() : '0'
     } catch (error) {
       if (debug) console.error(error)
       return '0'
