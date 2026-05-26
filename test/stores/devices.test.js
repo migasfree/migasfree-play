@@ -101,6 +101,8 @@ describe('Devices Store', () => {
         getAssigned: vi.fn(),
         getAvailable: vi.fn(),
         getLogical: vi.fn(),
+        assign: vi.fn(),
+        setDefault: vi.fn(),
       },
     }
     // Reset cid to 123 for each test
@@ -448,7 +450,11 @@ describe('Devices Store', () => {
   })
 
   describe('setDefaultLogicalDevice()', () => {
-    it('sets default logical device successfully', async () => {
+    it('sets default logical device successfully via HTTP on v4', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '4.2'
+
       api.patch.mockResolvedValue({
         data: { id: 123, default_logical_device: 10 },
       })
@@ -464,8 +470,26 @@ describe('Devices Store', () => {
       )
     })
 
+    it('sets default logical device successfully via IPC on v5', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '5.0'
+
+      const store = useDevicesStore()
+
+      await store.setDefaultLogicalDevice(10)
+
+      expect(window.electronAPI.devices.setDefault).toHaveBeenCalledWith(10)
+    })
+
     it('handles error gracefully', async () => {
-      api.patch.mockRejectedValue(new Error('Network error'))
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '5.0'
+
+      window.electronAPI.devices.setDefault.mockRejectedValue(
+        new Error('IPC error'),
+      )
 
       const store = useDevicesStore()
 
@@ -485,7 +509,11 @@ describe('Devices Store', () => {
       ]
     })
 
-    it('updates device attributes successfully', async () => {
+    it('updates device attributes successfully via HTTP on v4', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '4.2'
+
       api.patch.mockResolvedValue({
         data: {
           id: 10,
@@ -507,8 +535,36 @@ describe('Devices Store', () => {
       expect(mockElement.disabled).toBe(false)
     })
 
+    it('updates device attributes successfully via IPC on v5', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '5.0'
+
+      const { useComputerStore } = await import('src/stores/computer')
+      const computerStore = useComputerStore()
+      computerStore.attribute = 'attr-123'
+
+      const store = useDevicesStore()
+      const mockElement = { disabled: true }
+
+      await store.changeDeviceAttributes({
+        id: 10,
+        attributes: ['attr-123'],
+        element: mockElement,
+      })
+
+      expect(window.electronAPI.devices.assign).toHaveBeenCalledWith(10, true)
+      expect(mockElement.disabled).toBe(false)
+    })
+
     it('handles error gracefully', async () => {
-      api.patch.mockRejectedValue(new Error('Network error'))
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '5.0'
+
+      window.electronAPI.devices.assign.mockRejectedValue(
+        new Error('IPC error'),
+      )
 
       const store = useDevicesStore()
 

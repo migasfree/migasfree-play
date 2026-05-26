@@ -98,6 +98,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getLogical: (deviceId) =>
       ipcRenderer.invoke('devices:get-logical', { deviceId }),
     getAssigned: () => ipcRenderer.invoke('devices:get-assigned'),
+    assign: (logicalId, assigned) =>
+      ipcRenderer.invoke('devices:assign', { logicalId, assigned }),
+    setDefault: (logicalId) =>
+      ipcRenderer.invoke('devices:set-default', { logicalId }),
   },
 
   user: {

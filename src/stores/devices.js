@@ -81,17 +81,20 @@ export const useDevicesStore = defineStore('devices', () => {
     }
   }
 
-  // today is forbidden use this method
   const setDefaultLogicalDevice = async (logicalId) => {
     if (!computerStore.isRegistered) return
 
     try {
-      await tokenRequest(
-        'patch',
-        `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
-        { default_logical_device: logicalId },
-      )
-      // TODO: handle successful update
+      if (serverVersion.value.startsWith('4.')) {
+        await tokenRequest(
+          'patch',
+          `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
+          { default_logical_device: logicalId },
+        )
+      } else {
+        await window.electronAPI.devices.setDefault(logicalId)
+      }
+      defaultLogicalDevice.value = logicalId
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -208,19 +211,25 @@ export const useDevicesStore = defineStore('devices', () => {
 
   const changeDeviceAttributes = async ({ id, attributes, element = null }) => {
     try {
-      const { data } = await tokenRequest(
-        'patch',
-        `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
-        { attributes },
-      )
-
-      if (data.id) {
-        updateLogicalDeviceProperty(
-          data.device.id,
-          id,
-          'attributes',
-          data.attributes,
+      if (serverVersion.value.startsWith('4.')) {
+        const { data } = await tokenRequest(
+          'patch',
+          `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
+          { attributes },
         )
+
+        if (data.id) {
+          updateLogicalDeviceProperty(
+            data.device.id,
+            id,
+            'attributes',
+            data.attributes,
+          )
+          if (element) element.disabled = false
+        }
+      } else {
+        const isAssigning = attributes.includes(computerStore.attribute)
+        await window.electronAPI.devices.assign(id, isAssigning)
         if (element) element.disabled = false
       }
     } catch (error) {
