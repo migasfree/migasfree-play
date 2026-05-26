@@ -43,7 +43,10 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Fri, 22 May 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+* Tue, 26 May 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(devices): delegate logical device assignment and default setting to CLI on client v5
+- feat(ipc): decouple Electron handlers from Python internals using native CLI subcommands
+- feat(ui): add attributes grid and JSON export in computer info
 - feat(executions): track manual cancellations and allow copy in terminal
 - feat(client): implement hybrid v4/v5 execution model
 - feat(ui): add registration banner and computer registration status

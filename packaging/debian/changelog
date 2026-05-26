@@ -1,5 +1,10 @@
 migasfree-play (5.14.0) unstable; urgency=low
 
+  * feat(devices): delegate logical device assignment and default
+    setting to CLI on client v5
+  * feat(ipc): decouple Electron handlers from Python internals
+    using native CLI subcommands
+  * feat(ui): add attributes grid and JSON export in computer info
   * feat(executions): track manual cancellations and allow copy in terminal
   * feat(client): implement hybrid v4/v5 execution model
   * feat(ui): add registration banner and computer registration status
@@ -9,13 +14,15 @@ migasfree-play (5.14.0) unstable; urgency=low
   * fix(packaging): allow 301, 401, 403 status codes on startup check
   * fix(deps): upgrade core dependencies
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Fri, 22 May 2026 09:41:00 +0200
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Tue, 26 May 2026 18:10:00 +0200
 
 migasfree-play (5.13.0) unstable; urgency=low
 
   * feat(auto-update): implement event-driven background update detection
-  * feat(i18n): add translations for the updated restart dialog in ES, FR, GL, CA, and EU
-  * fix(packaging): remove 'set -e' from wrapper script to prevent silent failures in cron environments
+  * feat(i18n): add translations for the updated restart dialog in ES, FR,
+    GL, CA, and EU
+  * fix(packaging): remove 'set -e' from wrapper script to prevent silent
+    failures in cron environments
 
  -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 25 Mar 2026 12:26:00 +0100
 
@@ -26,15 +33,19 @@ migasfree-play (5.12.0) unstable; urgency=low
   * feat(ui): integrate xterm.js for professional terminal output
   * feat(ui): redesign computer label for 80x50mm thermal printers
   * feat(ux): add copy to clipboard in error dialog and terminal
-  * feat(sync): implement headless trigger to allow background synchronization from secondary instances
-  * feat(a11y): implement Phase 2 of accessibility audit (WCAG 2.1 AA compliance)
+  * feat(sync): implement headless trigger to allow background
+    synchronization from secondary instances
+  * feat(a11y): implement Phase 2 of accessibility audit (WCAG 2.1 AA
+    compliance)
   * feat(i18n): complete translations for ES, FR, CA, EU, and GL
   * fix(ui): improve scroll behavior and auto-scrolling during executions
-  * fix(sync): resolve race conditions and JSON parsing errors during store initialization
+  * fix(sync): resolve race conditions and JSON parsing errors during
+    store initialization
   * style(ui): improve notifications and dialog aesthetics with glassmorphism
   * refactor(ui): centralize icon management in a dedicated composable
   * refactor: improve server info retrieval for better v4/v5 compatibility
-  * test(qa): implement edge case testing and robust mapping for hardware and product icons
+  * test(qa): implement edge case testing and robust mapping for hardware
+    and product icons
 
  -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 16 Mar 2026 08:03:00 +0100
 
@@ -65,7 +76,8 @@ migasfree-play (5.11.0) unstable; urgency=low
   * feat: added debug file
   * fix: getLogicalDevice url
   * fix: possible devices duplication (v4)
-  * refactor(auth): separate token management into single-responsibility functions
+  * refactor(auth): separate token management into single-responsibility
+    functions
   * refactor(program): optimize auth flow to validate before requesting
   * feat(ui): redesign app splash screen with timeline and error card
   * feat(ui): redesign identity card and implement dedicated print view
