@@ -81,6 +81,7 @@ export const useDevicesStore = defineStore('devices', () => {
     }
   }
 
+  // today is forbidden use this method
   const setDefaultLogicalDevice = async (logicalId) => {
     if (!computerStore.isRegistered) return
 
