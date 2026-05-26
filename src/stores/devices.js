@@ -65,16 +65,58 @@ export const useDevicesStore = defineStore('devices', () => {
         data = await window.electronAPI.devices.getAssigned()
       }
 
-      defaultLogicalDevice.value = data.default_logical_device
-      assignedLogicalDevices.value = data.assigned_logical_devices_to_cid
-      inflictedLogicalDevices.value = data.inflicted_logical_devices
+      // Safe normalization for v4 and v5 structures
+      if (data && Array.isArray(data.logical)) {
+        // v5 server structure (via CLI or Safe API)
+        const logicalList = []
+        try {
+          const available = await window.electronAPI.devices.getAvailable()
+          for (const outer of data.logical) {
+            if (outer && typeof outer === 'object') {
+              const keys = Object.keys(outer)
+              if (keys.length > 0) {
+                const inner = outer[keys[0]]
+                if (inner && typeof inner === 'object') {
+                  const physDev = Array.isArray(available)
+                    ? available.find((d) => d.name === inner.name)
+                    : null
+                  const physId = physDev ? physDev.id : 0
+                  logicalList.push({
+                    id: inner.id,
+                    device: {
+                      id: physId,
+                      name: inner.name,
+                    },
+                  })
+                }
+              }
+            }
+          }
+        } catch {
+          // Fail-safe fallback if getAvailable fails or is not ready yet
+        }
+        defaultLogicalDevice.value =
+          data.default !== undefined ? data.default : 0
+        assignedLogicalDevices.value = logicalList
+        inflictedLogicalDevices.value = []
+      } else {
+        // v4 server structure or legacy/mock structure
+        defaultLogicalDevice.value = data?.default_logical_device || 0
+        assignedLogicalDevices.value =
+          data?.assigned_logical_devices_to_cid || []
+        inflictedLogicalDevices.value = data?.inflicted_logical_devices || []
+      }
 
       // Process sequentially to avoid race conditions with duplicate checks
       for (const item of assignedLogicalDevices.value) {
-        await addDeviceIfMissing(item, 'assigned')
+        if (item.device && item.device.id) {
+          await addDeviceIfMissing(item, 'assigned')
+        }
       }
       for (const item of inflictedLogicalDevices.value) {
-        await addDeviceIfMissing(item, 'inflicted')
+        if (item.device && item.device.id) {
+          await addDeviceIfMissing(item, 'inflicted')
+        }
       }
     } catch (err) {
       uiStore.notifyError(err)
