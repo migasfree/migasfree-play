@@ -2,7 +2,12 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import { ipcMain } from 'electron'
-import { pythonExecute, cliExecute, debug } from '../python-utils.js'
+import {
+  pythonExecute,
+  cliExecute,
+  debug,
+  getClientVersion,
+} from '../python-utils.js'
 
 const tokenFile = path.join(os.homedir(), '.migasfree-play', 'token')
 
@@ -48,6 +53,9 @@ export default function registerTokenHandlers() {
 
       let caPath = null
       let caContent = null
+      let certPath = null
+      let keyPath = null
+      let isV5 = false
 
       // 1. Try to get system CA via CLI (migasfree-client v5)
       try {
@@ -56,9 +64,19 @@ export default function registerTokenHandlers() {
         const jsonLine = lines[lines.length - 1].trim()
         const conf = JSON.parse(jsonLine)
 
+        isV5 = true
+
         if (conf.ca_file && fs.existsSync(conf.ca_file)) {
           if (debug) console.log(`[ipc] Using System CA file: ${conf.ca_file}`)
           caPath = conf.ca_file
+
+          // Look for mTLS cert and key in same directory (client v5)
+          const possibleCert = path.join(path.dirname(caPath), 'cert.pem')
+          const possibleKey = path.join(path.dirname(caPath), 'key.pem')
+          if (fs.existsSync(possibleCert) && fs.existsSync(possibleKey)) {
+            certPath = possibleCert
+            keyPath = possibleKey
+          }
         }
       } catch (error) {
         if (debug)
@@ -112,6 +130,14 @@ except ImportError:
             if (debug)
               console.log(`[ipc] Using Local Cached CA file: ${localCaPath}`)
             caPath = localCaPath
+
+            // Look for mTLS cert and key in local cached directory
+            const possibleCert = path.join(localMtlsDir, 'cert.pem')
+            const possibleKey = path.join(localMtlsDir, 'key.pem')
+            if (fs.existsSync(possibleCert) && fs.existsSync(possibleKey)) {
+              certPath = possibleCert
+              keyPath = possibleKey
+            }
           } else {
             // 3. Attempt Server Discovery (Bootstrap)
             const caUrl = `${new URL(url).origin}/manager/v1/public/ca`
@@ -148,20 +174,39 @@ except ImportError:
         }
       }
 
-      // Prepare HTTPS Agent if we found a CA
+      // Prepare HTTPS Agent with CA and optional mTLS certificates
       let httpsAgent = null
       if (caPath) {
         try {
           caContent = fs.readFileSync(caPath)
-          httpsAgent = new https.Agent({ ca: caContent })
+          const agentOptions = { ca: caContent }
+
+          if (certPath && keyPath) {
+            if (debug)
+              console.log(
+                `[ipc] Enabling Mutual TLS (mTLS) with cert: ${certPath}`,
+              )
+            agentOptions.cert = fs.readFileSync(certPath)
+            agentOptions.key = fs.readFileSync(keyPath)
+          }
+
+          httpsAgent = new https.Agent(agentOptions)
         } catch (readError) {
-          if (debug) console.error('[ipc] Failed to read CA file:', readError)
+          if (debug)
+            console.error('[ipc] Failed to read CA or mTLS files:', readError)
         }
       }
 
+      // If client is v5 and using mTLS, user credentials are innocuous.
+      // We pass fallback/dummy values to avoid DRF 400 Bad Request.
+      const reqUsername =
+        isV5 && certPath && keyPath ? username || 'migasfree-play' : username
+      const reqPassword =
+        isV5 && certPath && keyPath ? password || 'migasfree-play' : password
+
       const data = {
-        username,
-        password,
+        username: reqUsername,
+        password: reqPassword,
       }
 
       const config = {}

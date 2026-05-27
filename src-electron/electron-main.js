@@ -28,6 +28,7 @@ import registerComputerHandlers from './handlers/computer.js'
 import registerTokenHandlers from './handlers/token.js'
 import registerExecutionsHandlers from './handlers/executions.js'
 import registerTagsHandlers from './handlers/tags.js'
+import { getClientVersion } from './python-utils.js'
 import registerUserHandlers from './handlers/user.js'
 import registerAppsHandlers from './handlers/apps.js'
 import registerDevicesHandlers from './handlers/devices.js'
@@ -117,11 +118,24 @@ ipcMain.on('app:log', (_, { message, type }) => {
 // IPC Handlers - App State
 ipcMain.handle('app:get-sync-after-start', () => app.syncAfterStart)
 ipcMain.handle('app:get-platform', () => process.platform)
-ipcMain.handle('app:get-env-config', () => {
+ipcMain.handle('app:get-env-config', async () => {
   const user = process.env.MFP_USER || envDefaults.user
   const password = process.env.MFP_PASSWORD || envDefaults.password
 
-  if (user === envDefaults.user || password === envDefaults.password) {
+  let isV5 = false
+  try {
+    const version = await getClientVersion()
+    if (version && !version.startsWith('4.')) {
+      isV5 = true
+    }
+  } catch (err) {
+    // Ignore error, assume v4
+  }
+
+  if (
+    !isV5 &&
+    (user === envDefaults.user || password === envDefaults.password)
+  ) {
     console.warn(
       '[Security] Application is using default credentials. Set MFP_USER and MFP_PASSWORD environment variables.',
     )
