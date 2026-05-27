@@ -41,50 +41,50 @@ msgstr ""
 msgid "Score: %{score} out of 5 stars"
 msgstr ""
 
-#: src/components/AppDetail.vue:34
+#: src/components/AppDetail.vue:36
 msgid "%{name} icon"
 msgstr ""
 
-#: src/components/AppDetail.vue:51
+#: src/components/AppDetail.vue:49
 msgid "Read more about %{name}"
 msgstr ""
 
-#: src/components/AppDetail.vue:78
+#: src/components/AppDetail.vue:76
 msgid "Install App"
 msgstr ""
 
-#: src/components/AppDetail.vue:82
+#: src/components/AppDetail.vue:80
 #: src/components/DeviceDetail.vue:136
 msgid "Install"
 msgstr ""
 
-#: src/components/AppDetail.vue:96
+#: src/components/AppDetail.vue:94
 msgid "Uninstall App"
 msgstr ""
 
-#: src/components/AppDetail.vue:100
+#: src/components/AppDetail.vue:98
 #: src/components/DeviceDetail.vue:120
 msgid "Uninstall"
 msgstr ""
 
-#: src/components/AppDetail.vue:114
+#: src/components/AppDetail.vue:112
 #: src/components/Tags.vue:71
 msgid "Manage with privileges"
 msgstr ""
 
-#: src/components/AppDetail.vue:126
+#: src/components/AppDetail.vue:124
 msgid "Locked"
 msgstr ""
 
-#: src/components/AppDetail.vue:140
+#: src/components/AppDetail.vue:138
 msgid "Installed"
 msgstr ""
 
-#: src/components/AppDetail.vue:234
+#: src/components/AppDetail.vue:232
 msgid "Installing %{name}"
 msgstr ""
 
-#: src/components/AppDetail.vue:253
+#: src/components/AppDetail.vue:251
 msgid "Uninstalling %{name}"
 msgstr ""
 
@@ -228,41 +228,55 @@ msgstr ""
 msgid "Network Data"
 msgstr ""
 
-#: src/components/Info.vue:199
-msgid "Software Inventory"
+#: src/components/Info.vue:195
+msgid "Assigned Attributes"
 msgstr ""
 
-#: src/components/Info.vue:218
+#: src/components/Info.vue:215
+#: src/components/Info.vue:337
 msgid "Search..."
 msgstr ""
 
-#: src/components/Info.vue:222
-msgid "Search software inventory"
+#: src/components/Info.vue:219
+msgid "Search assigned attributes"
 msgstr ""
 
-#: src/components/Info.vue:270
+#: src/components/Info.vue:281
+msgid "Coordinates:"
+msgstr ""
+
+#: src/components/Info.vue:298
+#: src/components/Info.vue:389
 msgid "No results found"
 msgstr ""
 
-#: src/components/Info.vue:305
-#: src/components/Info.vue:404
+#: src/components/Info.vue:318
+msgid "Software Inventory"
+msgstr ""
+
+#: src/components/Info.vue:341
+msgid "Search software inventory"
+msgstr ""
+
+#: src/components/Info.vue:424
+#: src/components/Info.vue:523
 msgid "Identification"
 msgstr ""
 
-#: src/components/Info.vue:330
-#: src/components/Info.vue:422
+#: src/components/Info.vue:449
+#: src/components/Info.vue:541
 msgid "UUID"
 msgstr ""
 
-#: src/components/Info.vue:363
+#: src/components/Info.vue:482
 msgid "Print Label"
 msgstr ""
 
-#: src/components/Info.vue:376
+#: src/components/Info.vue:495
 msgid "Label size optimized for 80x50mm thermal printers."
 msgstr ""
 
-#: src/components/Info.vue:525
+#: src/components/Info.vue:672
 msgid "disks"
 msgstr ""
 
@@ -291,21 +305,21 @@ msgstr ""
 #: src/components/Menu.vue:86
 #: src/pages/apps/index.vue:4
 #: src/pages/apps/index.vue:38
-#: src/stores/program.js:134
+#: src/stores/program.js:135
 msgid "Apps"
 msgstr ""
 
 #: src/components/Menu.vue:92
 #: src/pages/devices/index.vue:4
 #: src/pages/devices/index.vue:49
-#: src/stores/program.js:159
+#: src/stores/program.js:160
 msgid "Devices"
 msgstr ""
 
 #: src/components/Menu.vue:98
 #: src/pages/tags/index.vue:4
 #: src/pages/tags/index.vue:32
-#: src/stores/program.js:170
+#: src/stores/program.js:171
 msgid "Tags"
 msgstr ""
 
@@ -486,23 +500,23 @@ msgstr ""
 msgid "User without privileges"
 msgstr ""
 
-#: src/stores/computer.js:141
+#: src/stores/computer.js:176
 msgid "There was a problem with registration"
 msgstr ""
 
-#: src/stores/computer.js:146
+#: src/stores/computer.js:181
 msgid "Registered Computer!"
 msgstr ""
 
-#: src/stores/executions.js:51
+#: src/stores/executions.js:85
 msgid "Synchronization finished"
 msgstr ""
 
-#: src/stores/executions.js:64
+#: src/stores/executions.js:98
 msgid "Please wait, other process is running!!!"
 msgstr ""
 
-#: src/stores/executions.js:194
+#: src/stores/executions.js:230
 msgid "Command cancelled"
 msgstr ""
 
@@ -532,7 +546,7 @@ msgstr ""
 msgid "Computer"
 msgstr ""
 
-#: src/stores/program.js:139
+#: src/stores/program.js:140
 msgid "Packages"
 msgstr ""
 
