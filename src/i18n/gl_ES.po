@@ -54,47 +54,47 @@ msgstr "Reiniciar Agora"
 msgid "Score: %{score} out of 5 stars"
 msgstr "Puntuación: %{score} de 5 estrelas"
 
-#: src/components/AppDetail.vue:34
+#: src/components/AppDetail.vue:36
 msgid "%{name} icon"
 msgstr "icona de %{name}"
 
-#: src/components/AppDetail.vue:51
+#: src/components/AppDetail.vue:49
 msgid "Read more about %{name}"
 msgstr "Ler máis sobre %{name}"
 
-#: src/components/AppDetail.vue:78
+#: src/components/AppDetail.vue:76
 msgid "Install App"
 msgstr "Instalar aplicación"
 
-#: src/components/AppDetail.vue:82 src/components/DeviceDetail.vue:136
+#: src/components/AppDetail.vue:80 src/components/DeviceDetail.vue:136
 msgid "Install"
 msgstr "Instalar"
 
-#: src/components/AppDetail.vue:96
+#: src/components/AppDetail.vue:94
 msgid "Uninstall App"
 msgstr "Desinstalar aplicación"
 
-#: src/components/AppDetail.vue:100 src/components/DeviceDetail.vue:120
+#: src/components/AppDetail.vue:98 src/components/DeviceDetail.vue:120
 msgid "Uninstall"
 msgstr "Desinstalar"
 
-#: src/components/AppDetail.vue:114 src/components/Tags.vue:71
+#: src/components/AppDetail.vue:112 src/components/Tags.vue:71
 msgid "Manage with privileges"
 msgstr "Xestionar con privilexios"
 
-#: src/components/AppDetail.vue:126
+#: src/components/AppDetail.vue:124
 msgid "Locked"
 msgstr "Pechado"
 
-#: src/components/AppDetail.vue:140
+#: src/components/AppDetail.vue:138
 msgid "Installed"
 msgstr "Instalado"
 
-#: src/components/AppDetail.vue:234
+#: src/components/AppDetail.vue:232
 msgid "Installing %{name}"
 msgstr "Instalando %{name}"
 
-#: src/components/AppDetail.vue:253
+#: src/components/AppDetail.vue:251
 msgid "Uninstalling %{name}"
 msgstr "Desinstalando %{name}"
 
@@ -190,7 +190,7 @@ msgstr "Ver só dispositivos asignados"
 
 #: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:86
 msgid "Cancelled manually"
-msgstr ""
+msgstr "Cancelado manualmente"
 
 #: src/components/ExecutionDetail.vue:59 src/components/ExecutionDetail.vue:62
 msgid "Cancel execution"
@@ -220,7 +220,7 @@ msgstr "Datos de Migasfree"
 
 #: src/components/Info.vue:108
 msgid "Computer not registered"
-msgstr ""
+msgstr "Equipo non rexistrado"
 
 #: src/components/Info.vue:129
 msgid "Hardware"
@@ -230,39 +230,52 @@ msgstr "Hardware"
 msgid "Network Data"
 msgstr "Datos da Rede"
 
-#: src/components/Info.vue:199
-msgid "Software Inventory"
-msgstr "Inventario de Software"
+#: src/components/Info.vue:195
+#, fuzzy
+msgid "Assigned Attributes"
+msgstr "Etiquetas asignadas"
 
-#: src/components/Info.vue:218
+#: src/components/Info.vue:215 src/components/Info.vue:337
 msgid "Search..."
 msgstr "Buscar..."
 
-#: src/components/Info.vue:222
-msgid "Search software inventory"
-msgstr "Buscar no inventario de software"
+#: src/components/Info.vue:219
+msgid "Search assigned attributes"
+msgstr "Buscar atributos asignados"
 
-#: src/components/Info.vue:270
+#: src/components/Info.vue:281
+msgid "Coordinates:"
+msgstr "Coordenadas:"
+
+#: src/components/Info.vue:298 src/components/Info.vue:389
 msgid "No results found"
 msgstr "Non se atoparon resultados"
 
-#: src/components/Info.vue:305 src/components/Info.vue:404
+#: src/components/Info.vue:318
+msgid "Software Inventory"
+msgstr "Inventario de Software"
+
+#: src/components/Info.vue:341
+msgid "Search software inventory"
+msgstr "Buscar no inventario de software"
+
+#: src/components/Info.vue:424 src/components/Info.vue:523
 msgid "Identification"
 msgstr "Identificación"
 
-#: src/components/Info.vue:330 src/components/Info.vue:422
+#: src/components/Info.vue:449 src/components/Info.vue:541
 msgid "UUID"
 msgstr "UUID"
 
-#: src/components/Info.vue:363
+#: src/components/Info.vue:482
 msgid "Print Label"
 msgstr "Imprimir etiqueta"
 
-#: src/components/Info.vue:376
+#: src/components/Info.vue:495
 msgid "Label size optimized for 80x50mm thermal printers."
 msgstr "Tamaño de etiqueta optimizado para impresoras térmicas de 80x50mm."
 
-#: src/components/Info.vue:525
+#: src/components/Info.vue:672
 msgid "disks"
 msgstr "discos"
 
@@ -287,17 +300,17 @@ msgid "Menu"
 msgstr "Menú"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38 src/stores/program.js:134
+#: src/pages/apps/index.vue:38 src/stores/program.js:135
 msgid "Apps"
 msgstr "Aplicacións"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49 src/stores/program.js:159
+#: src/pages/devices/index.vue:49 src/stores/program.js:160
 msgid "Devices"
 msgstr "Dispositivos"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32 src/stores/program.js:170
+#: src/pages/tags/index.vue:32 src/stores/program.js:171
 msgid "Tags"
 msgstr "Etiquetas"
 
@@ -437,8 +450,9 @@ msgid ""
 "Desktop graphical interface for Migasfree. Enables end-users to securely "
 "manage software catalogs, devices, and client synchronization."
 msgstr ""
-"Interface gráfica de escritorio para Migasfree. Permite aos usuarios xestionar "
-"de forma segura os catálogos de software, dispositivos e a sincronización do cliente."
+"Interface gráfica de escritorio para Migasfree. Permite aos usuarios "
+"xestionar de forma segura os catálogos de software, dispositivos e a "
+"sincronización do cliente."
 
 #: src/layouts/MainLayout.vue:3
 msgid "Skip to content"
@@ -487,23 +501,23 @@ msgstr "Usuario con privilexios"
 msgid "User without privileges"
 msgstr "Usuario sen privilexios"
 
-#: src/stores/computer.js:141
+#: src/stores/computer.js:176
 msgid "There was a problem with registration"
 msgstr "Houbo un problema co rexistro"
 
-#: src/stores/computer.js:146
+#: src/stores/computer.js:181
 msgid "Registered Computer!"
 msgstr "¡Ordenador rexistrado!"
 
-#: src/stores/executions.js:51
+#: src/stores/executions.js:85
 msgid "Synchronization finished"
 msgstr "Sincronización rematada"
 
-#: src/stores/executions.js:64
+#: src/stores/executions.js:98
 msgid "Please wait, other process is running!!!"
 msgstr "Agarde, outro proceso está en execución!!!"
 
-#: src/stores/executions.js:194
+#: src/stores/executions.js:230
 msgid "Command cancelled"
 msgstr "Comando cancelado"
 
@@ -531,7 +545,7 @@ msgstr "Fallou a validación do token"
 msgid "Computer"
 msgstr "Ordenador"
 
-#: src/stores/program.js:139
+#: src/stores/program.js:140
 msgid "Packages"
 msgstr "Paquetes"
 
