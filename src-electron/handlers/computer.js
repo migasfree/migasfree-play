@@ -172,7 +172,7 @@ mfc._save_sign_keys('${user}', '${password}')`
           '--assume-yes',
           '--user',
           user,
-          '--pwd',
+          '--password',
           password,
         ])
         return '1' // Registration success equivalent
