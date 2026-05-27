@@ -4,6 +4,7 @@
       :title="$gettext('Details')"
       :icon="appIcon('details')"
       :count="count"
+      :total-count="count"
       :show-sync="false"
     >
       <template #content>

@@ -9,6 +9,8 @@
       :error="item.error || ''"
       :icon="item.icon || ''"
       :cancelled="item.cancelled || false"
+      :percent="item.percent || 0"
+      :stage="item.stage || ''"
     />
   </div>
 

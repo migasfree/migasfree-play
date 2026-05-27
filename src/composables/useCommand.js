@@ -45,9 +45,9 @@ export function useCommand() {
       }
     } else {
       const modernActions = {
-        sync: 'sync',
-        install: 'install',
-        remove: 'purge',
+        sync: ['sync', '--json'],
+        install: ['install', '--json'],
+        remove: ['purge', '--json'],
         'tags-communicate': ['tags', '--communicate'],
         'tags-set': ['tags', '--set'],
       }

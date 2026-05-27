@@ -4,7 +4,7 @@
   <q-expansion-item
     ref="expansionRef"
     v-model="isExpanded"
-    class="glass-card execution-item q-mb-md overflow-hidden"
+    class="glass-card execution-item q-mb-lg overflow-hidden"
     @show="onExpand"
   >
     <template #header>
@@ -36,6 +36,29 @@
             {{ $gettext('Cancelled manually') }}
           </q-badge>
         </q-item-label>
+        <transition name="fade">
+          <q-item-label v-if="shouldShowProgress" class="q-mt-sm">
+            <div class="row no-wrap items-center q-gutter-x-sm">
+              <q-linear-progress
+                :value="percent / 100"
+                color="primary"
+                stripe
+                rounded
+                size="8px"
+                class="col"
+              />
+              <span class="text-caption text-primary text-weight-bold"
+                >{{ percent }}%</span
+              >
+            </div>
+            <div
+              v-if="stage"
+              class="text-caption text-muted q-mt-xs text-weight-medium"
+            >
+              {{ stage }}
+            </div>
+          </q-item-label>
+        </transition>
       </q-item-section>
 
       <q-item-section side class="self-center">
@@ -57,9 +80,18 @@
             color="negative"
             class="action-hover"
             :aria-label="$gettext('Cancel execution')"
+            :disable="isCancelDisabled"
             @click.stop="cancelCommand"
           >
-            <q-tooltip>{{ $gettext('Cancel execution') }}</q-tooltip>
+            <q-tooltip>
+              {{
+                isCancelDisabled
+                  ? $gettext(
+                      'Cancellation not allowed during package operations',
+                    )
+                  : $gettext('Cancel execution')
+              }}
+            </q-tooltip>
           </q-btn>
 
           <q-btn
@@ -179,6 +211,8 @@ const props = defineProps({
   error: { type: String, required: false, default: '' },
   icon: { type: String, required: false, default: '' },
   cancelled: { type: Boolean, required: false, default: false },
+  percent: { type: Number, required: false, default: 0 },
+  stage: { type: String, required: false, default: '' },
 })
 
 const { $gettext } = useGettext()
@@ -210,6 +244,43 @@ const textToCopy = computed(() =>
 )
 
 const errorPlainText = computed(() => executionsStore.stripAnsi(props.error))
+
+const isCancelDisabled = computed(() => {
+  const currentStage = (props.stage || '').toLowerCase()
+  return [
+    'update',
+    'install',
+    'uninstall',
+    'actualizar',
+    'instalar',
+    'desinstalar',
+  ].includes(currentStage)
+})
+
+const showProgress = ref(false)
+let progressTimeout = null
+
+const shouldShowProgress = computed(() => {
+  return showProgress.value && props.percent > 0
+})
+
+watch(
+  isCurrentlyRunning,
+  (running) => {
+    if (running) {
+      if (progressTimeout) {
+        clearTimeout(progressTimeout)
+        progressTimeout = null
+      }
+      showProgress.value = true
+    } else {
+      progressTimeout = setTimeout(() => {
+        showProgress.value = false
+      }, 4000)
+    }
+  },
+  { immediate: true },
+)
 
 const handleContextMenu = (e) => {
   if (terminal && terminal.hasSelection()) {
@@ -404,6 +475,9 @@ watch(
 )
 
 onBeforeUnmount(() => {
+  if (progressTimeout) {
+    clearTimeout(progressTimeout)
+  }
   disposeTerminal()
 })
 
@@ -418,9 +492,15 @@ const cancelCommand = () => {
 
 <style lang="scss" scoped>
 .execution-item {
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+}
+
+.execution-item.q-expansion-item--expanded {
+  border-color: rgba(var(--brand-primary-rgb), 0.3) !important;
+  box-shadow: 0 8px 32px rgba(var(--brand-primary-rgb), 0.06);
 }
 
 .execution-title {
@@ -489,17 +569,47 @@ const cancelCommand = () => {
 }
 
 .card-separator {
-  opacity: 0.1;
+  opacity: 0.25;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--brand-primary-rgb), 0) 0%,
+    rgba(var(--brand-primary-rgb), 0.4) 50%,
+    rgba(var(--brand-primary-rgb), 0) 100%
+  ) !important;
 }
 
 /* Dark Mode */
 .body--dark {
   .execution-item {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .execution-item.q-expansion-item--expanded {
+    border-color: rgba(var(--q-accent-rgb), 0.4) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
   .card-separator {
-    opacity: 0.05;
+    opacity: 0.4;
+    background: linear-gradient(
+      90deg,
+      rgba(var(--q-accent-rgb), 0) 0%,
+      rgba(var(--q-accent-rgb), 0.6) 50%,
+      rgba(var(--q-accent-rgb), 0) 100%
+    ) !important;
   }
+}
+
+/* Fade Transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
