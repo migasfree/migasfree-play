@@ -415,4 +415,52 @@ describe('Executions Store', () => {
       await exitCallback(0)
     })
   })
+
+  describe('Re-attaching to active tasks', () => {
+    it('re-attaches to a running task from Main Process on getExecutions()', async () => {
+      const store = useExecutionsStore()
+
+      const activeTask = {
+        id: '999999',
+        command: 'migasfree',
+        args: ['sync'],
+        status: 'running',
+        stdout: 'sync start...\n',
+        stderr: '',
+        startTime: Date.now(),
+      }
+
+      window.electronAPI.executions.read.mockResolvedValue({})
+      window.electronAPI.getActiveTasks.mockResolvedValue([activeTask])
+      window.electronAPI.spawnCommand.mockImplementation(() => {})
+
+      let exitCallback = null
+      let stdoutCallback = null
+
+      window.electronAPI.onCommandExit.mockImplementation((id, cb) => {
+        if (id === activeTask.id) exitCallback = cb
+        return () => {}
+      })
+      window.electronAPI.onCommandStdout.mockImplementation((id, cb) => {
+        if (id === activeTask.id) stdoutCallback = cb
+        return () => {}
+      })
+
+      // Trigger initialization / getExecutions
+      await store.getExecutions()
+
+      expect(window.electronAPI.getActiveTasks).toHaveBeenCalled()
+      expect(store.isRunningCommand).toBe(true)
+      expect(store.items[activeTask.id]).toBeDefined()
+      expect(store.items[activeTask.id].command).toBe('migasfree sync')
+
+      // Simulate new stdout while attached
+      stdoutCallback('syncing packages...\n')
+      expect(store.items[activeTask.id].text).toContain('syncing packages...')
+
+      // Complete command
+      await exitCallback(0)
+      expect(store.isRunningCommand).toBe(false)
+    })
+  })
 })

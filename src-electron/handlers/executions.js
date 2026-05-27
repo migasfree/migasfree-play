@@ -13,13 +13,24 @@ export default function registerExecutionsHandlers() {
     try {
       if (fs.existsSync(filePath)) {
         const data = await fs.promises.readFile(filePath, 'utf8')
-        return data ? JSON.parse(data) : {}
+        if (!data || !data.trim()) {
+          return {}
+        }
+        try {
+          return JSON.parse(data)
+        } catch (jsonError) {
+          console.warn(
+            '[ipc] Malformed JSON in executions file, resetting:',
+            jsonError,
+          )
+          return {}
+        }
       } else {
         return {}
       }
     } catch (error) {
-      if (debug) console.error('[ipc] Error reading executions file:', error)
-      throw new Error('Failed to read executions file')
+      console.error('[ipc] Error reading executions file:', error)
+      return {}
     }
   })
 

@@ -20,6 +20,7 @@ global.window.electronAPI = {
   close: vi.fn().mockResolvedValue(undefined),
   spawnCommand: vi.fn(),
   killCommand: vi.fn(),
+  getActiveTasks: vi.fn().mockResolvedValue([]),
   onCommandStdout: vi.fn().mockReturnValue(() => {}),
   onCommandStderr: vi.fn().mockReturnValue(() => {}),
   onCommandExit: vi.fn().mockReturnValue(() => {}),

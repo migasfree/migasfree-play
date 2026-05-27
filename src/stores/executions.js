@@ -32,6 +32,40 @@ export const useExecutionsStore = defineStore('executions', () => {
     try {
       const data = await window.electronAPI.executions.read()
       setExecutionsLog(data)
+
+      const activeTasks = await window.electronAPI.getActiveTasks()
+      if (activeTasks && activeTasks.length > 0) {
+        const activeTask = activeTasks[0]
+        console.log(
+          '[executions store] Found active task in Main Process, re-attaching:',
+          activeTask,
+        )
+
+        // If the task was not yet added to local executions items.value, add it
+        if (!items.value[activeTask.id]) {
+          items.value[activeTask.id] = {
+            command: activeTask.command + ' ' + activeTask.args.join(' '),
+            icon: 'mdi-console',
+            text: '',
+            error: '',
+          }
+          lastId.value = activeTask.id
+        } else {
+          // Clear text/error before re-attaching, as we'll get the full buffer re-streamed
+          items.value[activeTask.id].text = ''
+          items.value[activeTask.id].error = ''
+        }
+
+        // Call run with existingTaskId to re-attach listeners and fetch logs
+        run(
+          {
+            cmd: { command: activeTask.command, args: activeTask.args },
+            text: activeTask.command + ' ' + activeTask.args.join(' '),
+            icon: 'mdi-console',
+          },
+          activeTask.id,
+        )
+      }
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -58,8 +92,8 @@ export const useExecutionsStore = defineStore('executions', () => {
     ])
   }
 
-  const run = ({ cmd, text, icon }) => {
-    if (isRunningCommand.value) {
+  const run = ({ cmd, text, icon }, existingTaskId = null) => {
+    if (isRunningCommand.value && !existingTaskId) {
       uiStore.notifyInfo(
         gettext.$gettext('Please wait, other process is running!!!'),
       )
@@ -70,7 +104,7 @@ export const useExecutionsStore = defineStore('executions', () => {
       startedCmd()
 
       // Generate unique command ID
-      const commandId = Date.now().toString()
+      const commandId = existingTaskId || Date.now().toString()
       currentCommandId = commandId
 
       let command, args, input, env
@@ -86,7 +120,9 @@ export const useExecutionsStore = defineStore('executions', () => {
         env = cmd.env
       }
 
-      addExecution({ command: text, icon })
+      if (!existingTaskId) {
+        addExecution({ command: text, icon })
+      }
 
       // Set up listeners BEFORE spawning to avoid race condition
       window.electronAPI.onCommandStdout(commandId, (data) => {
@@ -114,7 +150,7 @@ export const useExecutionsStore = defineStore('executions', () => {
           resetExecutionError()
         }
 
-        setExecutions()
+        await setExecutions()
         finishedCmd()
 
         const cmdStr = typeof cmd === 'string' ? cmd : JSON.stringify(cmd)

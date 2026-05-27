@@ -179,6 +179,27 @@ ipcMain.on('app:relaunch', () => {
 const ALLOWED_COMMANDS = ['migasfree']
 
 ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
+  if (runningProcesses.has(id)) {
+    console.log(
+      `[Process Manager] Process ${id} is already registered. Re-attaching...`,
+    )
+    const proc = runningProcesses.get(id)
+    proc.webContents = event.sender
+
+    // Stream buffered logs back to the new webContents
+    if (proc.stdout) {
+      event.sender.send(`command:stdout:${id}`, proc.stdout)
+    }
+    if (proc.stderr) {
+      event.sender.send(`command:stderr:${id}`, proc.stderr)
+    }
+    // If the process has already completed/failed, trigger exit event immediately
+    if (proc.status !== 'running') {
+      event.sender.send(`command:exit:${id}`, proc.exitCode)
+    }
+    return
+  }
+
   if (!ALLOWED_COMMANDS.includes(command)) {
     console.error(
       `[Security] Blocked unauthorized command execution attempt: ${command}`,
@@ -209,20 +230,34 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
       if (proc && proc.subprocess) {
         proc.subprocess.kill('SIGKILL')
       }
-      runningProcesses.delete(id)
-
-      if (!event.sender.isDestroyed()) {
-        event.sender.send(
-          `command:stderr:${id}`,
-          '\n[Command timeout - forced cleanup]\n',
-        )
-        event.sender.send(`command:exit:${id}`, 1)
+      if (proc) {
+        proc.status = 'failed'
+        proc.exitCode = 1
+        proc.stderr += '\n[Command timeout - forced cleanup]\n'
+        if (proc.webContents && !proc.webContents.isDestroyed()) {
+          proc.webContents.send(
+            `command:stderr:${id}`,
+            '\n[Command timeout - forced cleanup]\n',
+          )
+          proc.webContents.send(`command:exit:${id}`, 1)
+        }
       }
     },
     30 * 60 * 1000,
   )
 
-  runningProcesses.set(id, { subprocess, timeoutId })
+  runningProcesses.set(id, {
+    subprocess,
+    timeoutId,
+    stdout: '',
+    stderr: '',
+    status: 'running',
+    exitCode: null,
+    command,
+    args,
+    startTime: Date.now(),
+    webContents: event.sender,
+  })
 
   // Write input to stdin if provided (e.g., "y\n" for confirmation)
   if (input) {
@@ -231,14 +266,22 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
   }
 
   subprocess.stdout.on('data', (data) => {
-    if (!event.sender.isDestroyed()) {
-      event.sender.send(`command:stdout:${id}`, data.toString())
+    const proc = runningProcesses.get(id)
+    if (proc) {
+      proc.stdout += data.toString()
+      if (proc.webContents && !proc.webContents.isDestroyed()) {
+        proc.webContents.send(`command:stdout:${id}`, data.toString())
+      }
     }
   })
 
   subprocess.stderr.on('data', (data) => {
-    if (!event.sender.isDestroyed()) {
-      event.sender.send(`command:stderr:${id}`, data.toString())
+    const proc = runningProcesses.get(id)
+    if (proc) {
+      proc.stderr += data.toString()
+      if (proc.webContents && !proc.webContents.isDestroyed()) {
+        proc.webContents.send(`command:stderr:${id}`, data.toString())
+      }
     }
   })
 
@@ -246,10 +289,11 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
     const proc = runningProcesses.get(id)
     if (proc) {
       clearTimeout(proc.timeoutId)
-      runningProcesses.delete(id)
-    }
-    if (!event.sender.isDestroyed()) {
-      event.sender.send(`command:exit:${id}`, code)
+      proc.status = code === 0 ? 'completed' : 'failed'
+      proc.exitCode = code
+      if (proc.webContents && !proc.webContents.isDestroyed()) {
+        proc.webContents.send(`command:exit:${id}`, code)
+      }
     }
   })
 
@@ -257,11 +301,13 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
     const proc = runningProcesses.get(id)
     if (proc) {
       clearTimeout(proc.timeoutId)
-      runningProcesses.delete(id)
-    }
-    if (!event.sender.isDestroyed()) {
-      event.sender.send(`command:stderr:${id}`, err.message)
-      event.sender.send(`command:exit:${id}`, 1)
+      proc.status = 'failed'
+      proc.exitCode = 1
+      proc.stderr += err.message
+      if (proc.webContents && !proc.webContents.isDestroyed()) {
+        proc.webContents.send(`command:stderr:${id}`, err.message)
+        proc.webContents.send(`command:exit:${id}`, 1)
+      }
     }
   })
 })
@@ -270,9 +316,34 @@ ipcMain.on('command:kill', (_, { id }) => {
   const proc = runningProcesses.get(id)
   if (proc) {
     clearTimeout(proc.timeoutId)
-    proc.subprocess.kill('SIGTERM')
-    runningProcesses.delete(id)
+    proc.status = 'cancelled'
+    proc.exitCode = 1
+    if (proc.subprocess) {
+      proc.subprocess.kill('SIGTERM')
+    }
   }
+})
+
+ipcMain.on('command:cleanup', (_, { id }) => {
+  console.log(`[Process Manager] Cleaning up command registration: ${id}`)
+  runningProcesses.delete(id)
+})
+
+ipcMain.handle('command:get-active', () => {
+  const tasks = []
+  for (const [id, proc] of runningProcesses.entries()) {
+    tasks.push({
+      id,
+      command: proc.command,
+      args: proc.args,
+      status: proc.status,
+      stdout: proc.stdout,
+      stderr: proc.stderr,
+      exitCode: proc.exitCode,
+      startTime: proc.startTime,
+    })
+  }
+  return tasks
 })
 
 app.commandLine.appendSwitch('ignore-certificate-errors')

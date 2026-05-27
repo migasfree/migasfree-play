@@ -114,6 +114,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.send('command:spawn', { id, command, args, input, env })
   },
   killCommand: (id) => ipcRenderer.send('command:kill', { id }),
+  getActiveTasks: () => ipcRenderer.invoke('command:get-active'),
 
   onCommandStdout: (id, callback) => {
     const listener = (_, data) => callback(data)
@@ -137,5 +138,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.removeAllListeners(`command:stdout:${id}`)
     ipcRenderer.removeAllListeners(`command:stderr:${id}`)
     ipcRenderer.removeAllListeners(`command:exit:${id}`)
+    ipcRenderer.send('command:cleanup', { id })
   },
 })
