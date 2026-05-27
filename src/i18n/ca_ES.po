@@ -111,7 +111,7 @@ msgid "View installed apps only"
 msgstr "Veure només aplicacions instal·lades"
 
 #: src/components/Apps.vue:29 src/components/Devices.vue:26
-#: src/components/Executions.vue:15
+#: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr "No hi ha elements per mostrar."
 
@@ -123,8 +123,8 @@ msgstr "Copiar"
 msgid "Text copied to clipboard"
 msgstr "S'ha copiat el text al porta-retalls"
 
-#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:225
-#: src/components/ExecutionDetail.vue:292
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:289
+#: src/components/ExecutionDetail.vue:356
 msgid "Failed to copy text"
 msgstr "Ha fallat al copiar el text"
 
@@ -188,27 +188,31 @@ msgstr "Cerca per nom, model o fabricant"
 msgid "View assigned devices only"
 msgstr "Veure només dispositius assignats"
 
-#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:86
+#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:118
 msgid "Cancelled manually"
 msgstr "Cancel·lat manualment"
 
-#: src/components/ExecutionDetail.vue:59 src/components/ExecutionDetail.vue:62
+#: src/components/ExecutionDetail.vue:82 src/components/ExecutionDetail.vue:92
 msgid "Cancel execution"
 msgstr "Cancel·lar execució"
 
-#: src/components/ExecutionDetail.vue:73 src/components/ExecutionDetail.vue:76
+#: src/components/ExecutionDetail.vue:89
+msgid "Cancellation not allowed during package operations"
+msgstr "Cancel·lació no permesa durant operacions de paquets"
+
+#: src/components/ExecutionDetail.vue:105
+#: src/components/ExecutionDetail.vue:108
 msgid "Show error details"
 msgstr "Veure detalls de l'error"
 
-#: src/components/ExecutionDetail.vue:124
+#: src/components/ExecutionDetail.vue:156
 msgid "Execution Error"
 msgstr "Error d'execució"
 
-#: src/components/ExecutionDetail.vue:221
-#: src/components/ExecutionDetail.vue:288
-#, fuzzy
+#: src/components/ExecutionDetail.vue:285
+#: src/components/ExecutionDetail.vue:352
 msgid "Selection copied to clipboard"
-msgstr "S'ha copiat el text al porta-retalls"
+msgstr "Selecció copiada al porta-retalls"
 
 #: src/components/Info.vue:44 src/layouts/MainLayout.vue:189
 msgid "Synchronization"
@@ -231,9 +235,8 @@ msgid "Network Data"
 msgstr "Dades de Xarxa"
 
 #: src/components/Info.vue:195
-#, fuzzy
 msgid "Assigned Attributes"
-msgstr "Etiquetes assignades"
+msgstr "Atributs assignats"
 
 #: src/components/Info.vue:215 src/components/Info.vue:337
 msgid "Search..."
@@ -315,7 +318,7 @@ msgid "Tags"
 msgstr "Etiquetes"
 
 #: src/components/Menu.vue:104 src/pages/details/index.vue:4
-#: src/pages/details/index.vue:33
+#: src/pages/details/index.vue:34
 msgid "Details"
 msgstr "Detalls"
 
@@ -471,11 +474,12 @@ msgid ""
 "This computer is not registered on the server. Please register to access all "
 "features."
 msgstr ""
+"Aquest ordinador no està registrat al servidor. Si us plau, registreu-lo per "
+"accedir a totes les funcions."
 
 #: src/layouts/MainLayout.vue:72
-#, fuzzy
 msgid "Register Now"
-msgstr "Registra't"
+msgstr "Registra ara"
 
 #: src/layouts/MainLayout.vue:95
 msgid "Scroll to bottom"
@@ -509,15 +513,15 @@ msgstr "Hi ha hagut un problema amb el registre"
 msgid "Registered Computer!"
 msgstr "¡Ordinador registrat!"
 
-#: src/stores/executions.js:85
+#: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr "Sincronització acabada"
 
-#: src/stores/executions.js:98
+#: src/stores/executions.js:154
 msgid "Please wait, other process is running!!!"
 msgstr "Espereu, un altre procés s'està executant!!!"
 
-#: src/stores/executions.js:230
+#: src/stores/executions.js:441
 msgid "Command cancelled"
 msgstr "Comanda cancel·lada"
 

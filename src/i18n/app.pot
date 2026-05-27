@@ -103,7 +103,7 @@ msgstr ""
 
 #: src/components/Apps.vue:29
 #: src/components/Devices.vue:26
-#: src/components/Executions.vue:15
+#: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr ""
 
@@ -116,8 +116,8 @@ msgid "Text copied to clipboard"
 msgstr ""
 
 #: src/components/CopyButton.vue:55
-#: src/components/ExecutionDetail.vue:225
-#: src/components/ExecutionDetail.vue:292
+#: src/components/ExecutionDetail.vue:289
+#: src/components/ExecutionDetail.vue:356
 msgid "Failed to copy text"
 msgstr ""
 
@@ -184,26 +184,30 @@ msgid "View assigned devices only"
 msgstr ""
 
 #: src/components/ExecutionDetail.vue:36
-#: src/components/ExecutionDetail.vue:86
+#: src/components/ExecutionDetail.vue:118
 msgid "Cancelled manually"
 msgstr ""
 
-#: src/components/ExecutionDetail.vue:59
-#: src/components/ExecutionDetail.vue:62
+#: src/components/ExecutionDetail.vue:82
+#: src/components/ExecutionDetail.vue:92
 msgid "Cancel execution"
 msgstr ""
 
-#: src/components/ExecutionDetail.vue:73
-#: src/components/ExecutionDetail.vue:76
+#: src/components/ExecutionDetail.vue:89
+msgid "Cancellation not allowed during package operations"
+msgstr ""
+
+#: src/components/ExecutionDetail.vue:105
+#: src/components/ExecutionDetail.vue:108
 msgid "Show error details"
 msgstr ""
 
-#: src/components/ExecutionDetail.vue:124
+#: src/components/ExecutionDetail.vue:156
 msgid "Execution Error"
 msgstr ""
 
-#: src/components/ExecutionDetail.vue:221
-#: src/components/ExecutionDetail.vue:288
+#: src/components/ExecutionDetail.vue:285
+#: src/components/ExecutionDetail.vue:352
 msgid "Selection copied to clipboard"
 msgstr ""
 
@@ -325,7 +329,7 @@ msgstr ""
 
 #: src/components/Menu.vue:104
 #: src/pages/details/index.vue:4
-#: src/pages/details/index.vue:33
+#: src/pages/details/index.vue:34
 msgid "Details"
 msgstr ""
 
@@ -508,15 +512,15 @@ msgstr ""
 msgid "Registered Computer!"
 msgstr ""
 
-#: src/stores/executions.js:85
+#: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr ""
 
-#: src/stores/executions.js:98
+#: src/stores/executions.js:154
 msgid "Please wait, other process is running!!!"
 msgstr ""
 
-#: src/stores/executions.js:230
+#: src/stores/executions.js:441
 msgid "Command cancelled"
 msgstr ""
 

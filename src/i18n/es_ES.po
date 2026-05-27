@@ -112,7 +112,7 @@ msgid "View installed apps only"
 msgstr "Ver solo aplicaciones instaladas"
 
 #: src/components/Apps.vue:29 src/components/Devices.vue:26
-#: src/components/Executions.vue:15
+#: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr "No hay elementos para mostrar."
 
@@ -124,8 +124,8 @@ msgstr "Copiar"
 msgid "Text copied to clipboard"
 msgstr "Texto copiado al portapapeles"
 
-#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:225
-#: src/components/ExecutionDetail.vue:292
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:289
+#: src/components/ExecutionDetail.vue:356
 msgid "Failed to copy text"
 msgstr "Fallo al copiar el texto"
 
@@ -189,27 +189,31 @@ msgstr "Buscar en nombre, modelo o fabricante"
 msgid "View assigned devices only"
 msgstr "Ver solo dispositivos asignados"
 
-#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:86
+#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:118
 msgid "Cancelled manually"
 msgstr "Cancelado manualmente"
 
-#: src/components/ExecutionDetail.vue:59 src/components/ExecutionDetail.vue:62
+#: src/components/ExecutionDetail.vue:82 src/components/ExecutionDetail.vue:92
 msgid "Cancel execution"
 msgstr "Cancelar ejecución"
 
-#: src/components/ExecutionDetail.vue:73 src/components/ExecutionDetail.vue:76
+#: src/components/ExecutionDetail.vue:89
+msgid "Cancellation not allowed during package operations"
+msgstr "No se permite la cancelación durante las operaciones de paquetes"
+
+#: src/components/ExecutionDetail.vue:105
+#: src/components/ExecutionDetail.vue:108
 msgid "Show error details"
 msgstr "Ver detalles del error"
 
-#: src/components/ExecutionDetail.vue:124
+#: src/components/ExecutionDetail.vue:156
 msgid "Execution Error"
 msgstr "Error de ejecución"
 
-#: src/components/ExecutionDetail.vue:221
-#: src/components/ExecutionDetail.vue:288
-#, fuzzy
+#: src/components/ExecutionDetail.vue:285
+#: src/components/ExecutionDetail.vue:352
 msgid "Selection copied to clipboard"
-msgstr "Texto copiado al portapapeles"
+msgstr "Selección copiada al portapapeles"
 
 #: src/components/Info.vue:44 src/layouts/MainLayout.vue:189
 msgid "Synchronization"
@@ -232,9 +236,8 @@ msgid "Network Data"
 msgstr "Datos de Red"
 
 #: src/components/Info.vue:195
-#, fuzzy
 msgid "Assigned Attributes"
-msgstr "Etiquetas asignadas"
+msgstr "Atributos asignados"
 
 #: src/components/Info.vue:215 src/components/Info.vue:337
 msgid "Search..."
@@ -316,7 +319,7 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #: src/components/Menu.vue:104 src/pages/details/index.vue:4
-#: src/pages/details/index.vue:33
+#: src/pages/details/index.vue:34
 msgid "Details"
 msgstr "Detalles"
 
@@ -472,11 +475,12 @@ msgid ""
 "This computer is not registered on the server. Please register to access all "
 "features."
 msgstr ""
+"Este ordenador no está registrado en el servidor. Por favor, regístrelo para "
+"acceder a todas las funciones."
 
 #: src/layouts/MainLayout.vue:72
-#, fuzzy
 msgid "Register Now"
-msgstr "Registrar"
+msgstr "Registrar ahora"
 
 #: src/layouts/MainLayout.vue:95
 msgid "Scroll to bottom"
@@ -510,15 +514,15 @@ msgstr "Hubo un problema con el registro"
 msgid "Registered Computer!"
 msgstr "¡Ordenador registrado!"
 
-#: src/stores/executions.js:85
+#: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr "Sincronización terminada"
 
-#: src/stores/executions.js:98
+#: src/stores/executions.js:154
 msgid "Please wait, other process is running!!!"
 msgstr "¡Espere por favor, otro proceso está ejecutándose!"
 
-#: src/stores/executions.js:230
+#: src/stores/executions.js:441
 msgid "Command cancelled"
 msgstr "Comando cancelado"
 
@@ -528,8 +532,10 @@ msgstr "Servidor"
 
 #: src/stores/program.js:84
 msgid "Credentials are not valid. Review app settings."
-msgstr "Las credenciales no son válidas. Revise la configuración de la aplicación."
-"Las credenciales no son válidas. Revise la configuración de la aplicación."
+msgstr ""
+"Las credenciales no son válidas. Revise la configuración de la "
+"aplicación.Las credenciales no son válidas. Revise la configuración de la "
+"aplicación."
 
 #: src/stores/program.js:90 src/stores/ui.js:46 src/stores/ui.js:77
 msgid "There is no connection to the server"

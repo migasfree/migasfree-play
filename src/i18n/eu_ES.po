@@ -111,7 +111,7 @@ msgid "View installed apps only"
 msgstr "Ikusi instalatutako aplikazioak soilik"
 
 #: src/components/Apps.vue:29 src/components/Devices.vue:26
-#: src/components/Executions.vue:15
+#: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr "Ez dago erakusteko elementurik."
 
@@ -123,8 +123,8 @@ msgstr "Kopiatu"
 msgid "Text copied to clipboard"
 msgstr "Testua arbelean kopiatu da"
 
-#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:225
-#: src/components/ExecutionDetail.vue:292
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:289
+#: src/components/ExecutionDetail.vue:356
 msgid "Failed to copy text"
 msgstr "Huts egin du testua kopiatzean"
 
@@ -188,27 +188,31 @@ msgstr "Bilatu izena, modeloa edo fabrikatzailea"
 msgid "View assigned devices only"
 msgstr "Ikusi esleitutako gailuak soilik"
 
-#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:86
+#: src/components/ExecutionDetail.vue:36 src/components/ExecutionDetail.vue:118
 msgid "Cancelled manually"
 msgstr "Eskuz bertan behera utzita"
 
-#: src/components/ExecutionDetail.vue:59 src/components/ExecutionDetail.vue:62
+#: src/components/ExecutionDetail.vue:82 src/components/ExecutionDetail.vue:92
 msgid "Cancel execution"
 msgstr "Bertan behera utzi exekuzioa"
 
-#: src/components/ExecutionDetail.vue:73 src/components/ExecutionDetail.vue:76
+#: src/components/ExecutionDetail.vue:89
+msgid "Cancellation not allowed during package operations"
+msgstr "Ezin da bertan behera utzi pakete-eragiketetan"
+
+#: src/components/ExecutionDetail.vue:105
+#: src/components/ExecutionDetail.vue:108
 msgid "Show error details"
 msgstr "Ikusi errorearen xehetasunak"
 
-#: src/components/ExecutionDetail.vue:124
+#: src/components/ExecutionDetail.vue:156
 msgid "Execution Error"
 msgstr "Exekuzio errorea"
 
-#: src/components/ExecutionDetail.vue:221
-#: src/components/ExecutionDetail.vue:288
-#, fuzzy
+#: src/components/ExecutionDetail.vue:285
+#: src/components/ExecutionDetail.vue:352
 msgid "Selection copied to clipboard"
-msgstr "Testua arbelean kopiatu da"
+msgstr "Hautapena arbelean kopiatu da"
 
 #: src/components/Info.vue:44 src/layouts/MainLayout.vue:189
 msgid "Synchronization"
@@ -231,9 +235,8 @@ msgid "Network Data"
 msgstr "Sareko Datuak"
 
 #: src/components/Info.vue:195
-#, fuzzy
 msgid "Assigned Attributes"
-msgstr "Esleitutako etiketak"
+msgstr "Esleitutako atributuak"
 
 #: src/components/Info.vue:215 src/components/Info.vue:337
 msgid "Search..."
@@ -315,7 +318,7 @@ msgid "Tags"
 msgstr "Etiketak"
 
 #: src/components/Menu.vue:104 src/pages/details/index.vue:4
-#: src/pages/details/index.vue:33
+#: src/pages/details/index.vue:34
 msgid "Details"
 msgstr "Xehetasunak"
 
@@ -471,11 +474,12 @@ msgid ""
 "This computer is not registered on the server. Please register to access all "
 "features."
 msgstr ""
+"Ordenagailu hau ez dago zerbitzarian erregistratuta. Mesedez, erregistratu "
+"eginbide guztietara sartzeko."
 
 #: src/layouts/MainLayout.vue:72
-#, fuzzy
 msgid "Register Now"
-msgstr "Izena eman"
+msgstr "Erregistratu orain"
 
 #: src/layouts/MainLayout.vue:95
 msgid "Scroll to bottom"
@@ -509,15 +513,15 @@ msgstr "Arazo bat izan da erregistroarekin"
 msgid "Registered Computer!"
 msgstr "¡Erregistratutako ordenagailua!"
 
-#: src/stores/executions.js:85
+#: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr "Sinkronizazioa amaitu da"
 
-#: src/stores/executions.js:98
+#: src/stores/executions.js:154
 msgid "Please wait, other process is running!!!"
 msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 
-#: src/stores/executions.js:230
+#: src/stores/executions.js:441
 msgid "Command cancelled"
 msgstr "Komandoa bertan behera utzi da"
 
