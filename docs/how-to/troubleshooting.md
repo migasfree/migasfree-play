@@ -23,6 +23,7 @@ If the application cannot connect to the Migasfree server:
 
 1. The application warns if it is using default credentials.
 2. **Solution**: Set the `MFP_USER` and `MFP_PASSWORD` environment variables in your environment. See [Technical Reference](../reference/technical.md) for variable names.
+3. **Note on Client v5**: If you are working with `migasfree-client` v5 or higher, Mutual TLS (mTLS) is automatically enabled using the system client certificates. In this case, user credentials are completely innocuous, and the "Insecure Credentials" warning is automatically suppressed, so you do not need to configure these variables.
 
 ## ❌ How to resolve "Permissions Denied"
 

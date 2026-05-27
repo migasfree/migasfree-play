@@ -9,7 +9,7 @@ This document provides step-by-step instructions for common user tasks in **Miga
 ## ⚙️ How to configure the application
 
 1. **Server Configuration**: The application automatically reads the server URL from `/etc/migasfree.conf`. Ensure this file is correctly configured by your administrator.
-2. **User Credentials**: Ensure the `MFP_USER` and `MFP_PASSWORD` environment variables are set correctly for your environment.
+2. **User Credentials**: If using a v4 client, ensure the `MFP_USER` and `MFP_PASSWORD` environment variables are set correctly for your environment. If working with `migasfree-client` v5 or higher, Mutual TLS (mTLS) is automatically enabled using the system client certificates, making these credentials completely innocuous and optional.
 
 ## 📦 How to manage applications
 

@@ -55,6 +55,8 @@ migasfree-play/
 | `MFP_EXECUTIONS_LIMIT` | Concurrent executions limit (int)  | `5`              |
 | `MFP_QUASAR_PORT`      | Dev server port (Development only) | `9999`           |
 
+> **Note on Client v5**: When working with `migasfree-client` v5 or higher, `MFP_USER` and `MFP_PASSWORD` are completely **optional and innocuous**. Mutual TLS (mTLS) is automatically enabled using the system's client certificates, rendering plaintext password authentication unnecessary.
+
 ## 🧭 UI Navigation Icons
 
 | Icon | Section         | Description                    |
