@@ -43,18 +43,22 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Tue, 26 May 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+* Wed, 27 May 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
 - feat(devices): delegate logical device assignment and default setting to CLI on client v5
 - feat(ipc): decouple Electron handlers from Python internals using native CLI subcommands
 - feat(ui): add attributes grid and JSON export in computer info
 - feat(executions): track manual cancellations and allow copy in terminal
 - feat(client): implement hybrid v4/v5 execution model
 - feat(ui): add registration banner and computer registration status
+- feat(auth): enable transparent mTLS and make credentials innocuous on client v5
+- feat(ui): integrate structured JSON output for execution stages
 - refactor(executions): migrate safety timeouts to main process
+- refactor(executions): implement persistent process manager and robust JSON handling
 - refactor(stores): eliminate circular dependencies and state re-exports
 - perf(stores): optimize data fetching and prevent redundant API calls
 - fix(packaging): allow 301, 401, 403 status codes on startup check
 - fix(deps): upgrade core dependencies
+- fix(ipc): use --password instead of --pwd for migasfree register command
 
 * Wed, 25 Mar 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.13-0
 - feat(auto-update): implement event-driven background update detection
