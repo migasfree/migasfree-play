@@ -30,6 +30,16 @@ If the application cannot connect to the Migasfree server:
 1. Most actions require `sudo` or specific Migasfree privileges.
 2. Ensure the running user is in the appropriate system groups.
 
+## 🐛 How to debug the migasfree client
+
+By design, all internal and interactive calls from **migasfree-play** to the `migasfree` client are forced to execute with `DEBUG=False` (suppressing the `MIGASFREE_CLIENT_DEBUG` environment variable and `--debug` flags). This strict policy is required to prevent the debug output from corrupting the JSON parsing engine in the Electron app.
+
+If you need to debug the client behavior or inspect server responses:
+
+1. Do not rely on the `migasfree-play` log output.
+2. Open a system terminal.
+3. Invoke the `migasfree` client directly from the command line (e.g., `sudo migasfree sync -d`).
+
 ---
 
 _Back to [README.md](../../README.md)_
