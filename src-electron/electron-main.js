@@ -217,7 +217,7 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
   const shellOption = process.platform === 'linux' ? '/bin/bash' : true
   const subprocess = spawn(command, args, {
     shell: shellOption,
-    env: { ...process.env, ...env },
+    env: { ...process.env, MIGASFREE_CLIENT_DEBUG: 'False', ...env },
   })
 
   // Set safety timeout (30 minutes max) in Main Process to survive Renderer reloads

@@ -43,7 +43,7 @@ const pythonShellOptions = {
   pythonPath: getPython(),
   env: {
     ...process.env,
-    MIGASFREE_CLIENT_DEBUG: 0,
+    MIGASFREE_CLIENT_DEBUG: 'False',
   },
   mode: 'text',
   encoding: 'utf8',
@@ -59,6 +59,7 @@ const cliExecute = async (args = []) => {
   try {
     const { stdout } = await execFileAsync(binary, args, {
       maxBuffer: 1024 * 1024 * 50,
+      env: pythonShellOptions.env,
     })
     return stdout.trim()
   } catch (error) {
