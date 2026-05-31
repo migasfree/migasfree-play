@@ -21,8 +21,9 @@ def build_pms_package():
         env = os.environ.copy()
         env['WPT_BUILD'] = '1'
 
-        # Using yarnpkg because of RULE: "usa yarnpkg en lugar de yarn o npm para lanzar comandos"
-        subprocess.run(['yarnpkg', 'build'], cwd=project_root, env=env, check=True)
+        # On Windows, shell=True is required to resolve yarnpkg command (.cmd wrapper)
+        use_shell = sys.platform == 'win32'
+        subprocess.run(['yarnpkg', 'build'], cwd=project_root, env=env, shell=use_shell, check=True)
     except subprocess.CalledProcessError as e:
         print(f'[!] Quasar build failed: {e}', file=sys.stderr)
         sys.exit(1)
