@@ -202,7 +202,7 @@ export default defineConfig((ctx) => {
           category: 'System',
         },
         win: {
-          target: ['nsis', 'msi'],
+          target: process.env.WPT_BUILD ? ['dir'] : ['nsis', 'msi'],
         },
         nsis: {
           perMachine: true,
