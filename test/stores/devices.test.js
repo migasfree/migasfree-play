@@ -463,14 +463,15 @@ describe('Devices Store', () => {
             {
               id: 50,
               device: { id: 100, name: 'Printer' },
-              capability: { id: 5, name: 'Color' },
+              feature: { id: 5, name: 'Color' },
+              alternative_feature_name: 'Color Alternative',
             },
           ],
           inflicted_logical_devices: [
             {
               id: 60,
               device: { id: 100, name: 'Printer' },
-              capability: { id: 6, name: 'Duplex' },
+              feature: { id: 6, name: 'Duplex' },
             },
           ],
         },
@@ -494,8 +495,18 @@ describe('Devices Store', () => {
 
       // The logical array should be populated with the reconstructed merged capabilities
       expect(store.devices[0].logical).toHaveLength(2)
-      expect(store.devices[0].logical.map((l) => l.id)).toContain(50)
-      expect(store.devices[0].logical.map((l) => l.id)).toContain(60)
+
+      const cap50 = store.devices[0].logical.find((l) => l.id === 50)
+      expect(cap50).toBeDefined()
+      expect(cap50.alternative_feature_name).toBe('Color Alternative')
+      expect(cap50.alternative_capability_name).toBe('Color Alternative')
+      expect(cap50.feature.name).toBe('Color')
+      expect(cap50.capability.name).toBe('Color')
+
+      const cap60 = store.devices[0].logical.find((l) => l.id === 60)
+      expect(cap60).toBeDefined()
+      expect(cap60.feature.name).toBe('Duplex')
+      expect(cap60.capability.name).toBe('Duplex')
 
       // Reset serverVersion
       serverStore.serverVersion.value = '5.0'

@@ -240,13 +240,26 @@ export const useDevicesStore = defineStore('devices', () => {
 
         for (const item of [...localAssigned, ...localInflicted]) {
           if (!results.some((r) => r.id === item.id)) {
+            const altName =
+              item.alternative_feature_name ||
+              item.alternative_capability_name ||
+              ''
+            const capId =
+              item.feature?.id || item.capability?.id || item.id || 0
+            const capName =
+              item.feature?.name || item.capability?.name || item.name || ''
+
             results.push({
               id: item.id,
-              alternative_capability_name:
-                item.alternative_capability_name || '',
+              alternative_feature_name: altName,
+              alternative_capability_name: altName,
+              feature: {
+                id: capId,
+                name: capName,
+              },
               capability: {
-                id: item.capability?.id || 0,
-                name: item.capability?.name || item.name || '',
+                id: capId,
+                name: capName,
               },
               device: {
                 id: id,
