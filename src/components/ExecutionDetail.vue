@@ -221,6 +221,8 @@ const executionsStore = useExecutionsStore()
 const { lastId, isRunningCommand } = storeToRefs(executionsStore)
 
 const scrollInfo = ref({})
+const autoscrollPageEnabled = ref(true)
+const autoscrollTerminalEnabled = ref(true)
 const showError = ref(false)
 const terminalRef = ref(null)
 const expansionRef = ref(null)
@@ -374,6 +376,15 @@ const createTerminal = () => {
     terminalRef.value.addEventListener('contextmenu', handleContextMenu)
   }
 
+  autoscrollTerminalEnabled.value = true
+
+  // Listen to terminal scroll events to toggle scroll-lock
+  terminal.onScroll(() => {
+    const buffer = terminal.buffer.active
+    const isTerminalAtBottom = buffer.viewportY >= buffer.baseY
+    autoscrollTerminalEnabled.value = isTerminalAtBottom
+  })
+
   // Write existing text (for restored executions)
   if (props.text) {
     terminal.write(props.text, () => {
@@ -403,7 +414,11 @@ const disposeTerminal = () => {
 }
 
 const scrollToBottom = () => {
-  if (isCurrentlyRunning.value && isExpanded.value) {
+  if (
+    isCurrentlyRunning.value &&
+    isExpanded.value &&
+    autoscrollPageEnabled.value
+  ) {
     nextTick(() => {
       // Small timeout to wait for expansion animation to start/finish
       setTimeout(() => {
@@ -417,6 +432,8 @@ const scrollToBottom = () => {
 }
 
 const onExpand = () => {
+  autoscrollPageEnabled.value = true
+  autoscrollTerminalEnabled.value = true
   if (!isLegacyHtml.value) {
     nextTick(() => {
       createTerminal()
@@ -433,6 +450,9 @@ watch(
       isExpanded.value = false
     } else {
       isExpanded.value = true
+      // Reset scroll locks for the new execution
+      autoscrollPageEnabled.value = true
+      autoscrollTerminalEnabled.value = true
       // Execution started, wait for expansion and scroll
       scrollToBottom()
     }
@@ -467,8 +487,12 @@ watch(
       writtenLength = newText.length
     }
 
-    // Auto-scroll: terminal internal scroll
-    if (terminal && isCurrentlyRunning.value) {
+    // Auto-scroll: terminal internal scroll if enabled
+    if (
+      terminal &&
+      isCurrentlyRunning.value &&
+      autoscrollTerminalEnabled.value
+    ) {
       terminal.scrollToBottom()
     }
   },
@@ -483,6 +507,19 @@ onBeforeUnmount(() => {
 
 const onScroll = (info) => {
   scrollInfo.value = info
+
+  // Detect if user is scrolled to the bottom of the page (within 150px threshold)
+  const isPageAtBottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 150
+
+  // If the user scrolls up, we disable autoscroll. If they scroll down and reach the bottom, we enable it.
+  if (info.direction === 'up') {
+    autoscrollPageEnabled.value = false
+  } else if (info.direction === 'down' && isPageAtBottom) {
+    autoscrollPageEnabled.value = true
+    autoscrollTerminalEnabled.value = true // Also re-enable terminal scroll on reaching page bottom
+  }
 }
 
 const cancelCommand = () => {
