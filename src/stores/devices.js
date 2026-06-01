@@ -228,8 +228,36 @@ export const useDevicesStore = defineStore('devices', () => {
       if (serverVersion.value.startsWith('4.')) {
         const url = `${initialUrl.value.token}${tokenApi.logicalDevice}available/?cid=${cid.value}&did=${id}`
         const { data } = await tokenRequest('get', url)
-        if (!data?.results?.length) return
-        results = data.results
+        results = data?.results || []
+
+        // Find already assigned/inflicted logical devices for this device to prevent "sin prestaciones"
+        const localAssigned = assignedLogicalDevices.value.filter(
+          (item) => item.device && item.device.id === id,
+        )
+        const localInflicted = inflictedLogicalDevices.value.filter(
+          (item) => item.device && item.device.id === id,
+        )
+
+        for (const item of [...localAssigned, ...localInflicted]) {
+          if (!results.some((r) => r.id === item.id)) {
+            results.push({
+              id: item.id,
+              alternative_capability_name:
+                item.alternative_capability_name || '',
+              capability: {
+                id: item.capability?.id || 0,
+                name: item.capability?.name || item.name || '',
+              },
+              device: {
+                id: id,
+                name: item.device.name || '',
+              },
+              attributes: item.attributes || [],
+            })
+          }
+        }
+
+        if (!results.length) return
       } else {
         results = await window.electronAPI.devices.getLogical(id)
         if (!results?.length) return

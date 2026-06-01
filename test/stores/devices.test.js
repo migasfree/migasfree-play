@@ -449,6 +449,59 @@ describe('Devices Store', () => {
     })
   })
 
+  describe('getLogicalDevice()', () => {
+    it('merges locally assigned and inflicted logical devices for v4 server fallback', async () => {
+      const { useServerStore } = await import('src/stores/server')
+      const serverStore = useServerStore()
+      serverStore.serverVersion.value = '4.2'
+
+      // Mock the HTTP API for computerDevices()
+      api.get.mockResolvedValueOnce({
+        data: {
+          default_logical_device: 0,
+          assigned_logical_devices_to_cid: [
+            {
+              id: 50,
+              device: { id: 100, name: 'Printer' },
+              capability: { id: 5, name: 'Color' },
+            },
+          ],
+          inflicted_logical_devices: [
+            {
+              id: 60,
+              device: { id: 100, name: 'Printer' },
+              capability: { id: 6, name: 'Duplex' },
+            },
+          ],
+        },
+      })
+
+      const store = useDevicesStore()
+      await store.computerDevices()
+
+      // Reset devices to have only device 100
+      store.devices = [{ id: 100, model: { name: 'Printer' } }]
+
+      // Mock the HTTP API to return an empty array for available logical devices
+      api.get.mockResolvedValueOnce({ data: { results: [] } })
+
+      await store.getFeaturesDevices()
+
+      expect(api.get).toHaveBeenCalledWith(
+        expect.stringContaining('/devices/logical/available/'),
+        expect.any(Object),
+      )
+
+      // The logical array should be populated with the reconstructed merged capabilities
+      expect(store.devices[0].logical).toHaveLength(2)
+      expect(store.devices[0].logical.map((l) => l.id)).toContain(50)
+      expect(store.devices[0].logical.map((l) => l.id)).toContain(60)
+
+      // Reset serverVersion
+      serverStore.serverVersion.value = '5.0'
+    })
+  })
+
   describe('setDefaultLogicalDevice()', () => {
     it('sets default logical device successfully via HTTP on v4', async () => {
       const { useServerStore } = await import('src/stores/server')
