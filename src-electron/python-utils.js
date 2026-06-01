@@ -115,7 +115,20 @@ const getClientVersion = async () => {
     const lines = results.trim().split('\n')
     return lines[lines.length - 1].trim()
   } catch (error) {
-    return '4.0' // safe fallback
+    try {
+      const results = await cliExecute(['--version'])
+      const lines = results.trim().split('\n')
+      return lines[lines.length - 1].trim()
+    } catch {
+      try {
+        const code =
+          'import migasfree_client; print(migasfree_client.__version__)'
+        const results = await pythonExecute(code)
+        return results.trim()
+      } catch {
+        return '4.0' // safe fallback
+      }
+    }
   }
 }
 
