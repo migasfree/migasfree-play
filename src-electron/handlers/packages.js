@@ -22,7 +22,7 @@ export default function registerPackagesHandlers() {
     if (debug) console.log('[ipc] Getting available packages...')
 
     if (version && version.startsWith('4.')) {
-      const scriptPath = path.join(getScriptsPath(), 'packages_available_v4.py')
+      const scriptPath = path.join(getScriptsPath(), 'packages_available.py')
       try {
         const results = await pythonExecute(scriptPath, [])
         return JSON.parse(results)
