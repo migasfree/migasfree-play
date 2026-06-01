@@ -44,6 +44,7 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
 * Mon, 01 Jun 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(ui): auto-load apps, devices, and tags on demand when sections are enabled
 - feat(executions): restore smart autoscroll and manual scroll lock in terminal
 - fix(autoupdate): implement continuous low-frequency background update polling
 - feat(devices): delegate logical device assignment and default setting to CLI on client v5
