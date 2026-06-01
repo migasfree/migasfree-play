@@ -47,11 +47,14 @@ export const usePackagesStore = defineStore('packages', () => {
   const setInstalledPackages = async (appsPackagesList = []) => {
     if (!computerStore.isRegistered) return
 
-    installed.value = await fetchPackages(
-      '/packages/installed/',
-      'post',
-      appsPackagesList,
-    )
+    let list = appsPackagesList
+    if (!list || list.length === 0) {
+      const { useAppsStore } = await import('./apps.js')
+      const appsStore = useAppsStore()
+      list = appsStore.getAppsPackages || []
+    }
+
+    installed.value = await fetchPackages('/packages/installed/', 'post', list)
   }
 
   const setInventory = async () => {

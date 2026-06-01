@@ -44,6 +44,12 @@ vi.mock('src/stores/ui', () => ({
   useUiStore: () => ({ notifyError: vi.fn() }),
 }))
 
+vi.mock('src/stores/apps', () => ({
+  useAppsStore: () => ({
+    getAppsPackages: ['firefox', 'vlc'],
+  }),
+}))
+
 describe('Packages Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -117,13 +123,27 @@ describe('Packages Store', () => {
       expect(store.installed).toEqual(mockInstalled)
     })
 
+    it('uses appsStore.getAppsPackages if appsPackagesList is empty', async () => {
+      const mockInstalled = ['firefox']
+      window.electronAPI.packages.getInstalled.mockResolvedValue(mockInstalled)
+
+      const store = usePackagesStore()
+      await store.setInstalledPackages()
+
+      expect(window.electronAPI.packages.getInstalled).toHaveBeenCalledWith(
+        ['firefox', 'vlc'],
+        '5.0',
+      )
+      expect(store.installed).toEqual(mockInstalled)
+    })
+
     it('handles errors', async () => {
       window.electronAPI.packages.getInstalled.mockRejectedValue(
         new Error('IPC error'),
       )
 
       const store = usePackagesStore()
-      await store.setInstalledPackages()
+      await store.setInstalledPackages(['firefox'])
 
       expect(store.installed).toEqual([])
     })
