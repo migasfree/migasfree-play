@@ -43,7 +43,9 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Wed, 27 May 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+* Mon, 01 Jun 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(executions): restore smart autoscroll and manual scroll lock in terminal
+- fix(autoupdate): implement continuous low-frequency background update polling
 - feat(devices): delegate logical device assignment and default setting to CLI on client v5
 - feat(ipc): decouple Electron handlers from Python internals using native CLI subcommands
 - feat(ui): add attributes grid and JSON export in computer info

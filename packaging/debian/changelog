@@ -1,5 +1,7 @@
 migasfree-play (5.14.0) unstable; urgency=low
 
+  * feat(executions): restore smart autoscroll and manual scroll lock in terminal
+  * fix(autoupdate): implement continuous low-frequency background update polling
   * feat(devices): delegate logical device assignment and default
     setting to CLI on client v5
   * feat(ipc): decouple Electron handlers from Python internals
@@ -18,7 +20,7 @@ migasfree-play (5.14.0) unstable; urgency=low
   * fix(deps): upgrade core dependencies
   * fix(ipc): use --password instead of --pwd for migasfree register command
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Wed, 27 May 2026 20:34:00 +0200
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 01 Jun 2026 11:45:00 +0200
 
 migasfree-play (5.13.0) unstable; urgency=low
 
