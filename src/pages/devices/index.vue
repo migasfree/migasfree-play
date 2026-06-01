@@ -25,6 +25,7 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -52,5 +53,11 @@ const { isUpdating, sync } = usePageSync(async () => {
   await devicesStore.computerDevices()
   await devicesStore.getAvailableDevices()
   await devicesStore.getFeaturesDevices()
+})
+
+onMounted(() => {
+  if (manageDevices && !devicesStore.hasLoaded) {
+    sync()
+  }
 })
 </script>

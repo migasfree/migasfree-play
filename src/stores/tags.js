@@ -15,6 +15,7 @@ export const useTagsStore = defineStore('tags', () => {
 
   const available = ref([])
   const assigned = ref([])
+  const hasLoaded = ref(false)
 
   const getTags = async () => {
     if (!computerStore.isRegistered) return
@@ -23,6 +24,7 @@ export const useTagsStore = defineStore('tags', () => {
       const data = await window.electronAPI.tags.get(clientVersion.value)
       setAvailableTags(data.available)
       setAssignedTags(data.assigned)
+      hasLoaded.value = true
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -41,5 +43,6 @@ export const useTagsStore = defineStore('tags', () => {
     assigned,
     getTags,
     setAssignedTags,
+    hasLoaded,
   }
 })

@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -32,4 +33,10 @@ const tagsStore = useTagsStore()
 useMeta({ title: $gettext('Tags') })
 
 const { isUpdating, sync } = usePageSync(() => tagsStore.getTags())
+
+onMounted(() => {
+  if (!tagsStore.hasLoaded) {
+    sync()
+  }
+})
 </script>

@@ -15,6 +15,7 @@ import { tokenApi } from 'config/app.conf'
 export const useAppsStore = defineStore('apps', () => {
   const apps = ref([])
   const filteredApps = ref([])
+  const hasLoaded = ref(false)
 
   const getAppsPackages = computed(() => {
     return apps.value.flatMap((app) => app.packages_to_install || [])
@@ -49,6 +50,7 @@ export const useAppsStore = defineStore('apps', () => {
         project: project.value,
       })
       filterApps()
+      hasLoaded.value = true
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -115,5 +117,6 @@ export const useAppsStore = defineStore('apps', () => {
     getAppsPackages,
     loadApps,
     filterApps,
+    hasLoaded,
   }
 })

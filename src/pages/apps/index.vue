@@ -17,6 +17,7 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -39,5 +40,11 @@ useMeta({ title: $gettext('Apps') })
 
 const { isUpdating, sync } = usePageSync(async () => {
   await Promise.all([appsStore.loadApps(), filtersStore.setCategories()])
+})
+
+onMounted(() => {
+  if (!appsStore.hasLoaded) {
+    sync()
+  }
 })
 </script>

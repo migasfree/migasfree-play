@@ -28,6 +28,7 @@ export const useDevicesStore = defineStore('devices', () => {
   const inflictedLogicalDevices = ref([])
   const assignedLogicalDevices = ref([])
   const filteredDevices = ref([])
+  const hasLoaded = ref(false)
 
   const tokenRequest = async (method, url, payload = null) => {
     const config = { headers: { Authorization: token.value } }
@@ -118,6 +119,7 @@ export const useDevicesStore = defineStore('devices', () => {
           await addDeviceIfMissing(item, 'inflicted')
         }
       }
+      hasLoaded.value = true
     } catch (err) {
       uiStore.notifyError(err)
     }
@@ -368,5 +370,6 @@ export const useDevicesStore = defineStore('devices', () => {
     filterDevices,
     addAssignedDevice,
     removeAssignedDevice,
+    hasLoaded,
   }
 })
