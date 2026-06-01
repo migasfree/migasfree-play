@@ -486,6 +486,18 @@ function setupAutoUpdateIPC(win) {
     }
   }
 
+  // Initialize lastMtime immediately at startup
+  try {
+    if (existsSync(appPath)) {
+      lastMtime = statSync(appPath).mtimeMs
+      console.log(
+        `[AutoUpdate] Initialized file watch on ${appPath} (mtime: ${lastMtime})`,
+      )
+    }
+  } catch (err) {
+    console.error(`[AutoUpdate] Initial stat failed: ${err.message}`)
+  }
+
   const pollFile = () => {
     if (updateNotified) return
 
@@ -508,9 +520,12 @@ function setupAutoUpdateIPC(win) {
     }
   }
 
+  // Start low-frequency continuous background polling (every 10 seconds)
+  setInterval(pollFile, 10000)
+
   ipcMain.on('app:start-update-polling', () => {
     if (updateNotified) return
-    console.log('[AutoUpdate] Starting FS polling...')
+    console.log('[AutoUpdate] Starting high-frequency FS polling...')
 
     // Reset tail timeout if it was cooling down
     if (updateTimeout) {
@@ -532,13 +547,15 @@ function setupAutoUpdateIPC(win) {
 
   ipcMain.on('app:stop-update-polling', () => {
     console.log(
-      '[AutoUpdate] Stopping FS polling in 60 seconds (cooldown tail)...',
+      '[AutoUpdate] Stopping high-frequency FS polling in 60 seconds (cooldown tail)...',
     )
 
     // Keep surveying for a minute after the task finished to catch the pkg manager trailing moves
     updateTimeout = setTimeout(() => {
       if (updatePollingInterval) {
-        console.log('[AutoUpdate] FS polling officially stopped.')
+        console.log(
+          '[AutoUpdate] High-frequency FS polling officially stopped.',
+        )
         clearInterval(updatePollingInterval)
         updatePollingInterval = null
       }
