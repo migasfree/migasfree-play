@@ -188,7 +188,8 @@ export const useExecutionsStore = defineStore('executions', () => {
         const lines = stdoutBuffer.split('\n')
         stdoutBuffer = lines.pop()
 
-        for (const line of lines) {
+        for (const rawLine of lines) {
+          const line = rawLine.replace(/\r$/, '')
           if (!line.trim()) continue
           try {
             if (line.startsWith('{') && line.endsWith('}')) {
@@ -262,7 +263,7 @@ export const useExecutionsStore = defineStore('executions', () => {
 
       window.electronAPI.onCommandExit(commandId, async (code) => {
         if (stdoutBuffer) {
-          const line = stdoutBuffer
+          const line = stdoutBuffer.replace(/\r$/, '')
           stdoutBuffer = ''
           try {
             if (line.startsWith('{') && line.endsWith('}')) {
