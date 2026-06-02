@@ -1,11 +1,12 @@
 /* eslint no-undef: "off" */
 import os from 'os'
 import path from 'path'
-import { execSync, execFile } from 'child_process'
+import { execSync, execFile, exec } from 'child_process'
 import { promisify } from 'util'
 import { PythonShell } from 'python-shell'
 
 const execFileAsync = promisify(execFile)
+const execAsync = promisify(exec)
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
@@ -69,11 +70,21 @@ const cliExecute = async (args = []) => {
   }
 
   try {
-    const { stdout } = await execFileAsync(binary, args, {
-      maxBuffer: 1024 * 1024 * 50,
-      env: pythonShellOptions.env,
-      shell: binary.endsWith('.cmd'),
-    })
+    let stdout
+    if (binary.endsWith('.cmd')) {
+      const cmdStr = `${binary} ${args.join(' ')}`
+      const result = await execAsync(cmdStr, {
+        maxBuffer: 1024 * 1024 * 50,
+        env: pythonShellOptions.env,
+      })
+      stdout = result.stdout
+    } else {
+      const result = await execFileAsync(binary, args, {
+        maxBuffer: 1024 * 1024 * 50,
+        env: pythonShellOptions.env,
+      })
+      stdout = result.stdout
+    }
     return stdout.trim()
   } catch (error) {
     if (debug) {
