@@ -49,8 +49,20 @@ const pythonShellOptions = {
   encoding: 'utf8',
 }
 
+const getMigasfreeBinary = () => {
+  if (os.platform() !== 'win32') return 'migasfree'
+  try {
+    execSync('where migasfree.cmd', { stdio: 'ignore' })
+    return 'migasfree.cmd'
+  } catch {
+    return 'migasfree.exe'
+  }
+}
+
+const MIGASFREE_BINARY = getMigasfreeBinary()
+
 const cliExecute = async (args = []) => {
-  const binary = os.platform() === 'win32' ? 'migasfree.exe' : 'migasfree'
+  const binary = MIGASFREE_BINARY
 
   if (debug) {
     console.log(`[python-utils] Executing CLI: ${binary} ${args.join(' ')}`)
@@ -60,6 +72,7 @@ const cliExecute = async (args = []) => {
     const { stdout } = await execFileAsync(binary, args, {
       maxBuffer: 1024 * 1024 * 50,
       env: pythonShellOptions.env,
+      shell: binary.endsWith('.cmd'),
     })
     return stdout.trim()
   } catch (error) {
