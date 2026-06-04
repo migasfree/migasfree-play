@@ -4,5 +4,6 @@
   "description": "Desktop graphical interface for Migasfree. Enables end-users to securely manage software catalogs, devices, and client synchronization.",
   "maintainer": "Jose Antonio Chavarría <jachavar@gmail.com>",
   "specification": "1.0.0",
+  "dependencies": ["migasfree-client"],
   "homepage": "https://github.com/migasfree/migasfree-play"
 }
