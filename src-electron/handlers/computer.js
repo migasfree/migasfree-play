@@ -4,6 +4,7 @@ import {
   cliExecute,
   debug,
   getClientVersion,
+  clearConfCache,
 } from '../python-utils.js'
 
 /**
@@ -175,6 +176,7 @@ mfc._save_sign_keys('${user}', '${password}')`
           '--password',
           password,
         ])
+        clearConfCache()
         return '1' // Registration success equivalent
       } catch (error) {
         if (debug) console.error(error)

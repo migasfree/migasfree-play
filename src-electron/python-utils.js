@@ -133,27 +133,59 @@ const pythonExecute = async (code, args = []) => {
   }
 }
 
-const getClientVersion = async () => {
-  try {
-    const results = await cliExecute(['--quiet', 'version'])
-    const lines = results.trim().split('\n')
-    return lines[lines.length - 1].trim()
-  } catch (error) {
-    try {
-      const results = await cliExecute(['--version'])
-      const lines = results.trim().split('\n')
-      return lines[lines.length - 1].trim()
-    } catch {
+let clientVersionPromise = null
+let confInfoPromise = null
+
+const getClientVersion = () => {
+  if (!clientVersionPromise) {
+    clientVersionPromise = (async () => {
       try {
-        const code =
-          'import migasfree_client; print(migasfree_client.__version__)'
-        const results = await pythonExecute(code)
-        return results.trim()
-      } catch {
-        return '4.0' // safe fallback
+        const results = await cliExecute(['--quiet', 'version'])
+        const lines = results.trim().split('\n')
+        return lines[lines.length - 1].trim()
+      } catch (error) {
+        try {
+          const results = await cliExecute(['--version'])
+          const lines = results.trim().split('\n')
+          return lines[lines.length - 1].trim()
+        } catch {
+          try {
+            const code =
+              'import migasfree_client; print(migasfree_client.__version__)'
+            const results = await pythonExecute(code)
+            return results.trim()
+          } catch {
+            return '4.0' // safe fallback
+          }
+        }
       }
-    }
+    })()
   }
+  return clientVersionPromise
 }
 
-export { debug, pythonExecute, cliExecute, getClientVersion, getScriptsPath }
+const getConfInfo = () => {
+  if (!confInfoPromise) {
+    confInfoPromise = (async () => {
+      const results = await cliExecute(['--quiet', 'conf', '--json'])
+      const lines = results.trim().split('\n')
+      const jsonLine = lines[lines.length - 1].trim()
+      return JSON.parse(jsonLine)
+    })()
+  }
+  return confInfoPromise
+}
+
+const clearConfCache = () => {
+  confInfoPromise = null
+}
+
+export {
+  debug,
+  pythonExecute,
+  cliExecute,
+  getClientVersion,
+  getConfInfo,
+  clearConfCache,
+  getScriptsPath,
+}

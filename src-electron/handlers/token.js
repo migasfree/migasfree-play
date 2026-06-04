@@ -2,12 +2,7 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import { ipcMain } from 'electron'
-import {
-  pythonExecute,
-  cliExecute,
-  debug,
-  getClientVersion,
-} from '../python-utils.js'
+import { pythonExecute, debug, getConfInfo } from '../python-utils.js'
 
 const tokenFile = path.join(os.homedir(), '.migasfree-play', 'token')
 
@@ -59,10 +54,7 @@ export default function registerTokenHandlers() {
 
       // 1. Try to get system CA via CLI (migasfree-client v5)
       try {
-        const results = await cliExecute(['--quiet', 'conf', '--json'])
-        const lines = results.trim().split('\n')
-        const jsonLine = lines[lines.length - 1].trim()
-        const conf = JSON.parse(jsonLine)
+        const conf = await getConfInfo()
 
         isV5 = true
 
@@ -93,7 +85,7 @@ try:
     from migasfree_client.utils import get_config
     from migasfree_client import settings
     from migasfree_client.mtls import get_mtls_ca_file
-    
+
     server = get_config(settings.CONF_FILE, 'client').get('server', 'localhost')
     ca_file = get_mtls_ca_file(server)
 

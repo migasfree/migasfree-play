@@ -4,9 +4,9 @@ import path from 'path'
 import { ipcMain } from 'electron'
 import {
   pythonExecute,
-  cliExecute,
   debug,
   getClientVersion,
+  getConfInfo,
 } from '../python-utils.js'
 
 const SETTINGS_FILE = path.resolve(
@@ -47,13 +47,6 @@ const readSettings = () => {
 const writeSettings = (content) => {
   fs.mkdirSync(path.dirname(SETTINGS_FILE), { recursive: true })
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(content, null, 2))
-}
-
-async function getConfInfo() {
-  const results = await cliExecute(['--quiet', 'conf', '--json'])
-  const lines = results.trim().split('\n')
-  const jsonLine = lines[lines.length - 1].trim()
-  return JSON.parse(jsonLine)
 }
 
 export default function registerPreferencesHandlers() {
