@@ -65,3 +65,4 @@ This project is supported by specialized AI Skills in `.agent/skills`. **ALWAYS*
 3. **Environment**: Use `.env` for development-specific configuration.
 4. **Sandboxing**: When building or running, the `--no-sandbox` flags in scripts are currently required for containerized environments.
 5. **i18n Integrity**: Ensure that new string literals are correctly wrapped for translation extraction.
+6. **Version Updates**: When changing the project version, make sure to also update the version in metadata.json accordingly.
