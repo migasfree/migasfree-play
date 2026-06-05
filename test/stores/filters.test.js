@@ -23,9 +23,16 @@ vi.mock('src/stores/auth', async () => {
 
 vi.mock('src/stores/server', async () => {
   const { ref } = await import('vue')
+  const clientVersion = ref('5.0')
+  const serverVersion = ref('5.0')
+  const isLegacyClient = ref(false)
+  const isLegacyServer = ref(false)
   const state = {
     initialUrl: ref({ token: 'http://api' }),
-    serverVersion: ref('5.0'),
+    clientVersion,
+    serverVersion,
+    isLegacyClient,
+    isLegacyServer,
   }
   return { useServerStore: () => state }
 })
@@ -35,7 +42,7 @@ vi.mock('src/stores/ui', () => ({
 }))
 
 describe('Filters Store', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
     window.electronAPI = {
@@ -43,6 +50,13 @@ describe('Filters Store', () => {
         getCategories: vi.fn(),
       },
     }
+    // Reset server store mock state
+    const { useServerStore } = await import('src/stores/server')
+    const serverStore = useServerStore()
+    serverStore.clientVersion.value = '5.0'
+    serverStore.serverVersion.value = '5.0'
+    serverStore.isLegacyClient.value = false
+    serverStore.isLegacyServer.value = false
   })
 
   describe('Initial State', () => {
@@ -97,7 +111,10 @@ describe('Filters Store', () => {
     it('fetches and processes categories for v4 API', async () => {
       const { useServerStore } = await import('src/stores/server')
       const serverStore = useServerStore()
+      serverStore.clientVersion.value = '4.20'
       serverStore.serverVersion.value = '4.20'
+      serverStore.isLegacyClient.value = true
+      serverStore.isLegacyServer.value = true
 
       const mockCategories = {
         1: 'Internet',

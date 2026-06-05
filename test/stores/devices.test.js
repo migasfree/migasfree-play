@@ -65,13 +65,16 @@ vi.mock('src/stores/auth', async () => {
 
 vi.mock('src/stores/server', async () => {
   const { ref } = await import('vue')
+  const clientVersion = ref('5.0')
   const serverVersion = ref('5.0')
+  const isLegacyClient = ref(false)
+  const isLegacyServer = ref(false)
   const state = {
     initialUrl: ref({ token: 'https://api.example.com/api/v1/token' }),
+    clientVersion,
     serverVersion,
-    get isLegacyServer() {
-      return serverVersion.value.startsWith('4.')
-    },
+    isLegacyClient,
+    isLegacyServer,
   }
   return { useServerStore: () => state }
 })
@@ -105,6 +108,14 @@ describe('Devices Store', () => {
         setDefault: vi.fn(),
       },
     }
+    // Reset server store mock state
+    const { useServerStore } = await import('src/stores/server')
+    const serverStore = useServerStore()
+    serverStore.clientVersion.value = '5.0'
+    serverStore.serverVersion.value = '5.0'
+    serverStore.isLegacyClient.value = false
+    serverStore.isLegacyServer.value = false
+
     // Reset cid to 123 for each test
     const { useComputerStore } = await import('src/stores/computer')
     const computerStore = useComputerStore()
@@ -388,7 +399,10 @@ describe('Devices Store', () => {
       // Change serverVersion to v4
       const { useServerStore } = await import('src/stores/server')
       const serverStore = useServerStore()
+      serverStore.clientVersion.value = '4.20'
       serverStore.serverVersion.value = '4.20'
+      serverStore.isLegacyClient.value = true
+      serverStore.isLegacyServer.value = true
 
       const responseData = {
         id: 100,
@@ -453,7 +467,10 @@ describe('Devices Store', () => {
     it('merges locally assigned and inflicted logical devices for v4 server fallback', async () => {
       const { useServerStore } = await import('src/stores/server')
       const serverStore = useServerStore()
+      serverStore.clientVersion.value = '4.2'
       serverStore.serverVersion.value = '4.2'
+      serverStore.isLegacyClient.value = true
+      serverStore.isLegacyServer.value = true
 
       // Mock the HTTP API for computerDevices()
       api.get.mockResolvedValueOnce({
@@ -517,7 +534,10 @@ describe('Devices Store', () => {
     it('sets default logical device successfully via HTTP on v4', async () => {
       const { useServerStore } = await import('src/stores/server')
       const serverStore = useServerStore()
+      serverStore.clientVersion.value = '4.2'
       serverStore.serverVersion.value = '4.2'
+      serverStore.isLegacyClient.value = true
+      serverStore.isLegacyServer.value = true
 
       api.patch.mockResolvedValue({
         data: { id: 123, default_logical_device: 10 },
@@ -576,7 +596,10 @@ describe('Devices Store', () => {
     it('updates device attributes successfully via HTTP on v4', async () => {
       const { useServerStore } = await import('src/stores/server')
       const serverStore = useServerStore()
+      serverStore.clientVersion.value = '4.2'
       serverStore.serverVersion.value = '4.2'
+      serverStore.isLegacyClient.value = true
+      serverStore.isLegacyServer.value = true
 
       api.patch.mockResolvedValue({
         data: {
