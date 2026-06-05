@@ -48,13 +48,13 @@ export const useUiStore = defineStore('ui', () => {
 
     if (error?.response) {
       const { status, data } = error.response
-      const defaultMsg = status >= 500 ? 'Server Error' : ''
+      const defaultMsg = status >= 500 ? gettext.$gettext('Server Error') : ''
 
       const statusMap = {
-        401: 'UnAuthorized',
-        404: 'API Route is Missing or Undefined',
-        405: 'API Route Method Not Allowed',
-        422: 'Validation Error',
+        401: gettext.$gettext('UnAuthorized'),
+        404: gettext.$gettext('API Route is Missing or Undefined'),
+        405: gettext.$gettext('API Route Method Not Allowed'),
+        422: gettext.$gettext('Validation Error'),
       }
 
       const msg = statusMap[status] ?? defaultMsg

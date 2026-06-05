@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
+import { gettext } from 'boot/gettext'
 
 import { tokenApi } from 'config/app.conf'
 
@@ -208,7 +209,7 @@ export const useDevicesStore = defineStore('devices', () => {
       } else {
         const allAvailable = await window.electronAPI.devices.getAvailable()
         itemData = allAvailable.find((d) => d.id === id)
-        if (!itemData) throw new Error('Device not found')
+        if (!itemData) throw new Error(gettext.$gettext('Device not found'))
       }
 
       const data = serverVersion.value.startsWith('4.')

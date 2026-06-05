@@ -5,7 +5,9 @@
     <div>
       <div class="text-error-code">404</div>
 
-      <div class="text-h2 text-error-message">Oops. Nothing here...</div>
+      <div class="text-h2 text-error-message">
+        {{ $gettext('Oops. Nothing here...') }}
+      </div>
 
       <q-btn
         class="q-mt-xl"
@@ -13,7 +15,7 @@
         text-color="blue"
         unelevated
         to="/"
-        label="Go Home"
+        :label="$gettext('Go Home')"
         no-caps
       />
     </div>
