@@ -28,14 +28,14 @@ export const useAppsStore = defineStore('apps', () => {
     const uiStore = useUiStore()
 
     const { cid, project } = storeToRefs(computerStore)
-    const { initialUrl, serverVersion } = storeToRefs(serverStore)
+    const { initialUrl, isLegacyClient } = storeToRefs(serverStore)
     const { token } = storeToRefs(authStore)
 
     if (!cid.value) return
 
     try {
       let data
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const url = `${initialUrl.value.token}${tokenApi.apps}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`
         const response = await api.get(url, {
           headers: { Authorization: token.value },

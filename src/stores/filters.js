@@ -7,7 +7,7 @@ import { useAuthStore } from './auth.js'
 import { useServerStore } from './server.js'
 import { useUiStore } from './ui.js'
 
-import { tokenApiv4 } from 'config/app.conf'
+import { tokenApi, tokenApiv4 } from 'config/app.conf'
 
 export const useFiltersStore = defineStore('filters', () => {
   const categories = ref([])
@@ -23,13 +23,16 @@ export const useFiltersStore = defineStore('filters', () => {
     const uiStore = useUiStore()
 
     const { token } = storeToRefs(authStore)
-    const { initialUrl, serverVersion } = storeToRefs(serverStore)
+    const { initialUrl, serverVersion, isLegacyClient } =
+      storeToRefs(serverStore)
 
     try {
       let data
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const base = `${initialUrl.value.token}`
-        const url = `${base}${tokenApiv4.categories}`
+        const url = serverVersion.value.startsWith('4.')
+          ? `${base}${tokenApiv4.categories}`
+          : `${base}${tokenApi.categories}`
         const response = await api.get(url, {
           headers: { Authorization: token.value },
         })

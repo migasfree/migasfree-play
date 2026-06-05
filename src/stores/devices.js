@@ -20,7 +20,7 @@ export const useDevicesStore = defineStore('devices', () => {
 
   const { cid } = storeToRefs(computerStore)
   const { token } = storeToRefs(authStore)
-  const { initialUrl, serverVersion } = storeToRefs(serverStore)
+  const { initialUrl, serverVersion, isLegacyClient } = storeToRefs(serverStore)
   const { searchDevice, onlyAssignedDevices } = storeToRefs(filtersStore)
 
   const devices = ref([])
@@ -56,7 +56,7 @@ export const useDevicesStore = defineStore('devices', () => {
 
     try {
       let data
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const response = await tokenRequest(
           'get',
           `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
@@ -71,7 +71,16 @@ export const useDevicesStore = defineStore('devices', () => {
         // v5 server structure (via CLI or Safe API)
         const logicalList = []
         try {
-          const available = await window.electronAPI.devices.getAvailable()
+          let available
+          if (isLegacyClient.value) {
+            const response = await tokenRequest(
+              'get',
+              `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
+            )
+            available = response.data.results
+          } else {
+            available = await window.electronAPI.devices.getAvailable()
+          }
           for (const outer of data.logical) {
             if (outer && typeof outer === 'object') {
               const keys = Object.keys(outer)
@@ -130,7 +139,7 @@ export const useDevicesStore = defineStore('devices', () => {
     if (!computerStore.isRegistered) return
 
     try {
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         await tokenRequest(
           'patch',
           `${initialUrl.value.token}${tokenApi.computer}${cid.value}/devices/`,
@@ -150,7 +159,7 @@ export const useDevicesStore = defineStore('devices', () => {
 
     try {
       let results
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const response = await tokenRequest(
           'get',
           `${initialUrl.value.token}${tokenApi.availableDevices}${cid.value}&page_size=${Number.MAX_SAFE_INTEGER}`,
@@ -190,7 +199,7 @@ export const useDevicesStore = defineStore('devices', () => {
   const getDeviceData = async (id) => {
     try {
       let itemData
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const response = await tokenRequest(
           'get',
           `${initialUrl.value.token}${tokenApi.deviceData}${id}/`,
@@ -225,7 +234,7 @@ export const useDevicesStore = defineStore('devices', () => {
     try {
       let results
 
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const url = `${initialUrl.value.token}${tokenApi.logicalDevice}available/?cid=${cid.value}&did=${id}`
         const { data } = await tokenRequest('get', url)
         results = data?.results || []
@@ -297,7 +306,7 @@ export const useDevicesStore = defineStore('devices', () => {
 
   const changeDeviceAttributes = async ({ id, attributes, element = null }) => {
     try {
-      if (serverVersion.value.startsWith('4.')) {
+      if (isLegacyClient.value) {
         const { data } = await tokenRequest(
           'patch',
           `${initialUrl.value.token}${tokenApi.logicalDevice}${id}/`,
