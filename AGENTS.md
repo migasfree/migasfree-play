@@ -66,3 +66,78 @@ This project is supported by specialized AI Skills in `.agent/skills`. **ALWAYS*
 4. **Sandboxing**: When building or running, the `--no-sandbox` flags in scripts are currently required for containerized environments.
 5. **i18n Integrity**: Ensure that new string literals are correctly wrapped for translation extraction.
 6. **Version Updates**: When changing the project version, make sure to also update the version in metadata.json accordingly.
+
+## 7. Client/Server Version Compatibility Matrix
+
+### Valid deployment combinations
+
+| `migasfree-client` | `migasfree-backend` | Notes                                         |
+| ------------------ | ------------------- | --------------------------------------------- |
+| v4                 | v4                  | Full legacy stack                             |
+| v4                 | v5                  | Supported — client cannot use CLI subcommands |
+| v5                 | v5                  | Full modern stack                             |
+| v5                 | v4                  | **IMPOSSIBLE** — never occurs in production   |
+
+### Two independent axes in Pinia store logic
+
+The conditionals in `src/stores/` must always use the **correct axis**:
+
+#### Axis 1 — How to fetch data: `isLegacyClient` (client version)
+
+Use `isLegacyClient.value` to decide **whether to call Electron IPC or the HTTP API directly**.
+
+- `isLegacyClient = true` (client v4): has no CLI subcommands → must call the server HTTP API directly.
+- `isLegacyClient = false` (client v5): has full CLI → use `window.electronAPI.*` (Electron IPC).
+
+```js
+// CORRECT
+if (isLegacyClient.value) {
+  // Direct HTTP API call (works against server v4 or v5)
+} else {
+  // Electron IPC / CLI (client v5 + server v5 only)
+}
+```
+
+#### Axis 2 — How to interpret data: `isLegacyServer` / `serverVersion` (server version)
+
+Use `serverVersion.value.startsWith('4.')` (or `isLegacyServer.value`) to decide:
+
+- Which **API endpoint** to call (v4 and v5 may expose different paths for the same resource).
+- How to **parse/transform** the response (e.g., `data` field as JSON string on v4 vs parsed object on v5).
+- Which **field names** to read (`feature` on v4, `capability` on v5).
+- Whether to **deduplicate** results (known bug on v4 servers).
+
+```js
+// CORRECT — endpoint selection inside an isLegacyClient branch
+if (isLegacyClient.value) {
+  const url = serverVersion.value.startsWith('4.')
+    ? `${base}${tokenApiv4.someEndpoint}`   // v4-specific path
+    : `${base}${tokenApi.someEndpoint}`      // v5 path (used by v4 client against v5 server)
+  ...
+}
+
+// CORRECT — response transformation, independent of client version
+if (serverVersion.value.startsWith('4.')) {
+  results = results.map((item) => ({ ...item, data: JSON.parse(item.data) }))
+}
+```
+
+#### Anti-patterns to avoid
+
+```js
+// WRONG — conflates client routing with server format
+if (isLegacyClient.value || serverVersion.value.startsWith('4.')) { ... }
+
+// WRONG — assumes server v4 implies client v4 (not always true)
+if (serverVersion.value.startsWith('4.')) {
+  // Electron IPC bypass — but client v4 + server v5 would never reach IPC anyway
+}
+```
+
+### Known server v4 vs v5 endpoint differences (`src/config/app.conf.js`)
+
+| Resource   | `tokenApiv4.*`              | `tokenApi.*`           |
+| ---------- | --------------------------- | ---------------------- |
+| Categories | `/catalog/apps/categories/` | `/catalog/categories/` |
+
+When adding new resources that differ between server versions, extend both `tokenApi` and `tokenApiv4` in `app.conf.js` and apply the selection inside the `isLegacyClient` branch using `serverVersion`.
