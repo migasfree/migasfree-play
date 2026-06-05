@@ -176,7 +176,7 @@ ipcMain.on('app:relaunch', () => {
 })
 
 // IPC Handlers - Command Execution
-const ALLOWED_COMMANDS = ['migasfree']
+const ALLOWED_COMMANDS = ['migasfree', 'migasfree-tags']
 
 ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
   if (runningProcesses.has(id)) {

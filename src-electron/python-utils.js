@@ -167,6 +167,10 @@ const getClientVersion = () => {
 const getConfInfo = () => {
   if (!confInfoPromise) {
     confInfoPromise = (async () => {
+      const version = await getClientVersion()
+      if (version.startsWith('4.')) {
+        throw new Error('Configuration info not supported on client v4')
+      }
       const results = await cliExecute(['--quiet', 'conf', '--json'])
       const lines = results.trim().split('\n')
       const jsonLine = lines[lines.length - 1].trim()

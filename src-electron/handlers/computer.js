@@ -47,6 +47,10 @@ export default function registerComputerHandlers() {
     if (debug) console.log('[ipc] Getting computer info...')
 
     try {
+      const version = await getClientVersion()
+      if (version.startsWith('4.')) {
+        throw new Error('Computer info not supported on client v4')
+      }
       const result = await cliExecute(['--quiet', 'info', '--json'])
       return parseJsonSafe(result)
     } catch (error) {
@@ -63,6 +67,10 @@ export default function registerComputerHandlers() {
     if (debug) console.log('[ipc] Getting computer ID...')
 
     try {
+      const version = await getClientVersion()
+      if (version.startsWith('4.')) {
+        return '0'
+      }
       const result = await cliExecute(['--quiet', 'info', 'id'])
       return result ? result.trim() : '0'
     } catch (error) {
@@ -79,6 +87,10 @@ export default function registerComputerHandlers() {
     if (debug) console.log('[ipc] Getting computer attributes...')
 
     try {
+      const version = await getClientVersion()
+      if (version.startsWith('4.')) {
+        throw new Error('Computer attributes not supported on client v4')
+      }
       const result = await cliExecute([
         '--quiet',
         'attributes',
@@ -100,6 +112,12 @@ export default function registerComputerHandlers() {
     if (debug) console.log('[ipc] Getting computer assigned attributes...')
 
     try {
+      const version = await getClientVersion()
+      if (version.startsWith('4.')) {
+        throw new Error(
+          'Computer assigned attributes not supported on client v4',
+        )
+      }
       const result = await cliExecute(['--quiet', 'attributes', '--json'])
       return parseJsonSafe(result)
     } catch (error) {
