@@ -1,6 +1,6 @@
 <template>
   <q-icon v-if="icon" :name="icon" size="sm" class="vertical-middle" />
-  <span v-if="value" class="vertical-middle">
+  <span v-if="value" class="vertical-middle text-mono date-highlight">
     {{ showDate(value) }}
     <q-tooltip>
       <template v-if="tooltipText">
@@ -53,3 +53,11 @@ const diffForHumans = (isoString) => {
   return dayjs(isoString).fromNow()
 }
 </script>
+
+<style lang="scss" scoped>
+.date-highlight {
+  color: var(--text-main);
+  opacity: 0.9;
+  font-weight: 500;
+}
+</style>
