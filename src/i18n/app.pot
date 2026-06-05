@@ -116,8 +116,8 @@ msgid "Text copied to clipboard"
 msgstr ""
 
 #: src/components/CopyButton.vue:55
-#: src/components/ExecutionDetail.vue:289
-#: src/components/ExecutionDetail.vue:356
+#: src/components/ExecutionDetail.vue:298
+#: src/components/ExecutionDetail.vue:365
 msgid "Failed to copy text"
 msgstr ""
 
@@ -206,8 +206,8 @@ msgstr ""
 msgid "Execution Error"
 msgstr ""
 
-#: src/components/ExecutionDetail.vue:285
-#: src/components/ExecutionDetail.vue:352
+#: src/components/ExecutionDetail.vue:294
+#: src/components/ExecutionDetail.vue:361
 msgid "Selection copied to clipboard"
 msgstr ""
 
@@ -308,21 +308,21 @@ msgstr ""
 
 #: src/components/Menu.vue:86
 #: src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38
+#: src/pages/apps/index.vue:39
 #: src/stores/program.js:135
 msgid "Apps"
 msgstr ""
 
 #: src/components/Menu.vue:92
 #: src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49
+#: src/pages/devices/index.vue:50
 #: src/stores/program.js:160
 msgid "Devices"
 msgstr ""
 
 #: src/components/Menu.vue:98
 #: src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32
+#: src/pages/tags/index.vue:33
 #: src/stores/program.js:171
 msgid "Tags"
 msgstr ""
@@ -496,6 +496,14 @@ msgstr ""
 msgid "Client does not manage devices"
 msgstr ""
 
+#: src/pages/Error404.vue:9
+msgid "Oops. Nothing here..."
+msgstr ""
+
+#: src/pages/Error404.vue:18
+msgid "Go Home"
+msgstr ""
+
 #: src/stores/auth.js:128
 msgid "User with privileges"
 msgstr ""
@@ -512,6 +520,10 @@ msgstr ""
 msgid "Registered Computer!"
 msgstr ""
 
+#: src/stores/devices.js:212
+msgid "Device not found"
+msgstr ""
+
 #: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr ""
@@ -520,7 +532,7 @@ msgstr ""
 msgid "Please wait, other process is running!!!"
 msgstr ""
 
-#: src/stores/executions.js:441
+#: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr ""
 
@@ -556,4 +568,24 @@ msgstr ""
 
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
+msgstr ""
+
+#: src/stores/ui.js:51
+msgid "Server Error"
+msgstr ""
+
+#: src/stores/ui.js:54
+msgid "UnAuthorized"
+msgstr ""
+
+#: src/stores/ui.js:55
+msgid "API Route is Missing or Undefined"
+msgstr ""
+
+#: src/stores/ui.js:56
+msgid "API Route Method Not Allowed"
+msgstr ""
+
+#: src/stores/ui.js:57
+msgid "Validation Error"
 msgstr ""

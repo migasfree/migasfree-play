@@ -123,8 +123,8 @@ msgstr "Copiar"
 msgid "Text copied to clipboard"
 msgstr "S'ha copiat el text al porta-retalls"
 
-#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:289
-#: src/components/ExecutionDetail.vue:356
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:298
+#: src/components/ExecutionDetail.vue:365
 msgid "Failed to copy text"
 msgstr "Ha fallat al copiar el text"
 
@@ -209,8 +209,8 @@ msgstr "Veure detalls de l'error"
 msgid "Execution Error"
 msgstr "Error d'execució"
 
-#: src/components/ExecutionDetail.vue:285
-#: src/components/ExecutionDetail.vue:352
+#: src/components/ExecutionDetail.vue:294
+#: src/components/ExecutionDetail.vue:361
 msgid "Selection copied to clipboard"
 msgstr "Selecció copiada al porta-retalls"
 
@@ -303,17 +303,17 @@ msgid "Menu"
 msgstr "Menú"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38 src/stores/program.js:135
+#: src/pages/apps/index.vue:39 src/stores/program.js:135
 msgid "Apps"
 msgstr "Aplicacions"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49 src/stores/program.js:160
+#: src/pages/devices/index.vue:50 src/stores/program.js:160
 msgid "Devices"
 msgstr "Dispositius"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32 src/stores/program.js:171
+#: src/pages/tags/index.vue:33 src/stores/program.js:171
 msgid "Tags"
 msgstr "Etiquetes"
 
@@ -497,6 +497,14 @@ msgstr "Sincronitzant..."
 msgid "Client does not manage devices"
 msgstr "El client no gestiona dispositius"
 
+#: src/pages/Error404.vue:9
+msgid "Oops. Nothing here..."
+msgstr "Ups! No hi ha res aquí..."
+
+#: src/pages/Error404.vue:18
+msgid "Go Home"
+msgstr "Anar a l'inici"
+
 #: src/stores/auth.js:128
 msgid "User with privileges"
 msgstr "Usuari amb privilegis"
@@ -513,6 +521,10 @@ msgstr "Hi ha hagut un problema amb el registre"
 msgid "Registered Computer!"
 msgstr "¡Ordinador registrat!"
 
+#: src/stores/devices.js:212
+msgid "Device not found"
+msgstr "Dispositiu no trobat"
+
 #: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr "Sincronització acabada"
@@ -521,7 +533,7 @@ msgstr "Sincronització acabada"
 msgid "Please wait, other process is running!!!"
 msgstr "Espereu, un altre procés s'està executant!!!"
 
-#: src/stores/executions.js:441
+#: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr "Comanda cancel·lada"
 
@@ -556,6 +568,26 @@ msgstr "Paquets"
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aquesta aplicació requereix almenys Migasfree Client %{version}"
+
+#: src/stores/ui.js:51
+msgid "Server Error"
+msgstr "Error del servidor"
+
+#: src/stores/ui.js:54
+msgid "UnAuthorized"
+msgstr "No autoritzat"
+
+#: src/stores/ui.js:55
+msgid "API Route is Missing or Undefined"
+msgstr "La ruta de l'API falta o no està definida"
+
+#: src/stores/ui.js:56
+msgid "API Route Method Not Allowed"
+msgstr "Mètode de ruta d'API no permès"
+
+#: src/stores/ui.js:57
+msgid "Validation Error"
+msgstr "Error de validació"
 
 #~ msgid "Register Computer on the Server"
 #~ msgstr "Registre l'ordinador al servidor"

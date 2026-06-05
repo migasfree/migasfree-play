@@ -123,8 +123,8 @@ msgstr "Copier"
 msgid "Text copied to clipboard"
 msgstr "Texte copié dans le presse-papiers"
 
-#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:289
-#: src/components/ExecutionDetail.vue:356
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:298
+#: src/components/ExecutionDetail.vue:365
 msgid "Failed to copy text"
 msgstr "Échec de la copie du texte"
 
@@ -209,8 +209,8 @@ msgstr "Afficher les détails de l'erreur"
 msgid "Execution Error"
 msgstr "Erreur d'exécution"
 
-#: src/components/ExecutionDetail.vue:285
-#: src/components/ExecutionDetail.vue:352
+#: src/components/ExecutionDetail.vue:294
+#: src/components/ExecutionDetail.vue:361
 msgid "Selection copied to clipboard"
 msgstr "Sélection copiée dans le presse-papiers"
 
@@ -303,17 +303,17 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38 src/stores/program.js:135
+#: src/pages/apps/index.vue:39 src/stores/program.js:135
 msgid "Apps"
 msgstr "Applications"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49 src/stores/program.js:160
+#: src/pages/devices/index.vue:50 src/stores/program.js:160
 msgid "Devices"
 msgstr "Périphériques"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32 src/stores/program.js:171
+#: src/pages/tags/index.vue:33 src/stores/program.js:171
 msgid "Tags"
 msgstr "Étiquettes"
 
@@ -498,6 +498,14 @@ msgstr "Synchronisation en cours..."
 msgid "Client does not manage devices"
 msgstr "Le client ne gère pas les périphériques"
 
+#: src/pages/Error404.vue:9
+msgid "Oops. Nothing here..."
+msgstr "Oups. Il n'y a rien ici..."
+
+#: src/pages/Error404.vue:18
+msgid "Go Home"
+msgstr "Aller à l'accueil"
+
 #: src/stores/auth.js:128
 msgid "User with privileges"
 msgstr "Utilisateur avec privilèges"
@@ -514,6 +522,10 @@ msgstr "Un problème est survenu lors de l'inscription"
 msgid "Registered Computer!"
 msgstr "Ordinateur enregistré !"
 
+#: src/stores/devices.js:212
+msgid "Device not found"
+msgstr "Périphérique introuvable"
+
 #: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr "Synchronisation terminée"
@@ -522,7 +534,7 @@ msgstr "Synchronisation terminée"
 msgid "Please wait, other process is running!!!"
 msgstr "Veuillez patienter, un autre processus est en cours d'exécution !"
 
-#: src/stores/executions.js:441
+#: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr "Commande annulée"
 
@@ -560,6 +572,26 @@ msgstr "Paquets"
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Cette application nécessite au moins Migasfree Client %{version}"
+
+#: src/stores/ui.js:51
+msgid "Server Error"
+msgstr "Erreur du serveur"
+
+#: src/stores/ui.js:54
+msgid "UnAuthorized"
+msgstr "Non autorisé"
+
+#: src/stores/ui.js:55
+msgid "API Route is Missing or Undefined"
+msgstr "La route de l'API est manquante ou indéfinie"
+
+#: src/stores/ui.js:56
+msgid "API Route Method Not Allowed"
+msgstr "Méthode de la route API non autorisée"
+
+#: src/stores/ui.js:57
+msgid "Validation Error"
+msgstr "Erreur de validation"
 
 #~ msgid "Register Computer on the Server"
 #~ msgstr "Enregistrer l'ordinateur sur le serveur"

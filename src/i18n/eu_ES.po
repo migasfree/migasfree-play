@@ -123,8 +123,8 @@ msgstr "Kopiatu"
 msgid "Text copied to clipboard"
 msgstr "Testua arbelean kopiatu da"
 
-#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:289
-#: src/components/ExecutionDetail.vue:356
+#: src/components/CopyButton.vue:55 src/components/ExecutionDetail.vue:298
+#: src/components/ExecutionDetail.vue:365
 msgid "Failed to copy text"
 msgstr "Huts egin du testua kopiatzean"
 
@@ -209,8 +209,8 @@ msgstr "Ikusi errorearen xehetasunak"
 msgid "Execution Error"
 msgstr "Exekuzio errorea"
 
-#: src/components/ExecutionDetail.vue:285
-#: src/components/ExecutionDetail.vue:352
+#: src/components/ExecutionDetail.vue:294
+#: src/components/ExecutionDetail.vue:361
 msgid "Selection copied to clipboard"
 msgstr "Hautapena arbelean kopiatu da"
 
@@ -303,17 +303,17 @@ msgid "Menu"
 msgstr "Menua"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:38 src/stores/program.js:135
+#: src/pages/apps/index.vue:39 src/stores/program.js:135
 msgid "Apps"
 msgstr "Aplikazioak"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:49 src/stores/program.js:160
+#: src/pages/devices/index.vue:50 src/stores/program.js:160
 msgid "Devices"
 msgstr "Gailuak"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:32 src/stores/program.js:171
+#: src/pages/tags/index.vue:33 src/stores/program.js:171
 msgid "Tags"
 msgstr "Etiketak"
 
@@ -497,6 +497,14 @@ msgstr "Sinkronizatzen..."
 msgid "Client does not manage devices"
 msgstr "Bezeroak ez ditu gailuak kudeatzen"
 
+#: src/pages/Error404.vue:9
+msgid "Oops. Nothing here..."
+msgstr "Ups. Ez dago ezer hemen..."
+
+#: src/pages/Error404.vue:18
+msgid "Go Home"
+msgstr "Hasierara joan"
+
 #: src/stores/auth.js:128
 msgid "User with privileges"
 msgstr "Pribilegioko erabiltzailea"
@@ -513,6 +521,10 @@ msgstr "Arazo bat izan da erregistroarekin"
 msgid "Registered Computer!"
 msgstr "¡Erregistratutako ordenagailua!"
 
+#: src/stores/devices.js:212
+msgid "Device not found"
+msgstr "Ez da gailua aurkitu"
+
 #: src/stores/executions.js:141
 msgid "Synchronization finished"
 msgstr "Sinkronizazioa amaitu da"
@@ -521,7 +533,7 @@ msgstr "Sinkronizazioa amaitu da"
 msgid "Please wait, other process is running!!!"
 msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 
-#: src/stores/executions.js:441
+#: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr "Komandoa bertan behera utzi da"
 
@@ -556,6 +568,26 @@ msgstr "Paketeak"
 #: src/stores/server.js:42
 msgid "This app requires at least Migasfree Client %{version}"
 msgstr "Aplikazio honek Migasfree Bezero gutxiago behar du %{version}"
+
+#: src/stores/ui.js:51
+msgid "Server Error"
+msgstr "Zerbitzari-errorea"
+
+#: src/stores/ui.js:54
+msgid "UnAuthorized"
+msgstr "Baimenik gabe"
+
+#: src/stores/ui.js:55
+msgid "API Route is Missing or Undefined"
+msgstr "API bidea falta da edo zehaztu gabe dago"
+
+#: src/stores/ui.js:56
+msgid "API Route Method Not Allowed"
+msgstr "Baimenik gabeko API bidearen metodoa"
+
+#: src/stores/ui.js:57
+msgid "Validation Error"
+msgstr "Balioztatze-errorea"
 
 #~ msgid "Register Computer on the Server"
 #~ msgstr "Erregistratu ordenagailua zerbitzarian"
