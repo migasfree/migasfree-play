@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const readToken = async () => {
     const data = await window.electronAPI.token.read()
-    return data?.token || null
+    return data || null
   }
 
   const requestToken = async () => {

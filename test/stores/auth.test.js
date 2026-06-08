@@ -40,7 +40,7 @@ describe('Auth Store', () => {
     vi.clearAllMocks()
 
     // Default mock return values
-    window.electronAPI.token.read.mockResolvedValue({})
+    window.electronAPI.token.read.mockResolvedValue('')
     window.electronAPI.token.write.mockResolvedValue(undefined)
     window.electronAPI.token.request = vi.fn() // Add request mock
     window.electronAPI.user.check.mockResolvedValue({ is_privileged: false })
@@ -87,7 +87,7 @@ describe('Auth Store', () => {
 
   describe('getToken()', () => {
     it('uses cached token if available', async () => {
-      window.electronAPI.token.read.mockResolvedValue({ token: 'cached-token' })
+      window.electronAPI.token.read.mockResolvedValue('cached-token')
 
       const store = useAuthStore()
       await store.getToken()
@@ -97,7 +97,7 @@ describe('Auth Store', () => {
     })
 
     it('fetches new token from server if not cached', async () => {
-      window.electronAPI.token.read.mockResolvedValue({}) // No local token
+      window.electronAPI.token.read.mockResolvedValue('') // No local token
       window.electronAPI.token.request.mockResolvedValue({ token: 'new-token' })
 
       const store = useAuthStore()
@@ -125,7 +125,7 @@ describe('Auth Store', () => {
     })
 
     it('returns error on invalid credentials', async () => {
-      window.electronAPI.token.read.mockResolvedValue({})
+      window.electronAPI.token.read.mockResolvedValue('')
       window.electronAPI.token.request.mockRejectedValue({
         response: { status: 400 },
       })

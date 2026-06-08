@@ -107,7 +107,7 @@ describe('Program Store', () => {
     window.electronAPI.token.request = vi
       .fn()
       .mockResolvedValue({ token: 'valid-token' })
-    window.electronAPI.token.read.mockResolvedValue({})
+    window.electronAPI.token.read.mockResolvedValue('')
     window.electronAPI.token.write.mockResolvedValue(undefined)
     window.electronAPI.getEnvConfig.mockResolvedValue({
       user: 'test-user',
