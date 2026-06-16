@@ -15,7 +15,7 @@
           @update:model-value="setLanguage"
         >
           <template #prepend>
-            <q-icon :name="appIcon('language')" size="xs" />
+            <q-icon :name="appIcon('language')" size="xs" aria-hidden="true" />
           </template>
         </q-select>
       </div>

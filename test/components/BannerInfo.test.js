@@ -1,6 +1,13 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import BannerInfo from 'src/components/BannerInfo.vue'
+
+// Mock vue3-gettext
+vi.mock('vue3-gettext', () => ({
+  useGettext: () => ({
+    $gettext: (key) => key,
+  }),
+}))
 
 describe('BannerInfo Component', () => {
   const globalConfig = {

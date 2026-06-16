@@ -1,7 +1,7 @@
 <template>
   <q-item v-if="show">
     <q-item-section avatar>
-      <q-icon :name="icon" color="blue-grey-7" />
+      <q-icon :name="icon" color="blue-grey-7" aria-hidden="true" />
     </q-item-section>
 
     <q-item-section class="text-body1">

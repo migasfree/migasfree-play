@@ -49,6 +49,7 @@
           color="grey-7"
           :icon="appIcon('info_outline')"
           class="action-hover"
+          :aria-label="$gettext('Information about tags')"
         >
           <q-tooltip>{{
             $gettext(

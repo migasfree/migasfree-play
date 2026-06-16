@@ -1,6 +1,6 @@
 <template>
   <div :class="['banner', `banner--${type}`]" role="alert">
-    <q-icon :name="resolvedIcon" class="banner-icon" />
+    <q-icon :name="resolvedIcon" class="banner-icon" aria-hidden="true" />
     <div class="banner-message">
       <slot>{{ message }}</slot>
     </div>
@@ -12,6 +12,7 @@
       :icon="appIcon('close')"
       size="sm"
       class="q-ml-sm"
+      :aria-label="$gettext('Close')"
       @click="$emit('close')"
     />
   </div>
@@ -19,9 +20,12 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
 import { appIcon } from 'src/composables/element'
 
 defineOptions({ name: 'BannerInfo' })
+
+const { $gettext } = useGettext()
 
 const props = defineProps({
   message: { type: String, default: '' },

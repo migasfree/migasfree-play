@@ -29,6 +29,7 @@
         color="primary"
         :loading="props.loading"
         :disabled="props.loading"
+        :aria-label="$gettext('Update')"
         @click="$emit('sync')"
       >
         <q-tooltip>{{ $gettext('Update') }}</q-tooltip>

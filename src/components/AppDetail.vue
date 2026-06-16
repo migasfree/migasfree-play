@@ -107,6 +107,7 @@
             color="orange-10"
             :icon="appIcon('unlock')"
             class="action-hover"
+            :aria-label="$gettext('Manage with privileges')"
             @click="$emit('openlogin')"
           >
             <q-tooltip>{{ $gettext('Manage with privileges') }}</q-tooltip>
@@ -120,6 +121,7 @@
             color="brown-8"
             :icon="appIcon('lock')"
             class="action-hover"
+            :aria-label="$gettext('Locked')"
           >
             <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
           </q-btn>
