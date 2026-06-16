@@ -73,6 +73,7 @@ describe('Element Composable Icons & Labels', () => {
   describe('elementIcon()', () => {
     it('returns correct icon for known status', () => {
       expect(elementIcon('intended')).toBe('mdi-heart-pulse')
+      expect(elementIcon('assigned')).toBe('mdi-heart-pulse')
     })
 
     it('returns unknown icon for undefined or empty status', () => {
@@ -88,7 +89,8 @@ describe('Element Composable Icons & Labels', () => {
   describe('computerStatus()', () => {
     it('returns translated label for known status', () => {
       const { computerStatus } = useElement()
-      expect(computerStatus('intended')).toBe('Intended')
+      expect(computerStatus('intended')).toBe('Assigned')
+      expect(computerStatus('assigned')).toBe('Assigned')
       expect(computerStatus('available')).toBe('Available')
     })
 

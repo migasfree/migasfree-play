@@ -69,6 +69,7 @@ export const APP_ICON = {
 
 export const ELEMENT_ICON = {
   intended: 'mdi-heart-pulse',
+  assigned: 'mdi-heart-pulse',
   available: 'mdi-cart',
   'in repair': 'mdi-wrench',
   reserved: 'mdi-lock-clock',
@@ -181,7 +182,8 @@ export const useElement = () => {
       available: $gettext('Available'),
       'in repair': $gettext('In repair'),
       reserved: $gettext('Reserved'),
-      intended: $gettext('Intended'),
+      intended: $gettext('Assigned'),
+      assigned: $gettext('Assigned'),
       unsubscribed: $gettext('Unsubscribed'),
     }
 
