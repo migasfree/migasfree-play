@@ -165,6 +165,8 @@ msgid "Default"
 msgstr ""
 
 #: src/components/DeviceDetail.vue:90
+#: src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Assigned"
 msgstr ""
 
@@ -442,27 +444,23 @@ msgstr ""
 msgid "Setting Tags..."
 msgstr ""
 
-#: src/composables/element.js:181
+#: src/composables/element.js:182
 msgid "Available"
 msgstr ""
 
-#: src/composables/element.js:182
+#: src/composables/element.js:183
 msgid "In repair"
 msgstr ""
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Reserved"
 msgstr ""
 
-#: src/composables/element.js:184
-msgid "Intended"
-msgstr ""
-
-#: src/composables/element.js:185
+#: src/composables/element.js:187
 msgid "Unsubscribed"
 msgstr ""
 
-#: src/composables/element.js:188
+#: src/composables/element.js:190
 msgid "Unknown"
 msgstr ""
 

@@ -169,7 +169,8 @@ msgstr "Conexión: %{type} %{ip}"
 msgid "Default"
 msgstr "Por defecto"
 
-#: src/components/DeviceDetail.vue:90
+#: src/components/DeviceDetail.vue:90 src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Assigned"
 msgstr "Asignado"
 
@@ -433,27 +434,23 @@ msgstr "Comunicar etiquetas"
 msgid "Setting Tags..."
 msgstr "Establecer etiquetas..."
 
-#: src/composables/element.js:181
+#: src/composables/element.js:182
 msgid "Available"
 msgstr "Dispoñible"
 
-#: src/composables/element.js:182
+#: src/composables/element.js:183
 msgid "In repair"
 msgstr "En reparación"
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Reserved"
 msgstr "Reservado"
 
-#: src/composables/element.js:184
-msgid "Intended"
-msgstr "Asignado"
-
-#: src/composables/element.js:185
+#: src/composables/element.js:187
 msgid "Unsubscribed"
 msgstr "Baixa"
 
-#: src/composables/element.js:188
+#: src/composables/element.js:190
 msgid "Unknown"
 msgstr "Descoñecido"
 
@@ -601,6 +598,9 @@ msgstr "Método de ruta de API non permitido"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Erro de validación"
+
+#~ msgid "Intended"
+#~ msgstr "Asignado"
 
 #~ msgid "Register Computer on the Server"
 #~ msgstr "Rexistrar o ordenador no servidor"

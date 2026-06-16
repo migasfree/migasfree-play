@@ -169,7 +169,8 @@ msgstr "Konexioa: %{type} %{ip}"
 msgid "Default"
 msgstr "Lehenetsia"
 
-#: src/components/DeviceDetail.vue:90
+#: src/components/DeviceDetail.vue:90 src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Assigned"
 msgstr "Esleitua"
 
@@ -433,27 +434,23 @@ msgstr "Etiketak komunikatu"
 msgid "Setting Tags..."
 msgstr "Etiketak ezartzea..."
 
-#: src/composables/element.js:181
+#: src/composables/element.js:182
 msgid "Available"
 msgstr "Eskuragarri"
 
-#: src/composables/element.js:182
+#: src/composables/element.js:183
 msgid "In repair"
 msgstr "Konponketan"
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
-#: src/composables/element.js:184
-msgid "Intended"
-msgstr "Asmoa"
-
-#: src/composables/element.js:185
+#: src/composables/element.js:187
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
-#: src/composables/element.js:188
+#: src/composables/element.js:190
 msgid "Unknown"
 msgstr "Ezezaguna"
 
@@ -601,6 +598,9 @@ msgstr "Baimenik gabeko API bidearen metodoa"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Balioztatze-errorea"
+
+#~ msgid "Intended"
+#~ msgstr "Asmoa"
 
 #~ msgid "Register Computer on the Server"
 #~ msgstr "Erregistratu ordenagailua zerbitzarian"

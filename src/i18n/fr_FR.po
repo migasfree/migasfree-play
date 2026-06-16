@@ -169,7 +169,8 @@ msgstr "Connexion: %{type} %{ip}"
 msgid "Default"
 msgstr "Défaut"
 
-#: src/components/DeviceDetail.vue:90
+#: src/components/DeviceDetail.vue:90 src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Assigned"
 msgstr "Attribué"
 
@@ -434,27 +435,23 @@ msgstr "Communiquer les étiquettes"
 msgid "Setting Tags..."
 msgstr "Définition des étiquettes..."
 
-#: src/composables/element.js:181
+#: src/composables/element.js:182
 msgid "Available"
 msgstr "Disponible"
 
-#: src/composables/element.js:182
+#: src/composables/element.js:183
 msgid "In repair"
 msgstr "En réparation"
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Reserved"
 msgstr "Réservé"
 
-#: src/composables/element.js:184
-msgid "Intended"
-msgstr "Attribué"
-
-#: src/composables/element.js:185
+#: src/composables/element.js:187
 msgid "Unsubscribed"
 msgstr "Désinscrit"
 
-#: src/composables/element.js:188
+#: src/composables/element.js:190
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -605,6 +602,9 @@ msgstr "Méthode de la route API non autorisée"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Erreur de validation"
+
+#~ msgid "Intended"
+#~ msgstr "Attribué"
 
 #~ msgid "Register Computer on the Server"
 #~ msgstr "Enregistrer l'ordinateur sur le serveur"
