@@ -20,8 +20,12 @@ vi.mock('boot/gettext', () => ({
   },
 }))
 
+const mockUiStore = {
+  notifyError: vi.fn(),
+  notifySuccess: vi.fn(),
+}
 vi.mock('src/stores/ui', () => ({
-  useUiStore: () => ({ notifyError: vi.fn() }),
+  useUiStore: () => mockUiStore,
 }))
 
 const mockPreferencesData = {
@@ -122,6 +126,9 @@ describe('Preferences Store', () => {
           dark_mode: true,
           show_apps: true,
         }),
+      )
+      expect(mockUiStore.notifySuccess).toHaveBeenCalledWith(
+        'Preferences saved successfully',
       )
     })
 

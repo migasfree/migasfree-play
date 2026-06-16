@@ -57,6 +57,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
       await window.electronAPI.preferences.write(payload)
       Dark.set(darkMode.value)
       LocalStorage.set('darkMode', darkMode.value)
+      uiStore.notifySuccess(gettext.$gettext('Preferences saved successfully'))
     } catch (error) {
       uiStore.notifyError(error)
     }
