@@ -33,8 +33,7 @@ import registerUserHandlers from './handlers/user.js'
 import registerAppsHandlers from './handlers/apps.js'
 import registerDevicesHandlers from './handlers/devices.js'
 import { validateSpawn } from './ipc-validation.js'
-
-const platform = process.platform || os.platform()
+import { platform, isWindows, isDarwin, getShell } from './platform-helper.js'
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const runningProcesses = new Map() // Store running command processes for IPC
 
@@ -118,7 +117,7 @@ ipcMain.on('app:log', (_, { message, type }) => {
 
 // IPC Handlers - App State
 ipcMain.handle('app:get-sync-after-start', () => app.syncAfterStart)
-ipcMain.handle('app:get-platform', () => process.platform)
+ipcMain.handle('app:get-platform', () => platform)
 ipcMain.handle('app:get-env-config', async () => {
   const user = process.env.MFP_USER || envDefaults.user
   const password = process.env.MFP_PASSWORD || envDefaults.password
@@ -226,9 +225,8 @@ ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
     return
   }
 
-  const shellOption = process.platform === 'linux' ? '/bin/bash' : true
   const subprocess = spawn(command, args, {
-    shell: shellOption,
+    shell: getShell(),
     env: { ...process.env, MIGASFREE_CLIENT_DEBUG: 'False', ...env },
   })
 
@@ -362,7 +360,7 @@ app.commandLine.appendSwitch('ignore-certificate-errors')
 
 const gotTheLock = app.requestSingleInstanceLock()
 
-if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
+if (isWindows && nativeTheme.shouldUseDarkColors === true) {
   unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
 }
 
@@ -457,7 +455,7 @@ if (!gotTheLock) {
   app.whenReady().then(createWindow)
 
   app.on('window-all-closed', () => {
-    if (platform !== 'darwin') {
+    if (!isDarwin) {
       app.quit()
     }
   })

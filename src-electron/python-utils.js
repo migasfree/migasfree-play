@@ -1,9 +1,9 @@
 /* eslint no-undef: "off" */
-import os from 'os'
 import path from 'path'
 import { execSync, execFile, exec } from 'child_process'
 import { promisify } from 'util'
 import { PythonShell } from 'python-shell'
+import { isWindows, getPythonCommand, getShell } from './platform-helper.js'
 
 const execFileAsync = promisify(execFile)
 const execAsync = promisify(exec)
@@ -17,9 +17,7 @@ const getScriptsPath = () => {
 }
 
 const getPython = () => {
-  const platform = os.platform()
-
-  if (platform === 'win32') return 'python'
+  if (isWindows) return getPythonCommand()
 
   const cmd = `
 _PYTHON=$(which python2 2>/dev/null)
@@ -32,7 +30,7 @@ else
 fi`
 
   try {
-    return execSync(cmd, { shell: '/bin/bash' }).toString().trim()
+    return execSync(cmd, { shell: getShell() }).toString().trim()
   } catch {
     return 'python3'
   }
@@ -51,7 +49,7 @@ const pythonShellOptions = {
 }
 
 const getMigasfreeBinary = () => {
-  if (os.platform() !== 'win32') return 'migasfree'
+  if (!isWindows) return 'migasfree'
   try {
     execSync('where migasfree.cmd', { stdio: 'ignore' })
     return 'migasfree.cmd'
