@@ -6,6 +6,7 @@ import {
   debug,
   getScriptsPath,
 } from '../python-utils.js'
+import { validateVersion, validatePackages } from '../ipc-validation.js'
 
 /**
  * Registers IPC handlers related to package management.
@@ -19,6 +20,7 @@ export default function registerPackagesHandlers() {
    * @returns {Promise<Array>} List of available packages.
    */
   ipcMain.handle('packages:get-available', async (_, { version }) => {
+    validateVersion(version)
     if (debug) console.log('[ipc] Getting available packages...')
 
     if (version && version.startsWith('4.')) {
@@ -50,6 +52,8 @@ export default function registerPackagesHandlers() {
    * @returns {Promise<Array>} List of installed packages with details.
    */
   ipcMain.handle('packages:get-installed', async (_, { packages, version }) => {
+    validatePackages(packages)
+    validateVersion(version)
     if (debug) console.log('[ipc] Getting installed packages...')
 
     if (version && version.startsWith('4.')) {
@@ -87,6 +91,7 @@ export default function registerPackagesHandlers() {
    * @returns {Promise<Array>} List of local inventory packages.
    */
   ipcMain.handle('packages:get-inventory', async (_, { version }) => {
+    validateVersion(version)
     if (debug) console.log('[ipc] Getting packages inventory...')
 
     if (version && version.startsWith('4.')) {

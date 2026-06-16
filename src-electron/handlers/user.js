@@ -6,6 +6,7 @@ import {
   debug,
   getScriptsPath,
 } from '../python-utils.js'
+import { validateCredentials } from '../ipc-validation.js'
 
 /**
  * Registers IPC handlers related to user actions.
@@ -21,6 +22,7 @@ export default function registerUserHandlers() {
    * @returns {Promise<Object>} Object containing the privilege status.
    */
   ipcMain.handle('user:check', async (_, { username, password, version }) => {
+    validateCredentials({ username, password, version })
     if (debug) console.log('[ipc] Checking user...')
 
     if (version && version.startsWith('4.')) {

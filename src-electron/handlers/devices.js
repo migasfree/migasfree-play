@@ -1,5 +1,9 @@
 import { ipcMain } from 'electron'
 import { cliExecute, debug, getClientVersion } from '../python-utils.js'
+import {
+  validateDeviceId,
+  validateDeviceAssignment,
+} from '../ipc-validation.js'
 
 export default function registerDevicesHandlers() {
   ipcMain.handle('devices:get-available', async () => {
@@ -23,6 +27,7 @@ export default function registerDevicesHandlers() {
   })
 
   ipcMain.handle('devices:get-logical', async (_, { deviceId }) => {
+    validateDeviceId(deviceId)
     if (debug) console.log(`[ipc] Getting logical devices...`)
     try {
       const version = await getClientVersion()
@@ -63,6 +68,7 @@ export default function registerDevicesHandlers() {
   })
 
   ipcMain.handle('devices:assign', async (_, { logicalId, assigned }) => {
+    validateDeviceAssignment(logicalId, assigned)
     if (debug)
       console.log(
         `[ipc] Assigning logical device: logicalId=${logicalId}, assigned=${assigned}...`,
@@ -86,6 +92,7 @@ export default function registerDevicesHandlers() {
   })
 
   ipcMain.handle('devices:set-default', async (_, { logicalId }) => {
+    validateDeviceAssignment(logicalId)
     if (debug)
       console.log(
         `[ipc] Setting default logical device: logicalId=${logicalId}...`,

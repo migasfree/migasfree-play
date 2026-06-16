@@ -6,6 +6,7 @@ import {
   getClientVersion,
   clearConfCache,
 } from '../python-utils.js'
+import { validateCredentials } from '../ipc-validation.js'
 
 /**
  * Robustly parses JSON from terminal outputs, ignoring leading/trailing noise
@@ -172,6 +173,7 @@ print(json.dumps(ret))`
   ipcMain.handle(
     'computer:register',
     async (_, { user, password, version }) => {
+      validateCredentials({ user, password, version })
       if (debug) console.log('[ipc] Registering Computer...')
 
       try {

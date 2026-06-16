@@ -32,6 +32,7 @@ import { getClientVersion } from './python-utils.js'
 import registerUserHandlers from './handlers/user.js'
 import registerAppsHandlers from './handlers/apps.js'
 import registerDevicesHandlers from './handlers/devices.js'
+import { validateSpawn } from './ipc-validation.js'
 
 const platform = process.platform || os.platform()
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
@@ -179,6 +180,17 @@ ipcMain.on('app:relaunch', () => {
 const ALLOWED_COMMANDS = ['migasfree', 'migasfree-tags']
 
 ipcMain.on('command:spawn', (event, { id, command, args, input, env }) => {
+  try {
+    validateSpawn({ id, command, args, input, env })
+  } catch (err) {
+    console.error(`[Security] IPC Validation Failed: ${err.message}`)
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(`command:stderr:${id}`, `Error: ${err.message}`)
+      event.sender.send(`command:exit:${id}`, 1)
+    }
+    return
+  }
+
   if (runningProcesses.has(id)) {
     console.log(
       `[Process Manager] Process ${id} is already registered. Re-attaching...`,

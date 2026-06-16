@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { ipcMain } from 'electron'
 import { pythonExecute, debug, getConfInfo } from '../python-utils.js'
+import { validateTokenRequest } from '../ipc-validation.js'
 
 const tokenFile = path.join(os.homedir(), '.migasfree-play', 'token')
 
@@ -39,6 +40,7 @@ export default function registerTokenHandlers() {
   })
 
   ipcMain.handle('token:request', async (_, { url, username, password }) => {
+    validateTokenRequest(url, username, password)
     if (debug) console.log(`[ipc] Requesting token from ${url}`)
 
     try {

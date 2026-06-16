@@ -8,6 +8,10 @@ import {
   getClientVersion,
   getConfInfo,
 } from '../python-utils.js'
+import {
+  validatePreferencesContent,
+  validateVersion,
+} from '../ipc-validation.js'
 
 const SETTINGS_FILE = path.resolve(
   os.homedir(),
@@ -61,6 +65,7 @@ export default function registerPreferencesHandlers() {
   })
 
   ipcMain.handle('preferences:write', (_, content) => {
+    validatePreferencesContent(content)
     if (debug) console.log('[ipc] Setting preferences...')
     try {
       writeSettings(content)
@@ -126,6 +131,7 @@ print(json.dumps(ret))`
   })
 
   ipcMain.handle('preferences:get-protocol', async (_, { version } = {}) => {
+    validateVersion(version)
     if (debug) console.log('[ipc] Getting API protocol...')
 
     try {
