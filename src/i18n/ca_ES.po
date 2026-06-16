@@ -78,23 +78,24 @@ msgstr "Desinstal·lar aplicació"
 msgid "Uninstall"
 msgstr "Desinstal·la"
 
-#: src/components/AppDetail.vue:112 src/components/Tags.vue:71
+#: src/components/AppDetail.vue:110 src/components/AppDetail.vue:113
+#: src/components/Tags.vue:72
 msgid "Manage with privileges"
 msgstr "Gestionar amb privilegis"
 
-#: src/components/AppDetail.vue:124
+#: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
 msgid "Locked"
 msgstr "Tancat"
 
-#: src/components/AppDetail.vue:138
+#: src/components/AppDetail.vue:140
 msgid "Installed"
 msgstr "Instal·lat"
 
-#: src/components/AppDetail.vue:232
+#: src/components/AppDetail.vue:234
 msgid "Installing %{name}"
 msgstr "Instal·lació %{name}"
 
-#: src/components/AppDetail.vue:251
+#: src/components/AppDetail.vue:253
 msgid "Uninstalling %{name}"
 msgstr "S'està desinstal·lant %{name}"
 
@@ -114,6 +115,10 @@ msgstr "Veure només aplicacions instal·lades"
 #: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr "No hi ha elements per mostrar."
+
+#: src/components/BannerInfo.vue:15
+msgid "Close"
+msgstr "Tancar"
 
 #: src/components/CopyButton.vue:43
 msgid "Copy"
@@ -336,7 +341,7 @@ msgstr "Preferències"
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/components/PageLayout.vue:34
+#: src/components/PageLayout.vue:32 src/components/PageLayout.vue:35
 msgid "Update"
 msgstr "Actualització"
 
@@ -380,7 +385,11 @@ msgstr "Etiquetes assignades"
 msgid "Add or search tags..."
 msgstr "Afegir o cercar etiquetes..."
 
-#: src/components/Tags.vue:54
+#: src/components/Tags.vue:52
+msgid "Information about tags"
+msgstr "Informació sobre etiquetes"
+
+#: src/components/Tags.vue:55
 msgid ""
 "Tags allow you to classify this computer to receive specific software or "
 "belong to logical management groups."
@@ -388,39 +397,39 @@ msgstr ""
 "Les etiquetes permeten classificar aquest ordinador per rebre programari "
 "específic o pertànyer a grups de gestió lògica."
 
-#: src/components/Tags.vue:68
+#: src/components/Tags.vue:69
 msgid "Unlock Management"
 msgstr "Desbloquejar gestió"
 
-#: src/components/Tags.vue:82
+#: src/components/Tags.vue:83
 msgid "Communicate"
 msgstr "Comunicar"
 
-#: src/components/Tags.vue:86
+#: src/components/Tags.vue:87
 msgid "Communicate tags to the server"
 msgstr "Comunicar etiquetes al servidor"
 
-#: src/components/Tags.vue:97 src/components/Tags.vue:182
+#: src/components/Tags.vue:98 src/components/Tags.vue:183
 msgid "Set Tags"
 msgstr "Estableix etiquetes"
 
-#: src/components/Tags.vue:100
+#: src/components/Tags.vue:101
 msgid "Set tags at the server"
 msgstr "Estableix etiquetes al servidor"
 
-#: src/components/Tags.vue:109
+#: src/components/Tags.vue:110
 msgid "There are no tags available to show."
 msgstr "No hi ha etiquetes disponibles per mostrar."
 
-#: src/components/Tags.vue:164
+#: src/components/Tags.vue:165
 msgid "Communicating..."
 msgstr "Comunicant-se..."
 
-#: src/components/Tags.vue:170
+#: src/components/Tags.vue:171
 msgid "Communicate Tags"
 msgstr "Comunicar etiquetes"
 
-#: src/components/Tags.vue:176
+#: src/components/Tags.vue:177
 msgid "Setting Tags..."
 msgstr "Configuració d'etiquetes..."
 
@@ -536,6 +545,10 @@ msgstr "Espereu, un altre procés s'està executant!!!"
 #: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr "Comanda cancel·lada"
+
+#: src/stores/preferences.js:60
+msgid "Preferences saved successfully"
+msgstr "Preferències desades correctament"
 
 #: src/stores/program.js:68
 msgid "Server"

@@ -78,23 +78,24 @@ msgstr "Désinstaller l'application"
 msgid "Uninstall"
 msgstr "Désinstaller"
 
-#: src/components/AppDetail.vue:112 src/components/Tags.vue:71
+#: src/components/AppDetail.vue:110 src/components/AppDetail.vue:113
+#: src/components/Tags.vue:72
 msgid "Manage with privileges"
 msgstr "Gérer avec des privilèges"
 
-#: src/components/AppDetail.vue:124
+#: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
 msgid "Locked"
 msgstr "Verrouillé"
 
-#: src/components/AppDetail.vue:138
+#: src/components/AppDetail.vue:140
 msgid "Installed"
 msgstr "Installé"
 
-#: src/components/AppDetail.vue:232
+#: src/components/AppDetail.vue:234
 msgid "Installing %{name}"
 msgstr "Installation de %{name}"
 
-#: src/components/AppDetail.vue:251
+#: src/components/AppDetail.vue:253
 msgid "Uninstalling %{name}"
 msgstr "Désinstallation de %{name}"
 
@@ -114,6 +115,10 @@ msgstr "Voir uniquement les applications installées"
 #: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr "Aucun élément à afficher."
+
+#: src/components/BannerInfo.vue:15
+msgid "Close"
+msgstr "Fermer"
 
 #: src/components/CopyButton.vue:43
 msgid "Copy"
@@ -336,7 +341,7 @@ msgstr "Préférences"
 msgid "Help"
 msgstr "Aide"
 
-#: src/components/PageLayout.vue:34
+#: src/components/PageLayout.vue:32 src/components/PageLayout.vue:35
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -381,7 +386,11 @@ msgstr "Étiquettes attribuées"
 msgid "Add or search tags..."
 msgstr "Ajouter ou rechercher des étiquettes..."
 
-#: src/components/Tags.vue:54
+#: src/components/Tags.vue:52
+msgid "Information about tags"
+msgstr "Informations sur les étiquettes"
+
+#: src/components/Tags.vue:55
 msgid ""
 "Tags allow you to classify this computer to receive specific software or "
 "belong to logical management groups."
@@ -389,39 +398,39 @@ msgstr ""
 "Les étiquettes vous permettent de classer cet ordinateur pour recevoir des "
 "logiciels spécifiques ou appartenir à des groupes de gestion logique."
 
-#: src/components/Tags.vue:68
+#: src/components/Tags.vue:69
 msgid "Unlock Management"
 msgstr "Déverrouiller la gestion"
 
-#: src/components/Tags.vue:82
+#: src/components/Tags.vue:83
 msgid "Communicate"
 msgstr "Communiquer"
 
-#: src/components/Tags.vue:86
+#: src/components/Tags.vue:87
 msgid "Communicate tags to the server"
 msgstr "Communiquer les étiquettes au serveur"
 
-#: src/components/Tags.vue:97 src/components/Tags.vue:182
+#: src/components/Tags.vue:98 src/components/Tags.vue:183
 msgid "Set Tags"
 msgstr "Définir les étiquettes"
 
-#: src/components/Tags.vue:100
+#: src/components/Tags.vue:101
 msgid "Set tags at the server"
 msgstr "Définir les étiquettes sur le serveur"
 
-#: src/components/Tags.vue:109
+#: src/components/Tags.vue:110
 msgid "There are no tags available to show."
 msgstr "Aucune étiquette disponible à afficher."
 
-#: src/components/Tags.vue:164
+#: src/components/Tags.vue:165
 msgid "Communicating..."
 msgstr "Communication en cours..."
 
-#: src/components/Tags.vue:170
+#: src/components/Tags.vue:171
 msgid "Communicate Tags"
 msgstr "Communiquer les étiquettes"
 
-#: src/components/Tags.vue:176
+#: src/components/Tags.vue:177
 msgid "Setting Tags..."
 msgstr "Définition des étiquettes..."
 
@@ -537,6 +546,10 @@ msgstr "Veuillez patienter, un autre processus est en cours d'exécution !"
 #: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr "Commande annulée"
+
+#: src/stores/preferences.js:60
+msgid "Preferences saved successfully"
+msgstr "Préférences enregistrées avec succès"
 
 #: src/stores/program.js:68
 msgid "Server"

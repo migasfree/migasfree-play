@@ -78,23 +78,24 @@ msgstr "Desinstalatu aplikazioa"
 msgid "Uninstall"
 msgstr "Desinstalatu"
 
-#: src/components/AppDetail.vue:112 src/components/Tags.vue:71
+#: src/components/AppDetail.vue:110 src/components/AppDetail.vue:113
+#: src/components/Tags.vue:72
 msgid "Manage with privileges"
 msgstr "Kudeatu pribilegioekin"
 
-#: src/components/AppDetail.vue:124
+#: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
 msgid "Locked"
 msgstr "Blokeatua"
 
-#: src/components/AppDetail.vue:138
+#: src/components/AppDetail.vue:140
 msgid "Installed"
 msgstr "Instalatua"
 
-#: src/components/AppDetail.vue:232
+#: src/components/AppDetail.vue:234
 msgid "Installing %{name}"
 msgstr "Instalatzen %{name}"
 
-#: src/components/AppDetail.vue:251
+#: src/components/AppDetail.vue:253
 msgid "Uninstalling %{name}"
 msgstr "Desinstalatzen %{name}"
 
@@ -114,6 +115,10 @@ msgstr "Ikusi instalatutako aplikazioak soilik"
 #: src/components/Executions.vue:17
 msgid "There are no items to show."
 msgstr "Ez dago erakusteko elementurik."
+
+#: src/components/BannerInfo.vue:15
+msgid "Close"
+msgstr "Itxi"
 
 #: src/components/CopyButton.vue:43
 msgid "Copy"
@@ -336,7 +341,7 @@ msgstr "Hobespenak"
 msgid "Help"
 msgstr "Laguntza"
 
-#: src/components/PageLayout.vue:34
+#: src/components/PageLayout.vue:32 src/components/PageLayout.vue:35
 msgid "Update"
 msgstr "Eguneratu"
 
@@ -380,7 +385,11 @@ msgstr "Esleitutako etiketak"
 msgid "Add or search tags..."
 msgstr "Gehitu edo bilatu etiketak..."
 
-#: src/components/Tags.vue:54
+#: src/components/Tags.vue:52
+msgid "Information about tags"
+msgstr "Etiketei buruzko informazioa"
+
+#: src/components/Tags.vue:55
 msgid ""
 "Tags allow you to classify this computer to receive specific software or "
 "belong to logical management groups."
@@ -388,39 +397,39 @@ msgstr ""
 "Etiketek ordenagailu hau sailkatzea ahalbidetzen dute, software espezifikoa "
 "jasotzeko edo kudeaketa-talde logikoetako kide izateko."
 
-#: src/components/Tags.vue:68
+#: src/components/Tags.vue:69
 msgid "Unlock Management"
 msgstr "Desblokeatu kudeaketa"
 
-#: src/components/Tags.vue:82
+#: src/components/Tags.vue:83
 msgid "Communicate"
 msgstr "Komunikatu"
 
-#: src/components/Tags.vue:86
+#: src/components/Tags.vue:87
 msgid "Communicate tags to the server"
 msgstr "Komunikatu etiketak zerbitzariari"
 
-#: src/components/Tags.vue:97 src/components/Tags.vue:182
+#: src/components/Tags.vue:98 src/components/Tags.vue:183
 msgid "Set Tags"
 msgstr "Ezarri etiketak"
 
-#: src/components/Tags.vue:100
+#: src/components/Tags.vue:101
 msgid "Set tags at the server"
 msgstr "Ezarri etiketak zerbitzarian"
 
-#: src/components/Tags.vue:109
+#: src/components/Tags.vue:110
 msgid "There are no tags available to show."
 msgstr "Ez dago erakusteko etiketarik eskuragarri."
 
-#: src/components/Tags.vue:164
+#: src/components/Tags.vue:165
 msgid "Communicating..."
 msgstr "Komunikatzen..."
 
-#: src/components/Tags.vue:170
+#: src/components/Tags.vue:171
 msgid "Communicate Tags"
 msgstr "Etiketak komunikatu"
 
-#: src/components/Tags.vue:176
+#: src/components/Tags.vue:177
 msgid "Setting Tags..."
 msgstr "Etiketak ezartzea..."
 
@@ -536,6 +545,10 @@ msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 #: src/stores/executions.js:446
 msgid "Command cancelled"
 msgstr "Komandoa bertan behera utzi da"
+
+#: src/stores/preferences.js:60
+msgid "Preferences saved successfully"
+msgstr "Hobespenak ongi gorde dira"
 
 #: src/stores/program.js:68
 msgid "Server"

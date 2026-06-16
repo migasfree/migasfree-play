@@ -67,24 +67,26 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
-#: src/components/AppDetail.vue:112
-#: src/components/Tags.vue:71
+#: src/components/AppDetail.vue:110
+#: src/components/AppDetail.vue:113
+#: src/components/Tags.vue:72
 msgid "Manage with privileges"
 msgstr ""
 
 #: src/components/AppDetail.vue:124
+#: src/components/AppDetail.vue:126
 msgid "Locked"
 msgstr ""
 
-#: src/components/AppDetail.vue:138
+#: src/components/AppDetail.vue:140
 msgid "Installed"
 msgstr ""
 
-#: src/components/AppDetail.vue:232
+#: src/components/AppDetail.vue:234
 msgid "Installing %{name}"
 msgstr ""
 
-#: src/components/AppDetail.vue:251
+#: src/components/AppDetail.vue:253
 msgid "Uninstalling %{name}"
 msgstr ""
 
@@ -105,6 +107,10 @@ msgstr ""
 #: src/components/Devices.vue:26
 #: src/components/Executions.vue:17
 msgid "There are no items to show."
+msgstr ""
+
+#: src/components/BannerInfo.vue:15
+msgid "Close"
 msgstr ""
 
 #: src/components/CopyButton.vue:43
@@ -350,7 +356,8 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/components/PageLayout.vue:34
+#: src/components/PageLayout.vue:32
+#: src/components/PageLayout.vue:35
 msgid "Update"
 msgstr ""
 
@@ -390,44 +397,48 @@ msgstr ""
 msgid "Add or search tags..."
 msgstr ""
 
-#: src/components/Tags.vue:54
+#: src/components/Tags.vue:52
+msgid "Information about tags"
+msgstr ""
+
+#: src/components/Tags.vue:55
 msgid "Tags allow you to classify this computer to receive specific software or belong to logical management groups."
 msgstr ""
 
-#: src/components/Tags.vue:68
+#: src/components/Tags.vue:69
 msgid "Unlock Management"
 msgstr ""
 
-#: src/components/Tags.vue:82
+#: src/components/Tags.vue:83
 msgid "Communicate"
 msgstr ""
 
-#: src/components/Tags.vue:86
+#: src/components/Tags.vue:87
 msgid "Communicate tags to the server"
 msgstr ""
 
-#: src/components/Tags.vue:97
-#: src/components/Tags.vue:182
+#: src/components/Tags.vue:98
+#: src/components/Tags.vue:183
 msgid "Set Tags"
 msgstr ""
 
-#: src/components/Tags.vue:100
+#: src/components/Tags.vue:101
 msgid "Set tags at the server"
 msgstr ""
 
-#: src/components/Tags.vue:109
+#: src/components/Tags.vue:110
 msgid "There are no tags available to show."
 msgstr ""
 
-#: src/components/Tags.vue:164
+#: src/components/Tags.vue:165
 msgid "Communicating..."
 msgstr ""
 
-#: src/components/Tags.vue:170
+#: src/components/Tags.vue:171
 msgid "Communicate Tags"
 msgstr ""
 
-#: src/components/Tags.vue:176
+#: src/components/Tags.vue:177
 msgid "Setting Tags..."
 msgstr ""
 
@@ -534,6 +545,10 @@ msgstr ""
 
 #: src/stores/executions.js:446
 msgid "Command cancelled"
+msgstr ""
+
+#: src/stores/preferences.js:60
+msgid "Preferences saved successfully"
 msgstr ""
 
 #: src/stores/program.js:68
