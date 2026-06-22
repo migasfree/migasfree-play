@@ -452,7 +452,8 @@ describe('Executions Store', () => {
       expect(window.electronAPI.getActiveTasks).toHaveBeenCalled()
       expect(store.isRunningCommand).toBe(true)
       expect(store.items[activeTask.id]).toBeDefined()
-      expect(store.items[activeTask.id].command).toBe('migasfree sync')
+      expect(store.items[activeTask.id].command).toBe('Synchronization')
+      expect(store.items[activeTask.id].icon).toBe('mdi-sync')
 
       // Simulate new stdout while attached
       stdoutCallback('syncing packages...\n')

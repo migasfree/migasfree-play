@@ -84,6 +84,67 @@ export const useExecutionsStore = defineStore('executions', () => {
     return result
   }
 
+  const getFriendlyDetails = (commandStr) => {
+    if (!commandStr) return null
+    const cmdLower = commandStr.toLowerCase().trim()
+
+    const isRawCommand =
+      cmdLower.startsWith('migasfree') ||
+      cmdLower.startsWith('/usr/bin/migasfree') ||
+      cmdLower.includes('--json') ||
+      cmdLower.includes('--update') ||
+      cmdLower.includes('--install') ||
+      cmdLower.includes('--remove') ||
+      cmdLower.includes('--communicate') ||
+      cmdLower.includes('--set')
+
+    if (!isRawCommand) {
+      return null
+    }
+
+    if (cmdLower.includes('sync') || cmdLower.includes('--update')) {
+      return {
+        command: gettext.$gettext('Synchronization'),
+        icon: 'mdi-sync',
+      }
+    }
+
+    if (cmdLower.includes('install') || cmdLower.includes('--install')) {
+      return {
+        command: gettext.$gettext('Install'),
+        icon: 'mdi-download',
+      }
+    }
+
+    if (cmdLower.includes('purge') || cmdLower.includes('--remove')) {
+      return {
+        command: gettext.$gettext('Uninstall'),
+        icon: 'mdi-delete',
+      }
+    }
+
+    if (cmdLower.includes('tags') || cmdLower.includes('migasfree-tags')) {
+      if (cmdLower.includes('--communicate')) {
+        return {
+          command: gettext.$gettext('Communicate Tags'),
+          icon: 'mdi-comment-processing',
+        }
+      }
+      if (cmdLower.includes('--set')) {
+        return {
+          command: gettext.$gettext('Set Tags'),
+          icon: 'mdi-cog-transfer',
+        }
+      }
+      return {
+        command: gettext.$gettext('Tags'),
+        icon: 'mdi-tag',
+      }
+    }
+
+    return null
+  }
+
   const getExecutions = async () => {
     try {
       const data = await window.electronAPI.executions.read()
@@ -97,11 +158,17 @@ export const useExecutionsStore = defineStore('executions', () => {
           activeTask,
         )
 
+        const rawCommandStr =
+          activeTask.command + ' ' + activeTask.args.join(' ')
+        const friendly = getFriendlyDetails(rawCommandStr)
+        const friendlyText = friendly ? friendly.command : rawCommandStr
+        const friendlyIcon = friendly ? friendly.icon : 'mdi-console'
+
         // If the task was not yet added to local executions items.value, add it
         if (!items.value[activeTask.id]) {
           items.value[activeTask.id] = {
-            command: activeTask.command + ' ' + activeTask.args.join(' '),
-            icon: 'mdi-console',
+            command: friendlyText,
+            icon: friendlyIcon,
             text: '',
             error: '',
           }
@@ -110,14 +177,16 @@ export const useExecutionsStore = defineStore('executions', () => {
           // Clear text/error before re-attaching, as we'll get the full buffer re-streamed
           items.value[activeTask.id].text = ''
           items.value[activeTask.id].error = ''
+          items.value[activeTask.id].command = friendlyText
+          items.value[activeTask.id].icon = friendlyIcon
         }
 
         // Call run with existingTaskId to re-attach listeners and fetch logs
         run(
           {
             cmd: { command: activeTask.command, args: activeTask.args },
-            text: activeTask.command + ' ' + activeTask.args.join(' '),
-            icon: 'mdi-console',
+            text: friendlyText,
+            icon: friendlyIcon,
           },
           activeTask.id,
         )
@@ -373,6 +442,20 @@ export const useExecutionsStore = defineStore('executions', () => {
   }
 
   const setExecutionsLog = (value) => {
+    if (value && typeof value === 'object') {
+      for (const key of Object.keys(value)) {
+        const item = value[key]
+        if (item && item.command) {
+          const friendly = getFriendlyDetails(item.command)
+          if (friendly) {
+            item.command = friendly.command
+            if (!item.icon || item.icon === 'mdi-console') {
+              item.icon = friendly.icon
+            }
+          }
+        }
+      }
+    }
     items.value = value
     if (Object.keys(value).length)
       lastId.value = Object.keys(value)[Object.keys(value).length - 1]
