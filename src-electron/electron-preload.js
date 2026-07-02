@@ -140,4 +140,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.removeAllListeners(`command:exit:${id}`)
     ipcRenderer.send('command:cleanup', { id })
   },
+
+  clearCommandListeners: (id) => {
+    ipcRenderer.removeAllListeners(`command:stdout:${id}`)
+    ipcRenderer.removeAllListeners(`command:stderr:${id}`)
+    ipcRenderer.removeAllListeners(`command:exit:${id}`)
+  },
 })

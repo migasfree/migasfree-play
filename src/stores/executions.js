@@ -251,6 +251,11 @@ export const useExecutionsStore = defineStore('executions', () => {
 
       let stdoutBuffer = ''
 
+      // Clear previous IPC listeners for this command ID to avoid duplicate output
+      if (window.electronAPI && window.electronAPI.clearCommandListeners) {
+        window.electronAPI.clearCommandListeners(commandId)
+      }
+
       // Set up listeners BEFORE spawning to avoid race condition
       window.electronAPI.onCommandStdout(commandId, (data) => {
         stdoutBuffer += data
