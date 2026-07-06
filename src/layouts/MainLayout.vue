@@ -120,7 +120,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
@@ -134,6 +134,7 @@ import { appIcon } from 'src/composables/element'
 import { useComputerStore } from 'src/stores/computer'
 import { useExecutionsStore } from 'src/stores/executions'
 import { usePreferencesStore } from 'src/stores/preferences'
+import { useProgramStore } from 'src/stores/program'
 import { useUiStore } from 'src/stores/ui'
 import { useCommand } from 'src/composables/useCommand'
 
@@ -146,8 +147,10 @@ const { $gettext } = useGettext()
 const computerStore = useComputerStore()
 const executionsStore = useExecutionsStore()
 const preferencesStore = usePreferencesStore()
+const programStore = useProgramStore()
 const uiStore = useUiStore()
 const { isUpdating: isFiltering } = storeToRefs(uiStore)
+const { isInitialized } = storeToRefs(programStore)
 
 const isJumpScrolled = ref(false)
 
@@ -176,7 +179,7 @@ const computerText = computed(() => {
   return cid.value ? `${name.value} (CID-${cid.value})` : name.value
 })
 
-const synchronize = () => {
+const executeSync = () => {
   uiStore.notifyInfo($gettext('Synchronizing...'))
 
   if (showSyncDetails.value && route.name !== 'details')
@@ -189,6 +192,19 @@ const synchronize = () => {
     text: $gettext('Synchronization'),
     icon: appIcon('sync'),
   })
+}
+
+const synchronize = () => {
+  if (!isInitialized.value) {
+    const unwatch = watch(isInitialized, (ready) => {
+      if (ready) {
+        unwatch()
+        executeSync()
+      }
+    })
+  } else {
+    executeSync()
+  }
 }
 
 if (!showApps.value) router.push({ name: 'details' })

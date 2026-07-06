@@ -18,6 +18,7 @@ export const useExecutionsStore = defineStore('executions', () => {
   const items = ref({})
   const lastId = ref('')
   const isRunningCommand = ref(false)
+  const isLoaded = ref(false)
   const error = ref('')
   let currentCommandId = null
 
@@ -149,6 +150,7 @@ export const useExecutionsStore = defineStore('executions', () => {
     try {
       const data = await window.electronAPI.executions.read()
       setExecutionsLog(data)
+      isLoaded.value = true
 
       const activeTasks = await window.electronAPI.getActiveTasks()
       if (activeTasks && activeTasks.length > 0) {

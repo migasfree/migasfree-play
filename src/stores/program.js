@@ -11,10 +11,12 @@ export const useProgramStore = defineStore('program', () => {
   // Own state
   const status = ref('')
   const stopApp = ref(false)
+  const isInitialized = ref(false)
 
   const appIsStopped = computed(() => stopApp.value)
 
   const init = async () => {
+    isInitialized.value = false
     // Lazy imports to avoid circular dependencies at module level
     const { useAppsStore } = await import('./apps.js')
     const { useAuthStore } = await import('./auth.js')
@@ -179,6 +181,7 @@ export const useProgramStore = defineStore('program', () => {
 
     setStatus('')
     uiStore.loadingFinished()
+    isInitialized.value = true
   }
 
   const setStatus = (value) => {
@@ -192,6 +195,7 @@ export const useProgramStore = defineStore('program', () => {
   return {
     status,
     appIsStopped,
+    isInitialized,
     init,
     setStatus,
     setStopApp,
