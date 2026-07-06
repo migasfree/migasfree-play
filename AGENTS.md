@@ -8,7 +8,7 @@
 **migasfree-play** is the desktop graphical interface for the Migasfree Systems Management System. It allows end-users to manage software (install/uninstall catalog) and peripherals.
 
 - **Desktop Framework**: Electron 39.x (Main, Preload, and Renderer processes)
-- **UI Framework**: Vue 3 + Quasar 2.18 (Webpack)
+- **UI Framework**: Vue 3 + Quasar 2.18 (Vite)
 - **State Management**: Pinia 3.x
 - **Language**: JavaScript (ES6 Modules) / Vue SFC
 - **System Integration**: Cross-platform (Linux/Windows) through `python-shell` and `migasfree-client`.

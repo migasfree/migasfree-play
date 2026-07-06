@@ -19,8 +19,8 @@
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import Info from 'components/Info'
-import PageLayout from 'components/PageLayout'
+import Info from 'components/Info.vue'
+import PageLayout from 'components/PageLayout.vue'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'

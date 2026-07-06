@@ -20,8 +20,8 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 
-import BannerInfo from 'components/BannerInfo'
-import ExecutionDetail from 'components/ExecutionDetail'
+import BannerInfo from 'components/BannerInfo.vue'
+import ExecutionDetail from 'components/ExecutionDetail.vue'
 
 import { useExecutionsStore } from 'src/stores/executions'
 

@@ -41,7 +41,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 
-import FilterCard from 'components/FilterCard'
+import FilterCard from 'components/FilterCard.vue'
 import { appIcon } from 'src/composables/element'
 
 import { useDevicesStore } from 'src/stores/devices'

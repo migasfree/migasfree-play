@@ -43,7 +43,19 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Mon, 01 Jun 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+* Mon, 06 Jul 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(build): migrate renderer build system from Webpack to Vite
+- fix(executions): prevent duplicate log output by clearing IPC listeners
+- fix(executions): normalize raw commands to friendly titles and icons
+- feat(security): implement strict input validation for IPC handlers
+- feat(store): trigger success toast on preference changes
+- feat(ui): implement WCAG 2.1 AA accessibility guidelines
+- refactor(stores): separate client-version and server-version logic
+- refactor(electron): add v4 client guards to all IPC handlers
+- perf(electron): memoize version and config CLI commands
+- refactor(packaging): deploy to Program Files with unified shim on Windows
+- fix(packages): reload installed packages using catalog list after execution
+- fix(devices): map both feature and capability properties for v4 capabilities
 - feat(devices): fallback to local capabilities for v4 servers
 - feat(ui): auto-load apps, devices, and tags on demand when sections are enabled
 - feat(executions): restore smart autoscroll and manual scroll lock in terminal

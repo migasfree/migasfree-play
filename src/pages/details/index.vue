@@ -20,8 +20,8 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { storeToRefs } from 'pinia'
 
-import Executions from 'components/Executions'
-import PageLayout from 'components/PageLayout'
+import Executions from 'components/Executions.vue'
+import PageLayout from 'components/PageLayout.vue'
 
 import { useExecutionsStore } from 'src/stores/executions'
 import { appIcon } from 'src/composables/element'

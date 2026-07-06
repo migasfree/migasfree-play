@@ -6,9 +6,8 @@
  */
 
 // Configuration for your app
-// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
+// https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-import ESLintPlugin from 'eslint-webpack-plugin'
 import { defineConfig } from '#q-app/wrappers'
 import { fileURLToPath } from 'node:url'
 
@@ -23,7 +22,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ['axios', 'fonts', 'gettext', 'ui-defaults'],
+    boot: ['axios', 'fonts', 'gettext', 'ui-defaults', 'qmarkdown'],
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.scss'],
@@ -46,40 +45,8 @@ export default defineConfig((ctx) => {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
-      // transpile: false,
-      // publicPath: '/',
-
-      // Add dependencies for transpiling with Babel (Array of string/regex)
-      // (from node_modules, which are by default not transpiled).
-      // Applies only if "transpile" is set to true.
-      // transpileDependencies: [],
-
-      // rtl: true, // https://v2.quasar.dev/options/rtl-support
-      // preloadChunks: true,
-      // showProgress: false,
-      // gzip: true,
-      // analyze: true,
-
-      // Options below are automatically set depending on the env, set them if you want to override
-      // extractCSS: false,
-
-      // https://v2.quasar.dev/quasar-cli/handling-webpack
-      // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-
-      chainWebpack(chain) {
-        chain.resolve.alias.set(
-          'config',
-          fileURLToPath(new URL('./src/config', import.meta.url)),
-        )
-      },
-
-      extendWebpack(cfg) {
-        cfg.externals = {
-          ...cfg.externals,
-          os: 'commonjs os',
-          fs: 'commonjs fs',
-          path: 'commonjs path',
-        }
+      alias: {
+        config: fileURLToPath(new URL('./src/config', import.meta.url)),
       },
     },
 
@@ -96,12 +63,6 @@ export default defineConfig((ctx) => {
     },
 
     eslint: {
-      // fix: true,
-      // include: [],
-      // exclude: [],
-      // cache: false,
-      // rawEsbuildEslintOptions: {},
-      // rawWebpackEslintPluginOptions: {},
       warnings: true,
       errors: true,
     },
@@ -146,12 +107,6 @@ export default defineConfig((ctx) => {
 
       maxAge: 1000 * 60 * 60 * 24 * 30,
       // Tell browser when a file from the server should expire from cache (in ms)
-
-      chainWebpackWebserver(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
-      },
 
       middlewares: [
         ctx.prod ? 'compression' : '',

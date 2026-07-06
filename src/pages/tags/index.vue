@@ -19,8 +19,8 @@ import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import PageLayout from 'components/PageLayout'
-import Tags from 'components/Tags'
+import PageLayout from 'components/PageLayout.vue'
+import Tags from 'components/Tags.vue'
 
 import { useTagsStore } from 'src/stores/tags'
 import { usePageSync } from 'src/composables/usePageSync'

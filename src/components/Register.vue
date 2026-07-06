@@ -79,9 +79,9 @@
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import BannerInfo from 'components/BannerInfo'
-import CredentialsForm from 'components/CredentialsForm'
-import InfoItem from 'components/InfoItem'
+import BannerInfo from 'components/BannerInfo.vue'
+import CredentialsForm from 'components/CredentialsForm.vue'
+import InfoItem from 'components/InfoItem.vue'
 
 import { useComputerStore } from 'src/stores/computer'
 import { useServerStore } from 'src/stores/server'

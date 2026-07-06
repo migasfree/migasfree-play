@@ -16,6 +16,12 @@ import { useGettext } from 'vue3-gettext'
 import { date } from 'quasar'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/es'
+import 'dayjs/locale/ca'
+import 'dayjs/locale/eu'
+import 'dayjs/locale/fr'
+import 'dayjs/locale/gl'
+import 'dayjs/locale/en'
 
 dayjs.extend(relativeTime)
 
@@ -44,11 +50,10 @@ const showDate = (isoString) => {
 }
 
 const diffForHumans = (isoString) => {
-  const locale = current.split('_')[0]
-  if (locale)
-    import(`dayjs/locale/${locale}.js`).then((module) => {
-      dayjs.locale(module.default.name)
-    })
+  const locale = (current || 'es').split('_')[0]
+  if (locale) {
+    dayjs.locale(locale)
+  }
 
   return dayjs(isoString).fromNow()
 }

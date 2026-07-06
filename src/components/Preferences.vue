@@ -62,7 +62,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 
-import FilterCard from 'components/FilterCard'
+import FilterCard from 'components/FilterCard.vue'
 
 import { usePreferencesStore } from 'src/stores/preferences'
 import { appIcon } from 'src/composables/element'

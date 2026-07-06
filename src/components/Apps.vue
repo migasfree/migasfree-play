@@ -35,11 +35,11 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import AppFilter from 'components/AppFilter'
-import AppDetail from 'components/AppDetail'
-import BannerInfo from 'components/BannerInfo'
-import Login from 'components/Login'
-import Pagination from 'components/Pagination'
+import AppFilter from 'components/AppFilter.vue'
+import AppDetail from 'components/AppDetail.vue'
+import BannerInfo from 'components/BannerInfo.vue'
+import Login from 'components/Login.vue'
+import Pagination from 'components/Pagination.vue'
 
 import { useAppsStore } from 'src/stores/apps'
 import { usePagination } from 'src/composables/usePagination'

@@ -18,8 +18,8 @@
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import PageLayout from 'components/PageLayout'
-import Preferences from 'components/Preferences'
+import PageLayout from 'components/PageLayout.vue'
+import Preferences from 'components/Preferences.vue'
 
 import { usePreferencesStore } from 'src/stores/preferences'
 import { usePageSync } from 'src/composables/usePageSync'

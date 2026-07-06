@@ -29,10 +29,10 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 
-import BannerInfo from 'components/BannerInfo'
-import DeviceFilter from 'components/DeviceFilter'
-import DeviceDetail from 'components/DeviceDetail'
-import Pagination from 'components/Pagination'
+import BannerInfo from 'components/BannerInfo.vue'
+import DeviceFilter from 'components/DeviceFilter.vue'
+import DeviceDetail from 'components/DeviceDetail.vue'
+import Pagination from 'components/Pagination.vue'
 
 import { useDevicesStore } from 'src/stores/devices'
 import { usePagination } from 'src/composables/usePagination'

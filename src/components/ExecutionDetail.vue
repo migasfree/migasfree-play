@@ -197,8 +197,8 @@ import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
 import { copyToClipboard } from 'quasar'
 
-import CopyButton from 'components/CopyButton'
-import DateView from 'components/DateView'
+import CopyButton from 'components/CopyButton.vue'
+import DateView from 'components/DateView.vue'
 
 import { useExecutionsStore } from 'src/stores/executions'
 import { useUiStore } from 'src/stores/ui'

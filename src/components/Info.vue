@@ -569,9 +569,9 @@ import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
 import QrcodeVue from 'qrcode.vue'
-import CopyButton from 'components/CopyButton'
-import DateView from 'components/DateView'
-import InfoItem from 'components/InfoItem'
+import CopyButton from 'components/CopyButton.vue'
+import DateView from 'components/DateView.vue'
+import InfoItem from 'components/InfoItem.vue'
 
 import { useComputerStore } from 'src/stores/computer'
 import { usePackagesStore } from 'src/stores/packages'

@@ -29,9 +29,9 @@ import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import BannerInfo from 'components/BannerInfo'
-import Devices from 'components/Devices'
-import PageLayout from 'components/PageLayout'
+import BannerInfo from 'components/BannerInfo.vue'
+import Devices from 'components/Devices.vue'
+import PageLayout from 'components/PageLayout.vue'
 
 import { useDevicesStore } from 'src/stores/devices'
 import { useServerStore } from 'src/stores/server'

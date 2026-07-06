@@ -21,8 +21,8 @@ import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import Apps from 'components/Apps'
-import PageLayout from 'components/PageLayout'
+import Apps from 'components/Apps.vue'
+import PageLayout from 'components/PageLayout.vue'
 
 import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'

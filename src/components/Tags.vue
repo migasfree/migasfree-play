@@ -119,9 +119,9 @@ import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 
-import BannerInfo from 'components/BannerInfo'
-import FilterCard from 'components/FilterCard'
-import Login from 'components/Login'
+import BannerInfo from 'components/BannerInfo.vue'
+import FilterCard from 'components/FilterCard.vue'
+import Login from 'components/Login.vue'
 
 import { useExecutionsStore } from 'src/stores/executions'
 import { useAuthStore } from 'src/stores/auth'

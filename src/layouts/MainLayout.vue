@@ -127,8 +127,8 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import { appName } from 'config/app.conf'
-import Menu from 'components/Menu'
-import Register from 'components/Register'
+import Menu from 'components/Menu.vue'
+import Register from 'components/Register.vue'
 
 import { appIcon } from 'src/composables/element'
 import { useComputerStore } from 'src/stores/computer'

@@ -54,7 +54,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
-import CredentialsForm from 'components/CredentialsForm'
+import CredentialsForm from 'components/CredentialsForm.vue'
 
 import { useAuthStore } from 'src/stores/auth'
 import { appIcon } from 'src/composables/element'
