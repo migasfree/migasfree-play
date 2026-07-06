@@ -199,10 +199,7 @@ const executeSync = () => {
 }
 
 const synchronize = () => {
-  if (isRunningCommand.value) {
-    uiStore.notifyInfo($gettext('Please wait, other process is running!!!'))
-    return
-  }
+  if (isRunningCommand.value) return
 
   if (!isInitialized.value) {
     if (isSyncPending) return
