@@ -179,7 +179,11 @@ const computerText = computed(() => {
   return cid.value ? `${name.value} (CID-${cid.value})` : name.value
 })
 
+let isSyncPending = false
+
 const executeSync = () => {
+  if (isRunningCommand.value) return
+
   uiStore.notifyInfo($gettext('Synchronizing...'))
 
   if (showSyncDetails.value && route.name !== 'details')
@@ -195,10 +199,19 @@ const executeSync = () => {
 }
 
 const synchronize = () => {
+  if (isRunningCommand.value) {
+    uiStore.notifyInfo($gettext('Please wait, other process is running!!!'))
+    return
+  }
+
   if (!isInitialized.value) {
+    if (isSyncPending) return
+    isSyncPending = true
+
     const unwatch = watch(isInitialized, (ready) => {
       if (ready) {
         unwatch()
+        isSyncPending = false
         executeSync()
       }
     })
