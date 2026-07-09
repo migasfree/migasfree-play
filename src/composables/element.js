@@ -25,6 +25,7 @@ export const APP_ICON = {
   privileged: 'mdi-wizard-hat',
   unlock: 'mdi-wizard-hat',
   lock: 'mdi-lock',
+  unavailable: 'mdi-package-variant-remove',
   auth: 'mdi-shield-lock-outline',
   login: 'mdi-login',
   search: 'mdi-magnify',

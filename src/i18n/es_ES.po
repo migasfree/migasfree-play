@@ -85,8 +85,8 @@ msgid "Manage with privileges"
 msgstr "Gestionar con privilegios"
 
 #: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
-msgid "Locked"
-msgstr "Bloqueado"
+msgid "Not available"
+msgstr "No disponible"
 
 #: src/components/AppDetail.vue:140
 msgid "Installed"
@@ -602,62 +602,3 @@ msgstr "Método de ruta de API no permitido"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Error de validación"
-
-#~ msgid "Intended"
-#~ msgstr "Asignado"
-
-#~ msgid "Register Computer on the Server"
-#~ msgstr "Registrar el ordenador en el servidor"
-
-#~ msgid "View All Apps"
-#~ msgstr "Ver todas las aplicaciones"
-
-#~ msgid "View All available"
-#~ msgstr "Ver todos los disponibles"
-
-#~ msgid "results"
-#~ msgstr "resultados"
-
-#~ msgid "Not show details when synchronizing"
-#~ msgstr "No mostrar detalles durante la sincronización"
-
-#~ msgid "Show details when synchronizing"
-#~ msgstr "Mostrar detalles durante la sincronización"
-
-#~ msgid "Switch to Light mode"
-#~ msgstr "Cambiar al modo luminoso"
-
-#~ msgid "Categories"
-#~ msgstr "Categorías"
-
-#~ msgid "Loading data"
-#~ msgstr "Cargando datos"
-
-#~ msgid "Please wait..."
-#~ msgstr "Por favor, espere..."
-
-#~ msgid "Last synchronization"
-#~ msgstr "Última sincronización"
-
-#~ msgid "Print Identification"
-#~ msgstr "Imprimir identificación"
-
-#~ msgid "Failed to obtain valid token. Review app settings."
-#~ msgstr ""
-#~ "No se pudo obtener un token válido. Revise la configuración de la "
-#~ "aplicación."
-
-#~ msgid "Could not authenticate with server"
-#~ msgstr "No se pudo autenticar con el servidor"
-
-#~ msgid "Predetermined"
-#~ msgstr "Predeterminado"
-
-#~ msgid "Inflicted"
-#~ msgstr "Heredado"
-
-#~ msgid "Predetermine"
-#~ msgstr "Predeterminar"
-
-#~ msgid "%{num} packages"
-#~ msgstr "%{num} paquetes"

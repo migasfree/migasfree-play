@@ -84,8 +84,8 @@ msgid "Manage with privileges"
 msgstr "Gérer avec des privilèges"
 
 #: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
-msgid "Locked"
-msgstr "Verrouillé"
+msgid "Not available"
+msgstr "Non disponible"
 
 #: src/components/AppDetail.vue:140
 msgid "Installed"
@@ -602,62 +602,3 @@ msgstr "Méthode de la route API non autorisée"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Erreur de validation"
-
-#~ msgid "Intended"
-#~ msgstr "Attribué"
-
-#~ msgid "Register Computer on the Server"
-#~ msgstr "Enregistrer l'ordinateur sur le serveur"
-
-#~ msgid "View All Apps"
-#~ msgstr "Voir toutes les applications"
-
-#~ msgid "View All available"
-#~ msgstr "Voir tous les disponibles"
-
-#~ msgid "results"
-#~ msgstr "résultats"
-
-#~ msgid "Not show details when synchronizing"
-#~ msgstr "Ne pas afficher les détails lors de la synchronisation"
-
-#~ msgid "Show details when synchronizing"
-#~ msgstr "Afficher les détails lors de la synchronisation"
-
-#~ msgid "Switch to Light mode"
-#~ msgstr "Passer en mode clair"
-
-#~ msgid "Categories"
-#~ msgstr "Catégories"
-
-#~ msgid "Loading data"
-#~ msgstr "Chargement des données"
-
-#~ msgid "Please wait..."
-#~ msgstr "Veuillez patienter..."
-
-#~ msgid "Last synchronization"
-#~ msgstr "Dernière synchronisation"
-
-#~ msgid "Print Identification"
-#~ msgstr "Imprimer l'identification"
-
-#~ msgid "Failed to obtain valid token. Review app settings."
-#~ msgstr ""
-#~ "Impossible d'obtenir un jeton valide. Vérifiez les paramètres de "
-#~ "l'application."
-
-#~ msgid "Could not authenticate with server"
-#~ msgstr "Impossible de s'authentifier auprès du serveur"
-
-#~ msgid "Predetermined"
-#~ msgstr "Prédéterminé"
-
-#~ msgid "Inflicted"
-#~ msgstr "Hérité"
-
-#~ msgid "Predetermine"
-#~ msgstr "Prédéterminer"
-
-#~ msgid "%{num} packages"
-#~ msgstr "%{num} paquets"

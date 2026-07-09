@@ -84,8 +84,8 @@ msgid "Manage with privileges"
 msgstr "Kudeatu pribilegioekin"
 
 #: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
-msgid "Locked"
-msgstr "Blokeatua"
+msgid "Not available"
+msgstr "Ez dago erabilgarri"
 
 #: src/components/AppDetail.vue:140
 msgid "Installed"
@@ -598,61 +598,3 @@ msgstr "Baimenik gabeko API bidearen metodoa"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Balioztatze-errorea"
-
-#~ msgid "Intended"
-#~ msgstr "Asmoa"
-
-#~ msgid "Register Computer on the Server"
-#~ msgstr "Erregistratu ordenagailua zerbitzarian"
-
-#~ msgid "View All Apps"
-#~ msgstr "Ikusi aplikazio guztiak"
-
-#~ msgid "View All available"
-#~ msgstr "Ikusi guztiak eskuragarri"
-
-#~ msgid "results"
-#~ msgstr "emaitzak"
-
-#~ msgid "Not show details when synchronizing"
-#~ msgstr "Ez erakutsi xehetasunak sinkronizatzean"
-
-#~ msgid "Show details when synchronizing"
-#~ msgstr "Erakutsi xehetasunak sinkronizatzean"
-
-#~ msgid "Switch to Light mode"
-#~ msgstr "Aldatu argi modura"
-
-#~ msgid "Categories"
-#~ msgstr "Kategoriak"
-
-#~ msgid "Loading data"
-#~ msgstr "Datuak kargatzen"
-
-#~ msgid "Please wait..."
-#~ msgstr "Mesedez, itxaron..."
-
-#~ msgid "Last synchronization"
-#~ msgstr "Azken sinkronizazioa"
-
-#~ msgid "Print Identification"
-#~ msgstr "Inprimatu Identifikazioa"
-
-#~ msgid "Failed to obtain valid token. Review app settings."
-#~ msgstr ""
-#~ "Ezin izan da baliozko tokena lortu. Berrikusi aplikazioaren ezarpenak."
-
-#~ msgid "Could not authenticate with server"
-#~ msgstr "Ezin izan da zerbitzariarekin autentifikatu"
-
-#~ msgid "Predetermined"
-#~ msgstr "Aurrez zehaztuta"
-
-#~ msgid "Inflicted"
-#~ msgstr "Heredatu"
-
-#~ msgid "Predetermine"
-#~ msgstr "Aurrez zehaztu"
-
-#~ msgid "%{num} packages"
-#~ msgstr "%{num} paketeak"

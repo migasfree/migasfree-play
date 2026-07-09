@@ -68,6 +68,17 @@ migasfree-play/
 | ℹ️   | **Info**        | System and server information. |
 | ⚙️   | **Preferences** | Application settings.          |
 
+## 📦 Application States
+
+Each application in the catalog card can be in one of the following states based on the availability of its packages in the configured repositories and the user's privilege level:
+
+| State                   | Badge / Button Icon                                         | Color       | Description                                                                                                                                                     |
+| ----------------------- | ----------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Installed**           | `mdi-check-circle-outline` (Badge)<br>`mdi-delete` (Action) | Green / Red | All packages are installed. If the user has privileges (or the app's level is User), a red trash bin button is available to uninstall it.                       |
+| **Installable**         | `mdi-download` (Action)                                     | Green       | The packages are available in the repositories but not installed. Clicking the green arrow installs them.                                                       |
+| **Requires Privileges** | `mdi-wizard-hat` (Action)                                   | Orange      | The packages are available, but the app's level is Administrator. Clicking this button prompts for administrative credentials.                                  |
+| **Not Available**       | `mdi-package-variant-remove` (Status)                       | Brown       | One or more packages associated with the application are missing from the repositories configured for this computer. The tooltip displays the missing packages. |
+
 ## 📋 Packaging
 
 ### Debian/Ubuntu

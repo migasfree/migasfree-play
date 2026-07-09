@@ -119,11 +119,15 @@
             round
             dense
             color="brown-8"
-            :icon="appIcon('lock')"
+            :icon="appIcon('unavailable')"
             class="action-hover"
-            :aria-label="$gettext('Locked')"
+            :aria-label="$gettext('Not available')"
           >
-            <q-tooltip>{{ $gettext('Locked') }}</q-tooltip>
+            <q-tooltip>
+              {{ $gettext('Not available') }} ({{
+                unavailablePackages.join(', ')
+              }})
+            </q-tooltip>
           </q-btn>
         </div>
 
@@ -201,6 +205,10 @@ const isInstalled = computed(
 
 const isAvailable = computed(() =>
   props.packages.every((pkg) => availableSet.value.has(pkg)),
+)
+
+const unavailablePackages = computed(() =>
+  props.packages.filter((pkg) => !availableSet.value.has(pkg)),
 )
 
 const isInstallable = computed(

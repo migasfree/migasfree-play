@@ -84,8 +84,8 @@ msgid "Manage with privileges"
 msgstr "Gestionar amb privilegis"
 
 #: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
-msgid "Locked"
-msgstr "Tancat"
+msgid "Not available"
+msgstr "No disponible"
 
 #: src/components/AppDetail.vue:140
 msgid "Installed"
@@ -598,62 +598,3 @@ msgstr "Mètode de ruta d'API no permès"
 #: src/stores/ui.js:57
 msgid "Validation Error"
 msgstr "Error de validació"
-
-#~ msgid "Intended"
-#~ msgstr "Assignat"
-
-#~ msgid "Register Computer on the Server"
-#~ msgstr "Registre l'ordinador al servidor"
-
-#~ msgid "View All Apps"
-#~ msgstr "Veure totes les aplicacions"
-
-#~ msgid "View All available"
-#~ msgstr "Veure tot disponible"
-
-#~ msgid "results"
-#~ msgstr "resultats"
-
-#~ msgid "Not show details when synchronizing"
-#~ msgstr "No es mostren els detalls en sincronitzar"
-
-#~ msgid "Show details when synchronizing"
-#~ msgstr "Mostra els detalls en sincronitzar"
-
-#~ msgid "Switch to Light mode"
-#~ msgstr "Canvia al mode de llum"
-
-#~ msgid "Categories"
-#~ msgstr "Categories"
-
-#~ msgid "Loading data"
-#~ msgstr "Carregant dades"
-
-#~ msgid "Please wait..."
-#~ msgstr "Si us plau, esperi..."
-
-#~ msgid "Last synchronization"
-#~ msgstr "Última sincronització"
-
-#~ msgid "Print Identification"
-#~ msgstr "Impressió d'identificació"
-
-#~ msgid "Failed to obtain valid token. Review app settings."
-#~ msgstr ""
-#~ "No s'ha pogut obtenir un token vàlid. Revisa la configuració de "
-#~ "l'aplicació."
-
-#~ msgid "Could not authenticate with server"
-#~ msgstr "No s'ha pogut autenticar amb el servidor"
-
-#~ msgid "Predetermined"
-#~ msgstr "Predeterminat"
-
-#~ msgid "Inflicted"
-#~ msgstr "Heretat"
-
-#~ msgid "Predetermine"
-#~ msgstr "Predeterminar"
-
-#~ msgid "%{num} packages"
-#~ msgstr "%{num} paquets"

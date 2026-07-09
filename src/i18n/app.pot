@@ -75,7 +75,7 @@ msgstr ""
 
 #: src/components/AppDetail.vue:124
 #: src/components/AppDetail.vue:126
-msgid "Locked"
+msgid "Not available"
 msgstr ""
 
 #: src/components/AppDetail.vue:140

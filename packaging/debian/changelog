@@ -1,5 +1,6 @@
 migasfree-play (5.14.0) unstable; urgency=low
 
+  * feat(ui): replace locked app concept with not available status and list missing packages
   * feat(build): migrate renderer build system from Webpack to Vite
   * fix(executions): prevent duplicate log output by clearing IPC listeners
   * fix(executions): normalize raw commands to friendly titles and icons
@@ -34,7 +35,7 @@ migasfree-play (5.14.0) unstable; urgency=low
   * fix(deps): upgrade core dependencies
   * fix(ipc): use --password instead of --pwd for migasfree register command
 
- -- Jose Antonio Chavarría <jachavar@gmail.com>  Mon, 06 Jul 2026 09:24:00 +0200
+ -- Jose Antonio Chavarría <jachavar@gmail.com>  Thu, 09 Jul 2026 10:52:00 +0200
 
 migasfree-play (5.13.0) unstable; urgency=low
 
