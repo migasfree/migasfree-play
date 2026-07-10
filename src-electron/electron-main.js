@@ -64,6 +64,7 @@ function getRealUserDarkMode() {
 
     const userEnv = {
       DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
+      XDG_RUNTIME_DIR: `/run/user/${uid}`,
       HOME: `/home/${sudoUser}`,
       USER: sudoUser,
       LOGNAME: sudoUser,
@@ -174,6 +175,7 @@ function startUserThemeWatcher(win) {
 
     const userEnv = {
       DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
+      XDG_RUNTIME_DIR: `/run/user/${uid}`,
       HOME: `/home/${sudoUser}`,
       USER: sudoUser,
       LOGNAME: sudoUser,
