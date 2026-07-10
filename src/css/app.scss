@@ -538,10 +538,23 @@ h6,
 
 .body--dark .q-notification {
   border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #0d0807 !important;
 
-  &.bg-warning {
+  .q-icon {
+    color: #0d0807 !important;
+  }
+
+  &.bg-positive,
+  &.bg-negative,
+  &.bg-warning,
+  &.bg-info,
+  &.bg-primary,
+  &.bg-accent {
     color: #0d0807 !important;
     .q-icon {
+      color: #0d0807 !important;
+    }
+    .q-btn {
       color: #0d0807 !important;
     }
   }
