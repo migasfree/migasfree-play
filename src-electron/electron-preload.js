@@ -110,6 +110,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   theme: {
+    shouldUseDarkColors: () =>
+      ipcRenderer.invoke('theme:should-use-dark-colors'),
     onNativeThemeUpdated: (callback) => {
       const listener = () => callback()
       ipcRenderer.on('theme:native-updated', listener)

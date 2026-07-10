@@ -248,7 +248,12 @@ watch(isBusy, () => {
   checkUpdateAndShow()
 })
 
-$q.dark.set($q.localStorage.getItem('darkMode') || false)
+const initialDarkMode = $q.localStorage.getItem('darkMode') || 'system'
+if (initialDarkMode === 'system') {
+  $q.dark.set('auto')
+} else {
+  $q.dark.set(initialDarkMode === 'dark')
+}
 
 useMeta({ title: appName })
 

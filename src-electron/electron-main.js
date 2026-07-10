@@ -152,6 +152,10 @@ ipcMain.on('app:set-can-exit', (_, value) => {
   app.canExit = value
 })
 
+ipcMain.handle('theme:should-use-dark-colors', () => {
+  return nativeTheme.shouldUseDarkColors
+})
+
 // IPC Handlers - Window Control
 ipcMain.handle('window:show', (event) => {
   BrowserWindow.fromWebContents(event.sender)?.show()

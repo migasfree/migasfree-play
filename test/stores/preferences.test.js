@@ -52,6 +52,7 @@ describe('Preferences Store', () => {
     window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
     window.electronAPI.preferences.write.mockResolvedValue(undefined)
     window.electronAPI.theme = {
+      shouldUseDarkColors: vi.fn().mockResolvedValue(true),
       onNativeThemeUpdated: vi.fn(),
     }
   })
@@ -119,17 +120,33 @@ describe('Preferences Store', () => {
       expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'dark')
     })
 
-    it('sets auto mode via Quasar for "system" value', async () => {
+    it('sets dark mode from nativeTheme for "system" value (dark OS)', async () => {
       const { Dark, LocalStorage } = await import('quasar')
       window.electronAPI.preferences.read.mockResolvedValue({
         ...mockPreferencesData,
         dark_mode: 'system',
       })
+      window.electronAPI.theme.shouldUseDarkColors.mockResolvedValue(true)
 
       const store = usePreferencesStore()
       await store.readPreferences()
 
-      expect(Dark.set).toHaveBeenCalledWith('auto')
+      expect(Dark.set).toHaveBeenCalledWith(true)
+      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'system')
+    })
+
+    it('sets light mode from nativeTheme for "system" value (light OS)', async () => {
+      const { Dark, LocalStorage } = await import('quasar')
+      window.electronAPI.preferences.read.mockResolvedValue({
+        ...mockPreferencesData,
+        dark_mode: 'system',
+      })
+      window.electronAPI.theme.shouldUseDarkColors.mockResolvedValue(false)
+
+      const store = usePreferencesStore()
+      await store.readPreferences()
+
+      expect(Dark.set).toHaveBeenCalledWith(false)
       expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'system')
     })
 
@@ -181,14 +198,15 @@ describe('Preferences Store', () => {
       expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'dark')
     })
 
-    it('sets auto mode after saving with "system" value', async () => {
+    it('sets dark mode from nativeTheme after saving with "system" value (dark OS)', async () => {
       const { Dark, LocalStorage } = await import('quasar')
+      window.electronAPI.theme.shouldUseDarkColors.mockResolvedValue(true)
 
       const store = usePreferencesStore()
       store.darkMode = 'system'
       await store.savePreferences()
 
-      expect(Dark.set).toHaveBeenCalledWith('auto')
+      expect(Dark.set).toHaveBeenCalledWith(true)
       expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'system')
     })
 

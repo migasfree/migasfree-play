@@ -23,9 +23,14 @@ export const usePreferencesStore = defineStore('preferences', () => {
   const darkMode = ref('system')
   const showDarkMode = ref(true)
 
-  const applyDarkMode = (value) => {
+  const applyDarkMode = async (value) => {
     if (value === 'system') {
-      Dark.set('auto')
+      if (window.electronAPI?.theme?.shouldUseDarkColors) {
+        const isDark = await window.electronAPI.theme.shouldUseDarkColors()
+        Dark.set(isDark)
+      } else {
+        Dark.set('auto')
+      }
     } else {
       Dark.set(value === 'dark')
     }
@@ -43,13 +48,16 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
       setPreferences(data)
       gettext.current = data.language
-      applyDarkMode(data.dark_mode)
+      await applyDarkMode(data.dark_mode)
 
-      window.electronAPI.theme.onNativeThemeUpdated(() => {
-        if (darkMode.value === 'system') {
-          Dark.set('auto')
-        }
-      })
+      if (window.electronAPI?.theme?.onNativeThemeUpdated) {
+        window.electronAPI.theme.onNativeThemeUpdated(async () => {
+          if (darkMode.value === 'system') {
+            const isDark = await window.electronAPI.theme.shouldUseDarkColors()
+            Dark.set(isDark)
+          }
+        })
+      }
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -74,7 +82,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
     try {
       await window.electronAPI.preferences.write(payload)
-      applyDarkMode(darkMode.value)
+      await applyDarkMode(darkMode.value)
       uiStore.notifySuccess(gettext.$gettext('Preferences saved successfully'))
     } catch (error) {
       uiStore.notifyError(error)
