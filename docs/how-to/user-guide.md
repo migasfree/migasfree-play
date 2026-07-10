@@ -13,7 +13,7 @@ This document provides step-by-step instructions for common user tasks in **Miga
 
 ## 📦 How to manage applications
 
-1. **Find an app**: Click the **Apps** icon (grid) in the header and use the search bar or categories.
+1. **Find an app**: Click the **Apps** icon (grid) in the header. You can filter applications using the search bar (by name or description), select a category, or filter by installation status (All, Installed, Not installed, or With privileges).
 2. **Install**: Click the **green arrow** button on an application's card.
 3. **Uninstall**: Click the **red trash bin** button.
 
