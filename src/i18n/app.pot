@@ -181,8 +181,8 @@ msgid "Default"
 msgstr ""
 
 #: src/components/DeviceDetail.vue:90
-#: src/composables/element.js:186
 #: src/composables/element.js:187
+#: src/composables/element.js:188
 msgid "Assigned"
 msgstr ""
 
@@ -381,16 +381,40 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: src/components/Preferences.vue:11
+#: src/components/Preferences.vue:22
 msgid "Language"
 msgstr ""
 
-#: src/components/Preferences.vue:29
+#: src/components/Preferences.vue:26
+msgid "Select your preferred interface language"
+msgstr ""
+
+#: src/components/Preferences.vue:62
 msgid "Show synchronization details"
 msgstr ""
 
-#: src/components/Preferences.vue:48
-msgid "Dark mode"
+#: src/components/Preferences.vue:67
+msgid "Display detailed command logs and process outputs during execution"
+msgstr ""
+
+#: src/components/Preferences.vue:105
+msgid "Theme"
+msgstr ""
+
+#: src/components/Preferences.vue:110
+msgid "Switch between light, dark, or system default appearance"
+msgstr ""
+
+#: src/components/Preferences.vue:157
+msgid "System"
+msgstr ""
+
+#: src/components/Preferences.vue:158
+msgid "Light"
+msgstr ""
+
+#: src/components/Preferences.vue:159
+msgid "Dark"
 msgstr ""
 
 #: src/components/Register.vue:9
@@ -464,23 +488,23 @@ msgstr ""
 msgid "Setting Tags..."
 msgstr ""
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Available"
 msgstr ""
 
-#: src/composables/element.js:184
+#: src/composables/element.js:185
 msgid "In repair"
 msgstr ""
 
-#: src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Reserved"
 msgstr ""
 
-#: src/composables/element.js:188
+#: src/composables/element.js:189
 msgid "Unsubscribed"
 msgstr ""
 
-#: src/composables/element.js:191
+#: src/composables/element.js:192
 msgid "Unknown"
 msgstr ""
 
@@ -565,7 +589,7 @@ msgstr ""
 msgid "Command cancelled"
 msgstr ""
 
-#: src/stores/preferences.js:60
+#: src/stores/preferences.js:78
 msgid "Preferences saved successfully"
 msgstr ""
 

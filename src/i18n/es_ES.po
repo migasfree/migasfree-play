@@ -185,8 +185,8 @@ msgstr "Conexión: %{type} %{ip}"
 msgid "Default"
 msgstr "Por defecto"
 
-#: src/components/DeviceDetail.vue:90 src/composables/element.js:186
-#: src/composables/element.js:187
+#: src/components/DeviceDetail.vue:90 src/composables/element.js:187
+#: src/composables/element.js:188
 msgid "Assigned"
 msgstr "Asignado"
 
@@ -364,17 +364,41 @@ msgstr "Ayuda"
 msgid "Update"
 msgstr "Actualizar"
 
-#: src/components/Preferences.vue:11
+#: src/components/Preferences.vue:22
 msgid "Language"
 msgstr "Idioma"
 
-#: src/components/Preferences.vue:29
+#: src/components/Preferences.vue:26
+msgid "Select your preferred interface language"
+msgstr "Selecciona tu idioma preferido para la interfaz"
+
+#: src/components/Preferences.vue:62
 msgid "Show synchronization details"
 msgstr "Mostrar detalles de sincronización"
 
-#: src/components/Preferences.vue:48
-msgid "Dark mode"
-msgstr "Modo oscuro"
+#: src/components/Preferences.vue:67
+msgid "Display detailed command logs and process outputs during execution"
+msgstr "Muestra registros detallados de comandos y salidas de procesos durante la ejecución"
+
+#: src/components/Preferences.vue:105
+msgid "Theme"
+msgstr "Tema"
+
+#: src/components/Preferences.vue:110
+msgid "Switch between light, dark, or system default appearance"
+msgstr "Cambia entre el aspecto claro, oscuro o el predeterminado del sistema"
+
+#: src/components/Preferences.vue:157
+msgid "System"
+msgstr "Sistema"
+
+#: src/components/Preferences.vue:158
+msgid "Light"
+msgstr "Claro"
+
+#: src/components/Preferences.vue:159
+msgid "Dark"
+msgstr "Oscuro"
 
 #: src/components/Register.vue:9
 msgid "Server Registration"
@@ -453,23 +477,23 @@ msgstr "Comunicar etiquetas"
 msgid "Setting Tags..."
 msgstr "Estableciendo etiquetas..."
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Available"
 msgstr "Disponible"
 
-#: src/composables/element.js:184
+#: src/composables/element.js:185
 msgid "In repair"
 msgstr "En reparación"
 
-#: src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Reserved"
 msgstr "Reservado"
 
-#: src/composables/element.js:188
+#: src/composables/element.js:189
 msgid "Unsubscribed"
 msgstr "Baja"
 
-#: src/composables/element.js:191
+#: src/composables/element.js:192
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -562,7 +586,7 @@ msgstr "¡Espere por favor, otro proceso está ejecutándose!"
 msgid "Command cancelled"
 msgstr "Comando cancelado"
 
-#: src/stores/preferences.js:60
+#: src/stores/preferences.js:78
 msgid "Preferences saved successfully"
 msgstr "Preferencias guardadas correctamente"
 

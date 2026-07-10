@@ -184,8 +184,8 @@ msgstr "Konexioa: %{type} %{ip}"
 msgid "Default"
 msgstr "Lehenetsia"
 
-#: src/components/DeviceDetail.vue:90 src/composables/element.js:186
-#: src/composables/element.js:187
+#: src/components/DeviceDetail.vue:90 src/composables/element.js:187
+#: src/composables/element.js:188
 msgid "Assigned"
 msgstr "Esleitua"
 
@@ -363,17 +363,41 @@ msgstr "Laguntza"
 msgid "Update"
 msgstr "Eguneratu"
 
-#: src/components/Preferences.vue:11
+#: src/components/Preferences.vue:22
 msgid "Language"
 msgstr "Hizkuntza"
 
-#: src/components/Preferences.vue:29
+#: src/components/Preferences.vue:26
+msgid "Select your preferred interface language"
+msgstr "Hautatu interfazearen hizkuntza hobetsia"
+
+#: src/components/Preferences.vue:62
 msgid "Show synchronization details"
 msgstr "Erakutsi sinkronizazioaren xehetasunak"
 
-#: src/components/Preferences.vue:48
-msgid "Dark mode"
-msgstr "Modu iluna"
+#: src/components/Preferences.vue:67
+msgid "Display detailed command logs and process outputs during execution"
+msgstr "Komandoen erregistro zehatzak eta prozesuen irteerak erakutsi exekuzioan zehar"
+
+#: src/components/Preferences.vue:105
+msgid "Theme"
+msgstr "Gaia"
+
+#: src/components/Preferences.vue:110
+msgid "Switch between light, dark, or system default appearance"
+msgstr "Aldatu itxura argia, iluna edo sistemaren lehenetsiaren artean"
+
+#: src/components/Preferences.vue:157
+msgid "System"
+msgstr "Sistema"
+
+#: src/components/Preferences.vue:158
+msgid "Light"
+msgstr "Argia"
+
+#: src/components/Preferences.vue:159
+msgid "Dark"
+msgstr "Iluna"
 
 #: src/components/Register.vue:9
 msgid "Server Registration"
@@ -452,23 +476,23 @@ msgstr "Etiketak komunikatu"
 msgid "Setting Tags..."
 msgstr "Etiketak ezartzea..."
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "Available"
 msgstr "Eskuragarri"
 
-#: src/composables/element.js:184
+#: src/composables/element.js:185
 msgid "In repair"
 msgstr "Konponketan"
 
-#: src/composables/element.js:185
+#: src/composables/element.js:186
 msgid "Reserved"
 msgstr "Erreserbatuta"
 
-#: src/composables/element.js:188
+#: src/composables/element.js:189
 msgid "Unsubscribed"
 msgstr "Harpidetza kendu da"
 
-#: src/composables/element.js:191
+#: src/composables/element.js:192
 msgid "Unknown"
 msgstr "Ezezaguna"
 
@@ -561,7 +585,7 @@ msgstr "Mesedez, itxaron, beste prozesu bat martxan dago!!!"
 msgid "Command cancelled"
 msgstr "Komandoa bertan behera utzi da"
 
-#: src/stores/preferences.js:60
+#: src/stores/preferences.js:78
 msgid "Preferences saved successfully"
 msgstr "Hobespenak ongi gorde dira"
 
