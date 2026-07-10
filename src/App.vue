@@ -129,7 +129,7 @@
               </div>
 
               <!-- Footer info -->
-              <div class="q-mt-xl text-caption text-grey-6 opacity-60">
+              <div class="q-mt-xl text-caption text-muted">
                 {{ app.name }} {{ app.version }} • {{ app.copyright }}
               </div>
             </div>
@@ -375,7 +375,7 @@ onUnmounted(() => {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.is-past {
-    opacity: 0.4;
+    opacity: 0.7;
     filter: grayscale(1);
     transform: scale(0.98);
   }

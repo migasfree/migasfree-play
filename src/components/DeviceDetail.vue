@@ -3,7 +3,9 @@
     <q-card unelevated class="glass-card device-card">
       <q-card-section horizontal class="q-pa-md items-center">
         <q-card-section class="col q-pa-none">
-          <div class="text-overline text-grey-7 device-id-label ellipsis">
+          <div
+            class="text-overline text-muted text-weight-bolder device-id-label ellipsis"
+          >
             {{ id }} {{ alternativeName ? `(${alternativeName})` : '' }}
           </div>
           <h3

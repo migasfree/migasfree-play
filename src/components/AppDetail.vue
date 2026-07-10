@@ -3,7 +3,9 @@
     <q-card unelevated class="glass-card app-card">
       <q-card-section horizontal class="q-pa-md items-center">
         <q-card-section class="col q-pa-none">
-          <div class="text-overline text-grey-7 category-label">
+          <div
+            class="text-overline text-muted text-weight-bolder category-label"
+          >
             {{ category }}
           </div>
           <h3 class="text-subtitle1 text-weight-bolder app-name q-ma-none">

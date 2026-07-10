@@ -179,10 +179,9 @@ h6,
 .q-header {
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  background-color: var(--app-bar-bg) !important;
   background-color: var(--surface) !important;
   border-bottom: 1px solid var(--border) !important;
-  color: var(--app-bar-on-bg) !important;
+  color: var(--text-main) !important;
 }
 
 .overflow {
@@ -250,7 +249,7 @@ h6,
   letter-spacing: 0.02em;
   font-size: 1rem;
   top: 18px;
-  color: var(--neutral-500);
+  color: var(--text-muted);
   transition:
     transform 0.3s,
     font-size 0.3s !important;
@@ -288,7 +287,7 @@ h6,
 
 /* Placeholders */
 .q-placeholder::placeholder {
-  color: var(--neutral-400) !important;
+  color: var(--text-muted) !important;
 }
 
 /* Field Bottom / Hints */
@@ -434,9 +433,6 @@ h6,
   letter-spacing: 0.05em !important;
 }
 
-.text-muted {
-  color: var(--neutral-500) !important;
-}
 
 /* =========================================
    NOTIFICATIONS (GLASSMORPHISM)
@@ -464,9 +460,9 @@ h6,
   &.bg-warning {
     background: rgba(var(--q-warning-rgb), 0.85) !important;
     border-color: rgba(var(--q-warning-rgb), 0.3) !important;
-    color: #431407 !important;
+    color: #ffffff !important;
     .q-icon {
-      color: #431407 !important;
+      color: #ffffff !important;
     }
   }
   &.bg-info {
