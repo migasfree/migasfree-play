@@ -31,7 +31,7 @@ const DEFAULT_SETTINGS = {
   show_preferences: true,
   show_info: true,
   show_help: true,
-  dark_mode: false,
+  dark_mode: 'system',
   show_dark_mode: true,
 }
 

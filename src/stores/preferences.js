@@ -20,17 +20,36 @@ export const usePreferencesStore = defineStore('preferences', () => {
   const showPreferences = ref(true)
   const showInfo = ref(true)
   const showHelp = ref(true)
-  const darkMode = ref(false)
+  const darkMode = ref('system')
   const showDarkMode = ref(true)
+
+  const applyDarkMode = (value) => {
+    if (value === 'system') {
+      Dark.set('auto')
+    } else {
+      Dark.set(value === 'dark')
+    }
+    LocalStorage.set('darkMode', value)
+  }
 
   const readPreferences = async () => {
     try {
       const data = await window.electronAPI.preferences.read()
 
+      // Migrate legacy boolean values
+      if (typeof data.dark_mode === 'boolean') {
+        data.dark_mode = data.dark_mode ? 'dark' : 'light'
+      }
+
       setPreferences(data)
       gettext.current = data.language
-      Dark.set(data.dark_mode)
-      LocalStorage.set('darkMode', data.dark_mode)
+      applyDarkMode(data.dark_mode)
+
+      window.electronAPI.theme.onNativeThemeUpdated(() => {
+        if (darkMode.value === 'system') {
+          Dark.set('auto')
+        }
+      })
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -55,8 +74,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
     try {
       await window.electronAPI.preferences.write(payload)
-      Dark.set(darkMode.value)
-      LocalStorage.set('darkMode', darkMode.value)
+      applyDarkMode(darkMode.value)
       uiStore.notifySuccess(gettext.$gettext('Preferences saved successfully'))
     } catch (error) {
       uiStore.notifyError(error)

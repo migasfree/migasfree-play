@@ -432,6 +432,13 @@ async function createWindow() {
 
   Menu.setApplicationMenu(null)
 
+  // Forward OS theme changes to the renderer
+  nativeTheme.on('updated', () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('theme:native-updated')
+    }
+  })
+
   // Start the IPC bindings for Auto-Update events
   setupAutoUpdateIPC(mainWindow)
 }

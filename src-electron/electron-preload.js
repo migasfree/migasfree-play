@@ -109,6 +109,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.invoke('user:check', { username, password, version }),
   },
 
+  theme: {
+    onNativeThemeUpdated: (callback) => {
+      const listener = () => callback()
+      ipcRenderer.on('theme:native-updated', listener)
+      return () => ipcRenderer.removeListener('theme:native-updated', listener)
+    },
+  },
+
   // Command Execution
   spawnCommand: (id, command, args, input, env) => {
     ipcRenderer.send('command:spawn', { id, command, args, input, env })

@@ -40,7 +40,7 @@ const mockPreferencesData = {
   show_preferences: true,
   show_info: true,
   show_help: true,
-  dark_mode: true,
+  dark_mode: 'dark',
   show_dark_mode: true,
 }
 
@@ -49,9 +49,11 @@ describe('Preferences Store', () => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
 
-    // Default mock implementation
     window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
     window.electronAPI.preferences.write.mockResolvedValue(undefined)
+    window.electronAPI.theme = {
+      onNativeThemeUpdated: vi.fn(),
+    }
   })
 
   describe('Initial State', () => {
@@ -65,16 +67,14 @@ describe('Preferences Store', () => {
       expect(store.showApps).toBe(true)
     })
 
-    it('has default darkMode false', () => {
+    it('has default darkMode system', () => {
       const store = usePreferencesStore()
-      expect(store.darkMode).toBe(false)
+      expect(store.darkMode).toBe('system')
     })
   })
 
   describe('readPreferences()', () => {
     it('fetches and sets all preference values', async () => {
-      window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
-
       const store = usePreferencesStore()
       await store.readPreferences()
 
@@ -86,18 +86,57 @@ describe('Preferences Store', () => {
       expect(store.showApps).toBe(true)
       expect(store.showDevices).toBe(true)
       expect(store.showTags).toBe(true)
-      expect(store.darkMode).toBe(true)
+      expect(store.darkMode).toBe('dark')
     })
 
-    it('sets dark mode via Quasar', async () => {
+    it('migrates legacy boolean true dark_mode to "dark"', async () => {
+      window.electronAPI.preferences.read.mockResolvedValue({
+        ...mockPreferencesData,
+        dark_mode: true,
+      })
+      const store = usePreferencesStore()
+      await store.readPreferences()
+      expect(store.darkMode).toBe('dark')
+    })
+
+    it('migrates legacy boolean false dark_mode to "light"', async () => {
+      window.electronAPI.preferences.read.mockResolvedValue({
+        ...mockPreferencesData,
+        dark_mode: false,
+      })
+      const store = usePreferencesStore()
+      await store.readPreferences()
+      expect(store.darkMode).toBe('light')
+    })
+
+    it('sets dark mode via Quasar for "dark" value', async () => {
       const { Dark, LocalStorage } = await import('quasar')
-      window.electronAPI.preferences.read.mockResolvedValue(mockPreferencesData)
 
       const store = usePreferencesStore()
       await store.readPreferences()
 
       expect(Dark.set).toHaveBeenCalledWith(true)
-      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', true)
+      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'dark')
+    })
+
+    it('sets auto mode via Quasar for "system" value', async () => {
+      const { Dark, LocalStorage } = await import('quasar')
+      window.electronAPI.preferences.read.mockResolvedValue({
+        ...mockPreferencesData,
+        dark_mode: 'system',
+      })
+
+      const store = usePreferencesStore()
+      await store.readPreferences()
+
+      expect(Dark.set).toHaveBeenCalledWith('auto')
+      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'system')
+    })
+
+    it('registers nativeTheme listener', async () => {
+      const store = usePreferencesStore()
+      await store.readPreferences()
+      expect(window.electronAPI.theme.onNativeThemeUpdated).toHaveBeenCalled()
     })
 
     it('handles API errors', async () => {
@@ -108,7 +147,6 @@ describe('Preferences Store', () => {
       const store = usePreferencesStore()
       await store.readPreferences()
 
-      // Should keep default values
       expect(store.language).toBe('es_ES')
     })
   })
@@ -117,13 +155,13 @@ describe('Preferences Store', () => {
     it('posts all preferences', async () => {
       const store = usePreferencesStore()
       store.language = 'ca_ES'
-      store.darkMode = true
+      store.darkMode = 'dark'
       await store.savePreferences()
 
       expect(window.electronAPI.preferences.write).toHaveBeenCalledWith(
         expect.objectContaining({
           language: 'ca_ES',
-          dark_mode: true,
+          dark_mode: 'dark',
           show_apps: true,
         }),
       )
@@ -132,33 +170,51 @@ describe('Preferences Store', () => {
       )
     })
 
-    it('sets dark mode after saving', async () => {
+    it('sets dark mode after saving with "dark" value', async () => {
       const { Dark, LocalStorage } = await import('quasar')
 
       const store = usePreferencesStore()
-      store.darkMode = true
+      store.darkMode = 'dark'
       await store.savePreferences()
 
       expect(Dark.set).toHaveBeenCalledWith(true)
-      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', true)
+      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'dark')
+    })
+
+    it('sets auto mode after saving with "system" value', async () => {
+      const { Dark, LocalStorage } = await import('quasar')
+
+      const store = usePreferencesStore()
+      store.darkMode = 'system'
+      await store.savePreferences()
+
+      expect(Dark.set).toHaveBeenCalledWith('auto')
+      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'system')
+    })
+
+    it('sets light mode after saving with "light" value', async () => {
+      const { Dark, LocalStorage } = await import('quasar')
+
+      const store = usePreferencesStore()
+      store.darkMode = 'light'
+      await store.savePreferences()
+
+      expect(Dark.set).toHaveBeenCalledWith(false)
+      expect(LocalStorage.set).toHaveBeenCalledWith('darkMode', 'light')
     })
   })
 
   describe('setLanguage()', () => {
     it('updates language value', () => {
       const store = usePreferencesStore()
-
       store.setLanguage('fr_FR')
-
       expect(store.language).toBe('fr_FR')
     })
 
     it('updates gettext current language', async () => {
       const { gettext } = await import('boot/gettext')
       const store = usePreferencesStore()
-
       store.setLanguage('ca_ES')
-
       expect(gettext.current).toBe('ca_ES')
     })
   })

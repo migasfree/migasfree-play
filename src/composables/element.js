@@ -60,6 +60,7 @@ export const APP_ICON = {
   hide: 'mdi-eye-off',
   dark: 'mdi-weather-night',
   light: 'mdi-weather-sunny',
+  system: 'mdi-theme-light-dark',
   language: 'mdi-translate',
   up: 'mdi-chevron-up',
   down: 'mdi-chevron-down',
