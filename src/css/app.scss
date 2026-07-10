@@ -122,6 +122,27 @@
   .q-toggle__track {
     background: var(--neutral-400) !important;
   }
+
+  /* Quasar static grey color overrides for dark mode */
+  .text-grey-6 {
+    color: var(--text-muted) !important;
+  }
+
+  .text-grey-7 {
+    color: var(--text-muted) !important;
+  }
+
+  .text-grey-8 {
+    color: var(--neutral-700) !important; /* #dfcfca, high-contrast warm grey */
+  }
+
+  .text-grey-9 {
+    color: var(--text-main) !important; /* #fefce8, primary text cream */
+  }
+
+  .text-blue-grey-7 {
+    color: #b0bec5 !important; /* High-contrast blue-grey */
+  }
 }
 
 .body--light {
