@@ -70,7 +70,7 @@
   --surface: rgba(30, 30, 30, 0.5);
   --border: rgba(255, 255, 255, 0.1);
   --text-main: #fefce8;
-  --text-muted: #a38c86;
+  --text-muted: #c4b5b0;
   background-color: #0d0807;
 
   /* Brand overrides */
@@ -108,6 +108,19 @@
   .q-chip.bg-warning,
   .q-toggle__inner--truthy .q-icon {
     color: #431407 !important;
+  }
+
+  /* Subcategory/Device status and button overrides for contrast */
+  .text-brown-8 {
+    color: #d7ccc8 !important; /* Muted light brown (Brown 200) for unavailable apps */
+  }
+
+  .text-orange-10 {
+    color: #ffa726 !important; /* High-contrast orange (Orange 4) for privileged apps */
+  }
+
+  .q-toggle__track {
+    background: var(--neutral-400) !important;
   }
 }
 
@@ -394,7 +407,7 @@ h6,
 
 /* --- Selection Controls --- */
 .q-checkbox__bg {
-  border: 2px solid var(--neutral-300) !important;
+  border: 2px solid var(--text-muted) !important;
   border-radius: 6px !important;
 }
 
