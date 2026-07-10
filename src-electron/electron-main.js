@@ -91,13 +91,15 @@ function getRealUserDarkMode() {
         const v = parseInt(m[1], 10)
         if (v === 1) return true
         if (v === 2) return false
-        // v === 0: no preference — fall through
+        // v === 0: no preference — fall through to gsettings for a precise answer
       }
     } catch {
       // Portal not available (old DE or KDE < 5.25)
     }
 
     // 2. GNOME gsettings
+    // Returns 'prefer-dark', 'prefer-light', or 'default' (treated as light).
+    // Once gsettings responds we always return a boolean — never fall through.
     try {
       const s = execFileSync(
         'gsettings',
@@ -106,8 +108,8 @@ function getRealUserDarkMode() {
       )
         .toString()
         .trim()
-      if (s.includes('prefer-dark')) return true
-      if (s.includes('prefer-light')) return false
+      // Any value other than 'prefer-dark' (including 'default') means light mode
+      return s.includes('prefer-dark')
     } catch {
       // Not GNOME
     }
