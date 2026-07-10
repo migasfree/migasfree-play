@@ -18,18 +18,19 @@ Desktop application for the [Migasfree](https://github.com/migasfree) ecosystem.
 ## Screenshots
 
 ![Apps View](./screenshots/play-apps.png)
+
 ![Devices View](./screenshots/play-devices.png)
+
 ![Info View](./screenshots/play-info.png)
 
 ## Tech Stack
 
 | Layer             | Technology             |
 | ----------------- | ---------------------- |
-| Desktop Framework | Electron 39.x          |
-| UI Framework      | Vue.js 3 + Quasar 2.18 |
+| Desktop Framework | Electron 43.x          |
+| UI Framework      | Vue.js 3 + Quasar 2.20 |
 | State Management  | Pinia 3.x              |
-
-| Testing | Vitest 4.x |
+| Testing           | Vitest 4.x             |
 
 ## 📚 Documentation
 
