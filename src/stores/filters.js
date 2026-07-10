@@ -13,7 +13,7 @@ export const useFiltersStore = defineStore('filters', () => {
   const categories = ref([])
   const selectedCategory = ref(null)
   const searchApp = ref(null)
-  const onlyInstalledApps = ref(false)
+  const appStatusFilter = ref(null)
   const searchDevice = ref(null)
   const onlyAssignedDevices = ref(false)
 
@@ -62,7 +62,7 @@ export const useFiltersStore = defineStore('filters', () => {
     categories,
     selectedCategory,
     searchApp,
-    onlyInstalledApps,
+    appStatusFilter,
     searchDevice,
     onlyAssignedDevices,
     setCategories,

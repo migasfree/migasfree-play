@@ -59,7 +59,7 @@ vi.mock('src/stores/filters', async () => {
   const state = {
     searchApp: ref(''),
     selectedCategory: ref(null),
-    onlyInstalledApps: ref(false),
+    appStatusFilter: ref(null),
   }
   return { useFiltersStore: () => state }
 })
@@ -135,7 +135,7 @@ describe('Apps Store', () => {
     const filters = useFiltersStore()
     filters.searchApp.value = ''
     filters.selectedCategory.value = null
-    filters.onlyInstalledApps.value = false
+    filters.appStatusFilter.value = null
 
     const packages = usePackagesStore()
     packages.installed.value = []
@@ -180,28 +180,63 @@ describe('Apps Store', () => {
     expect(store.filteredApps[0].name).toBe('VLC')
   })
 
-  it('filters by installed apps', async () => {
+  it('filters by app status: installed', async () => {
     const store = useAppsStore()
     const filtersStore = useFiltersStore()
     const packagesStore = usePackagesStore()
     await store.loadApps()
 
-    filtersStore.onlyInstalledApps.value = true
-    packagesStore.installed.value = []
-    store.filterApps()
-    expect(store.filteredApps.length).toBe(0)
+    // All packages available so none are 'unavailable'
+    packagesStore.available.value = ['firefox', 'vlc', 'gimp']
 
+    // Only VLC installed
     packagesStore.installed.value = ['vlc']
+    filtersStore.appStatusFilter.value = 'installed'
     store.filterApps()
-
-    // Debug: Why it might fail?
-    // apps value needs to be refreshed? No, filterApps uses apps.value which is set by loadApps.
-    // apps.value contains vlc. vlc has packages_to_install: ['vlc'].
-    // installedSet has 'vlc'.
-    // Should match.
-
     expect(store.filteredApps.length).toBe(1)
     expect(store.filteredApps[0].name).toBe('VLC')
+  })
+
+  it('filters by app status: not_installed', async () => {
+    const store = useAppsStore()
+    const filtersStore = useFiltersStore()
+    const packagesStore = usePackagesStore()
+    await store.loadApps()
+
+    packagesStore.available.value = ['firefox', 'vlc', 'gimp']
+    packagesStore.installed.value = ['vlc']
+    filtersStore.appStatusFilter.value = 'not_installed'
+    store.filterApps()
+    // Firefox and GIMP are available and not installed (level U assumed)
+    expect(store.filteredApps.length).toBe(2)
+    const names = store.filteredApps.map((a) => a.name)
+    expect(names).toContain('Firefox')
+    expect(names).toContain('GIMP')
+  })
+
+  it('filters by app status: unavailable', async () => {
+    const store = useAppsStore()
+    const filtersStore = useFiltersStore()
+    const packagesStore = usePackagesStore()
+    await store.loadApps()
+
+    // GIMP package not in available
+    packagesStore.available.value = ['firefox', 'vlc']
+    packagesStore.installed.value = []
+    filtersStore.appStatusFilter.value = 'unavailable'
+    store.filterApps()
+    expect(store.filteredApps.length).toBe(1)
+    expect(store.filteredApps[0].name).toBe('GIMP')
+  })
+
+  it('shows all apps when status filter is null', async () => {
+    const store = useAppsStore()
+    const filtersStore = useFiltersStore()
+    await store.loadApps()
+
+    filtersStore.appStatusFilter.value = null
+    store.filterApps()
+    expect(store.filteredApps.length).toBe(3)
   })
 
   it('computes all packages from apps', async () => {

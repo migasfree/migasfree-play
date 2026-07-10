@@ -75,9 +75,9 @@ describe('Filters Store', () => {
       expect(store.searchApp).toBeNull()
     })
 
-    it('has false onlyInstalledApps initially', () => {
+    it('has null appStatusFilter initially', () => {
       const store = useFiltersStore()
-      expect(store.onlyInstalledApps).toBe(false)
+      expect(store.appStatusFilter).toBeNull()
     })
 
     it('has null searchDevice initially', () => {

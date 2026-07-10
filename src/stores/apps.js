@@ -56,12 +56,51 @@ export const useAppsStore = defineStore('apps', () => {
     }
   }
 
+  // Returns the exclusive status of an app based on the priority hierarchy:
+  // installed → unavailable → privileged → not_installed
+  const getAppStatus = (app, packagesStore, userIsPrivileged) => {
+    const pkgs = app.packages_to_install
+
+    if (
+      pkgs.length > 0 &&
+      pkgs.every((pkg) => packagesStore.installedSet.has(pkg))
+    ) {
+      return 'installed'
+    }
+
+    if (!pkgs.every((pkg) => packagesStore.availableSet.has(pkg))) {
+      return 'unavailable'
+    }
+
+    if (app.level?.id === 'A' && !userIsPrivileged) {
+      return 'privileged'
+    }
+
+    return 'not_installed'
+  }
+
+  // Returns the set of status keys that are currently present in the app list.
+  // The component uses this to build the translated options for the status select.
+  const presentStatuses = computed(() => {
+    const packagesStore = usePackagesStore()
+    const authStore = useAuthStore()
+    const { userIsPrivileged } = storeToRefs(authStore)
+
+    const present = new Set()
+    apps.value.forEach((app) => {
+      present.add(getAppStatus(app, packagesStore, userIsPrivileged.value))
+    })
+    return present
+  })
+
   const filterApps = () => {
     const filtersStore = useFiltersStore()
     const packagesStore = usePackagesStore()
+    const authStore = useAuthStore()
 
-    const { searchApp, selectedCategory, onlyInstalledApps } =
+    const { searchApp, selectedCategory, appStatusFilter } =
       storeToRefs(filtersStore)
+    const { userIsPrivileged } = storeToRefs(authStore)
 
     const pattern = searchApp.value?.toLowerCase()
     const categoryId = selectedCategory.value?.id
@@ -79,16 +118,14 @@ export const useAppsStore = defineStore('apps', () => {
         if (!nameMatch && !descMatch) return false
       }
 
-      // Installed‑apps filter (if active)
-      if (onlyInstalledApps.value) {
-        // Must have at least one package to install
-        if (app.packages_to_install.length === 0) return false
-
-        // All required packages must be in the installed set
-        const allInstalled = app.packages_to_install.every((pkg) =>
-          packagesStore.installedSet.has(pkg),
-        )
-        if (!allInstalled) return false
+      // Status filter (if active)
+      if (appStatusFilter.value !== null) {
+        if (
+          getAppStatus(app, packagesStore, userIsPrivileged.value) !==
+          appStatusFilter.value
+        ) {
+          return false
+        }
       }
 
       return true
@@ -117,6 +154,8 @@ export const useAppsStore = defineStore('apps', () => {
     getAppsPackages,
     loadApps,
     filterApps,
+    getAppStatus,
+    presentStatuses,
     hasLoaded,
   }
 })

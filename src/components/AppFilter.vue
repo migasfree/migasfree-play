@@ -2,7 +2,7 @@
   <FilterCard>
     <div class="row q-col-gutter-md items-center">
       <!-- Search Input -->
-      <div class="col-12 col-sm-6 col-md-4">
+      <div class="col-12">
         <q-input
           v-model="searchApp"
           dense
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Category Select -->
-      <div class="col-12 col-sm-6 col-md-4">
+      <div class="col-12 col-sm-6">
         <q-select
           v-model="selectedCategory"
           dense
@@ -35,27 +35,53 @@
         />
       </div>
 
-      <!-- Toggle -->
-      <div class="col-12 col-md-4 flex justify-end items-center">
-        <q-toggle
-          v-model="onlyInstalledApps"
+      <!-- Status Select -->
+      <div class="col-12 col-sm-6">
+        <q-select
+          v-model="appStatusFilter"
           dense
-          class="filter-toggle"
-          :label="$gettext('View installed apps only')"
-          :checked-icon="appIcon('installed')"
-          :unchecked-icon="appIcon('apps')"
-          size="md"
-          :false-value="false"
-          :true-value="true"
+          filled
+          class="filter-input"
+          :label="$gettext('Status')"
+          :options="availableStatusOptions"
+          option-value="value"
+          option-label="label"
+          emit-value
+          map-options
           @update:model-value="appsStore.filterApps"
-        />
+        >
+          <!-- Show selected icon inline with the selected value label (as prepend) -->
+          <template #selected-item="scope">
+            <q-icon
+              v-if="scope.opt.icon"
+              :name="scope.opt.icon"
+              size="xs"
+              class="q-mr-xs"
+            />
+            <span>{{ scope.opt.label }}</span>
+          </template>
+
+          <!-- Show icons inside dropdown options list -->
+          <template #option="scope">
+            <q-item v-bind="scope.itemProps">
+              <q-item-section v-if="scope.opt.icon" avatar>
+                <q-icon :name="scope.opt.icon" size="xs" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ scope.opt.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
     </div>
   </FilterCard>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useGettext } from 'vue3-gettext'
 
 import FilterCard from 'components/FilterCard.vue'
 import { appIcon } from 'src/composables/element'
@@ -66,6 +92,38 @@ import { useFiltersStore } from 'src/stores/filters'
 const appsStore = useAppsStore()
 const filtersStore = useFiltersStore()
 
-const { searchApp, selectedCategory, categories, onlyInstalledApps } =
+const { $gettext } = useGettext()
+
+const { searchApp, selectedCategory, categories, appStatusFilter } =
   storeToRefs(filtersStore)
+
+const { presentStatuses } = storeToRefs(appsStore)
+
+const STATUS_ORDER = ['installed', 'not_installed', 'privileged', 'unavailable']
+
+const availableStatusOptions = computed(() => {
+  const labels = {
+    installed: $gettext('Installed'),
+    not_installed: $gettext('Not installed'),
+    privileged: $gettext('With privileges'),
+    unavailable: $gettext('Not available'),
+  }
+
+  const icons = {
+    installed: appIcon('success'),
+    not_installed: appIcon('install'),
+    privileged: appIcon('unlock'),
+    unavailable: appIcon('unavailable'),
+  }
+
+  const options = [
+    { value: null, label: $gettext('All'), icon: appIcon('apps') },
+  ]
+  STATUS_ORDER.forEach((key) => {
+    if (presentStatuses.value.has(key)) {
+      options.push({ value: key, label: labels[key], icon: icons[key] })
+    }
+  })
+  return options
+})
 </script>
