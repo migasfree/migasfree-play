@@ -43,7 +43,8 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
-* Thu, 09 Jul 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+* Fri, 10 Jul 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(apps): implement multi-state status filtering
 - feat(ui): replace locked app concept with not available status and list missing packages
 - feat(build): migrate renderer build system from Webpack to Vite
 - fix(executions): prevent duplicate log output by clearing IPC listeners
