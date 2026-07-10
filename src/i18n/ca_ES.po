@@ -67,6 +67,7 @@ msgid "Install App"
 msgstr "Instal·lar aplicació"
 
 #: src/components/AppDetail.vue:80 src/components/DeviceDetail.vue:136
+#: src/stores/executions.js:115
 msgid "Install"
 msgstr "Instal·lar"
 
@@ -75,6 +76,7 @@ msgid "Uninstall App"
 msgstr "Desinstal·lar aplicació"
 
 #: src/components/AppDetail.vue:98 src/components/DeviceDetail.vue:120
+#: src/stores/executions.js:122
 msgid "Uninstall"
 msgstr "Desinstal·la"
 
@@ -83,19 +85,20 @@ msgstr "Desinstal·la"
 msgid "Manage with privileges"
 msgstr "Gestionar amb privilegis"
 
-#: src/components/AppDetail.vue:124 src/components/AppDetail.vue:126
+#: src/components/AppDetail.vue:124 src/components/AppDetail.vue:127
+#: src/components/AppFilter.vue:109
 msgid "Not available"
 msgstr "No disponible"
 
-#: src/components/AppDetail.vue:140
+#: src/components/AppDetail.vue:144 src/components/AppFilter.vue:106
 msgid "Installed"
 msgstr "Instal·lat"
 
-#: src/components/AppDetail.vue:234
+#: src/components/AppDetail.vue:242
 msgid "Installing %{name}"
 msgstr "Instal·lació %{name}"
 
-#: src/components/AppDetail.vue:253
+#: src/components/AppDetail.vue:261
 msgid "Uninstalling %{name}"
 msgstr "S'està desinstal·lant %{name}"
 
@@ -107,9 +110,21 @@ msgstr "Cerca en nom o descripció"
 msgid "Category"
 msgstr "Categoria"
 
-#: src/components/AppFilter.vue:44
-msgid "View installed apps only"
-msgstr "Veure només aplicacions instal·lades"
+#: src/components/AppFilter.vue:45
+msgid "Status"
+msgstr "Estat"
+
+#: src/components/AppFilter.vue:107
+msgid "Not installed"
+msgstr "No instal·lat"
+
+#: src/components/AppFilter.vue:108
+msgid "With privileges"
+msgstr "Amb privilegis"
+
+#: src/components/AppFilter.vue:120
+msgid "All"
+msgstr "Tots"
 
 #: src/components/Apps.vue:29 src/components/Devices.vue:26
 #: src/components/Executions.vue:17
@@ -169,8 +184,8 @@ msgstr "Connexió: %{type} %{ip}"
 msgid "Default"
 msgstr "Per defecte"
 
-#: src/components/DeviceDetail.vue:90 src/composables/element.js:185
-#: src/composables/element.js:186
+#: src/components/DeviceDetail.vue:90 src/composables/element.js:186
+#: src/composables/element.js:187
 msgid "Assigned"
 msgstr "Assignat"
 
@@ -220,7 +235,8 @@ msgstr "Error d'execució"
 msgid "Selection copied to clipboard"
 msgstr "Selecció copiada al porta-retalls"
 
-#: src/components/Info.vue:44 src/layouts/MainLayout.vue:189
+#: src/components/Info.vue:44 src/layouts/MainLayout.vue:196
+#: src/stores/executions.js:108
 msgid "Synchronization"
 msgstr "Sincronització"
 
@@ -309,17 +325,18 @@ msgid "Menu"
 msgstr "Menú"
 
 #: src/components/Menu.vue:86 src/pages/apps/index.vue:4
-#: src/pages/apps/index.vue:39 src/stores/program.js:135
+#: src/pages/apps/index.vue:39 src/stores/program.js:137
 msgid "Apps"
 msgstr "Aplicacions"
 
 #: src/components/Menu.vue:92 src/pages/devices/index.vue:4
-#: src/pages/devices/index.vue:50 src/stores/program.js:160
+#: src/pages/devices/index.vue:50 src/stores/program.js:162
 msgid "Devices"
 msgstr "Dispositius"
 
 #: src/components/Menu.vue:98 src/pages/tags/index.vue:4
-#: src/pages/tags/index.vue:33 src/stores/program.js:171
+#: src/pages/tags/index.vue:33 src/stores/executions.js:141
+#: src/stores/program.js:173
 msgid "Tags"
 msgstr "Etiquetes"
 
@@ -334,7 +351,7 @@ msgid "Info"
 msgstr "Informació"
 
 #: src/components/Menu.vue:116 src/pages/preferences/index.vue:4
-#: src/pages/preferences/index.vue:32 src/stores/program.js:49
+#: src/pages/preferences/index.vue:32 src/stores/program.js:51
 msgid "Preferences"
 msgstr "Preferències"
 
@@ -411,6 +428,7 @@ msgid "Communicate tags to the server"
 msgstr "Comunicar etiquetes al servidor"
 
 #: src/components/Tags.vue:98 src/components/Tags.vue:183
+#: src/stores/executions.js:136
 msgid "Set Tags"
 msgstr "Estableix etiquetes"
 
@@ -426,7 +444,7 @@ msgstr "No hi ha etiquetes disponibles per mostrar."
 msgid "Communicating..."
 msgstr "Comunicant-se..."
 
-#: src/components/Tags.vue:171
+#: src/components/Tags.vue:171 src/stores/executions.js:130
 msgid "Communicate Tags"
 msgstr "Comunicar etiquetes"
 
@@ -434,23 +452,23 @@ msgstr "Comunicar etiquetes"
 msgid "Setting Tags..."
 msgstr "Configuració d'etiquetes..."
 
-#: src/composables/element.js:182
+#: src/composables/element.js:183
 msgid "Available"
 msgstr "Disponible"
 
-#: src/composables/element.js:183
+#: src/composables/element.js:184
 msgid "In repair"
 msgstr "En reparació"
 
-#: src/composables/element.js:184
+#: src/composables/element.js:185
 msgid "Reserved"
 msgstr "Reservat"
 
-#: src/composables/element.js:187
+#: src/composables/element.js:188
 msgid "Unsubscribed"
 msgstr "De baixa"
 
-#: src/composables/element.js:190
+#: src/composables/element.js:191
 msgid "Unknown"
 msgstr "Desconegut"
 
@@ -495,7 +513,7 @@ msgstr "Anar al final"
 msgid "Scroll to top"
 msgstr "Anar a l'inici"
 
-#: src/layouts/MainLayout.vue:180
+#: src/layouts/MainLayout.vue:187
 msgid "Synchronizing..."
 msgstr "Sincronitzant..."
 
@@ -531,15 +549,15 @@ msgstr "¡Ordinador registrat!"
 msgid "Device not found"
 msgstr "Dispositiu no trobat"
 
-#: src/stores/executions.js:141
+#: src/stores/executions.js:212
 msgid "Synchronization finished"
 msgstr "Sincronització acabada"
 
-#: src/stores/executions.js:154
+#: src/stores/executions.js:225
 msgid "Please wait, other process is running!!!"
 msgstr "Espereu, un altre procés s'està executant!!!"
 
-#: src/stores/executions.js:446
+#: src/stores/executions.js:536
 msgid "Command cancelled"
 msgstr "Comanda cancel·lada"
 
@@ -547,31 +565,31 @@ msgstr "Comanda cancel·lada"
 msgid "Preferences saved successfully"
 msgstr "Preferències desades correctament"
 
-#: src/stores/program.js:68
+#: src/stores/program.js:70
 msgid "Server"
 msgstr "Servidor"
 
-#: src/stores/program.js:84
+#: src/stores/program.js:86
 msgid "Credentials are not valid. Review app settings."
 msgstr "Les credencials no són vàlides. Revisa la configuració de l'aplicació."
 
-#: src/stores/program.js:90 src/stores/ui.js:46 src/stores/ui.js:77
+#: src/stores/program.js:92 src/stores/ui.js:46 src/stores/ui.js:77
 msgid "There is no connection to the server"
 msgstr "No hi ha connexió amb el servidor"
 
-#: src/stores/program.js:95
+#: src/stores/program.js:97
 msgid "Failed to obtain token"
 msgstr "Error en obtenir el token"
 
-#: src/stores/program.js:103
+#: src/stores/program.js:105
 msgid "Token validation failed"
 msgstr "Ha fallat la validació del token"
 
-#: src/stores/program.js:111
+#: src/stores/program.js:113
 msgid "Computer"
 msgstr "Ordinador"
 
-#: src/stores/program.js:140
+#: src/stores/program.js:142
 msgid "Packages"
 msgstr "Paquets"
 
