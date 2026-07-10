@@ -44,6 +44,7 @@ chmod 4755 /usr/share/migasfree-play/chrome-sandbox || true
 
 %changelog
 * Fri, 10 Jul 2026 Jose Antonio Chavarría <jachavar@gmail.com> - 5.14-0
+- feat(theme): implement system-aware 3-way theme selector
 - feat(apps): implement multi-state status filtering
 - feat(ui): replace locked app concept with not available status and list missing packages
 - feat(build): migrate renderer build system from Webpack to Vite
