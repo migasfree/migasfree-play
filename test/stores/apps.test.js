@@ -4,6 +4,7 @@ import { useAppsStore } from 'src/stores/apps'
 import { useFiltersStore } from 'src/stores/filters'
 import { usePackagesStore } from 'src/stores/packages'
 import { useComputerStore } from 'src/stores/computer'
+import { useAuthStore } from 'src/stores/auth'
 
 import { api } from 'boot/axios'
 
@@ -246,5 +247,30 @@ describe('Apps Store', () => {
     expect(pkgs).toContain('firefox')
     expect(pkgs).toContain('vlc')
     expect(pkgs).toContain('gimp')
+  })
+
+  it('automatically refilters when userIsPrivileged changes', async () => {
+    const store = useAppsStore()
+    const authStore = useAuthStore()
+    const packagesStore = usePackagesStore()
+    const filtersStore = useFiltersStore()
+
+    mockAppsData[2].level = { id: 'A', name: 'Administrator' }
+    await store.loadApps()
+
+    packagesStore.available.value = ['firefox', 'vlc', 'gimp']
+    packagesStore.installed.value = []
+
+    filtersStore.appStatusFilter.value = 'privileged'
+    store.filterApps()
+
+    expect(store.filteredApps.length).toBe(1)
+    expect(store.filteredApps[0].name).toBe('GIMP')
+
+    authStore.user.isPrivileged = true
+
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(store.filteredApps.length).toBe(0)
   })
 })

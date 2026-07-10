@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { api } from 'boot/axios'
@@ -147,6 +147,13 @@ export const useAppsStore = defineStore('apps', () => {
     })
     apps.value = results
   }
+
+  watch(
+    () => useAuthStore().userIsPrivileged,
+    () => {
+      filterApps()
+    },
+  )
 
   return {
     apps,
