@@ -128,91 +128,43 @@ function getRealUserDarkMode() {
 }
 
 /**
- * Cross-DE theme change watcher for root-launched apps.
- * Primary  : dbus-monitor on XDG portal SettingChanged signals (GNOME, KDE 5.25+)
- * Fallback : gsettings monitor (GNOME only, used if dbus-monitor fails)
- * On each change the renderer is notified via 'theme:native-updated' and then
- * calls shouldUseDarkColors() via IPC to resolve the actual value.
+ * Poll-based hot-switch for root-launched apps.
+ *
+ * D-Bus security policy allows root to make synchronous calls to the user's
+ * session bus (used successfully in getRealUserDarkMode) but blocks signal
+ * subscriptions across UIDs. Instead of fighting that restriction, we poll
+ * getRealUserDarkMode() every 2 s and send 'theme:native-updated' to the
+ * renderer only when the value actually changes.
  */
-let themeWatcherProcess = null
+let themePollInterval = null
+let lastPolledDarkMode = null
 
-function spawnGnomeWatcher(win, userEnv) {
-  if (themeWatcherProcess) return
-  try {
-    themeWatcherProcess = spawn(
-      'gsettings',
-      ['monitor', 'org.gnome.desktop.interface', 'color-scheme'],
-      { env: userEnv },
-    )
-    themeWatcherProcess.stdout.on('data', () => {
-      if (win && !win.isDestroyed())
+function startUserThemePoll(win) {
+  if (themePollInterval) return
+
+  lastPolledDarkMode = getRealUserDarkMode()
+  console.log(
+    `[ThemeWatcher] polling started (current: ${
+      lastPolledDarkMode === null
+        ? 'unknown'
+        : lastPolledDarkMode
+          ? 'dark'
+          : 'light'
+    })`,
+  )
+
+  themePollInterval = setInterval(() => {
+    const current = getRealUserDarkMode()
+    if (current !== null && current !== lastPolledDarkMode) {
+      lastPolledDarkMode = current
+      console.log(
+        `[ThemeWatcher] theme changed → ${current ? 'dark' : 'light'}`,
+      )
+      if (win && !win.isDestroyed()) {
         win.webContents.send('theme:native-updated')
-    })
-    themeWatcherProcess.on('error', () => {
-      themeWatcherProcess = null
-    })
-    themeWatcherProcess.on('exit', () => {
-      themeWatcherProcess = null
-    })
-    console.log('[ThemeWatcher] gsettings monitor started (GNOME fallback)')
-  } catch {
-    // Give up silently — hot-switching won't work, startup detection still does
-  }
-}
-
-function startUserThemeWatcher(win) {
-  if (themeWatcherProcess) return
-
-  const sudoUser = process.env.SUDO_USER
-  if (!sudoUser) return
-
-  try {
-    const uid = execFileSync('id', ['-u', sudoUser], { timeout: 1000 })
-      .toString()
-      .trim()
-    const busPath = `/run/user/${uid}/bus`
-    if (!existsSync(busPath)) return
-
-    const userEnv = {
-      DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
-      XDG_RUNTIME_DIR: `/run/user/${uid}`,
-      HOME: `/home/${sudoUser}`,
-      USER: sudoUser,
-      LOGNAME: sudoUser,
+      }
     }
-
-    // Primary: XDG portal SettingChanged signal — works on GNOME & KDE Plasma 5.25+
-    themeWatcherProcess = spawn(
-      'dbus-monitor',
-      [
-        '--session',
-        "type='signal',interface='org.freedesktop.portal.Settings',member='SettingChanged'",
-      ],
-      { env: userEnv },
-    )
-
-    themeWatcherProcess.stdout.on('data', () => {
-      // Any output = a portal setting changed; renderer queries the actual value
-      if (win && !win.isDestroyed())
-        win.webContents.send('theme:native-updated')
-    })
-
-    themeWatcherProcess.on('error', (err) => {
-      console.error(`[ThemeWatcher] dbus-monitor failed: ${err.message}`)
-      themeWatcherProcess = null
-      spawnGnomeWatcher(win, userEnv)
-    })
-
-    themeWatcherProcess.on('exit', (code) => {
-      const failed = code !== 0 && code !== null
-      themeWatcherProcess = null
-      if (failed) spawnGnomeWatcher(win, userEnv)
-    })
-
-    console.log('[ThemeWatcher] dbus-monitor started for user:', sudoUser)
-  } catch (err) {
-    console.error(`[ThemeWatcher] Failed to start: ${err.message}`)
-  }
+  }, 2000)
 }
 
 // Register new IPC handlers
@@ -626,7 +578,7 @@ async function createWindow() {
     process.getuid?.() === 0 &&
     process.env.SUDO_USER
   ) {
-    startUserThemeWatcher(mainWindow)
+    startUserThemePoll(mainWindow)
   } else {
     nativeTheme.on('updated', () => {
       if (mainWindow && !mainWindow.isDestroyed()) {
@@ -670,9 +622,9 @@ if (!gotTheLock) {
   })
 
   app.on('before-quit', () => {
-    if (themeWatcherProcess) {
-      themeWatcherProcess.kill()
-      themeWatcherProcess = null
+    if (themePollInterval) {
+      clearInterval(themePollInterval)
+      themePollInterval = null
     }
   })
 }
