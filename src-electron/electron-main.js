@@ -19,6 +19,7 @@ import {
   statSync,
   existsSync,
   writeFileSync,
+  readFileSync,
 } from 'node:fs'
 
 import { envDefaults } from '../src/config/app.conf.js'
@@ -38,13 +39,15 @@ const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const runningProcesses = new Map() // Store running command processes for IPC
 
 /**
- * When the app is launched via `sudo`, the Electron process runs as root and
- * cannot access the regular user's D-Bus session. nativeTheme will always
- * report light mode in that case. This helper reads the actual user's color
- * scheme preference directly via gsettings using the user's socket at
- * /run/user/{uid}/bus (available on any systemd-based Linux distro).
+ * Detect the real user's dark mode when running as root (sudo).
+ * nativeTheme is blind to the user's D-Bus session in that case.
  *
- * Returns true (dark), false (light), or null if detection is not applicable.
+ * Detection cascade (cross-DE):
+ *   1. XDG portal — org.freedesktop.portal.Settings (GNOME, KDE Plasma 5.25+)
+ *   2. gsettings  — org.gnome.desktop.interface color-scheme (GNOME only)
+ *   3. kdeglobals — ~/.config/kdeglobals ColorScheme field (KDE, no D-Bus)
+ *
+ * Returns true (dark), false (light), or null if not applicable / undetectable.
  */
 function getRealUserDarkMode() {
   if (process.platform !== 'linux' || process.getuid?.() !== 0) return null
@@ -59,35 +62,102 @@ function getRealUserDarkMode() {
     const busPath = `/run/user/${uid}/bus`
     if (!existsSync(busPath)) return null
 
-    const result = execFileSync(
-      'gsettings',
-      ['get', 'org.gnome.desktop.interface', 'color-scheme'],
-      {
-        timeout: 2000,
-        env: {
-          DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
-          HOME: `/home/${sudoUser}`,
-          USER: sudoUser,
-          LOGNAME: sudoUser,
-        },
-      },
-    )
-      .toString()
-      .trim()
+    const userEnv = {
+      DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
+      HOME: `/home/${sudoUser}`,
+      USER: sudoUser,
+      LOGNAME: sudoUser,
+    }
 
-    return result.includes('dark')
+    // 1. XDG portal: uint32 0 = no-preference, 1 = dark, 2 = light
+    try {
+      const out = execFileSync(
+        'dbus-send',
+        [
+          '--session',
+          '--dest=org.freedesktop.portal.Desktop',
+          '--type=method_call',
+          '--print-reply',
+          '/org/freedesktop/portal/desktop',
+          'org.freedesktop.portal.Settings.Read',
+          'string:org.freedesktop.appearance',
+          'string:color-scheme',
+        ],
+        { timeout: 2000, env: userEnv },
+      ).toString()
+      const m = out.match(/uint32\s+(\d+)/)
+      if (m) {
+        const v = parseInt(m[1], 10)
+        if (v === 1) return true
+        if (v === 2) return false
+        // v === 0: no preference — fall through
+      }
+    } catch {
+      // Portal not available (old DE or KDE < 5.25)
+    }
+
+    // 2. GNOME gsettings
+    try {
+      const s = execFileSync(
+        'gsettings',
+        ['get', 'org.gnome.desktop.interface', 'color-scheme'],
+        { timeout: 2000, env: userEnv },
+      )
+        .toString()
+        .trim()
+      if (s.includes('prefer-dark')) return true
+      if (s.includes('prefer-light')) return false
+    } catch {
+      // Not GNOME
+    }
+
+    // 3. KDE kdeglobals (plain text file — no D-Bus needed)
+    try {
+      const cfg = readFileSync(`/home/${sudoUser}/.config/kdeglobals`, 'utf8')
+      const m = cfg.match(/^ColorScheme=(.+)$/m)
+      if (m) return m[1].toLowerCase().includes('dark')
+    } catch {
+      // Not KDE
+    }
+
+    return null
   } catch {
     return null
   }
 }
 
 /**
- * When running as root, nativeTheme.on('updated') never fires for the user's
- * theme changes. This function spawns a `gsettings monitor` subprocess that
- * listens on the real user's D-Bus socket and forwards the event to the
- * renderer via the existing 'theme:native-updated' IPC channel.
+ * Cross-DE theme change watcher for root-launched apps.
+ * Primary  : dbus-monitor on XDG portal SettingChanged signals (GNOME, KDE 5.25+)
+ * Fallback : gsettings monitor (GNOME only, used if dbus-monitor fails)
+ * On each change the renderer is notified via 'theme:native-updated' and then
+ * calls shouldUseDarkColors() via IPC to resolve the actual value.
  */
 let themeWatcherProcess = null
+
+function spawnGnomeWatcher(win, userEnv) {
+  if (themeWatcherProcess) return
+  try {
+    themeWatcherProcess = spawn(
+      'gsettings',
+      ['monitor', 'org.gnome.desktop.interface', 'color-scheme'],
+      { env: userEnv },
+    )
+    themeWatcherProcess.stdout.on('data', () => {
+      if (win && !win.isDestroyed())
+        win.webContents.send('theme:native-updated')
+    })
+    themeWatcherProcess.on('error', () => {
+      themeWatcherProcess = null
+    })
+    themeWatcherProcess.on('exit', () => {
+      themeWatcherProcess = null
+    })
+    console.log('[ThemeWatcher] gsettings monitor started (GNOME fallback)')
+  } catch {
+    // Give up silently — hot-switching won't work, startup detection still does
+  }
+}
 
 function startUserThemeWatcher(win) {
   if (themeWatcherProcess) return
@@ -102,36 +172,42 @@ function startUserThemeWatcher(win) {
     const busPath = `/run/user/${uid}/bus`
     if (!existsSync(busPath)) return
 
+    const userEnv = {
+      DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
+      HOME: `/home/${sudoUser}`,
+      USER: sudoUser,
+      LOGNAME: sudoUser,
+    }
+
+    // Primary: XDG portal SettingChanged signal — works on GNOME & KDE Plasma 5.25+
     themeWatcherProcess = spawn(
-      'gsettings',
-      ['monitor', 'org.gnome.desktop.interface', 'color-scheme'],
-      {
-        env: {
-          DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
-          HOME: `/home/${sudoUser}`,
-          USER: sudoUser,
-          LOGNAME: sudoUser,
-        },
-      },
+      'dbus-monitor',
+      [
+        '--session',
+        "type='signal',interface='org.freedesktop.portal.Settings',member='SettingChanged'",
+      ],
+      { env: userEnv },
     )
 
     themeWatcherProcess.stdout.on('data', () => {
-      // Any output from gsettings monitor means the color-scheme changed
-      if (win && !win.isDestroyed()) {
+      // Any output = a portal setting changed; renderer queries the actual value
+      if (win && !win.isDestroyed())
         win.webContents.send('theme:native-updated')
-      }
     })
 
     themeWatcherProcess.on('error', (err) => {
-      console.error(`[ThemeWatcher] gsettings monitor error: ${err.message}`)
+      console.error(`[ThemeWatcher] dbus-monitor failed: ${err.message}`)
       themeWatcherProcess = null
+      spawnGnomeWatcher(win, userEnv)
     })
 
-    themeWatcherProcess.on('exit', () => {
+    themeWatcherProcess.on('exit', (code) => {
+      const failed = code !== 0 && code !== null
       themeWatcherProcess = null
+      if (failed) spawnGnomeWatcher(win, userEnv)
     })
 
-    console.log('[ThemeWatcher] gsettings monitor started for user:', sudoUser)
+    console.log('[ThemeWatcher] dbus-monitor started for user:', sudoUser)
   } catch (err) {
     console.error(`[ThemeWatcher] Failed to start: ${err.message}`)
   }
