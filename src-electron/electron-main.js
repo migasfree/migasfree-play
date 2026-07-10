@@ -3,7 +3,7 @@
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
-import { spawn } from 'child_process'
+import { spawn, execFileSync } from 'child_process'
 import {
   app,
   BrowserWindow,
@@ -36,6 +36,106 @@ import { validateSpawn } from './ipc-validation.js'
 import { platform, isWindows, isDarwin, getShell } from './platform-helper.js'
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const runningProcesses = new Map() // Store running command processes for IPC
+
+/**
+ * When the app is launched via `sudo`, the Electron process runs as root and
+ * cannot access the regular user's D-Bus session. nativeTheme will always
+ * report light mode in that case. This helper reads the actual user's color
+ * scheme preference directly via gsettings using the user's socket at
+ * /run/user/{uid}/bus (available on any systemd-based Linux distro).
+ *
+ * Returns true (dark), false (light), or null if detection is not applicable.
+ */
+function getRealUserDarkMode() {
+  if (process.platform !== 'linux' || process.getuid?.() !== 0) return null
+
+  const sudoUser = process.env.SUDO_USER
+  if (!sudoUser) return null
+
+  try {
+    const uid = execFileSync('id', ['-u', sudoUser], { timeout: 1000 })
+      .toString()
+      .trim()
+    const busPath = `/run/user/${uid}/bus`
+    if (!existsSync(busPath)) return null
+
+    const result = execFileSync(
+      'gsettings',
+      ['get', 'org.gnome.desktop.interface', 'color-scheme'],
+      {
+        timeout: 2000,
+        env: {
+          DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
+          HOME: `/home/${sudoUser}`,
+          USER: sudoUser,
+          LOGNAME: sudoUser,
+        },
+      },
+    )
+      .toString()
+      .trim()
+
+    return result.includes('dark')
+  } catch {
+    return null
+  }
+}
+
+/**
+ * When running as root, nativeTheme.on('updated') never fires for the user's
+ * theme changes. This function spawns a `gsettings monitor` subprocess that
+ * listens on the real user's D-Bus socket and forwards the event to the
+ * renderer via the existing 'theme:native-updated' IPC channel.
+ */
+let themeWatcherProcess = null
+
+function startUserThemeWatcher(win) {
+  if (themeWatcherProcess) return
+
+  const sudoUser = process.env.SUDO_USER
+  if (!sudoUser) return
+
+  try {
+    const uid = execFileSync('id', ['-u', sudoUser], { timeout: 1000 })
+      .toString()
+      .trim()
+    const busPath = `/run/user/${uid}/bus`
+    if (!existsSync(busPath)) return
+
+    themeWatcherProcess = spawn(
+      'gsettings',
+      ['monitor', 'org.gnome.desktop.interface', 'color-scheme'],
+      {
+        env: {
+          DBUS_SESSION_BUS_ADDRESS: `unix:path=${busPath}`,
+          HOME: `/home/${sudoUser}`,
+          USER: sudoUser,
+          LOGNAME: sudoUser,
+        },
+      },
+    )
+
+    themeWatcherProcess.stdout.on('data', () => {
+      // Any output from gsettings monitor means the color-scheme changed
+      if (win && !win.isDestroyed()) {
+        win.webContents.send('theme:native-updated')
+      }
+    })
+
+    themeWatcherProcess.on('error', (err) => {
+      console.error(`[ThemeWatcher] gsettings monitor error: ${err.message}`)
+      themeWatcherProcess = null
+    })
+
+    themeWatcherProcess.on('exit', () => {
+      themeWatcherProcess = null
+    })
+
+    console.log('[ThemeWatcher] gsettings monitor started for user:', sudoUser)
+  } catch (err) {
+    console.error(`[ThemeWatcher] Failed to start: ${err.message}`)
+  }
+}
 
 // Register new IPC handlers
 registerPackagesHandlers()
@@ -153,6 +253,10 @@ ipcMain.on('app:set-can-exit', (_, value) => {
 })
 
 ipcMain.handle('theme:should-use-dark-colors', () => {
+  // When running as root, nativeTheme can't see the real user's theme.
+  // Try to read it via gsettings from the user's D-Bus session.
+  const realUserDark = getRealUserDarkMode()
+  if (realUserDark !== null) return realUserDark
   return nativeTheme.shouldUseDarkColors
 })
 
@@ -436,12 +540,22 @@ async function createWindow() {
 
   Menu.setApplicationMenu(null)
 
-  // Forward OS theme changes to the renderer
-  nativeTheme.on('updated', () => {
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('theme:native-updated')
-    }
-  })
+  // Forward OS theme changes to the renderer.
+  // When running as root (sudo), nativeTheme.on('updated') never fires for
+  // the regular user's session, so we use a gsettings monitor subprocess instead.
+  if (
+    process.platform === 'linux' &&
+    process.getuid?.() === 0 &&
+    process.env.SUDO_USER
+  ) {
+    startUserThemeWatcher(mainWindow)
+  } else {
+    nativeTheme.on('updated', () => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('theme:native-updated')
+      }
+    })
+  }
 
   // Start the IPC bindings for Auto-Update events
   setupAutoUpdateIPC(mainWindow)
@@ -478,7 +592,10 @@ if (!gotTheLock) {
   })
 
   app.on('before-quit', () => {
-    // No explicit cleanup needed
+    if (themeWatcherProcess) {
+      themeWatcherProcess.kill()
+      themeWatcherProcess = null
+    }
   })
 }
 
