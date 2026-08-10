@@ -158,18 +158,6 @@ done
 
 if [ "$_SYNC" = "sync" ]
 then
-    # user root enabled in X
-    if [ "$XDG_SESSION_TYPE" = "x11" ]
-    then
-        if [ -n "$SUDO_USER" ]
-        then
-            su "$SUDO_USER" -c "xhost si:localuser:root" 2>/dev/null || \
-            su "$SUDO_USER" -c "xhost +local:root" 2>/dev/null || true
-        else
-            xhost si:localuser:root 2>/dev/null || xhost +local:root 2>/dev/null || true
-        fi
-    fi
-
     _LOCK_FILE="/tmp/migasfree-sync.lock"
     exec 200>"$_LOCK_FILE"
 
@@ -209,6 +197,18 @@ fi
 if [ "$_CONNECTIVITY" = "True" ]
 then
     [ "$_DEBUG" = "debug" ] && export ELECTRON_ENABLE_LOGGING=1
+
+    # Enable root in X server display
+    if [ -n "$DISPLAY" ]
+    then
+        if [ -n "$SUDO_USER" ]
+        then
+            su "$SUDO_USER" -c "xhost si:localuser:root" 2>/dev/null || \
+            su "$SUDO_USER" -c "xhost +local:root" 2>/dev/null || true
+        else
+            xhost si:localuser:root 2>/dev/null || xhost +local:root 2>/dev/null || true
+        fi
+    fi
 
     _WAYLAND_FLAGS=()
     if [ "$XDG_SESSION_TYPE" = "wayland" ]
